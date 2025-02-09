@@ -8,6 +8,8 @@ TagManager:
   - Right Hand
   - Left Baton
   - Right Baton
+  - Left Sequence
+  - Right Sequence
   layers:
   - Default
   - TransparentFX

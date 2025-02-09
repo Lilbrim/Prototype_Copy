@@ -8,13 +8,18 @@ public class StanceManager : MonoBehaviour
 
     public enum Stance { Default, BasicStrike, Redonda }
     public Stance currentStance = Stance.Default;
-
     public GameObject[] defaultBoxes;
     public GameObject[] basicStrikeBoxes;
     public GameObject[] redondaBoxes;
 
-    public float stanceTimeout =2f; 
+    public List<AttackSequence> basicStrikeSequences = new List<AttackSequence>();
+    public List<AttackSequence> redondaSequences = new List<AttackSequence>();
+
+    public float stanceTimeout = 2f;
     private float timer;
+
+    private AttackSequence currentAttackSequence; 
+    private StanceDetector[] allDetectors;
 
     private void Awake()
     {
@@ -30,16 +35,25 @@ public class StanceManager : MonoBehaviour
 
     private void Start()
     {
+        allDetectors = FindObjectsOfType<StanceDetector>();
         SetStance(Stance.Default);
     }
 
     private void Update()
     {
-        if (currentStance != Stance.Default && !IsAnyBatonInStanceBox())
+        if (currentStance != Stance.Default && currentAttackSequence == null)
         {
+            CheckForSequenceStart();
+        }
+
+        if (currentAttackSequence != null)
+        {
+            CheckAttackSequence();
+
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
+                ResetSequence();
                 SetStance(Stance.Default);
             }
         }
@@ -59,14 +73,13 @@ public class StanceManager : MonoBehaviour
 
     private void SetStance(Stance newStance)
     {
-        StanceDetector[] allDetectors = FindObjectsOfType<StanceDetector>();
+        currentStance = newStance;
+        timer = stanceTimeout;
+
         foreach (var detector in allDetectors)
         {
             detector.ResetStance();
         }
-
-        currentStance = newStance;
-        timer = stanceTimeout;
 
         foreach (var box in defaultBoxes) box.SetActive(false);
         foreach (var box in basicStrikeBoxes) box.SetActive(false);
@@ -84,18 +97,106 @@ public class StanceManager : MonoBehaviour
                 foreach (var box in redondaBoxes) box.SetActive(true);
                 break;
         }
+
+        currentAttackSequence = null;
     }
 
-    private bool IsAnyBatonInStanceBox()
+    private void CheckForSequenceStart()
     {
-        StanceDetector[] allDetectors = FindObjectsOfType<StanceDetector>();
-        foreach (var detector in allDetectors)
+        List<AttackSequence> sequences = GetSequencesForCurrentStance();
+
+        foreach (var sequence in sequences)
         {
-            if (detector.IsLeftHandInStance() || detector.IsRightHandInStance())
+            if (IsSequenceStartConditionMet(sequence))
             {
-                return true; 
+                StartAttackSequence(sequence);
+                break; 
             }
+        }
+    }
+
+    private List<AttackSequence> GetSequencesForCurrentStance()
+    {
+        switch (currentStance)
+        {
+            case Stance.BasicStrike:
+                return basicStrikeSequences;
+            case Stance.Redonda:
+                return redondaSequences;
+            default:
+                return new List<AttackSequence>();
+        }
+    }
+
+    private bool IsSequenceStartConditionMet(AttackSequence sequence)
+    {
+        if (sequence.startBoxLeft != null && sequence.startBoxRight != null)
+        {
+            var leftDetector = sequence.startBoxLeft.GetComponent<StanceDetector>();
+            var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
+
+            return leftDetector.IsLeftHandInStance() && rightDetector.IsRightHandInStance();
         }
         return false;
     }
+
+    private void StartAttackSequence(AttackSequence sequence)
+    {
+        currentAttackSequence = sequence;
+        timer = stanceTimeout;
+
+        switch (currentStance)
+        {
+            case Stance.BasicStrike:
+                foreach (var box in basicStrikeBoxes) box.SetActive(false);
+                break;
+            case Stance.Redonda:
+                foreach (var box in redondaBoxes) box.SetActive(false);
+                break;
+        }
+
+        foreach (var box in sequence.sequenceBoxes)
+        {
+            box.SetActive(true);
+        }
+    }
+
+    private void CheckAttackSequence()
+    {
+        if (currentAttackSequence != null)
+        {
+            var currentBox = currentAttackSequence.sequenceBoxes[currentAttackSequence.currentIndex];
+            var detector = currentBox.GetComponent<StanceDetector>();
+
+            if (detector.IsLeftHandInStance() || detector.IsRightHandInStance())
+            {
+                currentAttackSequence.currentIndex++;
+                if (currentAttackSequence.currentIndex >= currentAttackSequence.sequenceBoxes.Length)
+                {
+                    Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done.");
+                    ResetSequence();
+                    SetStance(Stance.Default);
+                }
+            }
+        }
+    }
+
+    private void ResetSequence()
+    {
+        if (currentAttackSequence != null)
+        {
+            currentAttackSequence.currentIndex = 0;
+            currentAttackSequence = null;
+        }
+    }
+}
+
+[System.Serializable]
+public class AttackSequence
+{
+    public string sequenceName; 
+    public GameObject startBoxLeft; 
+    public GameObject startBoxRight; 
+    public GameObject[] sequenceBoxes; 
+    [HideInInspector] public int currentIndex = 0; 
 }
