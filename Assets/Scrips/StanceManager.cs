@@ -57,6 +57,14 @@ public class StanceManager : MonoBehaviour
                 SetStance(Stance.Default);
             }
         }
+        else if (currentStance != Stance.Default)
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                SetStance(Stance.Default);
+            }
+        }
     }
 
     public void EnterStance(string stanceName)
