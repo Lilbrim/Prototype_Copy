@@ -18,8 +18,9 @@ public class StanceManager : MonoBehaviour
     public float stanceTimeout = 2f;
     private float timer;
 
-    private AttackSequence currentAttackSequence; 
+    public AttackSequence currentAttackSequence; 
     private StanceDetector[] allDetectors;
+    public int sequenceCounter; 
 
     private void Awake()
     {
@@ -107,6 +108,7 @@ public class StanceManager : MonoBehaviour
         }
 
         currentAttackSequence = null;
+        sequenceCounter = 0; 
     }
 
     private void CheckForSequenceStart()
@@ -153,16 +155,6 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = sequence;
         timer = stanceTimeout;
 
-        switch (currentStance)
-        {
-            case Stance.BasicStrike:
-                foreach (var box in basicStrikeBoxes) box.SetActive(false);
-                break;
-            case Stance.Redonda:
-                foreach (var box in redondaBoxes) box.SetActive(false);
-                break;
-        }
-
         foreach (var box in sequence.sequenceBoxes)
         {
             box.SetActive(true);
@@ -173,18 +165,23 @@ public class StanceManager : MonoBehaviour
     {
         if (currentAttackSequence != null)
         {
-            var currentBox = currentAttackSequence.sequenceBoxes[currentAttackSequence.currentIndex];
-            var detector = currentBox.GetComponent<StanceDetector>();
-
-            if (detector.IsLeftHandInStance() || detector.IsRightHandInStance())
+            foreach (var box in currentAttackSequence.sequenceBoxes)
             {
-                currentAttackSequence.currentIndex++;
-                if (currentAttackSequence.currentIndex >= currentAttackSequence.sequenceBoxes.Length)
+                var detector = box.GetComponent<StanceDetector>();
+                if ((detector.IsLeftHandInStance() || detector.IsRightHandInStance()) && !detector.IsCompleted)
                 {
-                    Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done.");
-                    ResetSequence();
-                    SetStance(Stance.Default);
+                    detector.IsCompleted = true;
+                    sequenceCounter++;
+                    Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
                 }
+            }
+
+            if (sequenceCounter >= currentAttackSequence.sequenceBoxes.Length)
+            {
+                Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Total boxes completed: {sequenceCounter}");
+                NotifyObjectiveCompletion();
+                ResetSequence();
+                SetStance(Stance.Default);
             }
         }
     }
@@ -193,9 +190,19 @@ public class StanceManager : MonoBehaviour
     {
         if (currentAttackSequence != null)
         {
-            currentAttackSequence.currentIndex = 0;
+            foreach (var box in currentAttackSequence.sequenceBoxes)
+            {
+                var detector = box.GetComponent<StanceDetector>();
+                detector.IsCompleted = false; 
+            }
+
             currentAttackSequence = null;
+            sequenceCounter = 0;
         }
+    }
+    public void NotifyObjectiveCompletion()
+    {
+        LevelManager.Instance.EndObjective();
     }
 }
 
@@ -206,5 +213,6 @@ public class AttackSequence
     public GameObject startBoxLeft; 
     public GameObject startBoxRight; 
     public GameObject[] sequenceBoxes; 
+    public float timeLimit;
     [HideInInspector] public int currentIndex = 0; 
 }

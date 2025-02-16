@@ -21,4 +21,9 @@ public class XRGrabInteractableTwoAttach : XRGrabInteractable
 
         base.OnSelectEntering(args);
     }
+
+    public bool IsHeld()
+    {
+        return isSelected; 
+    }
 }

@@ -7,12 +7,13 @@ public class StanceDetector : MonoBehaviour
     public string stanceName;
     public GameObject[] stanceBoxes;
 
-    public Transform batonTip; // Empty GameObject at the tip of the baton
-    public Vector3 correctDirection = Vector3.forward; // Correct direction relative to the box
-    public float angleThreshold = 30f; // Allowed angle deviation in degrees
+    public Transform batonTip;
+    public Vector3 correctDirection = Vector3.forward;
+    public float angleThreshold = 30f;
 
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
+      public bool IsCompleted { get; set; } = false;
 
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
@@ -72,7 +73,7 @@ public class StanceDetector : MonoBehaviour
             boxRenderer.material = originalMaterial;
         }
 
-        CheckStance(); // Ensure stance is rechecked when a baton exits
+        CheckStance(); 
     }
 
     private void CheckOrientation(Collider other)
@@ -151,5 +152,6 @@ public class StanceDetector : MonoBehaviour
         {
             boxRenderer.material = originalMaterial;
         }
+         IsCompleted = false; 
     }
 }
