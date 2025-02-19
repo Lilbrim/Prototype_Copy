@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PracticeGame.unity
     guid: 6b2f9f5a17147a84d980fe6fb29dcfc7
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 81f549fc1e38d8a4289b245d47e8069e
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 4904dc513ba3ef7468dea6121db4f398, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 13b131170893b1b4b880005a4672162c, type: 2}
