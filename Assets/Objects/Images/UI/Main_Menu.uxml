@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Objects/Images/UI/Main-menu.uss?fileID=7433441132597879392&amp;guid=0fc7dcdbccb641e48b4cefa489bfa7de&amp;type=3#Main-menu" />
+    <ui:VisualElement name="Panel" class="Panel" style="flex-grow: 1;">
+        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; justify-content: flex-start; align-items: center; width: 332px; background-color: rgba(0, 0, 0, 0.96); align-self: center; height: 343px; -unity-background-scale-mode: stretch-to-fill; background-image: url(&quot;project://database/Assets/Objects/Images/UI/1.png?fileID=2800000&amp;guid=3c2189414ad8c65449bfc5f8850ed5b7&amp;type=3#1&quot;); position: absolute; top: 44px; left: 251px;">
+            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" style="overflow: hidden; background-color: rgba(188, 188, 188, 0); justify-content: center; align-items: center; bottom: 138px; display: flex; visibility: visible; position: absolute; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&quot;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
