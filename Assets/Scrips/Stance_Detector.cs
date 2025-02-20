@@ -81,19 +81,15 @@ public class StanceDetector : MonoBehaviour
         if (boxRenderer == null || greenMaterial == null || redMaterial == null || batonTip == null)
             return;
 
-        // Get the baton direction in world space
         Vector3 batonDirection = (batonTip.position - transform.position).normalized;
 
-        // Use the box’s forward direction instead of transforming a vector
         Vector3 worldCorrectDirection = transform.forward;
 
-        // Calculate the angle between the correct direction and the baton direction
         float angle = Vector3.Angle(worldCorrectDirection, batonDirection);
 
-        // Check if the angle is within the threshold
         if (angle <= angleThreshold)
         {
-            boxRenderer.material = greenMaterial; // Correct orientation
+            boxRenderer.material = greenMaterial; 
             if (other.CompareTag("Left Baton"))
             {
                 leftHandInStance = true;
@@ -105,7 +101,7 @@ public class StanceDetector : MonoBehaviour
         }
         else
         {
-            boxRenderer.material = redMaterial; // Incorrect orientation
+            boxRenderer.material = redMaterial; 
             if (other.CompareTag("Left Baton"))
             {
                 leftHandInStance = false;
@@ -116,7 +112,7 @@ public class StanceDetector : MonoBehaviour
             }
         }
 
-        CheckStance(); // Ensure stance is rechecked when orientation changes
+        CheckStance(); 
     }
 
     private void CheckStance()
