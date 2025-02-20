@@ -34,7 +34,7 @@ public class IntroScript : MonoBehaviour
 
         RenderSettings.fog = true;
         RenderSettings.fogColor = Color.black;
-        RenderSettings.fogDensity = 0.2f;
+        RenderSettings.fogDensity = 0.42f;
 
         foreach (var box in stanceBoxes)
         {
@@ -48,7 +48,6 @@ public class IntroScript : MonoBehaviour
     {
         if (!batonsRemoved && !leftBatonSocket.hasSelection && !rightBatonSocket.hasSelection)
         {
-            Debug.Log("Both batons removed from sockets!");
             batonsRemoved = true;
             OnBatonsRemoved();
         }
