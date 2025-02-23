@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class StanceDetector : MonoBehaviour
 {
+    [Header("Stance Configuration")]
     public string stanceName;
     public GameObject[] stanceBoxes;
 
+    [Header("Baton & Detection Settings")]
     public Transform batonTip;
-    public Vector3 correctDirection = Vector3.forward;
-    public float angleThreshold = 30f;
+    [SerializeField] private float angleThreshold = 30f;
+    [SerializeField] private float positionThreshold = 0.2f;
 
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
-      public bool IsCompleted { get; set; } = false;
+    public bool IsCompleted { get; set; } = false;
 
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
@@ -40,6 +42,7 @@ public class StanceDetector : MonoBehaviour
             Debug.LogError("Materials not found in Resources folder!");
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -68,12 +71,8 @@ public class StanceDetector : MonoBehaviour
             rightHandInStance = false;
         }
 
-        if (boxRenderer != null && originalMaterial != null)
-        {
-            boxRenderer.material = originalMaterial;
-        }
-
-        CheckStance(); 
+        ResetMaterial();
+        CheckStance();
     }
 
     private void CheckOrientation(Collider other)
@@ -82,37 +81,27 @@ public class StanceDetector : MonoBehaviour
             return;
 
         Vector3 batonDirection = (batonTip.position - transform.position).normalized;
-
         Vector3 worldCorrectDirection = transform.forward;
 
-        float angle = Vector3.Angle(worldCorrectDirection, batonDirection);
+        float dot = Vector3.Dot(worldCorrectDirection.normalized, batonDirection);
+        float distance = Vector3.Distance(batonTip.position, transform.position);
 
-        if (angle <= angleThreshold)
+        bool inStance = (dot >= Mathf.Cos(angleThreshold * Mathf.Deg2Rad)) && (distance < positionThreshold);
+
+        if (inStance)
         {
-            boxRenderer.material = greenMaterial; 
-            if (other.CompareTag("Left Baton"))
-            {
-                leftHandInStance = true;
-            }
-            else if (other.CompareTag("Right Baton"))
-            {
-                rightHandInStance = true;
-            }
+            boxRenderer.material = greenMaterial;
+            if (other.CompareTag("Left Baton")) leftHandInStance = true;
+            if (other.CompareTag("Right Baton")) rightHandInStance = true;
         }
         else
         {
-            boxRenderer.material = redMaterial; 
-            if (other.CompareTag("Left Baton"))
-            {
-                leftHandInStance = false;
-            }
-            else if (other.CompareTag("Right Baton"))
-            {
-                rightHandInStance = false;
-            }
+            boxRenderer.material = redMaterial;
+            if (other.CompareTag("Left Baton")) leftHandInStance = false;
+            if (other.CompareTag("Right Baton")) rightHandInStance = false;
         }
 
-        CheckStance(); 
+        CheckStance();
     }
 
     private void CheckStance()
@@ -143,11 +132,16 @@ public class StanceDetector : MonoBehaviour
     {
         leftHandInStance = false;
         rightHandInStance = false;
+        ResetMaterial();
+        IsCompleted = false;
+    }
 
+    private void ResetMaterial()
+    {
         if (boxRenderer != null && originalMaterial != null)
         {
             boxRenderer.material = originalMaterial;
         }
-         IsCompleted = false; 
     }
+
 }

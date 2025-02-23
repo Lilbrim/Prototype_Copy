@@ -80,36 +80,38 @@ public class StanceManager : MonoBehaviour
         }
     }
 
-    private void SetStance(Stance newStance)
+   private void SetStance(Stance newStance)
+{
+    currentStance = newStance;
+    timer = stanceTimeout;
+
+    foreach (var detector in allDetectors)
     {
-        currentStance = newStance;
-        timer = stanceTimeout;
-
-        foreach (var detector in allDetectors)
-        {
-            detector.ResetStance();
-        }
-
-        foreach (var box in defaultBoxes) box.SetActive(false);
-        foreach (var box in basicStrikeBoxes) box.SetActive(false);
-        foreach (var box in redondaBoxes) box.SetActive(false);
-
-        switch (currentStance)
-        {
-            case Stance.Default:
-                foreach (var box in defaultBoxes) box.SetActive(true);
-                break;
-            case Stance.BasicStrike:
-                foreach (var box in basicStrikeBoxes) box.SetActive(true);
-                break;
-            case Stance.Redonda:
-                foreach (var box in redondaBoxes) box.SetActive(true);
-                break;
-        }
-
-        currentAttackSequence = null;
-        sequenceCounter = 0; 
+        detector.ResetStance();
     }
+
+    foreach (var box in defaultBoxes) box.SetActive(false);
+    foreach (var box in basicStrikeBoxes) box.SetActive(false);
+    foreach (var box in redondaBoxes) box.SetActive(false);
+
+    switch (currentStance)
+    {
+        case Stance.Default:
+            foreach (var box in defaultBoxes) box.SetActive(true);
+            break;
+        case Stance.BasicStrike:
+            foreach (var box in basicStrikeBoxes) box.SetActive(true);
+            LevelManager.Instance.OnStanceEntered(); // Add this line
+            break;
+        case Stance.Redonda:
+            foreach (var box in redondaBoxes) box.SetActive(true);
+            LevelManager.Instance.OnStanceEntered(); // Add this line
+            break;
+    }
+
+    currentAttackSequence = null;
+    sequenceCounter = 0; 
+}
 
     private void CheckForSequenceStart()
     {

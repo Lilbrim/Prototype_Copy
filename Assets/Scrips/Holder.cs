@@ -46,9 +46,5 @@ public class Holder : MonoBehaviour
         {
             weaponSocket.StartManualInteraction(grabInteractable);
         }
-        else
-        {
-            Debug.LogError("Weapon Socket is not assigned!");
-        }
     }
 }

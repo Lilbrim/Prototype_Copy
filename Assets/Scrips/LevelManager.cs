@@ -8,24 +8,28 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
 
+    [Header("Level Settings")]
     public string levelName;
     public List<LevelObjective> objectives = new List<LevelObjective>();
     private int currentObjectiveIndex = 0;
 
+    [Header("UI References")]
     public TextMeshProUGUI objectiveText;
     public TextMeshProUGUI scoreText;
     public Image objectiveImage;
     public Image feedbackImage;
+    public Image stanceEntryImage;
 
+    [Header("Feedback Sprites")]
     public Sprite missedSprite;
     public Sprite poorSprite;
     public Sprite goodSprite;
     public Sprite excellentSprite;
     public Sprite perfectSprite;
 
-    [SerializeField] private bool isPracticeMode = false; 
-
+    [SerializeField] private bool isPracticeMode = false;
     private int totalScore = 0;
+    private bool isWaitingForStanceEntry = false;
 
     private void Awake()
     {
@@ -37,24 +41,47 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        gameObject.SetActive(false);
     }
 
-    private void Start()
+    public void StartLevel()
     {
+        gameObject.SetActive(true);
+        currentObjectiveIndex = 0;
+        totalScore = 0;
+        
         if (objectives.Count > 0)
         {
+            StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+        
+        UpdateScoreDisplay();
+    }
+
+    private void StartStanceEntry(LevelObjective objective)
+    {
+        isWaitingForStanceEntry = true;
+        objectiveText.text = objective.stanceEntryInstruction;
+        stanceEntryImage.sprite = objective.stanceEntryImage;
+        objectiveImage.gameObject.SetActive(false);
+        stanceEntryImage.gameObject.SetActive(true);
+        StanceManager.Instance.EnterStance(objective.requiredStance);
+    }
+
+    public void OnStanceEntered()
+    {
+        if (isWaitingForStanceEntry)
+        {
+            isWaitingForStanceEntry = false;
             StartObjective(objectives[currentObjectiveIndex]);
         }
-
-        UpdateScoreDisplay();
     }
 
     public void StartObjective(LevelObjective objective)
     {
         objectiveText.text = objective.instruction;
+        stanceEntryImage.gameObject.SetActive(false);
+        objectiveImage.gameObject.SetActive(true);
         objectiveImage.sprite = objective.instructionImage;
-        StanceManager.Instance.EnterStance(objective.requiredStance);
     }
 
     public void EndObjective()
@@ -149,7 +176,16 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevel()
     {
-        UpdateScoreDisplay();
+        float accuracy = CalculateAccuracy();
+        ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+    }
+
+    private float CalculateAccuracy()
+    {
+        int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
+        int completedBoxes = StanceManager.Instance.sequenceCounter;
+
+        return (float)completedBoxes / totalBoxes;
     }
 
     private void UpdateScoreDisplay()
@@ -160,7 +196,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            scoreText.text = "Total Score: " + totalScore;
+            scoreText.text = "Total Score\n " + totalScore;
         }
     }
 }
@@ -168,6 +204,11 @@ public class LevelManager : MonoBehaviour
 [System.Serializable]
 public class LevelObjective
 {
+    [Header("Stance Entry")]
+    public string stanceEntryInstruction;
+    public Sprite stanceEntryImage;
+
+    [Header("Sequence")]
     public string instruction;
     public Sprite instructionImage;
     public string requiredStance;
