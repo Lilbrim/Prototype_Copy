@@ -90,21 +90,12 @@ public class LevelManager : MonoBehaviour
         totalScore += score;
         DisplayFeedback(score);
 
-        if (isPracticeMode)
-        {
-            if (score == 3 || score == 4)
-            {
-                currentObjectiveIndex++;
-            }
-        }
-        else
-        {
-            currentObjectiveIndex++;
-        }
+        // Always progress to the next objective regardless of score or practice mode
+        currentObjectiveIndex++;
 
         if (currentObjectiveIndex < objectives.Count)
         {
-            StartObjective(objectives[currentObjectiveIndex]);
+            StartStanceEntry(objectives[currentObjectiveIndex]);
         }
         else
         {
@@ -117,9 +108,9 @@ public class LevelManager : MonoBehaviour
     private int CalculateScore()
     {
         int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
-        int completedBoxes = StanceManager.Instance.sequenceCounter;
+        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
 
-        float percentage = (float)completedBoxes / totalBoxes;
+        float percentage = (float)touchedBoxes / totalBoxes;
 
         if (percentage == 0)
         {
@@ -183,9 +174,9 @@ public class LevelManager : MonoBehaviour
     private float CalculateAccuracy()
     {
         int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
-        int completedBoxes = StanceManager.Instance.sequenceCounter;
+        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
 
-        return (float)completedBoxes / totalBoxes;
+        return (float)touchedBoxes / totalBoxes;
     }
 
     private void UpdateScoreDisplay()
