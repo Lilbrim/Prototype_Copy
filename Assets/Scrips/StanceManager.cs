@@ -91,21 +91,23 @@ public class StanceManager : MonoBehaviour
             detector.ResetStance();
         }
 
-        foreach (var box in defaultBoxes) box.SetActive(false);
-        foreach (var box in basicStrikeBoxes) box.SetActive(false);
-        foreach (var box in redondaBoxes) box.SetActive(false);
+        // Set all boxes invisible and non-interactable first
+        SetBoxesVisibleAndInteractable(defaultBoxes, false);
+        SetBoxesVisibleAndInteractable(basicStrikeBoxes, false);
+        SetBoxesVisibleAndInteractable(redondaBoxes, false);
 
+        // Then set the appropriate boxes visible and interactable
         switch (currentStance)
         {
             case Stance.Default:
-                foreach (var box in defaultBoxes) box.SetActive(true);
+                SetBoxesVisibleAndInteractable(defaultBoxes, true);
                 break;
             case Stance.BasicStrike:
-                foreach (var box in basicStrikeBoxes) box.SetActive(true);
+                SetBoxesVisibleAndInteractable(basicStrikeBoxes, true);
                 LevelManager.Instance.OnStanceEntered();
                 break;
             case Stance.Redonda:
-                foreach (var box in redondaBoxes) box.SetActive(true);
+                SetBoxesVisibleAndInteractable(redondaBoxes, true);
                 LevelManager.Instance.OnStanceEntered();
                 break;
         }
@@ -113,6 +115,18 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0; // Reset total boxes touched
+    }
+
+    private void SetBoxesVisibleAndInteractable(GameObject[] boxes, bool state)
+    {
+        foreach (var box in boxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null)
+            {
+                detector.SetVisibleAndInteractable(state);
+            }
+        }
     }
 
     private void CheckForSequenceStart()
@@ -162,7 +176,11 @@ public class StanceManager : MonoBehaviour
 
         foreach (var box in sequence.sequenceBoxes)
         {
-            box.SetActive(true);
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null)
+            {
+                detector.SetVisibleAndInteractable(true);
+            }
         }
     }
 
@@ -204,7 +222,8 @@ public class StanceManager : MonoBehaviour
             foreach (var box in currentAttackSequence.sequenceBoxes)
             {
                 var detector = box.GetComponent<StanceDetector>();
-                detector.IsCompleted = false; 
+                detector.IsCompleted = false;
+                detector.SetVisibleAndInteractable(false);
             }
 
             currentAttackSequence = null;

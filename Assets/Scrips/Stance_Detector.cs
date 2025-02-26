@@ -16,6 +16,11 @@ public class StanceDetector : MonoBehaviour
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
+    
+    // Add these variables to track visibility and interactability
+    private bool isVisible = true;
+    private bool isInteractable = true;
+    private Collider boxCollider;
 
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
@@ -28,6 +33,7 @@ public class StanceDetector : MonoBehaviour
     private void Start()
     {
         boxRenderer = GetComponent<Renderer>();
+        boxCollider = GetComponent<Collider>();
 
         if (boxRenderer != null)
         {
@@ -43,9 +49,36 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
+    // Add methods to control visibility and interactability
+    public void SetVisibility(bool visible)
+    {
+        isVisible = visible;
+        if (boxRenderer != null)
+        {
+            boxRenderer.enabled = visible;
+        }
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        isInteractable = interactable;
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = interactable;
+        }
+    }
+
+    // Combine both operations for convenience
+    public void SetVisibleAndInteractable(bool state)
+    {
+        SetVisibility(state);
+        SetInteractable(state);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!isInteractable) return;
+        
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
             CheckOrientation(other);
@@ -54,6 +87,8 @@ public class StanceDetector : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (!isInteractable) return;
+        
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
             CheckOrientation(other);
@@ -62,6 +97,8 @@ public class StanceDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!isInteractable) return;
+        
         if (other.CompareTag("Left Baton"))
         {
             leftHandInStance = false;
@@ -134,6 +171,9 @@ public class StanceDetector : MonoBehaviour
         rightHandInStance = false;
         ResetMaterial();
         IsCompleted = false;
+        
+        // Make sure the box is visible and interactable by default when reset
+        SetVisibleAndInteractable(true);
     }
 
     private void ResetMaterial()
@@ -143,5 +183,4 @@ public class StanceDetector : MonoBehaviour
             boxRenderer.material = originalMaterial;
         }
     }
-
 }

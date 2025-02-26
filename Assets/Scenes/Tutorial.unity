@@ -1231,8 +1231,8 @@ Transform:
   m_GameObject: {fileID: 81825485}
   serializedVersion: 2
   m_LocalRotation: {x: 0.001056162, y: 0.0012556411, z: -0.0017406535, w: 0.99999714}
-  m_LocalPosition: {x: 8.30642e-10, y: 0, z: 5.0257587e-10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.0000000014649, y: 0.000000262, z: 8.8631e-10}
+  m_LocalScale: {x: 1, y: 1.7635, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 910350550}
@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810ea12d67c617547a1238264763c08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requireBothArnis: 1
+  requireBothArnis: 0
   batonInstructionCanvas: {fileID: 1970012550}
   batonInstructionText: {fileID: 1649519707}
   batonInstructionImage: {fileID: 1135841439}
@@ -4967,7 +4967,7 @@ Transform:
   m_GameObject: {fileID: 498175246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.451, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7395,7 +7395,7 @@ Transform:
   m_GameObject: {fileID: 910350549}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1176, z: 0}
+  m_LocalPosition: {x: 0, y: 1.46, z: 0}
   m_LocalScale: {x: 1, y: 0.91, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8919,6 +8919,10 @@ MonoBehaviour:
   heightText: {fileID: 1961357794}
   minHeight: 0.5
   maxHeight: 1.5
+  followThreshold: 30
+  followSpeed: 5
+  minDistanceToCamera: 1.5
+  maxDistanceToCamera: 2.5
 --- !u!114 &1210111731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10658,7 +10662,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1210111730}
         m_TargetAssemblyTypeName: Pause, Assembly-CSharp
         m_MethodName: Menu
         m_Mode: 1
@@ -12869,9 +12873,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1210111730}
         m_TargetAssemblyTypeName: Pause, Assembly-CSharp
-        m_MethodName: DisplayPauseUI
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -17,7 +17,7 @@ public class IntroManager : MonoBehaviour
     [Header("Stance UI")]
     public TextMeshProUGUI stanceInstructionText;
     public Image stanceInstructionImage;
-    public string stanceInstructionMessage = "Stand in ready position";
+    public string stanceInstructionMessage = "Position";
     public Sprite stanceInstructionSprite;
     
     [Header("XR References")]
