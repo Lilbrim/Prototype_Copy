@@ -21,6 +21,7 @@ public class StanceManager : MonoBehaviour
     public AttackSequence currentAttackSequence; 
     private StanceDetector[] allDetectors;
     public int sequenceCounter; 
+    public int totalBoxesTouched; // New variable to track total boxes touched
 
     private void Awake()
     {
@@ -80,38 +81,39 @@ public class StanceManager : MonoBehaviour
         }
     }
 
-   private void SetStance(Stance newStance)
-{
-    currentStance = newStance;
-    timer = stanceTimeout;
-
-    foreach (var detector in allDetectors)
+    private void SetStance(Stance newStance)
     {
-        detector.ResetStance();
+        currentStance = newStance;
+        timer = stanceTimeout;
+
+        foreach (var detector in allDetectors)
+        {
+            detector.ResetStance();
+        }
+
+        foreach (var box in defaultBoxes) box.SetActive(false);
+        foreach (var box in basicStrikeBoxes) box.SetActive(false);
+        foreach (var box in redondaBoxes) box.SetActive(false);
+
+        switch (currentStance)
+        {
+            case Stance.Default:
+                foreach (var box in defaultBoxes) box.SetActive(true);
+                break;
+            case Stance.BasicStrike:
+                foreach (var box in basicStrikeBoxes) box.SetActive(true);
+                LevelManager.Instance.OnStanceEntered();
+                break;
+            case Stance.Redonda:
+                foreach (var box in redondaBoxes) box.SetActive(true);
+                LevelManager.Instance.OnStanceEntered();
+                break;
+        }
+
+        currentAttackSequence = null;
+        sequenceCounter = 0;
+        totalBoxesTouched = 0; // Reset total boxes touched
     }
-
-    foreach (var box in defaultBoxes) box.SetActive(false);
-    foreach (var box in basicStrikeBoxes) box.SetActive(false);
-    foreach (var box in redondaBoxes) box.SetActive(false);
-
-    switch (currentStance)
-    {
-        case Stance.Default:
-            foreach (var box in defaultBoxes) box.SetActive(true);
-            break;
-        case Stance.BasicStrike:
-            foreach (var box in basicStrikeBoxes) box.SetActive(true);
-            LevelManager.Instance.OnStanceEntered(); // Add this line
-            break;
-        case Stance.Redonda:
-            foreach (var box in redondaBoxes) box.SetActive(true);
-            LevelManager.Instance.OnStanceEntered(); // Add this line
-            break;
-    }
-
-    currentAttackSequence = null;
-    sequenceCounter = 0; 
-}
 
     private void CheckForSequenceStart()
     {
@@ -156,6 +158,7 @@ public class StanceManager : MonoBehaviour
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;
+        totalBoxesTouched = 0; // Reset total boxes touched counter
 
         foreach (var box in sequence.sequenceBoxes)
         {
@@ -167,23 +170,29 @@ public class StanceManager : MonoBehaviour
     {
         if (currentAttackSequence != null)
         {
-            foreach (var box in currentAttackSequence.sequenceBoxes)
+            // Process all boxes to record which ones are touched
+            for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
             {
+                var box = currentAttackSequence.sequenceBoxes[i];
                 var detector = box.GetComponent<StanceDetector>();
+                
                 if ((detector.IsLeftHandInStance() || detector.IsRightHandInStance()) && !detector.IsCompleted)
                 {
                     detector.IsCompleted = true;
                     sequenceCounter++;
+                    totalBoxesTouched++; // Increment the total boxes touched
                     Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
+                    
+                    // If this is the final box in the sequence, end the sequence
+                    if (i == currentAttackSequence.sequenceBoxes.Length - 1)
+                    {
+                        Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
+                        NotifyObjectiveCompletion();
+                        ResetSequence();
+                        SetStance(Stance.Default);
+                        return;
+                    }
                 }
-            }
-
-            if (sequenceCounter >= currentAttackSequence.sequenceBoxes.Length)
-            {
-                Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Total boxes completed: {sequenceCounter}");
-                NotifyObjectiveCompletion();
-                ResetSequence();
-                SetStance(Stance.Default);
             }
         }
     }
@@ -202,6 +211,7 @@ public class StanceManager : MonoBehaviour
             sequenceCounter = 0;
         }
     }
+    
     public void NotifyObjectiveCompletion()
     {
         LevelManager.Instance.EndObjective();
