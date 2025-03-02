@@ -54,6 +54,7 @@ public class ResultsManager : MonoBehaviour
         HideResults();
         LevelManager.Instance.StartLevel();
     }
+    
 
     public void ExitToMenu()
     {

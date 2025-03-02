@@ -16,10 +16,9 @@ public class StanceDetector : MonoBehaviour
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
-    
-    private bool isVisible = true;
-    private bool isInteractable = true;
-    private Collider boxCollider;
+
+    // Track the colliders that are currently inside this trigger
+    private List<Collider> collidersInTrigger = new List<Collider>();
 
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
@@ -32,7 +31,6 @@ public class StanceDetector : MonoBehaviour
     private void Start()
     {
         boxRenderer = GetComponent<Renderer>();
-        boxCollider = GetComponent<Collider>();
 
         if (boxRenderer != null)
         {
@@ -48,44 +46,22 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    public void SetVisibility(bool visible)
-    {
-        isVisible = visible;
-        if (boxRenderer != null)
-        {
-            boxRenderer.enabled = visible;
-        }
-    }
-
-    public void SetInteractable(bool interactable)
-    {
-        isInteractable = interactable;
-        if (boxCollider != null)
-        {
-            boxCollider.enabled = interactable;
-        }
-    }
-
-    public void SetVisibleAndInteractable(bool state)
-    {
-        SetVisibility(state);
-        SetInteractable(state);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!isInteractable) return;
-        
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
+            // Add to our tracking list
+            if (!collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Add(other);
+            }
+            
             CheckOrientation(other);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!isInteractable) return;
-        
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
             CheckOrientation(other);
@@ -94,19 +70,62 @@ public class StanceDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isInteractable) return;
-        
         if (other.CompareTag("Left Baton"))
         {
             leftHandInStance = false;
+            
+            // Remove from our tracking list
+            if (collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Remove(other);
+            }
         }
         else if (other.CompareTag("Right Baton"))
         {
             rightHandInStance = false;
+            
+            // Remove from our tracking list
+            if (collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Remove(other);
+            }
         }
 
         ResetMaterial();
         CheckStance();
+    }
+
+    // New method to force reset trigger state
+    public void ForceResetTriggerState()
+    {
+        // Clear the tracked colliders
+        foreach (var collider in new List<Collider>(collidersInTrigger))
+        {
+            // Simulate OnTriggerExit for each tracked collider
+            if (collider != null)
+            {
+                if (collider.CompareTag("Left Baton"))
+                {
+                    leftHandInStance = false;
+                }
+                else if (collider.CompareTag("Right Baton"))
+                {
+                    rightHandInStance = false;
+                }
+            }
+        }
+        
+        // Clear the list completely
+        collidersInTrigger.Clear();
+        
+        // Reset visual appearance
+        ResetMaterial();
+    }
+
+    private void OnDisable()
+    {
+        // When this object is disabled, force reset the trigger state
+        ForceResetTriggerState();
     }
 
     private void CheckOrientation(Collider other)
@@ -168,8 +187,6 @@ public class StanceDetector : MonoBehaviour
         rightHandInStance = false;
         ResetMaterial();
         IsCompleted = false;
-        
-        SetVisibleAndInteractable(true);
     }
 
     private void ResetMaterial()

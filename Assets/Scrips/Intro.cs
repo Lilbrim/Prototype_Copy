@@ -17,7 +17,7 @@ public class IntroManager : MonoBehaviour
     [Header("Stance UI")]
     public TextMeshProUGUI stanceInstructionText;
     public Image stanceInstructionImage;
-    public string stanceInstructionMessage = "Position";
+    public string stanceInstructionMessage = "Stand in ready position";
     public Sprite stanceInstructionSprite;
     
     [Header("XR References")]
@@ -55,24 +55,8 @@ public class IntroManager : MonoBehaviour
         RenderSettings.fogColor = Color.black;
         RenderSettings.fogDensity = 0.42f;
 
-        StanceManager.Instance.gameObject.SetActive(true);
-        LevelManager.Instance.gameObject.SetActive(true);
-
-        foreach (var box in StanceManager.Instance.defaultBoxes)
-        {
-            StanceDetector detector = box.GetComponent<StanceDetector>();
-            if (detector != null) detector.SetVisibleAndInteractable(false);
-        }
-        foreach (var box in StanceManager.Instance.basicStrikeBoxes)
-        {
-            StanceDetector detector = box.GetComponent<StanceDetector>();
-            if (detector != null) detector.SetVisibleAndInteractable(false);
-        }
-        foreach (var box in StanceManager.Instance.redondaBoxes)
-        {
-            StanceDetector detector = box.GetComponent<StanceDetector>();
-            if (detector != null) detector.SetVisibleAndInteractable(false);
-        }
+        if (stanceManager != null) stanceManager.gameObject.SetActive(false);
+        if (levelManager != null) levelManager.gameObject.SetActive(false);
 
         InitializeStanceDetection();
 
@@ -100,16 +84,59 @@ public class IntroManager : MonoBehaviour
         }
     }
 
-    private void Update()
+private void Update()
+{
+    if (!batonsRemoved)
     {
+        CheckBatonRemoval();
+    }
+    else if (!stanceCompleted && stanceInstructionText.gameObject.activeSelf)
+    {
+        CheckStanceHold();
+    }
+
+    if (Input.GetKeyDown(KeyCode.S))
+    {
+        SkipIntro();
+    }
+}
+
+    private void SkipIntro()
+    {
+        Debug.Log("Skipping intro...");
+        
+        StopAllCoroutines(); // Stop any ongoing room rotation or fog effects
+
+        // Ensure fog is cleared
+        RenderSettings.fog = false;
+
+        // Immediately hide baton instruction UI
+        batonInstructionCanvas.gameObject.SetActive(false);
+
         if (!batonsRemoved)
         {
-            CheckBatonRemoval();
+            batonsRemoved = true;
         }
-        else if (!stanceCompleted && stanceInstructionText.gameObject.activeSelf)
+
+        if (!stanceCompleted)
         {
-            CheckStanceHold();
+            stanceCompleted = true;
+
+            // Hide stance-related UI
+            foreach (var box in stanceBoxes)
+            {
+                box.SetActive(false);
+            }
+            stanceInstructionText.gameObject.SetActive(false);
+            stanceInstructionImage.gameObject.SetActive(false);
         }
+
+        // Activate StanceManager and LevelManager
+        stanceManager.gameObject.SetActive(true);
+        levelManager.gameObject.SetActive(true);
+        levelManager.StartLevel();
+
+        this.enabled = false;
     }
 
     private void CheckBatonRemoval()

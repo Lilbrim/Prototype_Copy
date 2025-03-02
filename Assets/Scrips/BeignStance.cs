@@ -26,7 +26,13 @@ public class BeginStance : MonoBehaviour
 
     private void Start()
     {
-        levelManager.gameObject.SetActive(false);
+        // Make sure stanceManager is active so it can receive updates
+        if (stanceManager != null)
+            stanceManager.gameObject.SetActive(true);
+            
+        // Deactivate level manager until stance is completed
+        if (levelManager != null)
+            levelManager.gameObject.SetActive(false);
 
         InitializeStanceCheck();
         ShowInstructions();
@@ -63,6 +69,7 @@ public class BeginStance : MonoBehaviour
 
         for (int i = 0; i < stanceDetectors.Length; i++)
         {
+            // Use the methods from IntroManager (IsLeftHandInStance/IsRightHandInStance)
             if (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance())
             {
                 if (!isBoxHeld[i])
@@ -106,11 +113,17 @@ public class BeginStance : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        stanceManager.gameObject.SetActive(true);
+        // Make sure stanceManager is already active
+        if (!stanceManager.gameObject.activeSelf)
+            stanceManager.gameObject.SetActive(true);
+            
+        // Activate level manager
         levelManager.gameObject.SetActive(true);
         
+        // Start the level
         levelManager.StartLevel();
 
-        gameObject.SetActive(false);
+        // Disable this component rather than the entire GameObject
+        this.enabled = false;
     }
 }

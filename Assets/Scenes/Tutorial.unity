@@ -9907,6 +9907,8 @@ MonoBehaviour:
     - {fileID: 26445832}
     - {fileID: 197506522}
     - {fileID: 807610305}
+    endBoxLeft: {fileID: 807610305}
+    endBoxRight: {fileID: 197506522}
     timeLimit: 100
     currentIndex: 0
   redondaSequences:
@@ -9917,6 +9919,8 @@ MonoBehaviour:
     - {fileID: 2119554925}
     - {fileID: 1569565328}
     - {fileID: 1962972938}
+    endBoxLeft: {fileID: 1962972938}
+    endBoxRight: {fileID: 1569565328}
     timeLimit: 10
     currentIndex: 0
   stanceTimeout: 100
@@ -9925,6 +9929,8 @@ MonoBehaviour:
     startBoxLeft: {fileID: 0}
     startBoxRight: {fileID: 0}
     sequenceBoxes: []
+    endBoxLeft: {fileID: 0}
+    endBoxRight: {fileID: 0}
     timeLimit: 0
     currentIndex: 0
   sequenceCounter: 0
@@ -10988,15 +10994,16 @@ MonoBehaviour:
     timeLimit: 10
   - stanceEntryInstruction: Stance
     stanceEntryImage: {fileID: 21300000, guid: cdab3ec1868edf84cb0ade6b6b3ebe82, type: 3}
-    instruction: Basic Strike
+    instruction: Right Temple
     instructionImage: {fileID: 21300000, guid: b5401d15c166133478bccd30d4d2419b, type: 3}
-    requiredStance: Right_Temple
+    requiredStance: Redonda
     timeLimit: 10
   objectiveText: {fileID: 110202012}
   scoreText: {fileID: 661505614}
   objectiveImage: {fileID: 1052936818}
   feedbackImage: {fileID: 1334110752}
   stanceEntryImage: {fileID: 612444714}
+  incorrectStanceSprite: {fileID: 0}
   missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
   poorSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
   goodSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
