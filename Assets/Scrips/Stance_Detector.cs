@@ -17,7 +17,6 @@ public class StanceDetector : MonoBehaviour
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
     
-    // Add these variables to track visibility and interactability
     private bool isVisible = true;
     private bool isInteractable = true;
     private Collider boxCollider;
@@ -49,7 +48,6 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    // Add methods to control visibility and interactability
     public void SetVisibility(bool visible)
     {
         isVisible = visible;
@@ -68,7 +66,6 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    // Combine both operations for convenience
     public void SetVisibleAndInteractable(bool state)
     {
         SetVisibility(state);
@@ -172,7 +169,6 @@ public class StanceDetector : MonoBehaviour
         ResetMaterial();
         IsCompleted = false;
         
-        // Make sure the box is visible and interactable by default when reset
         SetVisibleAndInteractable(true);
     }
 

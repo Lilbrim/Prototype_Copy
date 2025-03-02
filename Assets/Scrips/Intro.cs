@@ -55,8 +55,24 @@ public class IntroManager : MonoBehaviour
         RenderSettings.fogColor = Color.black;
         RenderSettings.fogDensity = 0.42f;
 
-        if (stanceManager != null) stanceManager.gameObject.SetActive(false);
-        if (levelManager != null) levelManager.gameObject.SetActive(false);
+        StanceManager.Instance.gameObject.SetActive(true);
+        LevelManager.Instance.gameObject.SetActive(true);
+
+        foreach (var box in StanceManager.Instance.defaultBoxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null) detector.SetVisibleAndInteractable(false);
+        }
+        foreach (var box in StanceManager.Instance.basicStrikeBoxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null) detector.SetVisibleAndInteractable(false);
+        }
+        foreach (var box in StanceManager.Instance.redondaBoxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null) detector.SetVisibleAndInteractable(false);
+        }
 
         InitializeStanceDetection();
 

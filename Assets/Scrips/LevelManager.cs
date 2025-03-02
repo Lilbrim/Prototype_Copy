@@ -43,6 +43,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void ActivateManager() 
+    {
+        if (objectiveText != null) objectiveText.gameObject.SetActive(true);
+        if (scoreText != null) scoreText.gameObject.SetActive(true);
+        if (objectiveImage != null) objectiveImage.gameObject.SetActive(false);
+        if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
+        if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(true);
+        
+        StartLevel();
+    }
+
     public void StartLevel()
     {
         gameObject.SetActive(true);

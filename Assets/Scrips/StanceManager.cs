@@ -21,7 +21,7 @@ public class StanceManager : MonoBehaviour
     public AttackSequence currentAttackSequence; 
     private StanceDetector[] allDetectors;
     public int sequenceCounter; 
-    public int totalBoxesTouched; // New variable to track total boxes touched
+    public int totalBoxesTouched;
 
     private void Awake()
     {
@@ -38,6 +38,16 @@ public class StanceManager : MonoBehaviour
     private void Start()
     {
         allDetectors = FindObjectsOfType<StanceDetector>();
+        SetStance(Stance.Default);
+    }
+
+    public void ActivateManager()
+    {
+        
+        if (allDetectors == null || allDetectors.Length == 0)
+        {
+            allDetectors = FindObjectsOfType<StanceDetector>();
+        }
         SetStance(Stance.Default);
     }
 
@@ -91,12 +101,10 @@ public class StanceManager : MonoBehaviour
             detector.ResetStance();
         }
 
-        // Set all boxes invisible and non-interactable first
         SetBoxesVisibleAndInteractable(defaultBoxes, false);
         SetBoxesVisibleAndInteractable(basicStrikeBoxes, false);
         SetBoxesVisibleAndInteractable(redondaBoxes, false);
 
-        // Then set the appropriate boxes visible and interactable
         switch (currentStance)
         {
             case Stance.Default:
@@ -114,7 +122,7 @@ public class StanceManager : MonoBehaviour
 
         currentAttackSequence = null;
         sequenceCounter = 0;
-        totalBoxesTouched = 0; // Reset total boxes touched
+        totalBoxesTouched = 0;
     }
 
     private void SetBoxesVisibleAndInteractable(GameObject[] boxes, bool state)
@@ -172,7 +180,7 @@ public class StanceManager : MonoBehaviour
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;
-        totalBoxesTouched = 0; // Reset total boxes touched counter
+        totalBoxesTouched = 0;
 
         foreach (var box in sequence.sequenceBoxes)
         {
@@ -188,7 +196,6 @@ public class StanceManager : MonoBehaviour
     {
         if (currentAttackSequence != null)
         {
-            // Process all boxes to record which ones are touched
             for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
             {
                 var box = currentAttackSequence.sequenceBoxes[i];
@@ -198,10 +205,9 @@ public class StanceManager : MonoBehaviour
                 {
                     detector.IsCompleted = true;
                     sequenceCounter++;
-                    totalBoxesTouched++; // Increment the total boxes touched
+                    totalBoxesTouched++; 
                     Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
                     
-                    // If this is the final box in the sequence, end the sequence
                     if (i == currentAttackSequence.sequenceBoxes.Length - 1)
                     {
                         Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
