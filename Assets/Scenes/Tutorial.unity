@@ -5175,7 +5175,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Recentet
+  m_text: 'Recenter
 
 '
   m_isRightToLeft: 0
@@ -5934,6 +5934,8 @@ MonoBehaviour:
   resultsCanvasGroup: {fileID: 277468631}
   totalScoreText: {fileID: 681222811}
   accuracyText: {fileID: 828651133}
+  boxesStatsText: {fileID: 0}
+  showDetailedStats: 1
 --- !u!4 &718028368
 Transform:
   m_ObjectHideFlags: 0
@@ -7672,7 +7674,7 @@ Transform:
   m_GameObject: {fileID: 950183156}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.040447604, y: -0.627, z: -0.33999997}
+  m_LocalPosition: {x: 0.040447604, y: -1.066843, z: -0.33999997}
   m_LocalScale: {x: 0.100000024, y: 0.100000024, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10949,6 +10951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1543254546}
   - component: {fileID: 1543254547}
+  - component: {fileID: 1543254548}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -10993,9 +10996,9 @@ MonoBehaviour:
     requiredStance: BasicStrike
     timeLimit: 10
   - stanceEntryInstruction: Stance
-    stanceEntryImage: {fileID: 21300000, guid: cdab3ec1868edf84cb0ade6b6b3ebe82, type: 3}
+    stanceEntryImage: {fileID: 21300000, guid: b5401d15c166133478bccd30d4d2419b, type: 3}
     instruction: Right Temple
-    instructionImage: {fileID: 21300000, guid: b5401d15c166133478bccd30d4d2419b, type: 3}
+    instructionImage: {fileID: 21300000, guid: cdab3ec1868edf84cb0ade6b6b3ebe82, type: 3}
     requiredStance: Redonda
     timeLimit: 10
   objectiveText: {fileID: 110202012}
@@ -11010,6 +11013,23 @@ MonoBehaviour:
   excellentSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
   perfectSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
   isPracticeMode: 1
+--- !u!114 &1543254548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543254544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee6b480d100e734291177f235a26beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalBoxes: 0
+  totalBoxesTouched: 0
+  objectiveTotalBoxes: 
+  objectiveTouchedBoxes: 
+  showDebugLogs: 1
 --- !u!1 &1543286445
 GameObject:
   m_ObjectHideFlags: 0
@@ -12572,7 +12592,7 @@ Transform:
   m_GameObject: {fileID: 1841066474}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.0758431, z: 1.14}
+  m_LocalPosition: {x: 0, y: 0.636, z: 1.14}
   m_LocalScale: {x: 0.041339997, y: 0.48, z: 0.041339997}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13026,7 +13046,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908772943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

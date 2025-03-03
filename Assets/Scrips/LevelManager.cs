@@ -62,15 +62,23 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
     public void StartLevel()
     {
         gameObject.SetActive(true);
         currentObjectiveIndex = 0;
         totalScore = 0;
 
+        if (AccuracyTracker.Instance != null)
+        {
+            AccuracyTracker.Instance.ResetTracking();
+        }
+
         if (StanceManager.Instance != null)
         {
-            StanceManager.Instance.enabled = true; // Re-enable StanceManager when restarting
+            StanceManager.Instance.SetGameActive(true);
+            
+            StanceManager.Instance.enabled = true;
         }
 
         if (objectives != null && objectives.Count > 0)
@@ -84,7 +92,6 @@ public class LevelManager : MonoBehaviour
         
         UpdateScoreDisplay();
     }
-
     private void StartStanceEntry(LevelObjective objective)
     {
         if (objective == null)
@@ -100,7 +107,6 @@ public class LevelManager : MonoBehaviour
         objectiveImage.gameObject.SetActive(false);
         stanceEntryImage.gameObject.SetActive(true);
         
-        // Pass isPracticeMode and the required stance to StanceManager
         StanceManager.Instance.EnterStance(objective.requiredStance, isPracticeMode);
     }
 
@@ -122,17 +128,14 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                // Incorrect stance entered
                 DisplayIncorrectStanceFeedback();
                 
                 if (isPracticeMode)
                 {
-                    // In practice mode, restart the current objective
                     StartCoroutine(RestartCurrentObjectiveAfterDelay(2f));
                 }
                 else
                 {
-                    // In regular mode, give 0 points and move to next objective
                     totalScore += 0;
                     UpdateScoreDisplay();
                     
@@ -179,7 +182,6 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         feedbackImage.gameObject.SetActive(false);
         
-        // Check if index is valid before accessing
         if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
         {
             StartStanceEntry(objectives[currentObjectiveIndex]);
@@ -301,27 +303,21 @@ public class LevelManager : MonoBehaviour
         feedbackImage.gameObject.SetActive(false);
     }
 
-    private void EndLevel()
+  private void EndLevel()
     {
         if (StanceManager.Instance != null)
         {
-            // Disable all types of boxes in the StanceManager
+            StanceManager.Instance.SetGameActive(false);
             DisableAllBoxes();
-            
-            // Disable the StanceManager component (stops Update from running)
             StanceManager.Instance.enabled = false;
-            
-            // Reset the sequence if one is active
             if (StanceManager.Instance.currentAttackSequence != null)
             {
-                // Force reset current attack sequence
                 foreach (var box in StanceManager.Instance.currentAttackSequence.sequenceBoxes)
                 {
                     if (box != null)
                     {
                         box.SetActive(false);
                         
-                        // Also reset the detector state
                         StanceDetector detector = box.GetComponent<StanceDetector>();
                         if (detector != null)
                         {
@@ -331,7 +327,6 @@ public class LevelManager : MonoBehaviour
                     }
                 }
                 
-                // Also disable end boxes if they exist
                 if (StanceManager.Instance.currentAttackSequence.endBoxLeft != null)
                     StanceManager.Instance.currentAttackSequence.endBoxLeft.SetActive(false);
                     
@@ -339,12 +334,22 @@ public class LevelManager : MonoBehaviour
                     StanceManager.Instance.currentAttackSequence.endBoxRight.SetActive(false);
             }
         }
-
-        float accuracy = CalculateAccuracy();
         
         if (ResultsManager.Instance != null)
         {
-            ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+            if (AccuracyTracker.Instance != null)
+            {
+                float accuracy = AccuracyTracker.Instance.CalculateAccuracy();
+                int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
+                int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
+                
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode, totalBoxes, totalBoxesTouched);
+            }
+            else
+            {
+                float accuracy = CalculateAccuracy();
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+            }
         }
         else
         {
@@ -352,12 +357,10 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // New helper method to disable all boxes in the StanceManager
     private void DisableAllBoxes()
     {
         StanceManager sm = StanceManager.Instance;
         
-        // Disable all default boxes
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -367,7 +370,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable all basic strike boxes
         if (sm.basicStrikeBoxes != null)
         {
             foreach (var box in sm.basicStrikeBoxes)
@@ -377,7 +379,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable all redonda boxes
         if (sm.redondaBoxes != null)
         {
             foreach (var box in sm.redondaBoxes)
@@ -387,7 +388,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable all basic strike sequence boxes
         if (sm.basicStrikeSequences != null)
         {
             foreach (var sequence in sm.basicStrikeSequences)
@@ -396,7 +396,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable all redonda sequence boxes
         if (sm.redondaSequences != null)
         {
             foreach (var sequence in sm.redondaSequences)
@@ -406,20 +405,17 @@ public class LevelManager : MonoBehaviour
         }
     }
     
-    // Helper method to disable all boxes in a sequence
     private void DisableSequenceBoxes(AttackSequence sequence)
     {
         if (sequence == null)
             return;
             
-        // Disable start boxes
         if (sequence.startBoxLeft != null)
             sequence.startBoxLeft.SetActive(false);
             
         if (sequence.startBoxRight != null)
             sequence.startBoxRight.SetActive(false);
             
-        // Disable all sequence boxes
         if (sequence.sequenceBoxes != null)
         {
             foreach (var box in sequence.sequenceBoxes)
@@ -429,7 +425,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable end boxes
         if (sequence.endBoxLeft != null)
             sequence.endBoxLeft.SetActive(false);
             
@@ -439,6 +434,11 @@ public class LevelManager : MonoBehaviour
 
     private float CalculateAccuracy()
     {
+        if (AccuracyTracker.Instance != null)
+        {
+            return AccuracyTracker.Instance.CalculateAccuracy();
+        }
+        
         int totalBoxes = 0;
         int touchedBoxes = 0;
 
@@ -453,6 +453,7 @@ public class LevelManager : MonoBehaviour
 
         return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
     }
+
 
     private void UpdateScoreDisplay()
     {
@@ -469,13 +470,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Add a public getter for practice mode
     public bool IsPracticeMode()
     {
         return isPracticeMode;
     }
 
-    // Get current required stance
     public string GetCurrentRequiredStance()
     {
         return currentRequiredStance;

@@ -9,6 +9,10 @@ public class ResultsManager : MonoBehaviour
     public CanvasGroup resultsCanvasGroup;
     public TextMeshProUGUI totalScoreText;
     public TextMeshProUGUI accuracyText;
+    
+    [Header("Additional Stats Display")]
+    public TextMeshProUGUI boxesStatsText;
+    public bool showDetailedStats = true;
 
     private void Awake()
     {
@@ -26,6 +30,11 @@ public class ResultsManager : MonoBehaviour
 
     public void ShowResults(int totalScore, float accuracy, bool isPracticeMode)
     {
+        ShowResults(totalScore, accuracy, isPracticeMode, 0, 0);
+    }
+
+    public void ShowResults(int totalScore, float accuracy, bool isPracticeMode, int totalBoxes, int totalBoxesTouched)
+    {
         if (isPracticeMode)
         {
             totalScoreText.text = "PRACTICE MODE";
@@ -35,6 +44,17 @@ public class ResultsManager : MonoBehaviour
         {
             totalScoreText.text = "Total Score: " + totalScore;
             accuracyText.text = "Accuracy\n " + (accuracy * 100).ToString("F2") + "%";
+        }
+        
+        // Show detailed stats if enabled and if we have valid data
+        if (showDetailedStats && boxesStatsText != null && totalBoxes > 0)
+        {
+            boxesStatsText.gameObject.SetActive(true);
+            boxesStatsText.text = string.Format("Boxes Touched: {0}/{1}", totalBoxesTouched, totalBoxes);
+        }
+        else if (boxesStatsText != null)
+        {
+            boxesStatsText.gameObject.SetActive(false);
         }
 
         resultsCanvasGroup.alpha = 1; 
@@ -55,7 +75,6 @@ public class ResultsManager : MonoBehaviour
         LevelManager.Instance.StartLevel();
     }
     
-
     public void ExitToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");

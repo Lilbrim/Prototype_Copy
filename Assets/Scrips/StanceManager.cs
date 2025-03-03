@@ -5,7 +5,7 @@ using UnityEngine;
 public class StanceManager : MonoBehaviour
 {
     public static StanceManager Instance;
-
+    private bool isGameActive = true;
     public enum Stance { Default, BasicStrike, Redonda }
     public Stance currentStance = Stance.Default;
     public GameObject[] defaultBoxes;
@@ -21,7 +21,7 @@ public class StanceManager : MonoBehaviour
     public AttackSequence currentAttackSequence; 
     private StanceDetector[] allDetectors;
     public int sequenceCounter; 
-    public int totalBoxesTouched; // New variable to track total boxes touched
+    public int totalBoxesTouched;
     
     private bool isPracticeMode = false;
     private string requiredStanceForPractice = "";
@@ -72,25 +72,26 @@ public class StanceManager : MonoBehaviour
         }
     }
 
+    public void SetGameActive(bool active)
+    {
+        isGameActive = active;
+    }
+
     public void EnterStance(string stanceName, bool practiceMode = false)
     {
-        // Store practice mode and required stance
+        if (!isGameActive) return;
+
         isPracticeMode = practiceMode;
         requiredStanceForPractice = stanceName;
         
-        // If we're already in the default stance and in practice mode,
-        // we DON'T want to re-enter the stance, just update the boxes
         if (currentStance == Stance.Default && practiceMode)
         {
-            // Just update the boxes to show the entry points
             ActivateBoxesForPracticeMode(Stance.Default);
             return;
         }
 
-        // Process the stance entry based on current stance and requested stance
         if (stanceName == "BasicStrike" && currentStance != Stance.BasicStrike)
         {
-            // Only allow entry if we're in the default stance first
             if (currentStance == Stance.Default)
             {
                 SetStance(Stance.BasicStrike);
@@ -99,7 +100,6 @@ public class StanceManager : MonoBehaviour
         }
         else if (stanceName == "Redonda" && currentStance != Stance.Redonda)
         {
-            // Only allow entry if we're in the default stance first
             if (currentStance == Stance.Default)
             {
                 SetStance(Stance.Redonda);
@@ -108,7 +108,6 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Incorrect stance entered
             LevelManager.Instance.OnStanceEntered("Incorrect");
         }
     }
@@ -118,30 +117,25 @@ public class StanceManager : MonoBehaviour
         currentStance = newStance;
         timer = stanceTimeout;
 
-        // Reset all detectors BEFORE disabling any boxes
         foreach (var detector in allDetectors)
         {
             detector.ResetStance();
         }
 
-        // Force clear trigger states before deactivating boxes
         ForceResetTriggerStates(defaultBoxes);
         ForceResetTriggerStates(basicStrikeBoxes);
         ForceResetTriggerStates(redondaBoxes);
 
-        // Now deactivate all boxes
         foreach (var box in defaultBoxes) box.SetActive(false);
         foreach (var box in basicStrikeBoxes) box.SetActive(false);
         foreach (var box in redondaBoxes) box.SetActive(false);
 
-        // In practice mode, show only the necessary boxes for the next sequence
         if (isPracticeMode)
         {
             ActivateBoxesForPracticeMode(newStance);
         }
         else
         {
-            // Regular mode: Activate the appropriate boxes for the new stance
             switch (currentStance)
             {
                 case Stance.Default:
@@ -158,17 +152,16 @@ public class StanceManager : MonoBehaviour
 
         currentAttackSequence = null;
         sequenceCounter = 0;
-        totalBoxesTouched = 0; // Reset total boxes touched
+        totalBoxesTouched = 0;
     }
 
     private void ActivateBoxesForPracticeMode(Stance newStance)
     {
+        if (!isGameActive) return;
         if (newStance == Stance.Default)
         {
-            // Deactivate ALL default boxes first
             foreach (var box in defaultBoxes) box.SetActive(false);
 
-            // Find the target sequences for the required stance
             List<AttackSequence> targetSequences = new List<AttackSequence>();
             
             if (requiredStanceForPractice == "BasicStrike")
@@ -180,7 +173,6 @@ public class StanceManager : MonoBehaviour
                 targetSequences = redondaSequences;
             }
 
-            // Activate ONLY the start boxes for the required stance's sequences
             foreach (var sequence in targetSequences)
             {
                 if (sequence.startBoxLeft != null)
@@ -197,8 +189,6 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Once we're in a stance other than Default,
-            // show the appropriate stance boxes
             switch (newStance)
             {
                 case Stance.BasicStrike:
@@ -211,7 +201,6 @@ public class StanceManager : MonoBehaviour
         }
     }
 
-    // New method to force reset trigger states
     private void ForceResetTriggerStates(GameObject[] boxes)
     {
         foreach (var box in boxes)
@@ -222,7 +211,6 @@ public class StanceManager : MonoBehaviour
                 detector.ForceResetTriggerState();
             }
 
-            // If boxes have child colliders, reset those too
             Collider[] colliders = box.GetComponentsInChildren<Collider>();
             foreach (Collider col in colliders)
             {
@@ -276,23 +264,19 @@ public class StanceManager : MonoBehaviour
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;
-        totalBoxesTouched = 0; // Reset total boxes touched counter
+        totalBoxesTouched = 0; 
 
-        // Force reset trigger states before activating sequence boxes
         ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
 
-        // Deactivate all existing boxes first
         foreach (var box in defaultBoxes) box.SetActive(false);
         foreach (var box in basicStrikeBoxes) box.SetActive(false);
         foreach (var box in redondaBoxes) box.SetActive(false);
 
-        // Activate only the sequence boxes
         foreach (var box in sequence.sequenceBoxes)
         {
             box.SetActive(true);
         }
 
-        // Also activate end boxes if they exist
         if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
     }
@@ -301,7 +285,6 @@ public class StanceManager : MonoBehaviour
     {
         if (currentAttackSequence != null)
         {
-            // Process all boxes to record which ones are touched
             for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
             {
                 var box = currentAttackSequence.sequenceBoxes[i];
@@ -311,12 +294,11 @@ public class StanceManager : MonoBehaviour
                 {
                     detector.IsCompleted = true;
                     sequenceCounter++;
-                    totalBoxesTouched++; // Increment the total boxes touched
+                    totalBoxesTouched++;
                     Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
                 }
             }
             
-            // Check if both end boxes are triggered to complete the sequence
             if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
             {
                 var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
@@ -326,10 +308,8 @@ public class StanceManager : MonoBehaviour
                 {
                     Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
                     
-                    // Only check sequence correctness after completion
                     NotifyObjectiveCompletion();
                     
-                    // Reset sequence and return to default stance
                     ResetSequence();
                     SetStance(Stance.Default);
                     return;
@@ -357,6 +337,12 @@ public class StanceManager : MonoBehaviour
     public void NotifyObjectiveCompletion()
     {
         int touchedBoxes = totalBoxesTouched;
+        int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
+
+        if (AccuracyTracker.Instance != null)
+        {
+            AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
+        }
         
         LevelManager.Instance.EndObjective();
     }
