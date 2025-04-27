@@ -303,7 +303,7 @@ public class LevelManager : MonoBehaviour
         feedbackImage.gameObject.SetActive(false);
     }
 
-  private void EndLevel()
+    private void EndLevel()
     {
         if (StanceManager.Instance != null)
         {
@@ -361,6 +361,7 @@ public class LevelManager : MonoBehaviour
     {
         StanceManager sm = StanceManager.Instance;
         
+        // Disable default boxes
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -370,37 +371,25 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        if (sm.basicStrikeBoxes != null)
+        // Disable all style-specific boxes
+        foreach (var style in sm.arnisStyles)
         {
-            foreach (var box in sm.basicStrikeBoxes)
+            if (style.stanceBoxes != null)
             {
-                if (box != null)
-                    box.SetActive(false);
+                foreach (var box in style.stanceBoxes)
+                {
+                    if (box != null)
+                        box.SetActive(false);
+                }
             }
-        }
-        
-        if (sm.redondaBoxes != null)
-        {
-            foreach (var box in sm.redondaBoxes)
+            
+            // Disable all sequences for this style
+            if (style.sequences != null)
             {
-                if (box != null)
-                    box.SetActive(false);
-            }
-        }
-        
-        if (sm.basicStrikeSequences != null)
-        {
-            foreach (var sequence in sm.basicStrikeSequences)
-            {
-                DisableSequenceBoxes(sequence);
-            }
-        }
-        
-        if (sm.redondaSequences != null)
-        {
-            foreach (var sequence in sm.redondaSequences)
-            {
-                DisableSequenceBoxes(sequence);
+                foreach (var sequence in style.sequences)
+                {
+                    DisableSequenceBoxes(sequence);
+                }
             }
         }
     }

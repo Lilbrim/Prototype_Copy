@@ -6,25 +6,31 @@ public class StanceManager : MonoBehaviour
 {
     public static StanceManager Instance;
     private bool isGameActive = true;
-    public enum Stance { Default, BasicStrike, Redonda }
-    public Stance currentStance = Stance.Default;
-    public GameObject[] defaultBoxes;
-    public GameObject[] basicStrikeBoxes;
-    public GameObject[] redondaBoxes;
 
-    public List<AttackSequence> basicStrikeSequences = new List<AttackSequence>();
-    public List<AttackSequence> redondaSequences = new List<AttackSequence>();
+    [System.Serializable]
+    public class ArnisStyle
+    {
+        public string styleName;
+        public GameObject[] stanceBoxes;
+        public List<AttackSequence> sequences = new List<AttackSequence>();
+    }
+
+    public List<ArnisStyle> arnisStyles = new List<ArnisStyle>();
+    public GameObject[] defaultBoxes;
 
     public float stanceTimeout = 2f;
     private float timer;
 
-    public AttackSequence currentAttackSequence; 
+    public AttackSequence currentAttackSequence;
     private StanceDetector[] allDetectors;
-    public int sequenceCounter; 
+    public int sequenceCounter;
     public int totalBoxesTouched;
     
     private bool isPracticeMode = false;
     private string requiredStanceForPractice = "";
+
+    private string currentStance = "Default";
+    private ArnisStyle currentArnisStyle;
 
     private void Awake()
     {
@@ -41,12 +47,12 @@ public class StanceManager : MonoBehaviour
     private void Start()
     {
         allDetectors = FindObjectsOfType<StanceDetector>();
-        SetStance(Stance.Default);
+        SetStance("Default");
     }
 
     private void Update()
     {
-        if (currentStance != Stance.Default && currentAttackSequence == null)
+        if (currentStance != "Default" && currentAttackSequence == null)
         {
             CheckForSequenceStart();
         }
@@ -59,15 +65,15 @@ public class StanceManager : MonoBehaviour
             if (timer <= 0)
             {
                 ResetSequence();
-                SetStance(Stance.Default);
+                SetStance("Default");
             }
         }
-        else if (currentStance != Stance.Default)
+        else if (currentStance != "Default")
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                SetStance(Stance.Default);
+                SetStance("Default");
             }
         }
     }
@@ -84,26 +90,33 @@ public class StanceManager : MonoBehaviour
         isPracticeMode = practiceMode;
         requiredStanceForPractice = stanceName;
         
-        if (currentStance == Stance.Default && practiceMode)
+        if (currentStance == "Default" && practiceMode)
         {
-            ActivateBoxesForPracticeMode(Stance.Default);
+            ActivateBoxesForPracticeMode("Default");
             return;
         }
 
-        if (stanceName == "BasicStrike" && currentStance != Stance.BasicStrike)
+        if (stanceName != currentStance && currentStance == "Default")
         {
-            if (currentStance == Stance.Default)
+            // Check if the stance exists in our list
+            bool validStance = false;
+            foreach (var style in arnisStyles)
             {
-                SetStance(Stance.BasicStrike);
-                LevelManager.Instance.OnStanceEntered("BasicStrike");
+                if (style.styleName == stanceName)
+                {
+                    validStance = true;
+                    break;
+                }
             }
-        }
-        else if (stanceName == "Redonda" && currentStance != Stance.Redonda)
-        {
-            if (currentStance == Stance.Default)
+
+            if (validStance)
             {
-                SetStance(Stance.Redonda);
-                LevelManager.Instance.OnStanceEntered("Redonda");
+                SetStance(stanceName);
+                LevelManager.Instance.OnStanceEntered(stanceName);
+            }
+            else
+            {
+                LevelManager.Instance.OnStanceEntered("Incorrect");
             }
         }
         else
@@ -112,41 +125,57 @@ public class StanceManager : MonoBehaviour
         }
     }
 
-    private void SetStance(Stance newStance)
+    private void SetStance(string newStance)
     {
         currentStance = newStance;
         timer = stanceTimeout;
+        currentArnisStyle = null;
 
         foreach (var detector in allDetectors)
         {
             detector.ResetStance();
         }
 
+        // Deactivate all boxes first
         ForceResetTriggerStates(defaultBoxes);
-        ForceResetTriggerStates(basicStrikeBoxes);
-        ForceResetTriggerStates(redondaBoxes);
-
         foreach (var box in defaultBoxes) box.SetActive(false);
-        foreach (var box in basicStrikeBoxes) box.SetActive(false);
-        foreach (var box in redondaBoxes) box.SetActive(false);
 
-        if (isPracticeMode)
+        foreach (var style in arnisStyles)
         {
-            ActivateBoxesForPracticeMode(newStance);
+            ForceResetTriggerStates(style.stanceBoxes);
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
+
+        // Then activate appropriate boxes
+        if (currentStance == "Default")
+        {
+            if (isPracticeMode)
+            {
+                ActivateBoxesForPracticeMode(newStance);
+            }
+            else
+            {
+                foreach (var box in defaultBoxes) box.SetActive(true);
+            }
         }
         else
         {
-            switch (currentStance)
+            // Find and activate the correct style boxes
+            foreach (var style in arnisStyles)
             {
-                case Stance.Default:
-                    foreach (var box in defaultBoxes) box.SetActive(true);
+                if (style.styleName == currentStance)
+                {
+                    currentArnisStyle = style;
+                    if (isPracticeMode)
+                    {
+                        ActivateBoxesForPracticeMode(newStance);
+                    }
+                    else
+                    {
+                        foreach (var box in style.stanceBoxes) box.SetActive(true);
+                    }
                     break;
-                case Stance.BasicStrike:
-                    foreach (var box in basicStrikeBoxes) box.SetActive(true);
-                    break;
-                case Stance.Redonda:
-                    foreach (var box in redondaBoxes) box.SetActive(true);
-                    break;
+                }
             }
         }
 
@@ -155,22 +184,24 @@ public class StanceManager : MonoBehaviour
         totalBoxesTouched = 0;
     }
 
-    private void ActivateBoxesForPracticeMode(Stance newStance)
+    private void ActivateBoxesForPracticeMode(string newStance)
     {
         if (!isGameActive) return;
-        if (newStance == Stance.Default)
+        
+        if (newStance == "Default")
         {
             foreach (var box in defaultBoxes) box.SetActive(false);
 
             List<AttackSequence> targetSequences = new List<AttackSequence>();
             
-            if (requiredStanceForPractice == "BasicStrike")
+            // Find the target style for practice
+            foreach (var style in arnisStyles)
             {
-                targetSequences = basicStrikeSequences;
-            }
-            else if (requiredStanceForPractice == "Redonda")
-            {
-                targetSequences = redondaSequences;
+                if (style.styleName == requiredStanceForPractice)
+                {
+                    targetSequences = style.sequences;
+                    break;
+                }
             }
 
             foreach (var sequence in targetSequences)
@@ -189,14 +220,14 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            switch (newStance)
+            // Find and activate the correct style boxes for practice
+            foreach (var style in arnisStyles)
             {
-                case Stance.BasicStrike:
-                    foreach (var box in basicStrikeBoxes) box.SetActive(true);
+                if (style.styleName == newStance)
+                {
+                    foreach (var box in style.stanceBoxes) box.SetActive(true);
                     break;
-                case Stance.Redonda:
-                    foreach (var box in redondaBoxes) box.SetActive(true);
-                    break;
+                }
             }
         }
     }
@@ -223,28 +254,15 @@ public class StanceManager : MonoBehaviour
 
     private void CheckForSequenceStart()
     {
-        List<AttackSequence> sequences = GetSequencesForCurrentStance();
+        if (currentArnisStyle == null) return;
 
-        foreach (var sequence in sequences)
+        foreach (var sequence in currentArnisStyle.sequences)
         {
             if (IsSequenceStartConditionMet(sequence))
             {
                 StartAttackSequence(sequence);
                 break; 
             }
-        }
-    }
-
-    private List<AttackSequence> GetSequencesForCurrentStance()
-    {
-        switch (currentStance)
-        {
-            case Stance.BasicStrike:
-                return basicStrikeSequences;
-            case Stance.Redonda:
-                return redondaSequences;
-            default:
-                return new List<AttackSequence>();
         }
     }
 
@@ -269,8 +287,11 @@ public class StanceManager : MonoBehaviour
         ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
 
         foreach (var box in defaultBoxes) box.SetActive(false);
-        foreach (var box in basicStrikeBoxes) box.SetActive(false);
-        foreach (var box in redondaBoxes) box.SetActive(false);
+        
+        foreach (var style in arnisStyles)
+        {
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
 
         foreach (var box in sequence.sequenceBoxes)
         {
@@ -311,7 +332,7 @@ public class StanceManager : MonoBehaviour
                     NotifyObjectiveCompletion();
                     
                     ResetSequence();
-                    SetStance(Stance.Default);
+                    SetStance("Default");
                     return;
                 }
             }
@@ -331,7 +352,7 @@ public class StanceManager : MonoBehaviour
             currentAttackSequence = null;
             sequenceCounter = 0;
         }
-        SetStance(Stance.Default);
+        SetStance("Default");
     }
         
     public void NotifyObjectiveCompletion()
