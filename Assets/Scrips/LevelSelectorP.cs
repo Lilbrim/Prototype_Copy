@@ -13,6 +13,7 @@ public class LevelSelector : MonoBehaviour
         public Sprite levelThumbnail;
         [TextArea]
         public string levelDescription;
+        public string levelId; // Unique identifier for saving/loading accuracy data
     }
 
     [Header("Level Data")]
@@ -24,10 +25,13 @@ public class LevelSelector : MonoBehaviour
     public Transform levelButtonContainer;
     public TextMeshProUGUI levelDescriptionText;
     public Image levelPreviewImage;
+    public TextMeshProUGUI accuracyText;
     public Button startLevelButton;
 
     private IntroLevel selectedIntroLevel;
     private int selectedLevelIndex = -1;
+    private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
+    private const string NO_RECORD_TEXT = "No Record";
 
     private void Start()
     {
@@ -54,6 +58,19 @@ public class LevelSelector : MonoBehaviour
                 buttonText.text = levelData.levelName;
             }
             
+            float savedAccuracy = GetSavedAccuracy(levelData.levelId);
+            Transform accuracyIndicator = buttonObj.transform.Find("AccuracyIndicator");
+            if (accuracyIndicator != null && accuracyIndicator.GetComponent<TextMeshProUGUI>() != null)
+            {
+                if (savedAccuracy > 0)
+                {
+                    accuracyIndicator.GetComponent<TextMeshProUGUI>().text = $"{savedAccuracy:P0}";
+                }
+                else
+                {
+                    accuracyIndicator.GetComponent<TextMeshProUGUI>().text = NO_RECORD_TEXT;
+                }
+            }
 
             int levelIndex = i; 
             Button button = buttonObj.GetComponent<Button>();
@@ -84,11 +101,24 @@ public class LevelSelector : MonoBehaviour
             levelDescriptionText.text = levelData.levelDescription;
             levelPreviewImage.sprite = levelData.levelThumbnail;
             levelPreviewImage.gameObject.SetActive(true);
+            
+            float savedAccuracy = GetSavedAccuracy(levelData.levelId);
+            accuracyText.gameObject.SetActive(true);
+            
+            if (savedAccuracy > 0)
+            {
+                accuracyText.text = $"Best Accuracy: {savedAccuracy:P0}";
+            }
+            else
+            {
+                accuracyText.text = $"{NO_RECORD_TEXT}";
+            }
         }
         else
         {
             levelDescriptionText.text = "Select level";
             levelPreviewImage.gameObject.SetActive(false);
+            accuracyText.gameObject.SetActive(false);
         }
     }
 
@@ -98,8 +128,28 @@ public class LevelSelector : MonoBehaviour
         {
             levelSelectionPanel.SetActive(false);
             
+            if (selectedIntroLevel.gameObject.GetComponent<SaveAccuracy>() == null)
+            {
+                SaveAccuracy observer = selectedIntroLevel.gameObject.AddComponent<SaveAccuracy>();
+                observer.Initialize(this, availableLevels[selectedLevelIndex].levelId);
+            }
+            
             selectedIntroLevel.ActivateIntro();
         }
     }
 
+    public void SaveLevelAccuracy(string levelId, float accuracy)
+    {
+        float currentAccuracy = GetSavedAccuracy(levelId);
+        if (accuracy > currentAccuracy)
+        {
+            PlayerPrefs.SetFloat(ACCURACY_SAVE_PREFIX + levelId, accuracy);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public float GetSavedAccuracy(string levelId)
+    {
+        return PlayerPrefs.GetFloat(ACCURACY_SAVE_PREFIX + levelId, 0f);
+    }
 }

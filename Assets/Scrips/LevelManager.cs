@@ -335,11 +335,19 @@ public class LevelManager : MonoBehaviour
             }
         }
         
+        float accuracy = AccuracyTracker.Instance != null ? 
+            AccuracyTracker.Instance.CalculateAccuracy() : CalculateAccuracy();
+        
+        SaveAccuracy saveAccuracy = GetComponent<SaveAccuracy>();
+        if (saveAccuracy != null)
+        {
+            saveAccuracy.OnLevelCompleted();
+        }
+        
         if (ResultsManager.Instance != null)
         {
             if (AccuracyTracker.Instance != null)
             {
-                float accuracy = AccuracyTracker.Instance.CalculateAccuracy();
                 int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
                 int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
                 
@@ -347,7 +355,6 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                float accuracy = CalculateAccuracy();
                 ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
             }
         }
@@ -361,7 +368,6 @@ public class LevelManager : MonoBehaviour
     {
         StanceManager sm = StanceManager.Instance;
         
-        // Disable default boxes
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -371,7 +377,6 @@ public class LevelManager : MonoBehaviour
             }
         }
         
-        // Disable all style-specific boxes
         foreach (var style in sm.arnisStyles)
         {
             if (style.stanceBoxes != null)
@@ -383,7 +388,6 @@ public class LevelManager : MonoBehaviour
                 }
             }
             
-            // Disable all sequences for this style
             if (style.sequences != null)
             {
                 foreach (var sequence in style.sequences)

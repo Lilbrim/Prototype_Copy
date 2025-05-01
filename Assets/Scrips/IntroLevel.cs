@@ -24,7 +24,6 @@ public class IntroLevel : MonoBehaviour
     private float[] holdTimers;
     private bool stanceCompleted = false;
 
-    // Keep the intro level disabled until we activate it
     private void Awake()
     {
         gameObject.SetActive(false);

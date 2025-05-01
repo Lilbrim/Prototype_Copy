@@ -34,8 +34,6 @@ public class AccuracyTracker : MonoBehaviour
         objectiveTotalBoxes.Clear();
         objectiveTouchedBoxes.Clear();
 
-        if (showDebugLogs)
-            Debug.Log("AccuracyTracker: Tracking reset");
     }
 
     public void RecordSequenceData(int sequenceBoxCount, int touchedBoxCount)

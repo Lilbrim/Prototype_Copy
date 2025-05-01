@@ -46,7 +46,6 @@ public class ResultsManager : MonoBehaviour
             accuracyText.text = "Accuracy\n " + (accuracy * 100).ToString("F2") + "%";
         }
         
-        // Show detailed stats if enabled and if we have valid data
         if (showDetailedStats && boxesStatsText != null && totalBoxes > 0)
         {
             boxesStatsText.gameObject.SetActive(true);
