@@ -19,6 +19,9 @@ public class LevelManager : MonoBehaviour
     public Image objectiveImage;
     public Image feedbackImage;
     public Image stanceEntryImage;
+    
+    [Header("UI Container")]
+    public GameObject levelUI; 
 
     [Header("Feedback Sprites")]
     public Sprite incorrectStanceSprite;
@@ -66,6 +69,10 @@ public class LevelManager : MonoBehaviour
     public void StartLevel()
     {
         gameObject.SetActive(true);
+        
+        // Ensure UI is visible when starting level
+        EnableLevelUI();
+        
         currentObjectiveIndex = 0;
         totalScore = 0;
 
@@ -92,6 +99,43 @@ public class LevelManager : MonoBehaviour
         
         UpdateScoreDisplay();
     }
+    
+    private void EnableLevelUI()
+    {
+        // Enable the main UI container if available
+        if (levelUI != null)
+        {
+            levelUI.SetActive(true);
+        }
+        
+        // Enable individual UI elements
+        if (objectiveText != null) objectiveText.gameObject.SetActive(true);
+        if (scoreText != null) scoreText.gameObject.SetActive(true);
+        if (objectiveImage != null) objectiveImage.gameObject.SetActive(true);
+        if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(true);
+        
+        // Hide feedback image initially
+        if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
+    }
+    
+    private void DisableLevelUI()
+    {
+        // Disable the main UI container if available
+        if (levelUI != null)
+        {
+            levelUI.SetActive(false);
+        }
+        else
+        {
+            // If no container reference, disable individual UI elements
+            if (objectiveText != null) objectiveText.gameObject.SetActive(false);
+            if (scoreText != null) scoreText.gameObject.SetActive(false);
+            if (objectiveImage != null) objectiveImage.gameObject.SetActive(false);
+            if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
+            if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(false);
+        }
+    }
+    
     private void StartStanceEntry(LevelObjective objective)
     {
         if (objective == null)
@@ -305,6 +349,8 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevel()
     {
+        DisableLevelUI();
+        
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.SetGameActive(false);
@@ -317,7 +363,7 @@ public class LevelManager : MonoBehaviour
                     if (box != null)
                     {
                         box.SetActive(false);
-                        
+
                         StanceDetector detector = box.GetComponent<StanceDetector>();
                         if (detector != null)
                         {
@@ -326,31 +372,35 @@ public class LevelManager : MonoBehaviour
                         }
                     }
                 }
-                
+
                 if (StanceManager.Instance.currentAttackSequence.endBoxLeft != null)
                     StanceManager.Instance.currentAttackSequence.endBoxLeft.SetActive(false);
-                    
+
                 if (StanceManager.Instance.currentAttackSequence.endBoxRight != null)
                     StanceManager.Instance.currentAttackSequence.endBoxRight.SetActive(false);
             }
         }
-        
+
         float accuracy = AccuracyTracker.Instance != null ? 
-            AccuracyTracker.Instance.CalculateAccuracy() : CalculateAccuracy();
-        
-        SaveAccuracy saveAccuracy = GetComponent<SaveAccuracy>();
+        AccuracyTracker.Instance.CalculateAccuracy() : CalculateAccuracy();
+
+        SaveAccuracy saveAccuracy = FindObjectOfType<IntroLevel>().GetComponent<SaveAccuracy>();
         if (saveAccuracy != null)
         {
-            saveAccuracy.OnLevelCompleted();
+            saveAccuracy.OnLevelCompleted(accuracy);
         }
-        
+        else
+        {
+            Debug.LogError("SaveAccuracy component not found");
+        }
+
         if (ResultsManager.Instance != null)
         {
             if (AccuracyTracker.Instance != null)
             {
                 int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
                 int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
-                
+
                 ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode, totalBoxes, totalBoxesTouched);
             }
             else
@@ -363,6 +413,7 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("ResultsManager not found!");
         }
     }
+
 
     private void DisableAllBoxes()
     {

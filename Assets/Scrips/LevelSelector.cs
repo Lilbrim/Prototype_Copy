@@ -13,7 +13,7 @@ public class LevelSelector : MonoBehaviour
         public Sprite levelThumbnail;
         [TextArea]
         public string levelDescription;
-        public string levelId; // Unique identifier for saving/loading accuracy data
+        public string levelId;
     }
 
     [Header("Level Data")]
@@ -28,10 +28,15 @@ public class LevelSelector : MonoBehaviour
     public TextMeshProUGUI accuracyText;
     public Button startLevelButton;
 
+    [Header("Level Progression")]
+    [Range(0f, 1f)]
+    public float requiredAccuracyToUnlock = 0.7f;
+
     private IntroLevel selectedIntroLevel;
     private int selectedLevelIndex = -1;
     private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
     private const string NO_RECORD_TEXT = "No Record";
+    private List<Button> levelButtons = new List<Button>();
 
     private void Start()
     {
@@ -42,11 +47,14 @@ public class LevelSelector : MonoBehaviour
 
     private void GenerateLevelButtons()
     {
+        // Clear existing buttons
         foreach (Transform child in levelButtonContainer)
         {
             Destroy(child.gameObject);
         }
+        levelButtons.Clear();
 
+        // Generate new buttons
         for (int i = 0; i < availableLevels.Count; i++)
         {
             LevelData levelData = availableLevels[i];
@@ -74,9 +82,55 @@ public class LevelSelector : MonoBehaviour
 
             int levelIndex = i; 
             Button button = buttonObj.GetComponent<Button>();
+            levelButtons.Add(button);
+            
             if (button != null)
             {
                 button.onClick.AddListener(() => SelectLevel(levelIndex));
+            }
+        }
+        
+        // Update level buttons' interactable state based on progression
+        UpdateLevelButtonsState();
+    }
+
+    private void UpdateLevelButtonsState()
+    {
+        // First level is always unlocked
+        if (levelButtons.Count > 0)
+        {
+            levelButtons[0].interactable = true;
+        }
+
+        // Check subsequent levels
+        for (int i = 1; i < levelButtons.Count; i++)
+        {
+            string previousLevelId = availableLevels[i - 1].levelId;
+            float previousLevelAccuracy = GetSavedAccuracy(previousLevelId);
+            
+            // Level is unlocked if previous level has at least required accuracy
+            bool isUnlocked = previousLevelAccuracy >= requiredAccuracyToUnlock;
+            levelButtons[i].interactable = isUnlocked;
+            
+            // Add visual indicator for locked levels
+            Transform lockIndicator = levelButtons[i].transform.Find("LockIndicator");
+            if (lockIndicator != null)
+            {
+                lockIndicator.gameObject.SetActive(!isUnlocked);
+            }
+            else
+            {
+                // If there's no dedicated lock indicator, just gray out the button
+                ColorBlock colors = levelButtons[i].colors;
+                if (!isUnlocked)
+                {
+                    // Apply darker tint to locked levels
+                    colors.normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                    colors.highlightedColor = new Color(0.6f, 0.6f, 0.6f, 0.5f);
+                    colors.pressedColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
+                    colors.disabledColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
+                }
+                levelButtons[i].colors = colors;
             }
         }
     }
@@ -85,11 +139,33 @@ public class LevelSelector : MonoBehaviour
     {
         if (levelIndex >= 0 && levelIndex < availableLevels.Count)
         {
-            selectedLevelIndex = levelIndex;
-            selectedIntroLevel = availableLevels[levelIndex].introLevel;
-            
-            UpdateLevelInfoPanel(levelIndex);
-            startLevelButton.interactable = true;
+            // Only select if the level button is interactable (level is unlocked)
+            if (levelButtons[levelIndex].interactable)
+            {
+                selectedLevelIndex = levelIndex;
+                selectedIntroLevel = availableLevels[levelIndex].introLevel;
+                
+                UpdateLevelInfoPanel(levelIndex);
+                startLevelButton.interactable = true;
+            }
+            else
+            {
+                string previousLevelName = availableLevels[levelIndex - 1].levelName;
+                float previousLevelAccuracy = GetSavedAccuracy(availableLevels[levelIndex - 1].levelId);
+                float requiredPercentage = requiredAccuracyToUnlock * 100f;
+                
+                string lockMessage = $"This level is locked. Complete \"{previousLevelName}\" with at least {requiredPercentage}% accuracy to unlock.";
+                if (previousLevelAccuracy > 0)
+                {
+                    float currentPercentage = previousLevelAccuracy * 100f;
+                    lockMessage += $"\nCurrent accuracy: {currentPercentage:F0}%";
+                }
+                
+                levelDescriptionText.text = lockMessage;
+                levelPreviewImage.gameObject.SetActive(false);
+                accuracyText.gameObject.SetActive(false);
+                startLevelButton.interactable = false;
+            }
         }
     }
 
@@ -145,6 +221,7 @@ public class LevelSelector : MonoBehaviour
         {
             PlayerPrefs.SetFloat(ACCURACY_SAVE_PREFIX + levelId, accuracy);
             PlayerPrefs.Save();
+            UpdateLevelButtonsState();
         }
     }
 

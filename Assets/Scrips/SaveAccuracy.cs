@@ -15,20 +15,17 @@ public class SaveAccuracy : MonoBehaviour
         isInitialized = true;
     }
 
-    public void OnLevelCompleted()
+    public void OnLevelCompleted(float accuracy)
     {
         if (!isInitialized)
         {
-            Debug.LogWarning("not initialized!");
+            Debug.LogWarning("SaveAccuracy not initialized!");
             return;
         }
 
-        if (AccuracyTracker.Instance != null)
-        {
-            float accuracy = AccuracyTracker.Instance.CalculateAccuracy();
-            SaveLevelAccuracy(accuracy);
-        }
+        SaveLevelAccuracy(accuracy);
     }
+
 
     private void SaveLevelAccuracy(float accuracy)
     {

@@ -10,9 +10,12 @@ public class ResultsManager : MonoBehaviour
     public TextMeshProUGUI totalScoreText;
     public TextMeshProUGUI accuracyText;
     
-    [Header("Additional Stats Display")]
+    [Header("Display")]
     public TextMeshProUGUI boxesStatsText;
     public bool showDetailedStats = true;
+    
+    [Header("LevelSelector")]
+    public LevelSelector levelSelector; 
 
     private void Awake()
     {
@@ -26,6 +29,14 @@ public class ResultsManager : MonoBehaviour
         }
 
         HideResults();
+    }
+
+    private void Start()
+    {
+        if (levelSelector == null)
+        {
+            levelSelector = FindObjectOfType<LevelSelector>();
+        }
     }
 
     public void ShowResults(int totalScore, float accuracy, bool isPracticeMode)
@@ -77,5 +88,27 @@ public class ResultsManager : MonoBehaviour
     public void ExitToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
+    
+    public void ReturnToLevelSelector()
+    {
+        HideResults();
+        
+        if (levelSelector != null)
+        {
+            levelSelector.levelSelectionPanel.SetActive(true);
+        }
+        else
+        {
+            levelSelector = FindObjectOfType<LevelSelector>();
+            if (levelSelector != null)
+            {
+                levelSelector.levelSelectionPanel.SetActive(true);
+            }
+            else
+            {
+                ExitToMenu();
+            }
+        }
     }
 }
