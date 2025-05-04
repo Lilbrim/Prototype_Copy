@@ -17,7 +17,6 @@ public class StanceDetector : MonoBehaviour
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
 
-    // Track the colliders that are currently inside this trigger
     private List<Collider> collidersInTrigger = new List<Collider>();
 
     public bool IsLeftHandInStance() => leftHandInStance;
@@ -50,7 +49,6 @@ public class StanceDetector : MonoBehaviour
     {
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
-            // Add to our tracking list
             if (!collidersInTrigger.Contains(other))
             {
                 collidersInTrigger.Add(other);
@@ -74,7 +72,6 @@ public class StanceDetector : MonoBehaviour
         {
             leftHandInStance = false;
             
-            // Remove from our tracking list
             if (collidersInTrigger.Contains(other))
             {
                 collidersInTrigger.Remove(other);
@@ -84,7 +81,6 @@ public class StanceDetector : MonoBehaviour
         {
             rightHandInStance = false;
             
-            // Remove from our tracking list
             if (collidersInTrigger.Contains(other))
             {
                 collidersInTrigger.Remove(other);
@@ -95,13 +91,10 @@ public class StanceDetector : MonoBehaviour
         CheckStance();
     }
 
-    // New method to force reset trigger state
     public void ForceResetTriggerState()
     {
-        // Clear the tracked colliders
         foreach (var collider in new List<Collider>(collidersInTrigger))
         {
-            // Simulate OnTriggerExit for each tracked collider
             if (collider != null)
             {
                 if (collider.CompareTag("Left Baton"))
@@ -115,16 +108,13 @@ public class StanceDetector : MonoBehaviour
             }
         }
         
-        // Clear the list completely
         collidersInTrigger.Clear();
         
-        // Reset visual appearance
         ResetMaterial();
     }
 
     private void OnDisable()
     {
-        // When this object is disabled, force reset the trigger state
         ForceResetTriggerState();
     }
 

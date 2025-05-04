@@ -47,14 +47,12 @@ public class LevelSelector : MonoBehaviour
 
     private void GenerateLevelButtons()
     {
-        // Clear existing buttons
         foreach (Transform child in levelButtonContainer)
         {
             Destroy(child.gameObject);
         }
         levelButtons.Clear();
 
-        // Generate new buttons
         for (int i = 0; i < availableLevels.Count; i++)
         {
             LevelData levelData = availableLevels[i];
@@ -96,23 +94,19 @@ public class LevelSelector : MonoBehaviour
 
     private void UpdateLevelButtonsState()
     {
-        // First level is always unlocked
         if (levelButtons.Count > 0)
         {
             levelButtons[0].interactable = true;
         }
 
-        // Check subsequent levels
         for (int i = 1; i < levelButtons.Count; i++)
         {
             string previousLevelId = availableLevels[i - 1].levelId;
             float previousLevelAccuracy = GetSavedAccuracy(previousLevelId);
             
-            // Level is unlocked if previous level has at least required accuracy
             bool isUnlocked = previousLevelAccuracy >= requiredAccuracyToUnlock;
             levelButtons[i].interactable = isUnlocked;
             
-            // Add visual indicator for locked levels
             Transform lockIndicator = levelButtons[i].transform.Find("LockIndicator");
             if (lockIndicator != null)
             {
@@ -120,11 +114,9 @@ public class LevelSelector : MonoBehaviour
             }
             else
             {
-                // If there's no dedicated lock indicator, just gray out the button
                 ColorBlock colors = levelButtons[i].colors;
                 if (!isUnlocked)
                 {
-                    // Apply darker tint to locked levels
                     colors.normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
                     colors.highlightedColor = new Color(0.6f, 0.6f, 0.6f, 0.5f);
                     colors.pressedColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
@@ -139,7 +131,6 @@ public class LevelSelector : MonoBehaviour
     {
         if (levelIndex >= 0 && levelIndex < availableLevels.Count)
         {
-            // Only select if the level button is interactable (level is unlocked)
             if (levelButtons[levelIndex].interactable)
             {
                 selectedLevelIndex = levelIndex;

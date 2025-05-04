@@ -98,7 +98,6 @@ public class StanceManager : MonoBehaviour
 
         if (stanceName != currentStance && currentStance == "Default")
         {
-            // Check if the stance exists in our list
             bool validStance = false;
             foreach (var style in arnisStyles)
             {
@@ -146,7 +145,6 @@ public class StanceManager : MonoBehaviour
             foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
 
-        // Then activate appropriate boxes
         if (currentStance == "Default")
         {
             if (isPracticeMode)
@@ -160,7 +158,6 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Find and activate the correct style boxes
             foreach (var style in arnisStyles)
             {
                 if (style.styleName == currentStance)
@@ -194,7 +191,6 @@ public class StanceManager : MonoBehaviour
 
             List<AttackSequence> targetSequences = new List<AttackSequence>();
             
-            // Find the target style for practice
             foreach (var style in arnisStyles)
             {
                 if (style.styleName == requiredStanceForPractice)
@@ -220,7 +216,6 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Find and activate the correct style boxes for practice
             foreach (var style in arnisStyles)
             {
                 if (style.styleName == newStance)

@@ -102,32 +102,27 @@ public class LevelManager : MonoBehaviour
     
     private void EnableLevelUI()
     {
-        // Enable the main UI container if available
         if (levelUI != null)
         {
             levelUI.SetActive(true);
         }
         
-        // Enable individual UI elements
         if (objectiveText != null) objectiveText.gameObject.SetActive(true);
         if (scoreText != null) scoreText.gameObject.SetActive(true);
         if (objectiveImage != null) objectiveImage.gameObject.SetActive(true);
         if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(true);
         
-        // Hide feedback image initially
         if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
     }
     
     private void DisableLevelUI()
     {
-        // Disable the main UI container if available
         if (levelUI != null)
         {
             levelUI.SetActive(false);
         }
         else
         {
-            // If no container reference, disable individual UI elements
             if (objectiveText != null) objectiveText.gameObject.SetActive(false);
             if (scoreText != null) scoreText.gameObject.SetActive(false);
             if (objectiveImage != null) objectiveImage.gameObject.SetActive(false);
