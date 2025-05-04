@@ -84,16 +84,55 @@ public class IntroManager : MonoBehaviour
         }
     }
 
-    private void Update()
+private void Update()
+{
+    if (!batonsRemoved)
     {
+        CheckBatonRemoval();
+    }
+    else if (!stanceCompleted && stanceInstructionText.gameObject.activeSelf)
+    {
+        CheckStanceHold();
+    }
+
+    if (Input.GetKeyDown(KeyCode.S))
+    {
+        SkipIntro();
+    }
+}
+
+    private void SkipIntro()
+    {
+        Debug.Log("Skipping intro...");
+        
+        StopAllCoroutines();
+
+        RenderSettings.fog = false;
+
+        batonInstructionCanvas.gameObject.SetActive(false);
+
         if (!batonsRemoved)
         {
-            CheckBatonRemoval();
+            batonsRemoved = true;
         }
-        else if (!stanceCompleted && stanceInstructionText.gameObject.activeSelf)
+
+        if (!stanceCompleted)
         {
-            CheckStanceHold();
+            stanceCompleted = true;
+
+            foreach (var box in stanceBoxes)
+            {
+                box.SetActive(false);
+            }
+            stanceInstructionText.gameObject.SetActive(false);
+            stanceInstructionImage.gameObject.SetActive(false);
         }
+
+        stanceManager.gameObject.SetActive(true);
+        levelManager.gameObject.SetActive(true);
+        levelManager.StartLevel();
+
+        this.enabled = false;
     }
 
     private void CheckBatonRemoval()

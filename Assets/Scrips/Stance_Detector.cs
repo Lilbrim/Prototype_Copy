@@ -17,6 +17,9 @@ public class StanceDetector : MonoBehaviour
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
 
+    // Track the colliders that are currently inside this trigger
+    private List<Collider> collidersInTrigger = new List<Collider>();
+
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
 
@@ -43,11 +46,16 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
         {
+            // Add to our tracking list
+            if (!collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Add(other);
+            }
+            
             CheckOrientation(other);
         }
     }
@@ -65,14 +73,59 @@ public class StanceDetector : MonoBehaviour
         if (other.CompareTag("Left Baton"))
         {
             leftHandInStance = false;
+            
+            // Remove from our tracking list
+            if (collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Remove(other);
+            }
         }
         else if (other.CompareTag("Right Baton"))
         {
             rightHandInStance = false;
+            
+            // Remove from our tracking list
+            if (collidersInTrigger.Contains(other))
+            {
+                collidersInTrigger.Remove(other);
+            }
         }
 
         ResetMaterial();
         CheckStance();
+    }
+
+    // New method to force reset trigger state
+    public void ForceResetTriggerState()
+    {
+        // Clear the tracked colliders
+        foreach (var collider in new List<Collider>(collidersInTrigger))
+        {
+            // Simulate OnTriggerExit for each tracked collider
+            if (collider != null)
+            {
+                if (collider.CompareTag("Left Baton"))
+                {
+                    leftHandInStance = false;
+                }
+                else if (collider.CompareTag("Right Baton"))
+                {
+                    rightHandInStance = false;
+                }
+            }
+        }
+        
+        // Clear the list completely
+        collidersInTrigger.Clear();
+        
+        // Reset visual appearance
+        ResetMaterial();
+    }
+
+    private void OnDisable()
+    {
+        // When this object is disabled, force reset the trigger state
+        ForceResetTriggerState();
     }
 
     private void CheckOrientation(Collider other)
@@ -143,5 +196,4 @@ public class StanceDetector : MonoBehaviour
             boxRenderer.material = originalMaterial;
         }
     }
-
 }

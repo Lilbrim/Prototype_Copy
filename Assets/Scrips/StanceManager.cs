@@ -5,23 +5,32 @@ using UnityEngine;
 public class StanceManager : MonoBehaviour
 {
     public static StanceManager Instance;
+    private bool isGameActive = true;
 
-    public enum Stance { Default, BasicStrike, Redonda }
-    public Stance currentStance = Stance.Default;
+    [System.Serializable]
+    public class ArnisStyle
+    {
+        public string styleName;
+        public GameObject[] stanceBoxes;
+        public List<AttackSequence> sequences = new List<AttackSequence>();
+    }
+
+    public List<ArnisStyle> arnisStyles = new List<ArnisStyle>();
     public GameObject[] defaultBoxes;
-    public GameObject[] basicStrikeBoxes;
-    public GameObject[] redondaBoxes;
-
-    public List<AttackSequence> basicStrikeSequences = new List<AttackSequence>();
-    public List<AttackSequence> redondaSequences = new List<AttackSequence>();
 
     public float stanceTimeout = 2f;
     private float timer;
 
-    public AttackSequence currentAttackSequence; 
+    public AttackSequence currentAttackSequence;
     private StanceDetector[] allDetectors;
-    public int sequenceCounter; 
-    public int totalBoxesTouched; // New variable to track total boxes touched
+    public int sequenceCounter;
+    public int totalBoxesTouched;
+    
+    private bool isPracticeMode = false;
+    private string requiredStanceForPractice = "";
+
+    private string currentStance = "Default";
+    private ArnisStyle currentArnisStyle;
 
     private void Awake()
     {
@@ -38,12 +47,12 @@ public class StanceManager : MonoBehaviour
     private void Start()
     {
         allDetectors = FindObjectsOfType<StanceDetector>();
-        SetStance(Stance.Default);
+        SetStance("Default");
     }
 
     private void Update()
     {
-        if (currentStance != Stance.Default && currentAttackSequence == null)
+        if (currentStance != "Default" && currentAttackSequence == null)
         {
             CheckForSequenceStart();
         }
@@ -56,89 +65,204 @@ public class StanceManager : MonoBehaviour
             if (timer <= 0)
             {
                 ResetSequence();
-                SetStance(Stance.Default);
+                SetStance("Default");
             }
         }
-        else if (currentStance != Stance.Default)
+        else if (currentStance != "Default")
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                SetStance(Stance.Default);
+                SetStance("Default");
             }
         }
     }
 
-    public void EnterStance(string stanceName)
+    public void SetGameActive(bool active)
     {
-        if (stanceName == "BasicStrike" && currentStance != Stance.BasicStrike)
+        isGameActive = active;
+    }
+
+    public void EnterStance(string stanceName, bool practiceMode = false)
+    {
+        if (!isGameActive) return;
+
+        isPracticeMode = practiceMode;
+        requiredStanceForPractice = stanceName;
+        
+        if (currentStance == "Default" && practiceMode)
         {
-            SetStance(Stance.BasicStrike);
+            ActivateBoxesForPracticeMode("Default");
+            return;
         }
-        else if (stanceName == "Redonda" && currentStance != Stance.Redonda)
+
+        if (stanceName != currentStance && currentStance == "Default")
         {
-            SetStance(Stance.Redonda);
+            // Check if the stance exists in our list
+            bool validStance = false;
+            foreach (var style in arnisStyles)
+            {
+                if (style.styleName == stanceName)
+                {
+                    validStance = true;
+                    break;
+                }
+            }
+
+            if (validStance)
+            {
+                SetStance(stanceName);
+                LevelManager.Instance.OnStanceEntered(stanceName);
+            }
+            else
+            {
+                LevelManager.Instance.OnStanceEntered("Incorrect");
+            }
+        }
+        else
+        {
+            LevelManager.Instance.OnStanceEntered("Incorrect");
         }
     }
 
-    private void SetStance(Stance newStance)
+    private void SetStance(string newStance)
     {
         currentStance = newStance;
         timer = stanceTimeout;
+        currentArnisStyle = null;
 
         foreach (var detector in allDetectors)
         {
             detector.ResetStance();
         }
 
+        // Deactivate all boxes first
+        ForceResetTriggerStates(defaultBoxes);
         foreach (var box in defaultBoxes) box.SetActive(false);
-        foreach (var box in basicStrikeBoxes) box.SetActive(false);
-        foreach (var box in redondaBoxes) box.SetActive(false);
 
-        switch (currentStance)
+        foreach (var style in arnisStyles)
         {
-            case Stance.Default:
+            ForceResetTriggerStates(style.stanceBoxes);
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
+
+        // Then activate appropriate boxes
+        if (currentStance == "Default")
+        {
+            if (isPracticeMode)
+            {
+                ActivateBoxesForPracticeMode(newStance);
+            }
+            else
+            {
                 foreach (var box in defaultBoxes) box.SetActive(true);
-                break;
-            case Stance.BasicStrike:
-                foreach (var box in basicStrikeBoxes) box.SetActive(true);
-                LevelManager.Instance.OnStanceEntered();
-                break;
-            case Stance.Redonda:
-                foreach (var box in redondaBoxes) box.SetActive(true);
-                LevelManager.Instance.OnStanceEntered();
-                break;
+            }
+        }
+        else
+        {
+            // Find and activate the correct style boxes
+            foreach (var style in arnisStyles)
+            {
+                if (style.styleName == currentStance)
+                {
+                    currentArnisStyle = style;
+                    if (isPracticeMode)
+                    {
+                        ActivateBoxesForPracticeMode(newStance);
+                    }
+                    else
+                    {
+                        foreach (var box in style.stanceBoxes) box.SetActive(true);
+                    }
+                    break;
+                }
+            }
         }
 
         currentAttackSequence = null;
         sequenceCounter = 0;
-        totalBoxesTouched = 0; // Reset total boxes touched
+        totalBoxesTouched = 0;
+    }
+
+    private void ActivateBoxesForPracticeMode(string newStance)
+    {
+        if (!isGameActive) return;
+        
+        if (newStance == "Default")
+        {
+            foreach (var box in defaultBoxes) box.SetActive(false);
+
+            List<AttackSequence> targetSequences = new List<AttackSequence>();
+            
+            // Find the target style for practice
+            foreach (var style in arnisStyles)
+            {
+                if (style.styleName == requiredStanceForPractice)
+                {
+                    targetSequences = style.sequences;
+                    break;
+                }
+            }
+
+            foreach (var sequence in targetSequences)
+            {
+                if (sequence.startBoxLeft != null)
+                {
+                    sequence.startBoxLeft.SetActive(true);
+                    Debug.Log($"Activated startBoxLeft for sequence: {sequence.sequenceName}");
+                }
+                if (sequence.startBoxRight != null)
+                {
+                    sequence.startBoxRight.SetActive(true);
+                    Debug.Log($"Activated startBoxRight for sequence: {sequence.sequenceName}");
+                }
+            }
+        }
+        else
+        {
+            // Find and activate the correct style boxes for practice
+            foreach (var style in arnisStyles)
+            {
+                if (style.styleName == newStance)
+                {
+                    foreach (var box in style.stanceBoxes) box.SetActive(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void ForceResetTriggerStates(GameObject[] boxes)
+    {
+        foreach (var box in boxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null)
+            {
+                detector.ForceResetTriggerState();
+            }
+
+            Collider[] colliders = box.GetComponentsInChildren<Collider>();
+            foreach (Collider col in colliders)
+            {
+                bool wasEnabled = col.enabled;
+                col.enabled = false;
+                col.enabled = wasEnabled;
+            }
+        }
     }
 
     private void CheckForSequenceStart()
     {
-        List<AttackSequence> sequences = GetSequencesForCurrentStance();
+        if (currentArnisStyle == null) return;
 
-        foreach (var sequence in sequences)
+        foreach (var sequence in currentArnisStyle.sequences)
         {
             if (IsSequenceStartConditionMet(sequence))
             {
                 StartAttackSequence(sequence);
                 break; 
             }
-        }
-    }
-
-    private List<AttackSequence> GetSequencesForCurrentStance()
-    {
-        switch (currentStance)
-        {
-            case Stance.BasicStrike:
-                return basicStrikeSequences;
-            case Stance.Redonda:
-                return redondaSequences;
-            default:
-                return new List<AttackSequence>();
         }
     }
 
@@ -158,19 +282,30 @@ public class StanceManager : MonoBehaviour
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;
-        totalBoxesTouched = 0; // Reset total boxes touched counter
+        totalBoxesTouched = 0; 
+
+        ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
+
+        foreach (var box in defaultBoxes) box.SetActive(false);
+        
+        foreach (var style in arnisStyles)
+        {
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
 
         foreach (var box in sequence.sequenceBoxes)
         {
             box.SetActive(true);
         }
+
+        if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
+        if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
     }
 
     private void CheckAttackSequence()
     {
         if (currentAttackSequence != null)
         {
-            // Process all boxes to record which ones are touched
             for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
             {
                 var box = currentAttackSequence.sequenceBoxes[i];
@@ -180,18 +315,25 @@ public class StanceManager : MonoBehaviour
                 {
                     detector.IsCompleted = true;
                     sequenceCounter++;
-                    totalBoxesTouched++; // Increment the total boxes touched
+                    totalBoxesTouched++;
                     Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
+                }
+            }
+            
+            if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
+            {
+                var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+                var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
+                
+                if (leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance())
+                {
+                    Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
                     
-                    // If this is the final box in the sequence, end the sequence
-                    if (i == currentAttackSequence.sequenceBoxes.Length - 1)
-                    {
-                        Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
-                        NotifyObjectiveCompletion();
-                        ResetSequence();
-                        SetStance(Stance.Default);
-                        return;
-                    }
+                    NotifyObjectiveCompletion();
+                    
+                    ResetSequence();
+                    SetStance("Default");
+                    return;
                 }
             }
         }
@@ -210,10 +352,19 @@ public class StanceManager : MonoBehaviour
             currentAttackSequence = null;
             sequenceCounter = 0;
         }
+        SetStance("Default");
     }
-    
+        
     public void NotifyObjectiveCompletion()
     {
+        int touchedBoxes = totalBoxesTouched;
+        int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
+
+        if (AccuracyTracker.Instance != null)
+        {
+            AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
+        }
+        
         LevelManager.Instance.EndObjective();
     }
 }
@@ -224,7 +375,9 @@ public class AttackSequence
     public string sequenceName; 
     public GameObject startBoxLeft; 
     public GameObject startBoxRight; 
-    public GameObject[] sequenceBoxes; 
+    public GameObject[] sequenceBoxes;
+    public GameObject endBoxLeft; 
+    public GameObject endBoxRight;
     public float timeLimit;
     [HideInInspector] public int currentIndex = 0; 
 }

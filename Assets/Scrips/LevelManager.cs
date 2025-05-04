@@ -19,8 +19,12 @@ public class LevelManager : MonoBehaviour
     public Image objectiveImage;
     public Image feedbackImage;
     public Image stanceEntryImage;
+    
+    [Header("UI Container")]
+    public GameObject levelUI; 
 
     [Header("Feedback Sprites")]
+    public Sprite incorrectStanceSprite;
     public Sprite missedSprite;
     public Sprite poorSprite;
     public Sprite goodSprite;
@@ -30,6 +34,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private bool isPracticeMode = false;
     private int totalScore = 0;
     private bool isWaitingForStanceEntry = false;
+    private string currentRequiredStance = "";
 
     private void Awake()
     {
@@ -43,45 +48,221 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SkipObjective();
+        }
+    }
+
+    private void SkipObjective()
+    {
+        if (currentObjectiveIndex < objectives.Count)
+        {
+            Debug.Log("Skipping objective: " + currentObjectiveIndex);
+            EndObjective();
+        }
+    }
+
+
     public void StartLevel()
     {
         gameObject.SetActive(true);
+        
+        // Ensure UI is visible when starting level
+        EnableLevelUI();
+        
         currentObjectiveIndex = 0;
         totalScore = 0;
-        
-        if (objectives.Count > 0)
+
+        if (AccuracyTracker.Instance != null)
+        {
+            AccuracyTracker.Instance.ResetTracking();
+        }
+
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.SetGameActive(true);
+            
+            StanceManager.Instance.enabled = true;
+        }
+
+        if (objectives != null && objectives.Count > 0)
         {
             StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+        else
+        {
+            Debug.LogError("No objectives found for level: " + levelName);
         }
         
         UpdateScoreDisplay();
     }
-
+    
+    private void EnableLevelUI()
+    {
+        // Enable the main UI container if available
+        if (levelUI != null)
+        {
+            levelUI.SetActive(true);
+        }
+        
+        // Enable individual UI elements
+        if (objectiveText != null) objectiveText.gameObject.SetActive(true);
+        if (scoreText != null) scoreText.gameObject.SetActive(true);
+        if (objectiveImage != null) objectiveImage.gameObject.SetActive(true);
+        if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(true);
+        
+        // Hide feedback image initially
+        if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
+    }
+    
+    private void DisableLevelUI()
+    {
+        // Disable the main UI container if available
+        if (levelUI != null)
+        {
+            levelUI.SetActive(false);
+        }
+        else
+        {
+            // If no container reference, disable individual UI elements
+            if (objectiveText != null) objectiveText.gameObject.SetActive(false);
+            if (scoreText != null) scoreText.gameObject.SetActive(false);
+            if (objectiveImage != null) objectiveImage.gameObject.SetActive(false);
+            if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
+            if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(false);
+        }
+    }
+    
     private void StartStanceEntry(LevelObjective objective)
     {
+        if (objective == null)
+        {
+            Debug.LogError("Attempted to start null objective");
+            return;
+        }
+
         isWaitingForStanceEntry = true;
+        currentRequiredStance = objective.requiredStance;
         objectiveText.text = objective.stanceEntryInstruction;
         stanceEntryImage.sprite = objective.stanceEntryImage;
         objectiveImage.gameObject.SetActive(false);
         stanceEntryImage.gameObject.SetActive(true);
-        StanceManager.Instance.EnterStance(objective.requiredStance);
+        
+        StanceManager.Instance.EnterStance(objective.requiredStance, isPracticeMode);
     }
 
-    public void OnStanceEntered()
+    public void OnStanceEntered(string enteredStance)
     {
         if (isWaitingForStanceEntry)
         {
-            isWaitingForStanceEntry = false;
-            StartObjective(objectives[currentObjectiveIndex]);
+            if (enteredStance == currentRequiredStance)
+            {
+                isWaitingForStanceEntry = false;
+                if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+                {
+                    StartObjective(objectives[currentObjectiveIndex]);
+                }
+                else
+                {
+                    Debug.LogError("Current objective index out of range: " + currentObjectiveIndex);
+                }
+            }
+            else
+            {
+                DisplayIncorrectStanceFeedback();
+                
+                if (isPracticeMode)
+                {
+                    StartCoroutine(RestartCurrentObjectiveAfterDelay(2f));
+                }
+                else
+                {
+                    totalScore += 0;
+                    UpdateScoreDisplay();
+                    
+                    currentObjectiveIndex++;
+                    if (currentObjectiveIndex < objectives.Count)
+                    {
+                        StartCoroutine(StartNextObjectiveAfterDelay(2f));
+                    }
+                    else
+                    {
+                        StartCoroutine(EndLevelAfterDelay(2f));
+                    }
+                }
+            }
         }
+    }
+
+    private IEnumerator RestartCurrentObjectiveAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        feedbackImage.gameObject.SetActive(false);
+        
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+        else
+        {
+            Debug.LogError("Restart objective failed: Index out of range: " + currentObjectiveIndex);
+            if (objectives.Count > 0)
+            {
+                currentObjectiveIndex = 0;
+                StartStanceEntry(objectives[currentObjectiveIndex]);
+            }
+            else
+            {
+                EndLevel();
+            }
+        }
+    }
+
+    private IEnumerator StartNextObjectiveAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        feedbackImage.gameObject.SetActive(false);
+        
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+        else
+        {
+            Debug.LogError("Start next objective failed: Index out of range: " + currentObjectiveIndex);
+            EndLevel();
+        }
+    }
+
+    private IEnumerator EndLevelAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        EndLevel();
+    }
+
+    private void DisplayIncorrectStanceFeedback()
+    {
+        feedbackImage.sprite = incorrectStanceSprite;
+        feedbackImage.gameObject.SetActive(true);
     }
 
     public void StartObjective(LevelObjective objective)
     {
+        if (objective == null)
+        {
+            Debug.LogError("Attempted to start null objective");
+            return;
+        }
+
         objectiveText.text = objective.instruction;
         stanceEntryImage.gameObject.SetActive(false);
         objectiveImage.gameObject.SetActive(true);
         objectiveImage.sprite = objective.instructionImage;
+
+        StanceManager.Instance.EnterStance(objective.requiredStance, isPracticeMode);
     }
 
     public void EndObjective()
@@ -90,7 +271,6 @@ public class LevelManager : MonoBehaviour
         totalScore += score;
         DisplayFeedback(score);
 
-        // Always progress to the next objective regardless of score or practice mode
         currentObjectiveIndex++;
 
         if (currentObjectiveIndex < objectives.Count)
@@ -105,12 +285,14 @@ public class LevelManager : MonoBehaviour
         UpdateScoreDisplay();
     }
 
+
     private int CalculateScore()
     {
-        int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
+        int totalBoxes = StanceManager.Instance.currentAttackSequence != null ? 
+        StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length : 0;
         int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
 
-        float percentage = (float)touchedBoxes / totalBoxes;
+        float percentage = totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
 
         if (percentage == 0)
         {
@@ -167,28 +349,179 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevel()
     {
-        float accuracy = CalculateAccuracy();
-        ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+        DisableLevelUI();
+        
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.SetGameActive(false);
+            DisableAllBoxes();
+            StanceManager.Instance.enabled = false;
+            if (StanceManager.Instance.currentAttackSequence != null)
+            {
+                foreach (var box in StanceManager.Instance.currentAttackSequence.sequenceBoxes)
+                {
+                    if (box != null)
+                    {
+                        box.SetActive(false);
+
+                        StanceDetector detector = box.GetComponent<StanceDetector>();
+                        if (detector != null)
+                        {
+                            detector.IsCompleted = false;
+                            detector.ForceResetTriggerState();
+                        }
+                    }
+                }
+
+                if (StanceManager.Instance.currentAttackSequence.endBoxLeft != null)
+                    StanceManager.Instance.currentAttackSequence.endBoxLeft.SetActive(false);
+
+                if (StanceManager.Instance.currentAttackSequence.endBoxRight != null)
+                    StanceManager.Instance.currentAttackSequence.endBoxRight.SetActive(false);
+            }
+        }
+
+        float accuracy = AccuracyTracker.Instance != null ? 
+        AccuracyTracker.Instance.CalculateAccuracy() : CalculateAccuracy();
+
+        SaveAccuracy saveAccuracy = FindObjectOfType<IntroLevel>().GetComponent<SaveAccuracy>();
+        if (saveAccuracy != null)
+        {
+            saveAccuracy.OnLevelCompleted(accuracy);
+        }
+        else
+        {
+            Debug.LogError("SaveAccuracy component not found");
+        }
+
+        if (ResultsManager.Instance != null)
+        {
+            if (AccuracyTracker.Instance != null)
+            {
+                int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
+                int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
+
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode, totalBoxes, totalBoxesTouched);
+            }
+            else
+            {
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+            }
+        }
+        else
+        {
+            Debug.LogError("ResultsManager not found!");
+        }
+    }
+
+
+    private void DisableAllBoxes()
+    {
+        StanceManager sm = StanceManager.Instance;
+        
+        if (sm.defaultBoxes != null)
+        {
+            foreach (var box in sm.defaultBoxes)
+            {
+                if (box != null)
+                    box.SetActive(false);
+            }
+        }
+        
+        foreach (var style in sm.arnisStyles)
+        {
+            if (style.stanceBoxes != null)
+            {
+                foreach (var box in style.stanceBoxes)
+                {
+                    if (box != null)
+                        box.SetActive(false);
+                }
+            }
+            
+            if (style.sequences != null)
+            {
+                foreach (var sequence in style.sequences)
+                {
+                    DisableSequenceBoxes(sequence);
+                }
+            }
+        }
+    }
+    
+    private void DisableSequenceBoxes(AttackSequence sequence)
+    {
+        if (sequence == null)
+            return;
+            
+        if (sequence.startBoxLeft != null)
+            sequence.startBoxLeft.SetActive(false);
+            
+        if (sequence.startBoxRight != null)
+            sequence.startBoxRight.SetActive(false);
+            
+        if (sequence.sequenceBoxes != null)
+        {
+            foreach (var box in sequence.sequenceBoxes)
+            {
+                if (box != null)
+                    box.SetActive(false);
+            }
+        }
+        
+        if (sequence.endBoxLeft != null)
+            sequence.endBoxLeft.SetActive(false);
+            
+        if (sequence.endBoxRight != null)
+            sequence.endBoxRight.SetActive(false);
     }
 
     private float CalculateAccuracy()
     {
-        int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
-        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
+        if (AccuracyTracker.Instance != null)
+        {
+            return AccuracyTracker.Instance.CalculateAccuracy();
+        }
+        
+        int totalBoxes = 0;
+        int touchedBoxes = 0;
 
-        return (float)touchedBoxes / totalBoxes;
+        foreach (var objective in objectives)
+        {
+            if (StanceManager.Instance != null && StanceManager.Instance.currentAttackSequence != null)
+            {
+                totalBoxes += StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
+                touchedBoxes += StanceManager.Instance.totalBoxesTouched;
+            }
+        }
+
+        return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
     }
+
 
     private void UpdateScoreDisplay()
     {
-        if (isPracticeMode)
+        if (scoreText != null)
         {
-            scoreText.text = "PRACTICE MODE";
+            if (isPracticeMode)
+            {
+                scoreText.text = "PRACTICE MODE";
+            }
+            else
+            {
+                scoreText.text = "Total Score\n " + totalScore;
+            }
         }
-        else
-        {
-            scoreText.text = "Total Score\n " + totalScore;
-        }
+    }
+
+    public bool IsPracticeMode()
+    {
+        return isPracticeMode;
+    }
+
+    public string GetCurrentRequiredStance()
+    {
+        return currentRequiredStance;
     }
 }
 

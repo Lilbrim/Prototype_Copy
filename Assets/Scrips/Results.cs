@@ -9,6 +9,13 @@ public class ResultsManager : MonoBehaviour
     public CanvasGroup resultsCanvasGroup;
     public TextMeshProUGUI totalScoreText;
     public TextMeshProUGUI accuracyText;
+    
+    [Header("Display")]
+    public TextMeshProUGUI boxesStatsText;
+    public bool showDetailedStats = true;
+    
+    [Header("LevelSelector")]
+    public LevelSelector levelSelector; 
 
     private void Awake()
     {
@@ -24,7 +31,20 @@ public class ResultsManager : MonoBehaviour
         HideResults();
     }
 
+    private void Start()
+    {
+        if (levelSelector == null)
+        {
+            levelSelector = FindObjectOfType<LevelSelector>();
+        }
+    }
+
     public void ShowResults(int totalScore, float accuracy, bool isPracticeMode)
+    {
+        ShowResults(totalScore, accuracy, isPracticeMode, 0, 0);
+    }
+
+    public void ShowResults(int totalScore, float accuracy, bool isPracticeMode, int totalBoxes, int totalBoxesTouched)
     {
         if (isPracticeMode)
         {
@@ -35,6 +55,16 @@ public class ResultsManager : MonoBehaviour
         {
             totalScoreText.text = "Total Score: " + totalScore;
             accuracyText.text = "Accuracy\n " + (accuracy * 100).ToString("F2") + "%";
+        }
+        
+        if (showDetailedStats && boxesStatsText != null && totalBoxes > 0)
+        {
+            boxesStatsText.gameObject.SetActive(true);
+            boxesStatsText.text = string.Format("Boxes Touched: {0}/{1}", totalBoxesTouched, totalBoxes);
+        }
+        else if (boxesStatsText != null)
+        {
+            boxesStatsText.gameObject.SetActive(false);
         }
 
         resultsCanvasGroup.alpha = 1; 
@@ -54,9 +84,31 @@ public class ResultsManager : MonoBehaviour
         HideResults();
         LevelManager.Instance.StartLevel();
     }
-
+    
     public void ExitToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+    }
+    
+    public void ReturnToLevelSelector()
+    {
+        HideResults();
+        
+        if (levelSelector != null)
+        {
+            levelSelector.levelSelectionPanel.SetActive(true);
+        }
+        else
+        {
+            levelSelector = FindObjectOfType<LevelSelector>();
+            if (levelSelector != null)
+            {
+                levelSelector.levelSelectionPanel.SetActive(true);
+            }
+            else
+            {
+                ExitToMenu();
+            }
+        }
     }
 }
