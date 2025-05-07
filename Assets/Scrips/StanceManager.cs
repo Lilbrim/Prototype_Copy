@@ -32,6 +32,9 @@ public class StanceManager : MonoBehaviour
     private string currentStance = "Default";
     private ArnisStyle currentArnisStyle;
 
+    [Header("Manager Settings")]
+    public bool useSparManager = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -111,16 +114,30 @@ public class StanceManager : MonoBehaviour
             if (validStance)
             {
                 SetStance(stanceName);
-                LevelManager.Instance.OnStanceEntered(stanceName);
+                
+                if (useSparManager && SparManager.Instance != null)
+                {
+                
+                }
+                else if (LevelManager.Instance != null)
+                {
+                    LevelManager.Instance.OnStanceEntered(stanceName);
+                }
             }
             else
             {
-                LevelManager.Instance.OnStanceEntered("Incorrect");
+                if (LevelManager.Instance != null && !useSparManager)
+                {
+                    LevelManager.Instance.OnStanceEntered("Incorrect");
+                }
             }
         }
         else
         {
-            LevelManager.Instance.OnStanceEntered("Incorrect");
+            if (LevelManager.Instance != null && !useSparManager)
+            {
+                LevelManager.Instance.OnStanceEntered("Incorrect");
+            }
         }
     }
 
@@ -355,12 +372,22 @@ public class StanceManager : MonoBehaviour
         int touchedBoxes = totalBoxesTouched;
         int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
 
-        if (AccuracyTracker.Instance != null)
+        if (useSparManager && SparManager.Instance != null)
         {
-            AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
+            SparManager.Instance.NotifySequenceCompletion(currentStance, currentAttackSequence.sequenceName);
         }
-        
-        LevelManager.Instance.EndObjective();
+        else 
+        {
+            if (AccuracyTracker.Instance != null)
+            {
+                AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
+            }
+            
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.EndObjective();
+            }
+        }
     }
 }
 

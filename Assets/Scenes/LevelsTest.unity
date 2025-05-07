@@ -1819,7 +1819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &252661711
 Transform:
   m_ObjectHideFlags: 0
@@ -1943,7 +1943,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &262879434
 Transform:
   m_ObjectHideFlags: 0
@@ -4034,7 +4034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &462211521
 Transform:
   m_ObjectHideFlags: 0
@@ -5538,7 +5538,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667526349}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
   m_Name: 
@@ -6986,7 +6986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &836998873
 Transform:
   m_ObjectHideFlags: 0
@@ -7609,7 +7609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &921388518
 Transform:
   m_ObjectHideFlags: 0
@@ -9113,6 +9113,7 @@ GameObject:
   - component: {fileID: 1101313165}
   - component: {fileID: 1101313168}
   - component: {fileID: 1101313167}
+  - component: {fileID: 1101313169}
   m_Layer: 0
   m_Name: LevelSelector
   m_TagString: Untagged
@@ -9186,6 +9187,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1101313169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101313164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1105841527
 GameObject:
   m_ObjectHideFlags: 0
@@ -11761,7 +11781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1448544052
 Transform:
   m_ObjectHideFlags: 0
@@ -12828,7 +12848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1631951484
 Transform:
   m_ObjectHideFlags: 0
@@ -13380,7 +13400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1661181218
 Transform:
   m_ObjectHideFlags: 0
@@ -14492,6 +14512,7 @@ MonoBehaviour:
     - {fileID: 1448544051}
     - {fileID: 921388517}
     - {fileID: 1777479840}
+    - {fileID: 1631951483}
     sequences:
     - sequenceName: Left Temple
       startBoxLeft: {fileID: 1631951483}
@@ -14539,6 +14560,7 @@ MonoBehaviour:
     currentIndex: 0
   sequenceCounter: 0
   totalBoxesTouched: 0
+  useSparManager: 0
 --- !u!4 &1759198478
 Transform:
   m_ObjectHideFlags: 0
@@ -14573,7 +14595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1777479841
 Transform:
   m_ObjectHideFlags: 0
@@ -17353,7 +17375,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.5}
+  m_AnchoredPosition: {x: -91.5, y: 91.49986}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2100237762
