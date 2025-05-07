@@ -11,12 +11,14 @@ public class IntroLevel : MonoBehaviour
     public string stanceInstructionMessage = "Stand in ready position";
     public Sprite stanceInstructionSprite;
     
-    [Header("Scene References")]
+    [Header("Scene Stuff")]
     public GameObject[] stanceBoxes;
     public StanceManager stanceManager;
     public LevelManager levelManager;
+    public SparManager sparManager;
+    public bool isSparLevel = false; 
     
-    [Header("Effect Settings")]
+    [Header("Time")]
     public float stanceHoldTime = 3f;
 
     private StanceDetector[] stanceDetectors;
@@ -40,7 +42,8 @@ public class IntroLevel : MonoBehaviour
         stanceCompleted = false;
         
         if (stanceManager != null) stanceManager.gameObject.SetActive(false);
-        if (levelManager != null) levelManager.gameObject.SetActive(false);
+        if (levelManager != null && !isSparLevel) levelManager.gameObject.SetActive(false);
+        if (sparManager != null && isSparLevel) sparManager.gameObject.SetActive(false);
 
         InitializeStanceDetection();
         StartStancePhase();
@@ -92,8 +95,22 @@ public class IntroLevel : MonoBehaviour
         }
 
         stanceManager.gameObject.SetActive(true);
-        levelManager.gameObject.SetActive(true);
-        levelManager.StartLevel();
+        
+        if (isSparLevel)
+        {
+            if (sparManager != null) 
+            {
+                sparManager.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (levelManager != null)
+            {
+                levelManager.gameObject.SetActive(true);
+                levelManager.StartLevel();
+            }
+        }
 
         this.enabled = false;
     }
@@ -160,8 +177,22 @@ public class IntroLevel : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         stanceManager.gameObject.SetActive(true);
-        levelManager.gameObject.SetActive(true);
-        levelManager.StartLevel();
+
+        if (isSparLevel)
+        {
+            if (sparManager != null) 
+            {
+                sparManager.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (levelManager != null)
+            {
+                levelManager.gameObject.SetActive(true);
+                levelManager.StartLevel();
+            }
+        }
 
         this.enabled = false;
     }

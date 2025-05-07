@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 337530079}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
         m_MethodName: StartSelectedLevel
         m_Mode: 1
@@ -2491,7 +2491,6 @@ GameObject:
   - component: {fileID: 337530076}
   - component: {fileID: 337530078}
   - component: {fileID: 337530077}
-  - component: {fileID: 337530079}
   - component: {fileID: 337530081}
   - component: {fileID: 337530082}
   m_Layer: 0
@@ -2562,37 +2561,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337530075}
   m_CullTransparentMesh: 1
---- !u!114 &337530079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337530075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451d73b6763d6fc44a437dee22586acf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  availableLevels:
-  - levelName: Basic Strike
-    introLevel: {fileID: 1118523005}
-    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
-    levelDescription: Test
-    levelId: 1
-  - levelName: Single Sinawali
-    introLevel: {fileID: 0}
-    levelThumbnail: {fileID: 21300000, guid: ddcaf444fbde07e4ea0ce60299bf83d7, type: 3}
-    levelDescription: Test2
-    levelId: 2
-  levelSelectionPanel: {fileID: 337530075}
-  levelButtonPrefab: {fileID: 5046679306294668040, guid: 64f7b36ff43f6a743b90dd7d3fb8567f, type: 3}
-  levelButtonContainer: {fileID: 2100237761}
-  levelDescriptionText: {fileID: 1992801597}
-  levelPreviewImage: {fileID: 1560504612}
-  accuracyText: {fileID: 1327043723}
-  startLevelButton: {fileID: 142535408}
-  requiredAccuracyToUnlock: 0.7
 --- !u!223 &337530081
 Canvas:
   m_ObjectHideFlags: 0
@@ -5337,7 +5305,7 @@ MonoBehaviour:
   accuracyText: {fileID: 1374041881}
   boxesStatsText: {fileID: 0}
   showDetailedStats: 1
-  levelSelector: {fileID: 337530079}
+  levelSelector: {fileID: 0}
 --- !u!4 &595790735
 Transform:
   m_ObjectHideFlags: 0
@@ -5538,7 +5506,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667526349}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
   m_Name: 
@@ -7546,7 +7514,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1969228304}
   m_HandleRect: {fileID: 1969228303}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9114,6 +9082,7 @@ GameObject:
   - component: {fileID: 1101313168}
   - component: {fileID: 1101313167}
   - component: {fileID: 1101313169}
+  - component: {fileID: 1101313170}
   m_Layer: 0
   m_Name: LevelSelector
   m_TagString: Untagged
@@ -9206,6 +9175,45 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &1101313170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101313164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451d73b6763d6fc44a437dee22586acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableLevels:
+  - levelName: Basic Strike
+    introLevel: {fileID: 1118523005}
+    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
+    levelDescription: Test
+    levelId: 1
+    isSparLevel: 0
+  - levelName: Single Sinawali
+    introLevel: {fileID: 0}
+    levelThumbnail: {fileID: 21300000, guid: ddcaf444fbde07e4ea0ce60299bf83d7, type: 3}
+    levelDescription: Test2
+    levelId: 2
+    isSparLevel: 0
+  availableSparLevels: []
+  levelSelectionPanel: {fileID: 337530075}
+  levelButtonPrefab: {fileID: 5046679306294668040, guid: 64f7b36ff43f6a743b90dd7d3fb8567f, type: 3}
+  levelButtonContainer: {fileID: 2100237761}
+  sparLevelButtonContainer: {fileID: 0}
+  levelDescriptionText: {fileID: 1992801597}
+  levelPreviewImage: {fileID: 1560504612}
+  accuracyText: {fileID: 1327043723}
+  startLevelButton: {fileID: 142535408}
+  normalLevelsTab: {fileID: 0}
+  sparLevelsTab: {fileID: 0}
+  normalLevelsTabButton: {fileID: 0}
+  sparLevelsTabButton: {fileID: 0}
+  requiredAccuracyToUnlock: 0.7
 --- !u!1 &1105841527
 GameObject:
   m_ObjectHideFlags: 0
@@ -9413,6 +9421,8 @@ MonoBehaviour:
   - {fileID: 1638647952}
   stanceManager: {fileID: 1759198477}
   levelManager: {fileID: 667526350}
+  sparManager: {fileID: 0}
+  isSparLevel: 0
   stanceHoldTime: 3
 --- !u!4 &1118523006
 Transform:
@@ -17375,7 +17385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49986}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2100237762

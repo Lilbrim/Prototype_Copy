@@ -14,19 +14,28 @@ public class LevelSelector : MonoBehaviour
         [TextArea]
         public string levelDescription;
         public string levelId;
+        public bool isSparLevel = false;
     }
 
     [Header("Level Data")]
     public List<LevelData> availableLevels = new List<LevelData>();
+    public List<LevelData> availableSparLevels = new List<LevelData>();
 
     [Header("UI References")]
     public GameObject levelSelectionPanel;
     public GameObject levelButtonPrefab;
     public Transform levelButtonContainer;
+    public Transform sparLevelButtonContainer; 
     public TextMeshProUGUI levelDescriptionText;
     public Image levelPreviewImage;
     public TextMeshProUGUI accuracyText;
     public Button startLevelButton;
+    
+    [Header("Tab System")]
+    public GameObject normalLevelsTab;
+    public GameObject sparLevelsTab;
+    public Button normalLevelsTabButton;
+    public Button sparLevelsTabButton;
 
     [Header("Level Progression")]
     [Range(0f, 1f)]
@@ -34,29 +43,92 @@ public class LevelSelector : MonoBehaviour
 
     private IntroLevel selectedIntroLevel;
     private int selectedLevelIndex = -1;
+    private bool isViewingSparLevels = false;
     private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
     private const string NO_RECORD_TEXT = "No Record";
     private List<Button> levelButtons = new List<Button>();
+    private List<Button> sparLevelButtons = new List<Button>();
 
     private void Start()
     {
+        ShowNormalLevelsTab();
+        
         GenerateLevelButtons();
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
+        
+        if (normalLevelsTabButton != null)
+            normalLevelsTabButton.onClick.AddListener(ShowNormalLevelsTab);
+        
+        if (sparLevelsTabButton != null)
+            sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
+    }
+    
+    public void ShowNormalLevelsTab()
+    {
+        isViewingSparLevels = false;
+        
+        if (normalLevelsTab != null)
+            normalLevelsTab.SetActive(true);
+        
+        if (sparLevelsTab != null)
+            sparLevelsTab.SetActive(false);
+        
+        selectedLevelIndex = -1;
+        selectedIntroLevel = null;
+        UpdateLevelInfoPanel(-1);
+        startLevelButton.interactable = false;
+        
+        if (normalLevelsTabButton != null)
+            normalLevelsTabButton.interactable = false;
+        
+        if (sparLevelsTabButton != null)
+            sparLevelsTabButton.interactable = true;
+    }
+    
+    public void ShowSparLevelsTab()
+    {
+        isViewingSparLevels = true;
+        
+        if (normalLevelsTab != null)
+            normalLevelsTab.SetActive(false);
+        
+        if (sparLevelsTab != null)
+            sparLevelsTab.SetActive(true);
+        
+        selectedLevelIndex = -1;
+        selectedIntroLevel = null;
+        UpdateLevelInfoPanel(-1);
+        startLevelButton.interactable = false;
+        
+        if (normalLevelsTabButton != null)
+            normalLevelsTabButton.interactable = true;
+        
+        if (sparLevelsTabButton != null)
+            sparLevelsTabButton.interactable = false;
     }
 
     private void GenerateLevelButtons()
     {
-        foreach (Transform child in levelButtonContainer)
+        GenerateButtonsForList(availableLevels, levelButtonContainer, levelButtons, false);
+        
+        GenerateButtonsForList(availableSparLevels, sparLevelButtonContainer, sparLevelButtons, true);
+        
+        UpdateLevelButtonsState();
+    }
+    
+    private void GenerateButtonsForList(List<LevelData> levels, Transform container, List<Button> buttonsList, bool isSparLevel)
+    {
+        foreach (Transform child in container)
         {
             Destroy(child.gameObject);
         }
-        levelButtons.Clear();
+        buttonsList.Clear();
 
-        for (int i = 0; i < availableLevels.Count; i++)
+        for (int i = 0; i < levels.Count; i++)
         {
-            LevelData levelData = availableLevels[i];
-            GameObject buttonObj = Instantiate(levelButtonPrefab, levelButtonContainer);
+            LevelData levelData = levels[i];
+            GameObject buttonObj = Instantiate(levelButtonPrefab, container);
             
             TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
@@ -80,41 +152,52 @@ public class LevelSelector : MonoBehaviour
 
             int levelIndex = i; 
             Button button = buttonObj.GetComponent<Button>();
-            levelButtons.Add(button);
+            buttonsList.Add(button);
             
             if (button != null)
             {
-                button.onClick.AddListener(() => SelectLevel(levelIndex));
+                if (isSparLevel)
+                {
+                    button.onClick.AddListener(() => SelectSparLevel(levelIndex));
+                }
+                else
+                {
+                    button.onClick.AddListener(() => SelectLevel(levelIndex));
+                }
             }
         }
-        
-        // Update level buttons' interactable state based on progression
-        UpdateLevelButtonsState();
     }
 
     private void UpdateLevelButtonsState()
     {
-        if (levelButtons.Count > 0)
+        UpdateButtonsStateForList(levelButtons, availableLevels);
+        
+        UpdateButtonsStateForList(sparLevelButtons, availableSparLevels);
+    }
+    
+    private void UpdateButtonsStateForList(List<Button> buttons, List<LevelData> levels)
+    {
+        if (buttons.Count > 0)
         {
-            levelButtons[0].interactable = true;
+            buttons[0].interactable = true;
         }
 
-        for (int i = 1; i < levelButtons.Count; i++)
+        for (int i = 1; i < buttons.Count; i++)
         {
-            string previousLevelId = availableLevels[i - 1].levelId;
+            string previousLevelId = levels[i - 1].levelId;
             float previousLevelAccuracy = GetSavedAccuracy(previousLevelId);
             
             bool isUnlocked = previousLevelAccuracy >= requiredAccuracyToUnlock;
-            levelButtons[i].interactable = isUnlocked;
+            buttons[i].interactable = isUnlocked;
             
-            Transform lockIndicator = levelButtons[i].transform.Find("LockIndicator");
+            Transform lockIndicator = buttons[i].transform.Find("LockIndicator");
             if (lockIndicator != null)
             {
                 lockIndicator.gameObject.SetActive(!isUnlocked);
             }
             else
             {
-                ColorBlock colors = levelButtons[i].colors;
+                ColorBlock colors = buttons[i].colors;
                 if (!isUnlocked)
                 {
                     colors.normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
@@ -122,49 +205,59 @@ public class LevelSelector : MonoBehaviour
                     colors.pressedColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
                     colors.disabledColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
                 }
-                levelButtons[i].colors = colors;
+                buttons[i].colors = colors;
             }
         }
     }
 
     public void SelectLevel(int levelIndex)
     {
-        if (levelIndex >= 0 && levelIndex < availableLevels.Count)
+        SelectLevelFromList(levelIndex, availableLevels, levelButtons, false);
+    }
+    
+    public void SelectSparLevel(int levelIndex)
+    {
+        SelectLevelFromList(levelIndex, availableSparLevels, sparLevelButtons, true);
+    }
+    
+    private void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel)
+    {
+        if (levelIndex >= 0 && levelIndex < levels.Count)
         {
-            if (levelButtons[levelIndex].interactable)
+            selectedLevelIndex = levelIndex;
+            selectedIntroLevel = levels[levelIndex].introLevel;
+            
+            if (buttons[levelIndex].interactable)
             {
-                selectedLevelIndex = levelIndex;
-                selectedIntroLevel = availableLevels[levelIndex].introLevel;
-                
-                UpdateLevelInfoPanel(levelIndex);
+                UpdateLevelInfoPanel(levelIndex, levels);
                 startLevelButton.interactable = true;
             }
             else
             {
-                string previousLevelName = availableLevels[levelIndex - 1].levelName;
-                float previousLevelAccuracy = GetSavedAccuracy(availableLevels[levelIndex - 1].levelId);
+                string previousLevelName = levels[levelIndex - 1].levelName;
+                float previousLevelAccuracy = GetSavedAccuracy(levels[levelIndex - 1].levelId);
                 float requiredPercentage = requiredAccuracyToUnlock * 100f;
-                
-                string lockMessage = $"This level is locked. Complete \"{previousLevelName}\" with at least {requiredPercentage}% accuracy to unlock.";
-                if (previousLevelAccuracy > 0)
-                {
-                    float currentPercentage = previousLevelAccuracy * 100f;
-                    lockMessage += $"\nCurrent accuracy: {currentPercentage:F0}%";
-                }
-                
-                levelDescriptionText.text = lockMessage;
-                levelPreviewImage.gameObject.SetActive(false);
-                accuracyText.gameObject.SetActive(false);
-                startLevelButton.interactable = false;
-            }
+            }      
         }
     }
 
     private void UpdateLevelInfoPanel(int levelIndex)
     {
-        if (levelIndex >= 0 && levelIndex < availableLevels.Count)
+        if (isViewingSparLevels)
         {
-            LevelData levelData = availableLevels[levelIndex];
+            UpdateLevelInfoPanel(levelIndex, availableSparLevels);
+        }
+        else
+        {
+            UpdateLevelInfoPanel(levelIndex, availableLevels);
+        }
+    }
+
+    private void UpdateLevelInfoPanel(int levelIndex, List<LevelData> levels)
+    {
+        if (levelIndex >= 0 && levelIndex < levels.Count)
+        {
+            LevelData levelData = levels[levelIndex];
             levelDescriptionText.text = levelData.levelDescription;
             levelPreviewImage.sprite = levelData.levelThumbnail;
             levelPreviewImage.gameObject.SetActive(true);
@@ -195,10 +288,23 @@ public class LevelSelector : MonoBehaviour
         {
             levelSelectionPanel.SetActive(false);
             
+            selectedIntroLevel.isSparLevel = isViewingSparLevels;
+            
             if (selectedIntroLevel.gameObject.GetComponent<SaveAccuracy>() == null)
             {
                 SaveAccuracy observer = selectedIntroLevel.gameObject.AddComponent<SaveAccuracy>();
-                observer.Initialize(this, availableLevels[selectedLevelIndex].levelId);
+                
+                string levelId;
+                if (isViewingSparLevels)
+                {
+                    levelId = availableSparLevels[selectedLevelIndex].levelId;
+                }
+                else
+                {
+                    levelId = availableLevels[selectedLevelIndex].levelId;
+                }
+                
+                observer.Initialize(this, levelId);
             }
             
             selectedIntroLevel.ActivateIntro();

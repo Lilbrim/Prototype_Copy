@@ -70,7 +70,6 @@ public class LevelManager : MonoBehaviour
     {
         gameObject.SetActive(true);
         
-        // Ensure UI is visible when starting level
         EnableLevelUI();
         
         currentObjectiveIndex = 0;

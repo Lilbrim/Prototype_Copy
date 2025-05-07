@@ -50,7 +50,15 @@ public class StanceManager : MonoBehaviour
     private void Start()
     {
         allDetectors = FindObjectsOfType<StanceDetector>();
-        SetStance("Default");
+        
+        foreach (var box in defaultBoxes) box.SetActive(false);
+        
+        foreach (var style in arnisStyles)
+        {
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
+        
+        currentStance = "Default";
     }
 
     private void Update()
@@ -84,6 +92,13 @@ public class StanceManager : MonoBehaviour
     public void SetGameActive(bool active)
     {
         isGameActive = active;
+    }
+
+    public void ActivateDefaultStance()
+    {
+        if (!isGameActive) return;
+        
+        foreach (var box in defaultBoxes) box.SetActive(true);
     }
 
     public void EnterStance(string stanceName, bool practiceMode = false)
@@ -152,7 +167,6 @@ public class StanceManager : MonoBehaviour
             detector.ResetStance();
         }
 
-        // Deactivate all boxes first
         ForceResetTriggerStates(defaultBoxes);
         foreach (var box in defaultBoxes) box.SetActive(false);
 
@@ -170,7 +184,7 @@ public class StanceManager : MonoBehaviour
             }
             else
             {
-                foreach (var box in defaultBoxes) box.SetActive(true);
+                
             }
         }
         else
