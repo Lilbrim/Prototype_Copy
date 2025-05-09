@@ -17,11 +17,11 @@ public class LevelSelector : MonoBehaviour
         public bool isSparLevel = false;
     }
 
-    [Header("Level Data")]
+    [Header("Levels")]
     public List<LevelData> availableLevels = new List<LevelData>();
     public List<LevelData> availableSparLevels = new List<LevelData>();
 
-    [Header("UI References")]
+    [Header("UI Stuff")]
     public GameObject levelSelectionPanel;
     public GameObject levelButtonPrefab;
     public Transform levelButtonContainer;
@@ -31,7 +31,7 @@ public class LevelSelector : MonoBehaviour
     public TextMeshProUGUI accuracyText;
     public Button startLevelButton;
     
-    [Header("Tab System")]
+    [Header("Tabs")]
     public GameObject normalLevelsTab;
     public GameObject sparLevelsTab;
     public Button normalLevelsTabButton;
