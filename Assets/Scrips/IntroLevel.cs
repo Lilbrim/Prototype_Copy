@@ -3,6 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public interface ILevelManager
+{
+    void StartLevel();
+}
+
 public class IntroLevel : MonoBehaviour
 {
     [Header("Stance UI")]
@@ -14,21 +19,33 @@ public class IntroLevel : MonoBehaviour
     [Header("Scene Stuff")]
     public GameObject[] stanceBoxes;
     public StanceManager stanceManager;
-    public LevelManager levelManager;
-    public SparManager sparManager;
-    public bool isSparLevel = false; 
+    public MonoBehaviour levelManagerComponent; 
     
     [Header("Time")]
     public float stanceHoldTime = 3f;
 
+    [Header("Partner")]
+    public bool includeSparringPartner = false;
+    public GameObject sparringPartnerPrefab;
+    public Transform sparringPartnerSpawnPoint;
+    public string sparringPartnerAnimation = "Sinwali";
+    
+    private ILevelManager levelManager; 
     private StanceDetector[] stanceDetectors;
     private bool[] isBoxHeld;
     private float[] holdTimers;
     private bool stanceCompleted = false;
+    private GameObject instantiatedSparringPartner;
 
     private void Awake()
     {
         gameObject.SetActive(false);
+        
+        levelManager = levelManagerComponent as ILevelManager;
+        if (levelManager == null)
+        {
+            Debug.LogError("Level manager component does not implement ILevelManager interface!");
+        }
     }
 
     public void ActivateIntro()
@@ -42,11 +59,43 @@ public class IntroLevel : MonoBehaviour
         stanceCompleted = false;
         
         if (stanceManager != null) stanceManager.gameObject.SetActive(false);
-        if (levelManager != null && !isSparLevel) levelManager.gameObject.SetActive(false);
-        if (sparManager != null && isSparLevel) sparManager.gameObject.SetActive(false);
+        if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
 
         InitializeStanceDetection();
+        
+        if (includeSparringPartner)
+        {
+            SetupSparringPartner();
+        }
+        
         StartStancePhase();
+    }
+
+    private void SetupSparringPartner()
+    {
+        if (sparringPartnerPrefab != null && sparringPartnerSpawnPoint != null)
+        {
+            instantiatedSparringPartner = Instantiate(
+                sparringPartnerPrefab, 
+                sparringPartnerSpawnPoint.position, 
+                sparringPartnerSpawnPoint.rotation
+            );
+            
+            Animator animator = instantiatedSparringPartner.GetComponent<Animator>();
+            if (animator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+            {
+                animator.Play(sparringPartnerAnimation);
+            }
+            
+            if (stanceInstructionImage != null)
+            {
+                stanceInstructionImage.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Sparring partner or spawn point is missing. Cannot spawn sparring partner.");
+        }
     }
 
     private void InitializeStanceDetection()
@@ -78,7 +127,7 @@ public class IntroLevel : MonoBehaviour
 
     private void SkipIntro()
     {
-        Debug.Log("Skipping intro...");
+        Debug.Log("Skipping");
         
         StopAllCoroutines();
 
@@ -91,23 +140,38 @@ public class IntroLevel : MonoBehaviour
                 box.SetActive(false);
             }
             stanceInstructionText.gameObject.SetActive(false);
-            stanceInstructionImage.gameObject.SetActive(false);
-        }
-
-        stanceManager.gameObject.SetActive(true);
-        
-        if (isSparLevel)
-        {
-            if (sparManager != null) 
+            
+            if (stanceInstructionImage != null && stanceInstructionImage.gameObject.activeSelf)
             {
-                sparManager.gameObject.SetActive(true);
+                stanceInstructionImage.gameObject.SetActive(false);
             }
         }
-        else
+
+        if (instantiatedSparringPartner != null && levelManagerComponent != null)
         {
-            if (levelManager != null)
+            SparManager sparManager = levelManagerComponent.GetComponent<SparManager>();
+            if (sparManager != null)
             {
-                levelManager.gameObject.SetActive(true);
+                sparManager.SetSparringPartner(instantiatedSparringPartner);
+            }
+        }
+
+        if (stanceManager != null)
+        {
+            stanceManager.gameObject.SetActive(true);
+        }
+        
+        if (levelManagerComponent != null)
+        {
+            levelManagerComponent.gameObject.SetActive(true);
+            
+            SparManager sparManager = levelManagerComponent.GetComponent<SparManager>();
+            if (sparManager != null)
+            {
+                sparManager.StartLevel();
+            }
+            else if (levelManager != null)
+            {
                 levelManager.StartLevel();
             }
         }
@@ -118,9 +182,13 @@ public class IntroLevel : MonoBehaviour
     private void StartStancePhase()
     {
         stanceInstructionText.text = stanceInstructionMessage;
-        stanceInstructionImage.sprite = stanceInstructionSprite;
         stanceInstructionText.gameObject.SetActive(true);
-        stanceInstructionImage.gameObject.SetActive(true);
+        
+        if (stanceInstructionImage != null && !includeSparringPartner)
+        {
+            stanceInstructionImage.sprite = stanceInstructionSprite;
+            stanceInstructionImage.gameObject.SetActive(true);
+        }
 
         foreach (var box in stanceBoxes)
         {
@@ -172,27 +240,26 @@ public class IntroLevel : MonoBehaviour
             box.SetActive(false);
         }
         stanceInstructionText.gameObject.SetActive(false);
-        stanceInstructionImage.gameObject.SetActive(false);
+        
+        if (stanceInstructionImage != null && stanceInstructionImage.gameObject.activeSelf)
+        {
+            stanceInstructionImage.gameObject.SetActive(false);
+        }
 
         yield return new WaitForSeconds(1f);
 
-        stanceManager.gameObject.SetActive(true);
+        if (instantiatedSparringPartner != null && levelManagerComponent != null)
+        {
+            SparManager sparManager = levelManagerComponent.GetComponent<SparManager>();
+            if (sparManager != null)
+            {
+                sparManager.SetSparringPartner(instantiatedSparringPartner);
+            }
+        }
 
-        if (isSparLevel)
-        {
-            if (sparManager != null) 
-            {
-                sparManager.gameObject.SetActive(true);
-            }
-        }
-        else
-        {
-            if (levelManager != null)
-            {
-                levelManager.gameObject.SetActive(true);
-                levelManager.StartLevel();
-            }
-        }
+        stanceManager.gameObject.SetActive(true);
+        levelManagerComponent.gameObject.SetActive(true);
+        levelManager.StartLevel();
 
         this.enabled = false;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour ,ILevelManager
 {
     public static LevelManager Instance;
 
@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             SkipObjective();
         }

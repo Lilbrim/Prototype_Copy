@@ -35,6 +35,9 @@ public class StanceManager : MonoBehaviour
     [Header("Manager Settings")]
     public bool useSparManager = false;
 
+    public delegate void StanceChangedDelegate(string newStance);
+    public event StanceChangedDelegate OnStanceChanged;
+
     private void Awake()
     {
         if (Instance == null)
@@ -161,6 +164,7 @@ public class StanceManager : MonoBehaviour
         currentStance = newStance;
         timer = stanceTimeout;
         currentArnisStyle = null;
+        OnStanceChanged?.Invoke(newStance);
 
         foreach (var detector in allDetectors)
         {
@@ -210,6 +214,99 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0;
+        currentStance = newStance;
+        timer = stanceTimeout;
+        currentArnisStyle = null;
+    }
+
+    // New method to completely clear all stance boxes
+    public void ClearAllStances()
+    {
+        Debug.Log("Clearing all stances and sequence boxes");
+        
+        // Reset all detectors
+        foreach (var detector in allDetectors)
+        {
+            if (detector != null)
+            {
+                detector.ResetStance();
+                detector.ForceResetTriggerState();
+            }
+        }
+        
+        // Deactivate default boxes
+        foreach (var box in defaultBoxes)
+        {
+            if (box != null)
+            {
+                box.SetActive(false);
+            }
+        }
+        
+        // Deactivate all style boxes and sequence boxes
+        foreach (var style in arnisStyles)
+        {
+            // Deactivate stance boxes
+            foreach (var box in style.stanceBoxes)
+            {
+                if (box != null)
+                {
+                    box.SetActive(false);
+                }
+            }
+            
+            // Deactivate all sequence-related boxes in each style
+            foreach (var sequence in style.sequences)
+            {
+                // Deactivate sequence boxes
+                foreach (var box in sequence.sequenceBoxes)
+                {
+                    if (box != null)
+                    {
+                        box.SetActive(false);
+                    }
+                }
+                
+                // Deactivate start/end boxes
+                if (sequence.startBoxLeft != null) sequence.startBoxLeft.SetActive(false);
+                if (sequence.startBoxRight != null) sequence.startBoxRight.SetActive(false);
+                if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(false);
+                if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(false);
+            }
+        }
+        
+        // Reset current sequence
+        if (currentAttackSequence != null)
+        {
+            foreach (var box in currentAttackSequence.sequenceBoxes)
+            {
+                if (box != null)
+                {
+                    var detector = box.GetComponent<StanceDetector>();
+                    if (detector != null)
+                    {
+                        detector.IsCompleted = false;
+                    }
+                    box.SetActive(false);
+                }
+            }
+        }
+        
+        currentAttackSequence = null;
+        sequenceCounter = 0;
+        totalBoxesTouched = 0;
+        currentStance = "Default";
+        currentArnisStyle = null;
+        
+        // Remove all active event listeners
+        System.Delegate[] delegates = OnStanceChanged?.GetInvocationList();
+        if (delegates != null)
+        {
+            foreach (var del in delegates)
+            {
+                OnStanceChanged -= (StanceChangedDelegate)del;
+            }
+        }
     }
 
     private void ActivateBoxesForPracticeMode(string newStance)
@@ -400,6 +497,44 @@ public class StanceManager : MonoBehaviour
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.EndObjective();
+            }
+        }
+    }
+
+    public void ActivatePhase2Stances(List<string> availableStances)
+    {
+        Debug.Log("Activating Phase 2 stances");
+        
+        // Clear all existing stance boxes first
+        foreach (var box in defaultBoxes) box.SetActive(false);
+        
+        foreach (var style in arnisStyles)
+        {
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
+        
+        // Only activate the start boxes for the specified stances
+        foreach (var stanceName in availableStances)
+        {
+            foreach (var style in arnisStyles)
+            {
+                if (style.styleName == stanceName)
+                {
+                    foreach (var sequence in style.sequences)
+                    {
+                        if (sequence.startBoxLeft != null)
+                        {
+                            sequence.startBoxLeft.SetActive(true);
+                            Debug.Log($"Activated start box left for {stanceName}.{sequence.sequenceName}");
+                        }
+                        if (sequence.startBoxRight != null)
+                        {
+                            sequence.startBoxRight.SetActive(true);
+                            Debug.Log($"Activated start box right for {stanceName}.{sequence.sequenceName}");
+                        }
+                    }
+                    break;
+                }
             }
         }
     }

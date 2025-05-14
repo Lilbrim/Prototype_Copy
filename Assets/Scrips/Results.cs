@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ResultsManager : MonoBehaviour
@@ -9,13 +10,18 @@ public class ResultsManager : MonoBehaviour
     public CanvasGroup resultsCanvasGroup;
     public TextMeshProUGUI totalScoreText;
     public TextMeshProUGUI accuracyText;
-    
+
     [Header("Display")]
     public TextMeshProUGUI boxesStatsText;
     public bool showDetailedStats = true;
-    
+
     [Header("LevelSelector")]
-    public LevelSelector levelSelector; 
+    public LevelSelector levelSelector;
+
+    [Header("Buttons")]
+    public Button restartButton;
+    public Button exitButton;
+    public Button returnToSelectorButton;
 
     private void Awake()
     {
@@ -37,6 +43,15 @@ public class ResultsManager : MonoBehaviour
         {
             levelSelector = FindObjectOfType<LevelSelector>();
         }
+
+        if (restartButton != null)
+            restartButton.onClick.AddListener(RestartLevel);
+
+        if (exitButton != null)
+            exitButton.onClick.AddListener(ExitToMenu);
+
+        if (returnToSelectorButton != null)
+            returnToSelectorButton.onClick.AddListener(ReturnToLevelSelector);
     }
 
     public void ShowResults(int totalScore, float accuracy, bool isPracticeMode)
@@ -56,26 +71,26 @@ public class ResultsManager : MonoBehaviour
             totalScoreText.text = "Total Score: " + totalScore;
             accuracyText.text = "Accuracy\n " + (accuracy * 100).ToString("F2") + "%";
         }
-        
+
         if (showDetailedStats && boxesStatsText != null && totalBoxes > 0)
         {
             boxesStatsText.gameObject.SetActive(true);
-            boxesStatsText.text = string.Format("Boxes Touched: {0}/{1}", totalBoxesTouched, totalBoxes);
+            boxesStatsText.text = $"Boxes Touched: {totalBoxesTouched}/{totalBoxes}";
         }
         else if (boxesStatsText != null)
         {
             boxesStatsText.gameObject.SetActive(false);
         }
 
-        resultsCanvasGroup.alpha = 1; 
-        resultsCanvasGroup.interactable = true; 
-        resultsCanvasGroup.blocksRaycasts = true; 
+        resultsCanvasGroup.alpha = 1;
+        resultsCanvasGroup.interactable = true;
+        resultsCanvasGroup.blocksRaycasts = true;
     }
 
     public void HideResults()
     {
         resultsCanvasGroup.alpha = 0;
-        resultsCanvasGroup.interactable = false; 
+        resultsCanvasGroup.interactable = false;
         resultsCanvasGroup.blocksRaycasts = false;
     }
 
@@ -84,16 +99,16 @@ public class ResultsManager : MonoBehaviour
         HideResults();
         LevelManager.Instance.StartLevel();
     }
-    
+
     public void ExitToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
-    
+
     public void ReturnToLevelSelector()
     {
         HideResults();
-        
+
         if (levelSelector != null)
         {
             levelSelector.levelSelectionPanel.SetActive(true);
