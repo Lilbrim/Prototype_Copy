@@ -13,6 +13,15 @@ public class StanceDetector : MonoBehaviour
     [SerializeField] private float angleThreshold = 30f;
     [SerializeField] private float positionThreshold = 0.2f;
 
+    [Header("Color Settings")]
+    [SerializeField] private Color leftBatonColor = new Color(1.0f, 0.647f, 0.0f); // Orange FFA500
+    [SerializeField] private Color rightBatonColor = new Color(0.0f, 0.812f, 1.0f); // Cyan 00CFFF
+    [SerializeField] private Color successColor = Color.green;
+    [SerializeField] private Color failureColor = Color.red;
+    
+    [HideInInspector] public bool isPartOfSequence = false;
+    [HideInInspector] public int sequencePosition = 0;
+
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
@@ -22,9 +31,7 @@ public class StanceDetector : MonoBehaviour
     public bool IsLeftHandInStance() => leftHandInStance;
     public bool IsRightHandInStance() => rightHandInStance;
 
-    private Material originalMaterial;
-    private Material greenMaterial;
-    private Material redMaterial;
+    private Color originalColor;
     private Renderer boxRenderer;
 
     private void Start()
@@ -33,15 +40,75 @@ public class StanceDetector : MonoBehaviour
 
         if (boxRenderer != null)
         {
-            originalMaterial = boxRenderer.material;
+            originalColor = boxRenderer.material.color;
+            
+            if (isPartOfSequence)
+            {
+                AttackSequence sequence = GetAttackSequence();
+                if (sequence != null)
+                {
+                    float t = (float)sequencePosition / (sequence.sequenceBoxes.Length - 1);
+                    
+                    if (CompareTag("Left Baton"))
+                    {
+                        Color darkOrange = new Color(0.8f, 0.4f, 0.0f); // Darker orange
+                        boxRenderer.material.color = Color.Lerp(leftBatonColor, darkOrange, t);
+                    }
+                    else if (CompareTag("Right Baton"))
+                    {
+                        Color darkCyan = new Color(0.0f, 0.4f, 0.6f); // Darker cyan
+                        boxRenderer.material.color = Color.Lerp(rightBatonColor, darkCyan, t);
+                    }
+                }
+            }
+            else
+            {
+                if (CompareTag("Left Baton"))
+                {
+                    boxRenderer.material.color = leftBatonColor;
+                }
+                else if (CompareTag("Right Baton"))
+                {
+                    boxRenderer.material.color = rightBatonColor;
+                }
+            }
         }
+    }
 
-        greenMaterial = Resources.Load<Material>("GreenMaterial");
-        redMaterial = Resources.Load<Material>("RedMaterial");
-
-        if (greenMaterial == null || redMaterial == null)
+    public void UpdateColorForSequence(int totalBoxesInSequence)
+    {
+        if (boxRenderer == null) return;
+        
+        if (isPartOfSequence && totalBoxesInSequence > 1)
         {
-            Debug.LogError("Materials not found in Resources folder!");
+            float t = (float)sequencePosition / (totalBoxesInSequence - 1);
+            
+            if (CompareTag("Left Baton"))
+            {
+                Color darkOrange = new Color(0.8f, 0.4f, 0.0f); // Darker orange
+                boxRenderer.material.color = Color.Lerp(leftBatonColor, darkOrange, t);
+            }
+            else if (CompareTag("Right Baton"))
+            {
+                Color darkCyan = new Color(0.0f, 0.4f, 0.6f); // Darker cyan
+                boxRenderer.material.color = Color.Lerp(rightBatonColor, darkCyan, t);
+            }
+        }
+        else
+        {
+            // For non-sequence boxes, use default colors
+            if (CompareTag("Left Baton"))
+            {
+                boxRenderer.material.color = leftBatonColor;
+            }
+            else if (CompareTag("Right Baton"))
+            {
+                boxRenderer.material.color = rightBatonColor;
+            }
+            else
+            {
+                boxRenderer.material.color = originalColor;
+            }
         }
     }
 
@@ -87,7 +154,7 @@ public class StanceDetector : MonoBehaviour
             }
         }
 
-        ResetMaterial();
+        ResetColor();
         CheckStance();
     }
 
@@ -110,7 +177,7 @@ public class StanceDetector : MonoBehaviour
         
         collidersInTrigger.Clear();
         
-        ResetMaterial();
+        ResetColor();
     }
 
     private void OnDisable()
@@ -120,7 +187,7 @@ public class StanceDetector : MonoBehaviour
 
     private void CheckOrientation(Collider other)
     {
-        if (boxRenderer == null || greenMaterial == null || redMaterial == null || batonTip == null)
+        if (boxRenderer == null || batonTip == null)
             return;
 
         Vector3 batonDirection = (batonTip.position - transform.position).normalized;
@@ -133,19 +200,41 @@ public class StanceDetector : MonoBehaviour
 
         if (inStance)
         {
-            boxRenderer.material = greenMaterial;
+            boxRenderer.material.color = successColor;
             if (other.CompareTag("Left Baton")) leftHandInStance = true;
             if (other.CompareTag("Right Baton")) rightHandInStance = true;
         }
         else
         {
-            boxRenderer.material = redMaterial;
+            boxRenderer.material.color = failureColor;
             if (other.CompareTag("Left Baton")) leftHandInStance = false;
             if (other.CompareTag("Right Baton")) rightHandInStance = false;
         }
 
         CheckStance();
     }
+        private AttackSequence GetAttackSequence()
+    {
+        StanceManager stanceManager = StanceManager.Instance;
+        if (stanceManager != null)
+        {
+            foreach (var style in stanceManager.arnisStyles)
+            {
+                foreach (var sequence in style.sequences)
+                {
+                    for (int i = 0; i < sequence.sequenceBoxes.Length; i++)
+                    {
+                        if (sequence.sequenceBoxes[i] == gameObject)
+                        {
+                            return sequence;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     private void CheckStance()
     {
@@ -175,15 +264,31 @@ public class StanceDetector : MonoBehaviour
     {
         leftHandInStance = false;
         rightHandInStance = false;
-        ResetMaterial();
+        ResetColor();
         IsCompleted = false;
     }
 
-    private void ResetMaterial()
+    private void ResetColor()
     {
-        if (boxRenderer != null && originalMaterial != null)
+        if (boxRenderer != null)
         {
-            boxRenderer.material = originalMaterial;
+            if (CompareTag("Left Baton"))
+            {
+                boxRenderer.material.color = leftBatonColor;
+            }
+            else if (CompareTag("Right Baton"))
+            {
+                boxRenderer.material.color = rightBatonColor;
+            }
+            else
+            {
+                boxRenderer.material.color = originalColor;
+            }
+            
+            if (StanceManager.Instance != null && isPartOfSequence)
+            {
+                StanceManager.Instance.UpdateSequenceColors();
+            }
         }
     }
 }

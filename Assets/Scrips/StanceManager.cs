@@ -25,7 +25,7 @@ public class StanceManager : MonoBehaviour
     private StanceDetector[] allDetectors;
     public int sequenceCounter;
     public int totalBoxesTouched;
-    
+
     private bool isPracticeMode = false;
     private string requiredStanceForPractice = "";
 
@@ -53,15 +53,60 @@ public class StanceManager : MonoBehaviour
     private void Start()
     {
         allDetectors = FindObjectsOfType<StanceDetector>();
-        
+
         foreach (var box in defaultBoxes) box.SetActive(false);
-        
+
         foreach (var style in arnisStyles)
         {
             foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
-        
+
+        AssignSequencePositions();
+
         currentStance = "Default";
+    }
+
+    private void AssignSequencePositions()
+    {
+        foreach (var style in arnisStyles)
+        {
+            foreach (var sequence in style.sequences)
+            {
+                for (int i = 0; i < sequence.sequenceBoxes.Length; i++)
+                {
+                    StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
+                    if (detector != null)
+                    {
+                        detector.isPartOfSequence = true;
+                        detector.sequencePosition = i;
+                    }
+                }
+
+                SetupSpecialBox(sequence.startBoxLeft, "Left Baton", false, 0);
+                SetupSpecialBox(sequence.startBoxRight, "Right Baton", false, 0);
+                SetupSpecialBox(sequence.endBoxLeft, "Left Baton", false, 1);
+                SetupSpecialBox(sequence.endBoxRight, "Right Baton", false, 1);
+
+                UpdateSequenceColorsForSequence(sequence);
+            }
+        }
+    }
+
+    private void SetupSpecialBox(GameObject box, string batonTag, bool isSequenceBox, int position)
+    {
+        if (box == null) return;
+
+        StanceDetector detector = box.GetComponent<StanceDetector>();
+        if (detector != null)
+        {
+            if (!string.IsNullOrEmpty(batonTag) && string.IsNullOrEmpty(box.tag))
+            {
+                box.tag = batonTag;
+            }
+
+            detector.isPartOfSequence = isSequenceBox;
+            detector.sequencePosition = position;
+        }
     }
 
     private void Update()
@@ -100,7 +145,7 @@ public class StanceManager : MonoBehaviour
     public void ActivateDefaultStance()
     {
         if (!isGameActive) return;
-        
+
         foreach (var box in defaultBoxes) box.SetActive(true);
     }
 
@@ -110,7 +155,7 @@ public class StanceManager : MonoBehaviour
 
         isPracticeMode = practiceMode;
         requiredStanceForPractice = stanceName;
-        
+
         if (currentStance == "Default" && practiceMode)
         {
             ActivateBoxesForPracticeMode("Default");
@@ -132,10 +177,10 @@ public class StanceManager : MonoBehaviour
             if (validStance)
             {
                 SetStance(stanceName);
-                
+
                 if (useSparManager && SparManager.Instance != null)
                 {
-                
+
                 }
                 else if (LevelManager.Instance != null)
                 {
@@ -188,7 +233,7 @@ public class StanceManager : MonoBehaviour
             }
             else
             {
-                
+
             }
         }
         else
@@ -219,12 +264,10 @@ public class StanceManager : MonoBehaviour
         currentArnisStyle = null;
     }
 
-    // New method to completely clear all stance boxes
     public void ClearAllStances()
     {
         Debug.Log("Clearing all stances and sequence boxes");
-        
-        // Reset all detectors
+
         foreach (var detector in allDetectors)
         {
             if (detector != null)
@@ -233,8 +276,7 @@ public class StanceManager : MonoBehaviour
                 detector.ForceResetTriggerState();
             }
         }
-        
-        // Deactivate default boxes
+
         foreach (var box in defaultBoxes)
         {
             if (box != null)
@@ -242,11 +284,9 @@ public class StanceManager : MonoBehaviour
                 box.SetActive(false);
             }
         }
-        
-        // Deactivate all style boxes and sequence boxes
+
         foreach (var style in arnisStyles)
         {
-            // Deactivate stance boxes
             foreach (var box in style.stanceBoxes)
             {
                 if (box != null)
@@ -254,11 +294,9 @@ public class StanceManager : MonoBehaviour
                     box.SetActive(false);
                 }
             }
-            
-            // Deactivate all sequence-related boxes in each style
+
             foreach (var sequence in style.sequences)
             {
-                // Deactivate sequence boxes
                 foreach (var box in sequence.sequenceBoxes)
                 {
                     if (box != null)
@@ -266,16 +304,14 @@ public class StanceManager : MonoBehaviour
                         box.SetActive(false);
                     }
                 }
-                
-                // Deactivate start/end boxes
+
                 if (sequence.startBoxLeft != null) sequence.startBoxLeft.SetActive(false);
                 if (sequence.startBoxRight != null) sequence.startBoxRight.SetActive(false);
                 if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(false);
                 if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(false);
             }
         }
-        
-        // Reset current sequence
+
         if (currentAttackSequence != null)
         {
             foreach (var box in currentAttackSequence.sequenceBoxes)
@@ -291,14 +327,13 @@ public class StanceManager : MonoBehaviour
                 }
             }
         }
-        
+
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0;
         currentStance = "Default";
         currentArnisStyle = null;
-        
-        // Remove all active event listeners
+
         System.Delegate[] delegates = OnStanceChanged?.GetInvocationList();
         if (delegates != null)
         {
@@ -312,13 +347,13 @@ public class StanceManager : MonoBehaviour
     private void ActivateBoxesForPracticeMode(string newStance)
     {
         if (!isGameActive) return;
-        
+
         if (newStance == "Default")
         {
             foreach (var box in defaultBoxes) box.SetActive(false);
 
             List<AttackSequence> targetSequences = new List<AttackSequence>();
-            
+
             foreach (var style in arnisStyles)
             {
                 if (style.styleName == requiredStanceForPractice)
@@ -384,7 +419,7 @@ public class StanceManager : MonoBehaviour
             if (IsSequenceStartConditionMet(sequence))
             {
                 StartAttackSequence(sequence);
-                break; 
+                break;
             }
         }
     }
@@ -405,12 +440,12 @@ public class StanceManager : MonoBehaviour
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;
-        totalBoxesTouched = 0; 
+        totalBoxesTouched = 0;
 
         ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
 
         foreach (var box in defaultBoxes) box.SetActive(false);
-        
+
         foreach (var style in arnisStyles)
         {
             foreach (var box in style.stanceBoxes) box.SetActive(false);
@@ -423,6 +458,8 @@ public class StanceManager : MonoBehaviour
 
         if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
+
+        UpdateSequenceColors();
     }
 
     private void CheckAttackSequence()
@@ -433,7 +470,7 @@ public class StanceManager : MonoBehaviour
             {
                 var box = currentAttackSequence.sequenceBoxes[i];
                 var detector = box.GetComponent<StanceDetector>();
-                
+
                 if ((detector.IsLeftHandInStance() || detector.IsRightHandInStance()) && !detector.IsCompleted)
                 {
                     detector.IsCompleted = true;
@@ -442,18 +479,18 @@ public class StanceManager : MonoBehaviour
                     Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
                 }
             }
-            
+
             if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
             {
                 var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
                 var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
-                
+
                 if (leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance())
                 {
                     Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
-                    
+
                     NotifyObjectiveCompletion();
-                    
+
                     ResetSequence();
                     SetStance("Default");
                     return;
@@ -469,7 +506,7 @@ public class StanceManager : MonoBehaviour
             foreach (var box in currentAttackSequence.sequenceBoxes)
             {
                 var detector = box.GetComponent<StanceDetector>();
-                detector.IsCompleted = false; 
+                detector.IsCompleted = false;
             }
 
             currentAttackSequence = null;
@@ -477,7 +514,7 @@ public class StanceManager : MonoBehaviour
         }
         SetStance("Default");
     }
-        
+
     public void NotifyObjectiveCompletion()
     {
         int touchedBoxes = totalBoxesTouched;
@@ -487,13 +524,13 @@ public class StanceManager : MonoBehaviour
         {
             SparManager.Instance.NotifySequenceCompletion(currentStance, currentAttackSequence.sequenceName);
         }
-        else 
+        else
         {
             if (AccuracyTracker.Instance != null)
             {
                 AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
             }
-            
+
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.EndObjective();
@@ -504,16 +541,14 @@ public class StanceManager : MonoBehaviour
     public void ActivatePhase2Stances(List<string> availableStances)
     {
         Debug.Log("Activating Phase 2 stances");
-        
-        // Clear all existing stance boxes first
+
         foreach (var box in defaultBoxes) box.SetActive(false);
-        
+
         foreach (var style in arnisStyles)
         {
             foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
-        
-        // Only activate the start boxes for the specified stances
+
         foreach (var stanceName in availableStances)
         {
             foreach (var style in arnisStyles)
@@ -536,6 +571,30 @@ public class StanceManager : MonoBehaviour
                     break;
                 }
             }
+        }
+
+    }
+    private void UpdateSequenceColorsForSequence(AttackSequence sequence)
+    {
+        if (sequence == null) return;
+        
+        int totalBoxes = sequence.sequenceBoxes.Length;
+        
+        for (int i = 0; i < totalBoxes; i++)
+        {
+            StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
+            if (detector != null)
+            {
+                detector.UpdateColorForSequence(totalBoxes);
+            }
+        }
+    }
+    
+    public void UpdateSequenceColors()
+    {
+        if (currentAttackSequence != null)
+        {
+            UpdateSequenceColorsForSequence(currentAttackSequence);
         }
     }
 }

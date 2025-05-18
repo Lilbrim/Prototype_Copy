@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using UnityEngine.InputSystem;
 
-public class LevelManager : MonoBehaviour ,ILevelManager
+public class LevelManager : MonoBehaviour, ILevelManager
 {
     public static LevelManager Instance;
 
@@ -31,10 +33,22 @@ public class LevelManager : MonoBehaviour ,ILevelManager
     public Sprite excellentSprite;
     public Sprite perfectSprite;
 
-    [SerializeField] private bool isPracticeMode = false;
+    [Header("Training Mode")]
+    [SerializeField] private bool trainingMode = false;
+    public GameObject trainingModePanel;
+    public TextMeshProUGUI accuracyText;
+    public TextMeshProUGUI trainingModeInstructionText;
+    public InputActionAsset inputActions;
+    private InputAction acceptAction;
+    private InputAction backAction;
+    
     private int totalScore = 0;
     private bool isWaitingForStanceEntry = false;
     private string currentRequiredStance = "";
+    private bool isWaitingForTrainingInput = false;
+    private float currentObjectiveAccuracy = 0f;
+    
+    private Dictionary<int, float> objectiveAccuracies = new Dictionary<int, float>();
 
     private void Awake()
     {
@@ -46,25 +60,123 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         {
             Destroy(gameObject);
         }
+        
+        if (inputActions != null)
+        {
+            acceptAction = inputActions.FindAction("Accept");
+            backAction = inputActions.FindAction("Back");
+            
+            if (acceptAction == null)
+            {
+                Debug.LogError("Continue action not found in Input Action Asset");
+            }
+            
+            if (backAction == null)
+            {
+                Debug.LogError("Retry action not found in Input Action Asset");
+            }
+        }
+        else
+        {
+            Debug.LogError("Input Action Asset not assigned");
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (acceptAction != null)
+        {
+            acceptAction.performed += OnacceptAction;
+            acceptAction.Enable();
+        }
+        
+        if (backAction != null)
+        {
+            backAction.performed += OnbackAction;
+            backAction.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (acceptAction != null)
+        {
+            acceptAction.performed -= OnacceptAction;
+            acceptAction.Disable();
+        }
+        
+        if (backAction != null)
+        {
+            backAction.performed -= OnbackAction;
+            backAction.Disable();
+        }
     }
 
     private void Update()
     {
+        // Original "A" key for continue
         if (Input.GetKeyDown(KeyCode.A))
         {
-            SkipObjective();
+            if (isWaitingForTrainingInput)
+            {
+                ContinueToNextObjective();
+            }
+            else
+            {
+                SkipObjective();
+            }
+        }
+        
+        // Original "B" key for retry
+        if (trainingMode && Input.GetKeyDown(KeyCode.B) && isWaitingForTrainingInput)
+        {
+            RetryCurrentObjective();
+        }
+        
+        // New "Y" key for continue
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            if (isWaitingForTrainingInput)
+            {
+                ContinueToNextObjective();
+            }
+            else
+            {
+                SkipObjective();
+            }
+        }
+        
+        // New "N" key for retry
+        if (trainingMode && Input.GetKeyDown(KeyCode.N) && isWaitingForTrainingInput)
+        {
+            RetryCurrentObjective();
+        }
+    }
+
+    private void OnacceptAction(InputAction.CallbackContext context)
+    {
+        if (isWaitingForTrainingInput)
+        {
+            ContinueToNextObjective();
+        }
+    }
+
+    private void OnbackAction(InputAction.CallbackContext context)
+    {
+        if (trainingMode && isWaitingForTrainingInput)
+        {
+            RetryCurrentObjective();
         }
     }
 
     private void SkipObjective()
     {
-        if (currentObjectiveIndex < objectives.Count)
+        if (currentObjectiveIndex < objectives.Count && !isWaitingForTrainingInput)
         {
             Debug.Log("Skipping objective: " + currentObjectiveIndex);
             EndObjective();
         }
     }
-
 
     public void StartLevel()
     {
@@ -74,6 +186,8 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         
         currentObjectiveIndex = 0;
         totalScore = 0;
+        objectiveAccuracies.Clear();
+        isWaitingForTrainingInput = false;
 
         if (AccuracyTracker.Instance != null)
         {
@@ -83,7 +197,6 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.SetGameActive(true);
-            
             StanceManager.Instance.enabled = true;
         }
 
@@ -97,6 +210,11 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         }
         
         UpdateScoreDisplay();
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
     }
     
     private void EnableLevelUI()
@@ -128,6 +246,11 @@ public class LevelManager : MonoBehaviour ,ILevelManager
             if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
             if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(false);
         }
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
     }
     
     private void StartStanceEntry(LevelObjective objective)
@@ -139,13 +262,19 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         }
 
         isWaitingForStanceEntry = true;
+        isWaitingForTrainingInput = false;
         currentRequiredStance = objective.requiredStance;
         objectiveText.text = objective.stanceEntryInstruction;
         stanceEntryImage.sprite = objective.stanceEntryImage;
         objectiveImage.gameObject.SetActive(false);
         stanceEntryImage.gameObject.SetActive(true);
         
-        StanceManager.Instance.EnterStance(objective.requiredStance, isPracticeMode);
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
+        
+        StanceManager.Instance.EnterStance(objective.requiredStance, trainingMode);
     }
 
     public void OnStanceEntered(string enteredStance)
@@ -168,7 +297,7 @@ public class LevelManager : MonoBehaviour ,ILevelManager
             {
                 DisplayIncorrectStanceFeedback();
                 
-                if (isPracticeMode)
+                if (trainingMode)
                 {
                     StartCoroutine(RestartCurrentObjectiveAfterDelay(2f));
                 }
@@ -256,17 +385,102 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         objectiveImage.gameObject.SetActive(true);
         objectiveImage.sprite = objective.instructionImage;
 
-        StanceManager.Instance.EnterStance(objective.requiredStance, isPracticeMode);
+        StanceManager.Instance.EnterStance(objective.requiredStance, trainingMode);
     }
 
     public void EndObjective()
     {
-        int score = CalculateScore();
-        totalScore += score;
-        DisplayFeedback(score);
+        int score = 0;
+        if (!trainingMode)
+        {
+            score = CalculateScore();
+            totalScore += score;
+        }
+        
+        currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
+        objectiveAccuracies[currentObjectiveIndex] = currentObjectiveAccuracy;
+        
+        //DisplayFeedback(score);
 
+        if (trainingMode)
+        {
+            ShowTrainingModePanel();
+        }
+        else
+        {
+            currentObjectiveIndex++;
+            if (currentObjectiveIndex < objectives.Count)
+            {
+                StartStanceEntry(objectives[currentObjectiveIndex]);
+            }
+            else
+            {
+                EndLevel();
+            }
+        }
+
+        UpdateScoreDisplay();
+    }
+
+    private void ShowTrainingModePanel()
+    {
+        isWaitingForTrainingInput = true;
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(true);
+            
+            if (accuracyText != null)
+            {
+                accuracyText.text = $"Accuracy: {(currentObjectiveAccuracy * 100):F1}%";
+            }
+            
+            if (trainingModeInstructionText != null)
+            {
+                trainingModeInstructionText.text = "Press B or N to Retry\nPress A or Y to Continue";
+            }
+        }
+        else
+        {
+            Debug.LogError("Training Mode Panel not assigned!");
+            ContinueToNextObjective();
+        }
+    }
+    
+    private void RetryCurrentObjective()
+    {
+        isWaitingForTrainingInput = false;
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
+        
+        // Reset boxes for current sequence
+        if (StanceManager.Instance != null)
+        {
+            // Clear any active sequence
+            StanceManager.Instance.ClearAllStances();
+        }
+        
+        // Restart the current objective
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+    }
+    
+    private void ContinueToNextObjective()
+    {
+        isWaitingForTrainingInput = false;
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
+        
         currentObjectiveIndex++;
-
+        
         if (currentObjectiveIndex < objectives.Count)
         {
             StartStanceEntry(objectives[currentObjectiveIndex]);
@@ -275,10 +489,7 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         {
             EndLevel();
         }
-
-        UpdateScoreDisplay();
     }
-
 
     private int CalculateScore()
     {
@@ -310,29 +521,60 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         }
     }
 
+    private float CalculateCurrentObjectiveAccuracy()
+    {
+        int totalBoxes = StanceManager.Instance.currentAttackSequence != null ? 
+            StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length : 0;
+        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
+
+        return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
+    }
+
     private void DisplayFeedback(int score)
     {
-        switch (score)
+        if (trainingMode)
         {
-            case 0:
+            float accuracy = currentObjectiveAccuracy;
+            
+            if (accuracy == 0)
                 feedbackImage.sprite = missedSprite;
-                break;
-            case 1:
+            else if (accuracy <= 0.5f)
                 feedbackImage.sprite = poorSprite;
-                break;
-            case 2:
+            else if (accuracy <= 0.8f)
                 feedbackImage.sprite = goodSprite;
-                break;
-            case 3:
+            else if (accuracy < 1f)
                 feedbackImage.sprite = excellentSprite;
-                break;
-            case 4:
+            else
                 feedbackImage.sprite = perfectSprite;
-                break;
+        }
+        else
+        {
+            switch (score)
+            {
+                case 0:
+                    feedbackImage.sprite = missedSprite;
+                    break;
+                case 1:
+                    feedbackImage.sprite = poorSprite;
+                    break;
+                case 2:
+                    feedbackImage.sprite = goodSprite;
+                    break;
+                case 3:
+                    feedbackImage.sprite = excellentSprite;
+                    break;
+                case 4:
+                    feedbackImage.sprite = perfectSprite;
+                    break;
+            }
         }
 
         feedbackImage.gameObject.SetActive(true);
-        StartCoroutine(HideFeedbackAfterDelay(2f));
+        
+        if (!trainingMode)
+        {
+            StartCoroutine(HideFeedbackAfterDelay(2f));
+        }
     }
 
     private IEnumerator HideFeedbackAfterDelay(float delay)
@@ -375,8 +617,14 @@ public class LevelManager : MonoBehaviour ,ILevelManager
             }
         }
 
-        float accuracy = AccuracyTracker.Instance != null ? 
-        AccuracyTracker.Instance.CalculateAccuracy() : CalculateAccuracy();
+        float accuracy;
+        if (trainingMode) {
+            accuracy = CalculateTrainingModeFinalAccuracy();
+        } else if (AccuracyTracker.Instance != null) {
+            accuracy = AccuracyTracker.Instance.CalculateAccuracy();
+        } else {
+            accuracy = CalculateAccuracy();
+        }
 
         SaveAccuracy saveAccuracy = FindObjectOfType<IntroLevel>().GetComponent<SaveAccuracy>();
         if (saveAccuracy != null)
@@ -390,16 +638,16 @@ public class LevelManager : MonoBehaviour ,ILevelManager
 
         if (ResultsManager.Instance != null)
         {
-            if (AccuracyTracker.Instance != null)
+            if (AccuracyTracker.Instance != null && !trainingMode)
             {
                 int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
                 int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
 
-                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode, totalBoxes, totalBoxesTouched);
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode, totalBoxes, totalBoxesTouched);
             }
             else
             {
-                ResultsManager.Instance.ShowResults(totalScore, accuracy, isPracticeMode);
+                ResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode);
             }
         }
         else
@@ -408,6 +656,19 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         }
     }
 
+    private float CalculateTrainingModeFinalAccuracy()
+    {
+        float totalAccuracy = 0f;
+        int validObjectives = 0;
+        
+        foreach (var entry in objectiveAccuracies)
+        {
+            totalAccuracy += entry.Value;
+            validObjectives++;
+        }
+        
+        return validObjectives > 0 ? totalAccuracy / validObjectives : 0f;
+    }
 
     private void DisableAllBoxes()
     {
@@ -497,9 +758,9 @@ public class LevelManager : MonoBehaviour ,ILevelManager
     {
         if (scoreText != null)
         {
-            if (isPracticeMode)
+            if (trainingMode)
             {
-                scoreText.text = "PRACTICE MODE";
+                scoreText.text = "TRAINING MODE";
             }
             else
             {
@@ -508,9 +769,9 @@ public class LevelManager : MonoBehaviour ,ILevelManager
         }
     }
 
-    public bool IsPracticeMode()
+    public bool IsTrainingMode()
     {
-        return isPracticeMode;
+        return trainingMode;
     }
 
     public string GetCurrentRequiredStance()

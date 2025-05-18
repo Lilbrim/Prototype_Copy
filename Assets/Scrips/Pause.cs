@@ -22,10 +22,10 @@ public class Pause : MonoBehaviour
     private float initialScale;
     
     [Header("Menu Following Settings")]
-    public float followThreshold = 30f; // Angle in degrees
-    public float followSpeed = 5f; // How fast the menu follows
-    public float minDistanceToCamera = 1.5f; // Minimum distance to maintain from camera
-    public float maxDistanceToCamera = 2.5f; // Maximum distance from camera
+    public float followThreshold = 30f; 
+    public float followSpeed = 5f; 
+    public float minDistanceToCamera = 1.5f; 
+    public float maxDistanceToCamera = 2.5f; 
     
     private bool activePauseUI = false;
     private Vector3 originalPlayerPosition;
@@ -63,33 +63,26 @@ public class Pause : MonoBehaviour
     {
         Transform cameraTransform = Camera.main.transform;
         
-        // Check if menu is in direct view
         Vector3 directionToMenu = (pauseUI.transform.position - cameraTransform.position).normalized;
         float angle = Vector3.Angle(cameraTransform.forward, directionToMenu);
         
-        // Calculate current distance to maintain min/max constraints
         float currentDistance = Vector3.Distance(pauseUI.transform.position, cameraTransform.position);
         currentDistance = Mathf.Clamp(currentDistance, minDistanceToCamera, maxDistanceToCamera);
         
         if (angle > followThreshold)
         {
-            // Not looking directly at the menu, so it should follow
             isInDirectView = false;
             
-            // Calculate new target position
             targetPosition = cameraTransform.position + cameraTransform.forward * currentDistance;
             targetRotation = Quaternion.LookRotation(targetPosition - cameraTransform.position);
             
-            // Smoothly move menu
             pauseUI.transform.position = Vector3.Lerp(pauseUI.transform.position, targetPosition, Time.unscaledDeltaTime * followSpeed);
             pauseUI.transform.rotation = Quaternion.Lerp(pauseUI.transform.rotation, targetRotation, Time.unscaledDeltaTime * followSpeed);
         }
         else
         {
-            // Looking directly at the menu, keep it stable
             isInDirectView = true;
             
-            // Adjust only the distance if needed
             if (currentDistance < minDistanceToCamera || currentDistance > maxDistanceToCamera)
             {
                 Vector3 newPosition = cameraTransform.position + directionToMenu * Mathf.Clamp(currentDistance, minDistanceToCamera, maxDistanceToCamera);
