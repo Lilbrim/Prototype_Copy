@@ -6,9 +6,9 @@ using TMPro;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.InputSystem;
 
-public class LevelManager : MonoBehaviour, ILevelManager
+public class TutorialLevelManager : MonoBehaviour, ILevelManager
 {
-    public static LevelManager Instance;
+    public static TutorialLevelManager Instance;
 
     [Header("Level Settings")]
     public string levelName;
@@ -42,6 +42,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
     private InputAction acceptAction;
     private InputAction backAction;
     
+    [Header("Tutorial References")]
+    public string nextSceneName = "Main"; 
+    
     private int totalScore = 0;
     private bool isWaitingForStanceEntry = false;
     private string currentRequiredStance = "";
@@ -49,10 +52,10 @@ public class LevelManager : MonoBehaviour, ILevelManager
     private float currentObjectiveAccuracy = 0f;
     
     private Dictionary<int, float> objectiveAccuracies = new Dictionary<int, float>();
+    private AttackSequence currentSequence = null; 
 
     private void Awake()
     {
-        
         if (Instance == null)
         {
             Instance = this;
@@ -82,11 +85,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
             Debug.LogError("Input Action Asset not assigned");
         }
     }
-    
-    private void Start()
-    {
-        inputActions.Enable();
-    }
 
     private void OnEnable()
     {
@@ -95,7 +93,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             acceptAction.performed += OnacceptAction;
             acceptAction.Enable();
         }
-
+        
         if (backAction != null)
         {
             backAction.performed += OnbackAction;
@@ -190,6 +188,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         totalScore = 0;
         objectiveAccuracies.Clear();
         isWaitingForTrainingInput = false;
+        currentSequence = null;
 
         if (AccuracyTracker.Instance != null)
         {
@@ -201,6 +200,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
             StanceManager.Instance.SetGameActive(true);
             StanceManager.Instance.enabled = true;
         }
+
+        DisableAllSequenceBoxes();
 
         if (objectives != null && objectives.Count > 0)
         {
@@ -262,6 +263,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
             Debug.LogError("Attempted to start null objective");
             return;
         }
+
+        DisablePreviousSequenceBoxes();
 
         isWaitingForStanceEntry = true;
         isWaitingForTrainingInput = false;
@@ -387,6 +390,11 @@ public class LevelManager : MonoBehaviour, ILevelManager
         objectiveImage.gameObject.SetActive(true);
         objectiveImage.sprite = objective.instructionImage;
 
+        if (StanceManager.Instance != null)
+        {
+            currentSequence = StanceManager.Instance.currentAttackSequence;
+        }
+
         StanceManager.Instance.EnterStance(objective.requiredStance, trainingMode);
     }
 
@@ -402,8 +410,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
         currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
         objectiveAccuracies[currentObjectiveIndex] = currentObjectiveAccuracy;
         
-        //DisplayFeedback(score);
-
         if (trainingMode)
         {
             ShowTrainingModePanel();
@@ -439,7 +445,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
             
             if (trainingModeInstructionText != null)
             {
-                trainingModeInstructionText.text = "Press B to Retry\nPress A to Continue";
+                trainingModeInstructionText.text = "Press B to Retry\nPress Y to Continue";
             }
         }
         else
@@ -461,6 +467,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.ClearAllStances();
+            
+            DisablePreviousSequenceBoxes();
         }
         
         if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
@@ -478,6 +486,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
             trainingModePanel.SetActive(false);
         }
         
+        DisablePreviousSequenceBoxes();
+        
         currentObjectiveIndex++;
         
         if (currentObjectiveIndex < objectives.Count)
@@ -487,6 +497,50 @@ public class LevelManager : MonoBehaviour, ILevelManager
         else
         {
             EndLevel();
+        }
+    }
+
+    private void DisablePreviousSequenceBoxes()
+    {
+        if (StanceManager.Instance != null)
+        {
+            if (currentSequence != null)
+            {
+                DisableSequenceBoxes(currentSequence);
+            }
+            
+            if (StanceManager.Instance.currentAttackSequence != null)
+            {
+                DisableSequenceBoxes(StanceManager.Instance.currentAttackSequence);
+            }
+            
+            StanceDetector[] allDetectors = FindObjectsOfType<StanceDetector>();
+            foreach (var detector in allDetectors)
+            {
+                detector.ForceResetTriggerState();
+                detector.IsCompleted = false;
+            }
+            
+            StanceManager.Instance.totalBoxesTouched = 0;
+        }
+    }
+
+    private void DisableAllSequenceBoxes()
+    {
+        if (StanceManager.Instance != null)
+        {
+            foreach (var style in StanceManager.Instance.arnisStyles)
+            {
+                if (style.sequences != null)
+                {
+                    foreach (var sequence in style.sequences)
+                    {
+                        DisableSequenceBoxes(sequence);
+                    }
+                }
+            }
+            
+            StanceManager.Instance.totalBoxesTouched = 0;
         }
     }
 
@@ -585,35 +639,12 @@ public class LevelManager : MonoBehaviour, ILevelManager
     private void EndLevel()
     {
         DisableLevelUI();
+        DisableAllBoxes();
         
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.SetGameActive(false);
-            DisableAllBoxes();
             StanceManager.Instance.enabled = false;
-            if (StanceManager.Instance.currentAttackSequence != null)
-            {
-                foreach (var box in StanceManager.Instance.currentAttackSequence.sequenceBoxes)
-                {
-                    if (box != null)
-                    {
-                        box.SetActive(false);
-
-                        StanceDetector detector = box.GetComponent<StanceDetector>();
-                        if (detector != null)
-                        {
-                            detector.IsCompleted = false;
-                            detector.ForceResetTriggerState();
-                        }
-                    }
-                }
-
-                if (StanceManager.Instance.currentAttackSequence.endBoxLeft != null)
-                    StanceManager.Instance.currentAttackSequence.endBoxLeft.SetActive(false);
-
-                if (StanceManager.Instance.currentAttackSequence.endBoxRight != null)
-                    StanceManager.Instance.currentAttackSequence.endBoxRight.SetActive(false);
-            }
         }
 
         float accuracy;
@@ -625,28 +656,18 @@ public class LevelManager : MonoBehaviour, ILevelManager
             accuracy = CalculateAccuracy();
         }
 
-        SaveAccuracy saveAccuracy = FindObjectOfType<IntroLevel>().GetComponent<SaveAccuracy>();
-        if (saveAccuracy != null)
-        {
-            saveAccuracy.OnLevelCompleted(accuracy);
-        }
-        else
-        {
-            Debug.LogError("SaveAccuracy component not found");
-        }
-
-        if (ResultsManager.Instance != null)
+        if (TutorialResultsManager.Instance != null)
         {
             if (AccuracyTracker.Instance != null && !trainingMode)
             {
                 int totalBoxes = AccuracyTracker.Instance.GetTotalBoxes();
                 int totalBoxesTouched = AccuracyTracker.Instance.GetTotalBoxesTouched();
 
-                ResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode, totalBoxes, totalBoxesTouched);
+                TutorialResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode, totalBoxes, totalBoxesTouched);
             }
             else
             {
-                ResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode);
+                TutorialResultsManager.Instance.ShowResults(totalScore, accuracy, trainingMode);
             }
         }
         else
@@ -673,6 +694,9 @@ public class LevelManager : MonoBehaviour, ILevelManager
     {
         StanceManager sm = StanceManager.Instance;
         
+        if (sm == null)
+            return;
+            
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -719,7 +743,16 @@ public class LevelManager : MonoBehaviour, ILevelManager
             foreach (var box in sequence.sequenceBoxes)
             {
                 if (box != null)
+                {
                     box.SetActive(false);
+                    
+                    StanceDetector detector = box.GetComponent<StanceDetector>();
+                    if (detector != null)
+                    {
+                        detector.IsCompleted = false;
+                        detector.ForceResetTriggerState();
+                    }
+                }
             }
         }
         
@@ -752,7 +785,6 @@ public class LevelManager : MonoBehaviour, ILevelManager
         return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
     }
 
-
     private void UpdateScoreDisplay()
     {
         if (scoreText != null)
@@ -777,18 +809,4 @@ public class LevelManager : MonoBehaviour, ILevelManager
     {
         return currentRequiredStance;
     }
-}
-
-[System.Serializable]
-public class LevelObjective
-{
-    [Header("Stance Entry")]
-    public string stanceEntryInstruction;
-    public Sprite stanceEntryImage;
-
-    [Header("Sequence")]
-    public string instruction;
-    public Sprite instructionImage;
-    public string requiredStance;
-    public float timeLimit;
 }

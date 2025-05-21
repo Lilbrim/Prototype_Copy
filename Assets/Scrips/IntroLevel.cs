@@ -58,6 +58,12 @@ public class IntroLevel : MonoBehaviour
     {
         stanceCompleted = false;
         
+        if (instantiatedSparringPartner != null)
+        {
+            Destroy(instantiatedSparringPartner);
+            instantiatedSparringPartner = null;
+        }
+        
         if (stanceManager != null) stanceManager.gameObject.SetActive(false);
         if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
 
@@ -69,6 +75,8 @@ public class IntroLevel : MonoBehaviour
         }
         
         StartStancePhase();
+        
+        this.enabled = true;
     }
 
     private void SetupSparringPartner()
@@ -110,6 +118,12 @@ public class IntroLevel : MonoBehaviour
             isBoxHeld[i] = false;
             holdTimers[i] = 0f;
         }
+    }
+
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+        stanceCompleted = false;
     }
 
     private void Update()
@@ -202,7 +216,7 @@ public class IntroLevel : MonoBehaviour
 
         for (int i = 0; i < stanceDetectors.Length; i++)
         {
-            if (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance())
+            if (stanceDetectors[i] != null && (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance()))
             {
                 if (!isBoxHeld[i])
                 {
@@ -257,9 +271,16 @@ public class IntroLevel : MonoBehaviour
             }
         }
 
-        stanceManager.gameObject.SetActive(true);
-        levelManagerComponent.gameObject.SetActive(true);
-        levelManager.StartLevel();
+        if (stanceManager != null)
+        {
+            stanceManager.gameObject.SetActive(true);
+        }
+        
+        if (levelManagerComponent != null)
+        {
+            levelManagerComponent.gameObject.SetActive(true);
+            levelManager.StartLevel();
+        }
 
         this.enabled = false;
     }

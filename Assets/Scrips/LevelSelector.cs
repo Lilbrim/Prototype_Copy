@@ -47,7 +47,7 @@ public class LevelSelector : MonoBehaviour
     public Button sparLevelsTabButton;
 
     private IntroLevel selectedIntroLevel;
-    private int selectedLevelIndex = -1;
+    public int selectedLevelIndex = -1;
     private bool isViewingSparLevels = false;
     private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
     private const string SCORE_SAVE_PREFIX = "LevelScore_";
@@ -191,7 +191,7 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
-    private void UpdateLevelButtonsState()
+    public void UpdateLevelButtonsState()
     {
         UpdateButtonsStateForList(levelButtons, availableLevels, false);
         
@@ -311,7 +311,7 @@ public class LevelSelector : MonoBehaviour
         SelectLevelFromList(levelIndex, availableSparLevels, sparLevelButtons, true);
     }
     
-    private void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel)
+    public void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel)
     {
         if (levelIndex >= 0 && levelIndex < levels.Count)
         {
@@ -381,7 +381,7 @@ public class LevelSelector : MonoBehaviour
         return "Unknown Level";
     }
 
-    private void UpdateLevelInfoPanel(int levelIndex)
+    public void UpdateLevelInfoPanel(int levelIndex)
     {
         if (isViewingSparLevels)
         {

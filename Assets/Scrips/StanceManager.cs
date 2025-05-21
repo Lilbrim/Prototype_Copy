@@ -34,6 +34,7 @@ public class StanceManager : MonoBehaviour
 
     [Header("Manager Settings")]
     public bool useSparManager = false;
+    public bool useTutorialManager = false;
 
     public delegate void StanceChangedDelegate(string newStance);
     public event StanceChangedDelegate OnStanceChanged;
@@ -180,7 +181,10 @@ public class StanceManager : MonoBehaviour
 
                 if (useSparManager && SparManager.Instance != null)
                 {
-
+                }
+                else if (useTutorialManager && TutorialLevelManager.Instance != null)
+                {
+                    TutorialLevelManager.Instance.OnStanceEntered(stanceName);
                 }
                 else if (LevelManager.Instance != null)
                 {
@@ -189,7 +193,11 @@ public class StanceManager : MonoBehaviour
             }
             else
             {
-                if (LevelManager.Instance != null && !useSparManager)
+                if (useTutorialManager && TutorialLevelManager.Instance != null)
+                {
+                    TutorialLevelManager.Instance.OnStanceEntered("Incorrect");
+                }
+                else if (LevelManager.Instance != null && !useSparManager)
                 {
                     LevelManager.Instance.OnStanceEntered("Incorrect");
                 }
@@ -197,7 +205,11 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            if (LevelManager.Instance != null && !useSparManager)
+            if (useTutorialManager && TutorialLevelManager.Instance != null)
+            {
+                TutorialLevelManager.Instance.OnStanceEntered("Incorrect");
+            }
+            else if (LevelManager.Instance != null && !useSparManager)
             {
                 LevelManager.Instance.OnStanceEntered("Incorrect");
             }
@@ -206,7 +218,7 @@ public class StanceManager : MonoBehaviour
 
     private void SetStance(string newStance)
     {
-        currentStance = newStance;
+
         timer = stanceTimeout;
         currentArnisStyle = null;
         OnStanceChanged?.Invoke(newStance);
@@ -225,7 +237,7 @@ public class StanceManager : MonoBehaviour
             foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
 
-        if (currentStance == "Default")
+        if (newStance == "Default")
         {
             if (isPracticeMode)
             {
@@ -240,7 +252,7 @@ public class StanceManager : MonoBehaviour
         {
             foreach (var style in arnisStyles)
             {
-                if (style.styleName == currentStance)
+                if (style.styleName == newStance)
                 {
                     currentArnisStyle = style;
                     if (isPracticeMode)
@@ -259,9 +271,7 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0;
-        currentStance = newStance;
-        timer = stanceTimeout;
-        currentArnisStyle = null;
+        currentStance = newStance; 
     }
 
     public void ClearAllStances()
@@ -523,6 +533,14 @@ public class StanceManager : MonoBehaviour
         if (useSparManager && SparManager.Instance != null)
         {
             SparManager.Instance.NotifySequenceCompletion(currentStance, currentAttackSequence.sequenceName);
+        }
+        else if (useTutorialManager && TutorialLevelManager.Instance != null)
+        {
+            if (AccuracyTracker.Instance != null)
+            {
+                AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
+            }
+            TutorialLevelManager.Instance.EndObjective();
         }
         else
         {

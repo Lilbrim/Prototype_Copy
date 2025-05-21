@@ -8,6 +8,10 @@ using TMPro;
 
 public class Pause : MonoBehaviour
 {
+    [Header("Input Action")]
+    [SerializeField] private InputActionAsset inputActions;
+    private InputAction pauseAction;
+    
     [Header("UI References")]
     public GameObject pauseUI;
     public GameObject mainPausePanel;
@@ -19,7 +23,9 @@ public class Pause : MonoBehaviour
     public TextMeshProUGUI heightText;
     public float minHeight = 0.5f;
     public float maxHeight = 1.5f;
+    [SerializeField] private float defaultHeight = 1.0f;
     private float initialScale;
+    private const string HEIGHT_PREF_KEY = "PlayerHeight";
     
     [Header("Menu Following Settings")]
     public float followThreshold = 30f; 
@@ -33,6 +39,14 @@ public class Pause : MonoBehaviour
     private Quaternion targetRotation;
     private bool isInDirectView = true;
     
+    private void Awake()
+    {
+        if (inputActions != null)
+        {
+            pauseAction = inputActions.FindAction("Pause");
+        }
+    }
+    
     void Start()
     {
         pauseUI.SetActive(false);
@@ -42,13 +56,51 @@ public class Pause : MonoBehaviour
         
         if (playerRig != null && heightSlider != null)
         {
-            initialScale = playerRig.localScale.y;
+            float savedHeight = PlayerPrefs.GetFloat(HEIGHT_PREF_KEY, defaultHeight);
+            
+            savedHeight = Mathf.Clamp(savedHeight, minHeight, maxHeight);
+            
+            initialScale = savedHeight;
+            
             heightSlider.minValue = minHeight;
             heightSlider.maxValue = maxHeight;
-            heightSlider.value = initialScale;
+            heightSlider.value = savedHeight;
             heightSlider.onValueChanged.AddListener(OnHeightChanged);
+            
+            Vector3 newScale = playerRig.localScale;
+            newScale.y = savedHeight;
+            playerRig.localScale = newScale;
+            
             UpdateHeightText();
         }
+        
+        if (inputActions != null)
+        {
+            inputActions.Enable();
+        }
+    }
+    
+    private void OnEnable()
+    {
+        if (pauseAction != null)
+        {
+            pauseAction.Enable();
+            pauseAction.performed += OnPauseAction;
+        }
+    }
+    
+    private void OnDisable()
+    {
+        if (pauseAction != null)
+        {
+            pauseAction.performed -= OnPauseAction;
+            pauseAction.Disable();
+        }
+    }
+    
+    private void OnPauseAction(InputAction.CallbackContext context)
+    {
+        DisplayPauseUI();
     }
 
     void Update()
@@ -145,6 +197,9 @@ public class Pause : MonoBehaviour
             Vector3 newScale = playerRig.localScale;
             newScale.y = value;
             playerRig.localScale = newScale;
+            
+            PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, value);
+            PlayerPrefs.Save(); 
         }
         UpdateHeightText();
     }
@@ -161,7 +216,10 @@ public class Pause : MonoBehaviour
     {
         if (heightSlider != null)
         {
-            heightSlider.value = initialScale;
+            heightSlider.value = defaultHeight;
+            
+            PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, defaultHeight);
+            PlayerPrefs.Save();
         }
     }
 

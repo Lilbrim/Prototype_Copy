@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Unity.XR.CoreUtils;
 
 public class Recenter : MonoBehaviour
 {
@@ -24,13 +22,22 @@ public class Recenter : MonoBehaviour
             Debug.LogWarning("Recenter: Missing required transform references");
             return;
         }
-        float originalYRotation = origin.eulerAngles.y;
 
         Vector3 headOffset = head.position - origin.position;
+        
         origin.position = target.position - headOffset;
 
-
-        origin.rotation = Quaternion.Euler(0, originalYRotation, 0);
+        Vector3 targetForward = target.forward;
+        targetForward.y = 0;
+        targetForward.Normalize();
+        
+        Vector3 headForward = head.forward;
+        headForward.y = 0;
+        headForward.Normalize();
+        
+        float angleToRotate = Vector3.SignedAngle(headForward, targetForward, Vector3.up);
+        
+        origin.Rotate(0, angleToRotate, 0);
 
         if (pauseScript != null && Time.timeScale == 0)
         {
@@ -40,6 +47,5 @@ public class Recenter : MonoBehaviour
         {
             Time.timeScale = 1;
         }
-
     }
 }

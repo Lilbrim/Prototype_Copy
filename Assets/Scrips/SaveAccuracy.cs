@@ -13,6 +13,7 @@ public class SaveAccuracy : MonoBehaviour
         levelSelector = selector;
         levelId = id;
         isInitialized = true;
+        Debug.Log($"SaveAccuracy initialized for level: {levelId}");
     }
 
     public void OnLevelCompleted(float accuracy)
@@ -26,13 +27,19 @@ public class SaveAccuracy : MonoBehaviour
         SaveLevelAccuracy(accuracy);
     }
 
-
     private void SaveLevelAccuracy(float accuracy)
     {
         if (levelSelector != null)
         {
             levelSelector.SaveLevelAccuracy(levelId, accuracy);
             Debug.Log($"Saved accuracy for level {levelId}: {accuracy:P0}");
+            
+            levelSelector.UpdateLevelButtonsState();
+            
+            if (levelSelector.selectedLevelIndex >= 0)
+            {
+                levelSelector.UpdateLevelInfoPanel(levelSelector.selectedLevelIndex);
+            }
         }
         else
         {
