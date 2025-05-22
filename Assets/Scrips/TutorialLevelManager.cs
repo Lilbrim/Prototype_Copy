@@ -455,6 +455,121 @@ public class TutorialLevelManager : MonoBehaviour, ILevelManager
         }
     }
     
+
+    private void ContinueToNextObjective()
+    {
+        isWaitingForTrainingInput = false;
+        
+        if (trainingModePanel != null)
+        {
+            trainingModePanel.SetActive(false);
+        }
+        
+        // Enhanced cleanup - disable all boxes first
+        DisableAllSequenceBoxes();
+        
+        // Clear stance manager state
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.ClearAllStances();
+            StanceManager.Instance.totalBoxesTouched = 0;
+            // Reset current sequence reference
+            StanceManager.Instance.currentAttackSequence = null;
+        }
+        
+        // Reset current sequence reference
+        currentSequence = null;
+        
+        currentObjectiveIndex++;
+        
+        if (currentObjectiveIndex < objectives.Count)
+        {
+            // Add a small delay to ensure cleanup is complete
+            StartCoroutine(StartNextObjectiveAfterCleanup());
+        }
+        else
+        {
+            EndLevel();
+        }
+    }
+
+    // New coroutine to ensure proper cleanup before starting next objective
+    private IEnumerator StartNextObjectiveAfterCleanup()
+    {
+        yield return new WaitForEndOfFrame(); // Wait one frame for cleanup to complete
+        
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            StartStanceEntry(objectives[currentObjectiveIndex]);
+        }
+        else
+        {
+            EndLevel();
+        }
+    }
+
+    // Enhanced DisableAllSequenceBoxes method
+    private void DisableAllSequenceBoxes()
+    {
+        if (StanceManager.Instance != null)
+        {
+            // Disable current sequence boxes first
+            if (currentSequence != null)
+            {
+                DisableSequenceBoxes(currentSequence);
+            }
+            
+            if (StanceManager.Instance.currentAttackSequence != null)
+            {
+                DisableSequenceBoxes(StanceManager.Instance.currentAttackSequence);
+            }
+            
+            // Disable all boxes from all styles and sequences
+            foreach (var style in StanceManager.Instance.arnisStyles)
+            {
+                // Disable stance boxes
+                if (style.stanceBoxes != null)
+                {
+                    foreach (var box in style.stanceBoxes)
+                    {
+                        if (box != null)
+                            box.SetActive(false);
+                    }
+                }
+                
+                // Disable all sequence boxes
+                if (style.sequences != null)
+                {
+                    foreach (var sequence in style.sequences)
+                    {
+                        DisableSequenceBoxes(sequence);
+                    }
+                }
+            }
+            
+            // Disable default boxes
+            if (StanceManager.Instance.defaultBoxes != null)
+            {
+                foreach (var box in StanceManager.Instance.defaultBoxes)
+                {
+                    if (box != null)
+                        box.SetActive(false);
+                }
+            }
+            
+            // Reset all detectors
+            StanceDetector[] allDetectors = FindObjectsOfType<StanceDetector>();
+            foreach (var detector in allDetectors)
+            {
+                detector.ForceResetTriggerState();
+                detector.IsCompleted = false;
+            }
+            
+            StanceManager.Instance.totalBoxesTouched = 0;
+        }
+    }
+
+    // Also update your RetryCurrentObjective method:
     private void RetryCurrentObjective()
     {
         isWaitingForTrainingInput = false;
@@ -467,36 +582,28 @@ public class TutorialLevelManager : MonoBehaviour, ILevelManager
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.ClearAllStances();
-            
-            DisablePreviousSequenceBoxes();
+            StanceManager.Instance.totalBoxesTouched = 0;
+            StanceManager.Instance.currentAttackSequence = null;
         }
+        
+        // Complete cleanup before restarting
+        DisableAllSequenceBoxes();
+        currentSequence = null;
+        
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            // Add small delay for cleanup
+            StartCoroutine(RestartObjectiveAfterCleanup());
+        }
+    }
+
+    private IEnumerator RestartObjectiveAfterCleanup()
+    {
+        yield return new WaitForEndOfFrame();
         
         if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
         {
             StartStanceEntry(objectives[currentObjectiveIndex]);
-        }
-    }
-    
-    private void ContinueToNextObjective()
-    {
-        isWaitingForTrainingInput = false;
-        
-        if (trainingModePanel != null)
-        {
-            trainingModePanel.SetActive(false);
-        }
-        
-        DisablePreviousSequenceBoxes();
-        
-        currentObjectiveIndex++;
-        
-        if (currentObjectiveIndex < objectives.Count)
-        {
-            StartStanceEntry(objectives[currentObjectiveIndex]);
-        }
-        else
-        {
-            EndLevel();
         }
     }
 
@@ -519,25 +626,6 @@ public class TutorialLevelManager : MonoBehaviour, ILevelManager
             {
                 detector.ForceResetTriggerState();
                 detector.IsCompleted = false;
-            }
-            
-            StanceManager.Instance.totalBoxesTouched = 0;
-        }
-    }
-
-    private void DisableAllSequenceBoxes()
-    {
-        if (StanceManager.Instance != null)
-        {
-            foreach (var style in StanceManager.Instance.arnisStyles)
-            {
-                if (style.sequences != null)
-                {
-                    foreach (var sequence in style.sequences)
-                    {
-                        DisableSequenceBoxes(sequence);
-                    }
-                }
             }
             
             StanceManager.Instance.totalBoxesTouched = 0;
