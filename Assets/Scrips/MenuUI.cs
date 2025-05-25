@@ -81,9 +81,6 @@ public class UIManager : MonoBehaviour
     
     private void StartNewGame()
     {
-        PlayerPrefs.SetInt(NEW_GAME_KEY, 1);
-        PlayerPrefs.Save();
-        
         LoadScene(newGameSceneName);
     }
     
