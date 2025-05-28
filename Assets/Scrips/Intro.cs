@@ -42,19 +42,34 @@ public class IntroManager : MonoBehaviour
     private bool[] isBoxHeld;
     private float[] holdTimers;
     private bool batonsRemoved = false;
+    private bool heightCompleted = false;
     private bool stanceCompleted = false;
     private bool batonInstructionShown = false;
+    private bool heightInstructionShown = false;
     private bool boxInstructionShown = false;
+
+    private enum IntroState
+    {
+        BatonInstruction,
+        GrabBaton,
+        HeightInstruction,
+        RoomRotation,
+        BoxInstruction,
+        StancePhase,
+        Complete
+    }
+    private IntroState currentState = IntroState.BatonInstruction;
 
     private void Awake()
     {
         if (instructionScreens == null)
         {
-            Debug.LogError("InstructionScreens reference is missing in IntroManager!");
+            Debug.LogError("InstructionScreens reference is missing");
             return;
         }
         
         instructionScreens.onBatonInstructionComplete.AddListener(OnBatonInstructionComplete);
+        instructionScreens.onHeightInstructionComplete.AddListener(OnHeightInstructionComplete);
         instructionScreens.onBoxInstructionComplete.AddListener(OnBoxInstructionComplete);
     }
 
@@ -66,9 +81,12 @@ public class IntroManager : MonoBehaviour
     private void InitializeScene()
     {
         batonsRemoved = false;
+        heightCompleted = false;
         stanceCompleted = false;
         batonInstructionShown = false;
+        heightInstructionShown = false;
         boxInstructionShown = false;
+        currentState = IntroState.BatonInstruction;
         
         RenderSettings.fog = true;
         RenderSettings.fogColor = Color.black;
@@ -88,7 +106,8 @@ public class IntroManager : MonoBehaviour
         if (stanceInstructionImage != null)
             stanceInstructionImage.gameObject.SetActive(false);
             
-        foreach (var box in stanceBoxes)
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
+        foreach (var box in activeBoxes)
         {
             box.SetActive(false);
         }
@@ -96,15 +115,31 @@ public class IntroManager : MonoBehaviour
         ShowBatonWelcomeInstruction();
     }
 
+    private GameObject[] GetActiveStanceBoxes()
+    {
+        if (stanceManager != null)
+        {
+            GameObject[] managerBoxes = stanceManager.GetIntroStanceBoxes();
+            if (managerBoxes != null && managerBoxes.Length > 0)
+            {
+                return managerBoxes;
+            }
+        }
+        
+        return stanceBoxes;
+    }
+
     private void InitializeStanceDetection()
     {
-        stanceDetectors = new StanceDetector[stanceBoxes.Length];
-        isBoxHeld = new bool[stanceBoxes.Length];
-        holdTimers = new float[stanceBoxes.Length];
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
+        
+        stanceDetectors = new StanceDetector[activeBoxes.Length];
+        isBoxHeld = new bool[activeBoxes.Length];
+        holdTimers = new float[activeBoxes.Length];
 
-        for (int i = 0; i < stanceBoxes.Length; i++)
+        for (int i = 0; i < activeBoxes.Length; i++)
         {
-            stanceDetectors[i] = stanceBoxes[i].GetComponent<StanceDetector>();
+            stanceDetectors[i] = activeBoxes[i].GetComponent<StanceDetector>();
             isBoxHeld[i] = false;
             holdTimers[i] = 0f;
         }
@@ -123,66 +158,106 @@ public class IntroManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SkipIntro();
+            SkipToNextStep();
         }
     }
 
-    private void SkipIntro()
+    private void SkipToNextStep()
     {
-        Debug.Log("Skipping intro...");
+        Debug.Log($"Skipping from state: {currentState}");
         
-        StopAllCoroutines();
-
-        RenderSettings.fog = false;
-
-        if (instructionScreens != null)
+        switch (currentState)
         {
-            if (instructionScreens.batonInstructionCanvas != null)
-                instructionScreens.batonInstructionCanvas.gameObject.SetActive(false);
+            case IntroState.BatonInstruction:
+                if (instructionScreens != null && instructionScreens.instructionCanvas != null)
+                    instructionScreens.instructionCanvas.gameObject.SetActive(false);
                 
-            if (instructionScreens.boxInstructionCanvas != null)
-                instructionScreens.boxInstructionCanvas.gameObject.SetActive(false);
-        }
-        
-        if (grabBatonCanvas != null)
-            grabBatonCanvas.gameObject.SetActive(false);
-
-        if (!batonsRemoved)
-        {
-            batonsRemoved = true;
-        }
-
-        if (!stanceCompleted)
-        {
-            stanceCompleted = true;
-
-            foreach (var box in stanceBoxes)
-            {
-                box.SetActive(false);
-            }
-            
-            if (stanceInstructionText != null)
-                stanceInstructionText.gameObject.SetActive(false);
+                OnBatonInstructionComplete();
+                currentState = IntroState.GrabBaton;
+                break;
                 
-            if (stanceInstructionImage != null)
-                stanceInstructionImage.gameObject.SetActive(false);
+            case IntroState.GrabBaton:
+                if (grabBatonCanvas != null)
+                    grabBatonCanvas.gameObject.SetActive(false);
+                
+                batonsRemoved = true;
+                currentState = IntroState.HeightInstruction;
+                ShowHeightInstruction();
+                break;
+                
+            case IntroState.HeightInstruction:
+                if (instructionScreens != null && instructionScreens.instructionCanvas != null)
+                    instructionScreens.instructionCanvas.gameObject.SetActive(false);
+                
+                OnHeightInstructionComplete();
+                currentState = IntroState.RoomRotation;
+                break;
+                
+            case IntroState.RoomRotation:
+                StopAllCoroutines();
+                
+                float targetYRotation = roomTransform.eulerAngles.y - 0;
+                roomTransform.rotation = Quaternion.Euler(0, targetYRotation, 0);
+                
+                RenderSettings.fog = false;
+                RenderSettings.fogDensity = 0;
+                
+                currentState = IntroState.BoxInstruction;
+                ShowBoxStanceInstruction();
+                break;
+                
+            case IntroState.BoxInstruction:
+                if (instructionScreens != null && instructionScreens.instructionCanvas != null)
+                    instructionScreens.instructionCanvas.gameObject.SetActive(false);
+                
+                OnBoxInstructionComplete();
+                currentState = IntroState.StancePhase;
+                break;
+                
+            case IntroState.StancePhase:
+                StopAllCoroutines();
+                stanceCompleted = true;
+                
+                GameObject[] activeBoxes = GetActiveStanceBoxes();
+                foreach (var box in activeBoxes)
+                {
+                    box.SetActive(false);
+                }
+                
+                if (stanceInstructionText != null)
+                    stanceInstructionText.gameObject.SetActive(false);
+                    
+                if (stanceInstructionImage != null)
+                    stanceInstructionImage.gameObject.SetActive(false);
+                
+                currentState = IntroState.Complete;
+                CompleteIntro();
+                break;
+                
+            case IntroState.Complete:
+                Debug.Log("Intro done");
+                break;
         }
+    }
 
+    private void CompleteIntro()
+    {
         stanceManager.gameObject.SetActive(true);
         TutorialLevelManager.gameObject.SetActive(true);
         TutorialLevelManager.StartLevel();
-
         this.enabled = false;
     }
 
     private void ShowBatonWelcomeInstruction()
     {
+        currentState = IntroState.BatonInstruction;
         instructionScreens.ShowBatonInstruction();
     }
     
     private void OnBatonInstructionComplete()
     {
         batonInstructionShown = true;
+        currentState = IntroState.GrabBaton;
         ShowGrabBatonInstruction();
     }
 
@@ -204,6 +279,20 @@ public class IntroManager : MonoBehaviour
         if (grabBatonCanvas != null)
             grabBatonCanvas.gameObject.SetActive(false);
             
+        currentState = IntroState.HeightInstruction;
+        ShowHeightInstruction();
+    }
+
+    private void ShowHeightInstruction()
+    {
+        instructionScreens.ShowHeightInstruction();
+    }
+    
+    private void OnHeightInstructionComplete()
+    {
+        heightInstructionShown = true;
+        heightCompleted = true;
+        currentState = IntroState.RoomRotation;
         StartCoroutine(RotateRoomAndClearFog());
     }
 
@@ -232,6 +321,7 @@ public class IntroManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         
+        currentState = IntroState.BoxInstruction;
         ShowBoxStanceInstruction();
     }
     
@@ -243,6 +333,7 @@ public class IntroManager : MonoBehaviour
     private void OnBoxInstructionComplete()
     {
         boxInstructionShown = true;
+        currentState = IntroState.StancePhase;
         StartStancePhase();
     }
 
@@ -253,7 +344,8 @@ public class IntroManager : MonoBehaviour
         stanceInstructionText.gameObject.SetActive(true);
         stanceInstructionImage.gameObject.SetActive(true);
 
-        foreach (var box in stanceBoxes)
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
+        foreach (var box in activeBoxes)
         {
             box.SetActive(true);
         }
@@ -265,7 +357,7 @@ public class IntroManager : MonoBehaviour
 
         for (int i = 0; i < stanceDetectors.Length; i++)
         {
-            if (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance())
+            if (stanceDetectors[i] != null && (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance()))
             {
                 if (!isBoxHeld[i])
                 {
@@ -298,7 +390,8 @@ public class IntroManager : MonoBehaviour
     {
         stanceCompleted = true;
 
-        foreach (var box in stanceBoxes)
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
+        foreach (var box in activeBoxes)
         {
             box.SetActive(false);
         }
@@ -307,11 +400,8 @@ public class IntroManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        stanceManager.gameObject.SetActive(true);
-        TutorialLevelManager.gameObject.SetActive(true);
-        TutorialLevelManager.StartLevel();
-
-        this.enabled = false;
+        currentState = IntroState.Complete;
+        CompleteIntro();
     }
 
     private void ShowGrabBatonInstruction()
@@ -328,6 +418,7 @@ public class IntroManager : MonoBehaviour
         if (instructionScreens != null)
         {
             instructionScreens.onBatonInstructionComplete.RemoveListener(OnBatonInstructionComplete);
+            instructionScreens.onHeightInstructionComplete.RemoveListener(OnHeightInstructionComplete);
             instructionScreens.onBoxInstructionComplete.RemoveListener(OnBoxInstructionComplete);
         }
     }

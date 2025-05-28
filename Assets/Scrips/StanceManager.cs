@@ -18,13 +18,27 @@ public class StanceManager : MonoBehaviour
     public List<ArnisStyle> arnisStyles = new List<ArnisStyle>();
     public GameObject[] defaultBoxes;
 
+    [Header("Mirroring Settings")]
+    public bool isRightHandDominant = false;
+    public Transform mirrorPlane;
+    public Vector3 mirrorNormal = Vector3.right;
+    
+    private Dictionary<GameObject, GameObject> mirroredBoxes = new Dictionary<GameObject, GameObject>();
+    private List<ArnisStyle> mirroredArnisStyles = new List<ArnisStyle>();
+    private GameObject[] mirroredDefaultBoxes;
+    private GameObject[] mirroredIntroBoxes;
+    private bool mirroredDataInitialized = false;
+    
+    private Transform mirroredObjectsParent;
+    private const string MIRRORED_PARENT_NAME = "MirroredObjects";
+
     public float stanceTimeout = 2f;
     private float timer;
 
-    [SerializeField] public AttackSequence currentAttackSequence;
+    public AttackSequence currentAttackSequence;
     private StanceDetector[] allDetectors;
-    [SerializeField] private int sequenceCounter;
-    [SerializeField] public int totalBoxesTouched;
+    public int sequenceCounter;
+    public int totalBoxesTouched;
 
     private bool isPracticeMode = false;
     private string requiredStanceForPractice = "";
@@ -32,403 +46,474 @@ public class StanceManager : MonoBehaviour
     private string currentStance = "Default";
     private ArnisStyle currentArnisStyle;
 
+    [Header("Intro Level Integration")]
+    public GameObject[] introStanceBoxes; 
+
     [Header("Manager Settings")]
     public bool useSparManager = false;
     public bool useTutorialManager = false;
 
-    [Header("Hand Dominance Mirroring")]
-    [Tooltip("Check this if the right hand is dominant (will mirror positions)")]
-    public bool isRightHandDominant = false;
-    [Tooltip("Empty GameObject to use as the mirror center point (like Blender)")]
-    public Transform mirrorCenter;
-    [Tooltip("Mirror axis - X for left/right mirroring, Y for up/down, Z for forward/back")]
-    public MirrorAxis mirrorAxis = MirrorAxis.X;
-
-    // Store original positions and rotations for mirroring
-    private Dictionary<GameObject, Vector3> originalPositions = new Dictionary<GameObject, Vector3>();
-    private Dictionary<GameObject, Quaternion> originalRotations = new Dictionary<GameObject, Quaternion>();
-    private bool positionsStored = false;
-
-    public enum MirrorAxis
-    {
-        X, Y, Z
-    }
-
     public delegate void StanceChangedDelegate(string newStance);
     public event StanceChangedDelegate OnStanceChanged;
-
-    // Public properties for debugging
-    public AttackSequence CurrentAttackSequence => currentAttackSequence;
-    public string CurrentStance => currentStance;
-    public int SequenceCounter => sequenceCounter;
-    public int TotalBoxesTouched => totalBoxesTouched;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            InitializeMirroredObjectsParent();
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
+    }
+
+    private void InitializeMirroredObjectsParent()
+    {
+        GameObject parentObj = GameObject.Find(MIRRORED_PARENT_NAME);
+        if (parentObj == null)
+        {
+            parentObj = new GameObject(MIRRORED_PARENT_NAME);
+            parentObj.transform.SetParent(transform);
+        }
+        mirroredObjectsParent = parentObj.transform;
+    }
+    
+    public GameObject[] GetIntroStanceBoxes()
+    {
+        if (isRightHandDominant && mirroredIntroBoxes != null)
+        {
+            return mirroredIntroBoxes;
+        }
+        return introStanceBoxes;
     }
 
     private void Start()
     {
-        InitializeManager();
-    }
+        InitializeMirroringSystem();
 
-    private void InitializeManager()
-    {
         allDetectors = FindObjectsOfType<StanceDetector>();
 
-        // Validate required components
-        if (!ValidateSetup())
+        foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
+
+        foreach (var style in GetActiveArnisStyles())
         {
-            Debug.LogError("StanceManager setup validation failed!");
-            return;
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
-
-        // Store original positions and rotations before any mirroring
-        StoreOriginalPositions();
-
-        // Initialize all boxes as inactive
-        SetAllBoxesActive(false);
 
         AssignSequencePositions();
-
-        // Apply mirroring if right hand is dominant
-        if (isRightHandDominant)
-        {
-            ApplyMirroring();
-        }
-
         currentStance = "Default";
-        Debug.Log("StanceManager initialized successfully");
     }
 
-    private bool ValidateSetup()
+    private void InitializeMirroringSystem()
     {
-        bool isValid = true;
-
-        if (defaultBoxes == null || defaultBoxes.Length == 0)
+        if (isRightHandDominant && !mirroredDataInitialized)
         {
-            Debug.LogWarning("No default boxes assigned to StanceManager");
-        }
-
-        if (arnisStyles == null || arnisStyles.Count == 0)
-        {
-            Debug.LogWarning("No Arnis styles configured in StanceManager");
-            return false;
-        }
-
-        foreach (var style in arnisStyles)
-        {
-            if (string.IsNullOrEmpty(style.styleName))
-            {
-                Debug.LogError("Found ArnisStyle with empty name");
-                isValid = false;
-            }
-
-            if (style.stanceBoxes == null || style.stanceBoxes.Length == 0)
-            {
-                Debug.LogWarning($"No stance boxes assigned for style: {style.styleName}");
-            }
-
-            foreach (var sequence in style.sequences)
-            {
-                if (string.IsNullOrEmpty(sequence.sequenceName))
-                {
-                    Debug.LogError($"Found sequence with empty name in style: {style.styleName}");
-                    isValid = false;
-                }
-
-                if (sequence.sequenceBoxes == null || sequence.sequenceBoxes.Length == 0)
-                {
-                    Debug.LogWarning($"No sequence boxes assigned for sequence: {sequence.sequenceName}");
-                }
-            }
-        }
-
-        return isValid;
-    }
-
-    private void SetAllBoxesActive(bool active)
-    {
-        // Set default boxes
-        if (defaultBoxes != null)
-        {
-            foreach (var box in defaultBoxes)
-            {
-                if (box != null) box.SetActive(active);
-            }
-        }
-
-        // Set stance boxes
-        foreach (var style in arnisStyles)
-        {
-            if (style.stanceBoxes != null)
-            {
-                foreach (var box in style.stanceBoxes)
-                {
-                    if (box != null) box.SetActive(active);
-                }
-            }
-
-            // Set sequence boxes
-            foreach (var sequence in style.sequences)
-            {
-                if (sequence.sequenceBoxes != null)
-                {
-                    foreach (var box in sequence.sequenceBoxes)
-                    {
-                        if (box != null) box.SetActive(active);
-                    }
-                }
-
-                if (sequence.startBoxLeft != null) sequence.startBoxLeft.SetActive(active);
-                if (sequence.startBoxRight != null) sequence.startBoxRight.SetActive(active);
-                if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(active);
-                if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(active);
-            }
+            CreateMirroredStances();
+            mirroredDataInitialized = true;
         }
     }
 
-    private void StoreOriginalPositions()
+    private void CreateMirroredStances()
     {
-        if (positionsStored) return;
-
-        originalPositions.Clear();
-        originalRotations.Clear();
-
-        // Store default boxes positions and rotations
-        if (defaultBoxes != null)
+        if (mirrorPlane == null)
         {
-            foreach (var box in defaultBoxes)
-            {
-                if (box != null)
-                {
-                    originalPositions[box] = box.transform.position;
-                    originalRotations[box] = box.transform.rotation;
-                }
-            }
+            SetupDefaultMirrorPlane();
         }
 
-        // Store stance boxes positions and rotations
-        foreach (var style in arnisStyles)
+        if (mirroredDataInitialized)
         {
-            if (style.stanceBoxes != null)
-            {
-                foreach (var box in style.stanceBoxes)
-                {
-                    if (box != null)
-                    {
-                        originalPositions[box] = box.transform.position;
-                        originalRotations[box] = box.transform.rotation;
-                    }
-                }
-            }
-
-            // Store sequence boxes positions and rotations
-            foreach (var sequence in style.sequences)
-            {
-                if (sequence.sequenceBoxes != null)
-                {
-                    foreach (var box in sequence.sequenceBoxes)
-                    {
-                        if (box != null)
-                        {
-                            originalPositions[box] = box.transform.position;
-                            originalRotations[box] = box.transform.rotation;
-                        }
-                    }
-                }
-
-                if (sequence.startBoxLeft != null)
-                {
-                    originalPositions[sequence.startBoxLeft] = sequence.startBoxLeft.transform.position;
-                    originalRotations[sequence.startBoxLeft] = sequence.startBoxLeft.transform.rotation;
-                }
-                if (sequence.startBoxRight != null)
-                {
-                    originalPositions[sequence.startBoxRight] = sequence.startBoxRight.transform.position;
-                    originalRotations[sequence.startBoxRight] = sequence.startBoxRight.transform.rotation;
-                }
-                if (sequence.endBoxLeft != null)
-                {
-                    originalPositions[sequence.endBoxLeft] = sequence.endBoxLeft.transform.position;
-                    originalRotations[sequence.endBoxLeft] = sequence.endBoxLeft.transform.rotation;
-                }
-                if (sequence.endBoxRight != null)
-                {
-                    originalPositions[sequence.endBoxRight] = sequence.endBoxRight.transform.position;
-                    originalRotations[sequence.endBoxRight] = sequence.endBoxRight.transform.rotation;
-                }
-            }
-        }
-
-        positionsStored = true;
-        Debug.Log($"Stored {originalPositions.Count} original positions and rotations for mirroring");
-    }
-
-    private void ApplyMirroring()
-    {
-        if (mirrorCenter == null)
-        {
-            Debug.LogWarning("Mirror center is not assigned! Please assign an empty GameObject as mirror center.");
+            UpdateMirroredPositions();
             return;
         }
 
-        Vector3 mirrorCenterPos = mirrorCenter.position;
-        Quaternion mirrorCenterRot = mirrorCenter.rotation;
-        int mirroredCount = 0;
-
-        // Mirror all stored positions and rotations
-        foreach (var kvp in originalPositions)
-        {
-            if (kvp.Key != null)
-            {
-                kvp.Key.transform.position = GetMirroredPosition(kvp.Value, mirrorCenterPos);
-                
-                if (originalRotations.ContainsKey(kvp.Key))
-                {
-                    kvp.Key.transform.rotation = GetMirroredRotation(originalRotations[kvp.Key], mirrorCenterRot);
-                }
-                
-                mirroredCount++;
-            }
-        }
-
-        Debug.Log($"Applied mirroring to {mirroredCount} objects (position and rotation)");
+        CreateMirroredDefaultBoxes();
+        CreateMirroredArnisStyles();
     }
 
-    private Vector3 GetMirroredPosition(Vector3 originalPos, Vector3 mirrorCenterPos)
+    private void SetupDefaultMirrorPlane()
     {
-        Vector3 mirroredPos = originalPos;
+        Debug.LogWarning("Mirror plane not set! Using world center as mirror plane.");
+        GameObject tempPlane = new GameObject("TempMirrorPlane");
+        tempPlane.transform.position = Vector3.zero;
+        tempPlane.transform.SetParent(transform);
+        mirrorPlane = tempPlane.transform;
+    }
+
+    private void CreateMirroredDefaultBoxes()
+    {
+        if (mirroredDefaultBoxes != null) return;
+
+        // Create mirrored default boxes (existing code)
+        mirroredDefaultBoxes = new GameObject[defaultBoxes.Length];
         
-        switch (mirrorAxis)
+        for (int i = 0; i < defaultBoxes.Length; i++)
         {
-            case MirrorAxis.X:
-                mirroredPos.x = mirrorCenterPos.x - (originalPos.x - mirrorCenterPos.x);
-                break;
-            case MirrorAxis.Y:
-                mirroredPos.y = mirrorCenterPos.y - (originalPos.y - mirrorCenterPos.y);
-                break;
-            case MirrorAxis.Z:
-                mirroredPos.z = mirrorCenterPos.z - (originalPos.z - mirrorCenterPos.z);
-                break;
-        }
-
-        return mirroredPos;
-    }
-
-    private Quaternion GetMirroredRotation(Quaternion originalRotation, Quaternion mirrorCenterRotation)
-    {
-        // Convert quaternion to euler angles for easier mirroring
-        Vector3 eulerAngles = originalRotation.eulerAngles;
-        Vector3 mirroredEuler = eulerAngles;
-
-        // Mirror rotation based on the selected axis
-        switch (mirrorAxis)
-        {
-            case MirrorAxis.X:
-                // Mirror Y and Z rotations when mirroring across X axis
-                mirroredEuler.y = -eulerAngles.y;
-                mirroredEuler.z = -eulerAngles.z;
-                break;
-            case MirrorAxis.Y:
-                // Mirror X and Z rotations when mirroring across Y axis
-                mirroredEuler.x = -eulerAngles.x;
-                mirroredEuler.z = -eulerAngles.z;
-                break;
-            case MirrorAxis.Z:
-                // Mirror X and Y rotations when mirroring across Z axis
-                mirroredEuler.x = -eulerAngles.x;
-                mirroredEuler.y = -eulerAngles.y;
-                break;
-        }
-
-        return Quaternion.Euler(mirroredEuler);
-    }
-
-    private void RestoreOriginalPositions()
-    {
-        int restoredCount = 0;
-        foreach (var kvp in originalPositions)
-        {
-            if (kvp.Key != null)
+            if (defaultBoxes[i] != null)
             {
-                kvp.Key.transform.position = kvp.Value;
-                
-                if (originalRotations.ContainsKey(kvp.Key))
-                {
-                    kvp.Key.transform.rotation = originalRotations[kvp.Key];
-                }
-                
-                restoredCount++;
+                GameObject mirrored = CreateOptimizedMirroredBox(defaultBoxes[i], $"Default_{i}");
+                mirroredDefaultBoxes[i] = mirrored;
+                mirroredBoxes[defaultBoxes[i]] = mirrored;
             }
         }
-        Debug.Log($"Restored {restoredCount} original positions and rotations");
+
+        // NEW: Create mirrored intro boxes
+        CreateMirroredIntroBoxes();
     }
 
-    // Public method to toggle hand dominance at runtime
-    public void SetHandDominance(bool rightHandDominant)
+    private void CreateMirroredArnisStyles()
     {
-        if (isRightHandDominant == rightHandDominant) return;
+        if (mirroredArnisStyles.Count > 0) return;
 
-        isRightHandDominant = rightHandDominant;
-
-        if (isRightHandDominant)
+        foreach (var style in arnisStyles)
         {
-            ApplyMirroring();
+            ArnisStyle mirroredStyle = CreateMirroredStyle(style);
+            mirroredArnisStyles.Add(mirroredStyle);
         }
-        else
-        {
-            RestoreOriginalPositions();
-        }
-
-        Debug.Log($"Hand dominance set to: {(rightHandDominant ? "Right" : "Left")}");
     }
 
-    // Editor helper method to refresh mirroring
-    [ContextMenu("Refresh Mirroring")]
-    private void RefreshMirroring()
+    private ArnisStyle CreateMirroredStyle(ArnisStyle originalStyle)
     {
-        if (!Application.isPlaying) return;
+        ArnisStyle mirroredStyle = new ArnisStyle
+        {
+            styleName = originalStyle.styleName,
+            stanceBoxes = new GameObject[originalStyle.stanceBoxes.Length],
+            sequences = new List<AttackSequence>()
+        };
 
-        if (isRightHandDominant)
+        for (int i = 0; i < originalStyle.stanceBoxes.Length; i++)
         {
-            RestoreOriginalPositions();
-            ApplyMirroring();
+            if (originalStyle.stanceBoxes[i] != null)
+            {
+                GameObject mirrored = CreateOptimizedMirroredBox(
+                    originalStyle.stanceBoxes[i], 
+                    $"{originalStyle.styleName}_Stance_{i}"
+                );
+                mirroredStyle.stanceBoxes[i] = mirrored;
+                mirroredBoxes[originalStyle.stanceBoxes[i]] = mirrored;
+            }
         }
-        else
+
+        foreach (var sequence in originalStyle.sequences)
         {
-            RestoreOriginalPositions();
+            AttackSequence mirroredSequence = CreateMirroredSequence(sequence, originalStyle.styleName);
+            mirroredStyle.sequences.Add(mirroredSequence);
+        }
+
+        return mirroredStyle;
+    }
+
+    private AttackSequence CreateMirroredSequence(AttackSequence originalSequence, string styleName)
+    {
+        AttackSequence mirroredSequence = new AttackSequence
+        {
+            sequenceName = originalSequence.sequenceName,
+            timeLimit = originalSequence.timeLimit,
+            sequenceBoxes = new GameObject[originalSequence.sequenceBoxes.Length]
+        };
+
+        for (int i = 0; i < originalSequence.sequenceBoxes.Length; i++)
+        {
+            if (originalSequence.sequenceBoxes[i] != null)
+            {
+                GameObject mirrored = CreateOptimizedMirroredBox(
+                    originalSequence.sequenceBoxes[i],
+                    $"{styleName}_{originalSequence.sequenceName}_Seq_{i}"
+                );
+                mirroredSequence.sequenceBoxes[i] = mirrored;
+                mirroredBoxes[originalSequence.sequenceBoxes[i]] = mirrored;
+            }
+        }
+
+        mirroredSequence.startBoxLeft = CreateMirroredSpecialBox(originalSequence.startBoxLeft, $"{styleName}_{originalSequence.sequenceName}_StartL");
+        mirroredSequence.startBoxRight = CreateMirroredSpecialBox(originalSequence.startBoxRight, $"{styleName}_{originalSequence.sequenceName}_StartR");
+        mirroredSequence.endBoxLeft = CreateMirroredSpecialBox(originalSequence.endBoxLeft, $"{styleName}_{originalSequence.sequenceName}_EndL");
+        mirroredSequence.endBoxRight = CreateMirroredSpecialBox(originalSequence.endBoxRight, $"{styleName}_{originalSequence.sequenceName}_EndR");
+
+        return mirroredSequence;
+    }
+
+    private GameObject CreateMirroredSpecialBox(GameObject original, string namePrefix)
+    {
+        if (original == null) return null;
+        
+        GameObject mirrored = CreateOptimizedMirroredBox(original, namePrefix);
+        mirroredBoxes[original] = mirrored;
+        return mirrored;
+    }
+
+    private GameObject CreateOptimizedMirroredBox(GameObject original, string namePrefix)
+    {
+        GameObject mirrored = InstantiateOptimized(original);
+        mirrored.name = $"{namePrefix}_Mirrored";
+        mirrored.transform.SetParent(mirroredObjectsParent);
+
+        MirrorTransform(original.transform, mirrored.transform);
+
+        mirrored.SetActive(original.activeSelf);
+
+        return mirrored;
+    }
+    
+    private void CreateMirroredIntroBoxes()
+    {
+        if (introStanceBoxes == null || introStanceBoxes.Length == 0) return;
+        if (mirroredIntroBoxes != null) return; // Already created
+
+        mirroredIntroBoxes = new GameObject[introStanceBoxes.Length];
+        
+        for (int i = 0; i < introStanceBoxes.Length; i++)
+        {
+            if (introStanceBoxes[i] != null)
+            {
+                GameObject mirrored = CreateOptimizedMirroredBox(introStanceBoxes[i], $"Intro_{i}");
+                mirroredIntroBoxes[i] = mirrored;
+                mirroredBoxes[introStanceBoxes[i]] = mirrored;
+            }
+        }
+    }
+
+    private GameObject InstantiateOptimized(GameObject original)
+    {
+        GameObject instance = Instantiate(original, mirroredObjectsParent);
+
+
+        return instance;
+    }
+
+    private void UpdateMirroredPositions()
+    {
+        if (!mirroredDataInitialized) return;
+
+        UpdateMirroredBoxPositions(defaultBoxes, mirroredDefaultBoxes);
+        
+        UpdateMirroredBoxPositions(introStanceBoxes, mirroredIntroBoxes);
+
+        for (int styleIndex = 0; styleIndex < arnisStyles.Count && styleIndex < mirroredArnisStyles.Count; styleIndex++)
+        {
+            var originalStyle = arnisStyles[styleIndex];
+            var mirroredStyle = mirroredArnisStyles[styleIndex];
+
+            UpdateMirroredBoxPositions(originalStyle.stanceBoxes, mirroredStyle.stanceBoxes);
+
+            for (int seqIndex = 0; seqIndex < originalStyle.sequences.Count && seqIndex < mirroredStyle.sequences.Count; seqIndex++)
+            {
+                var originalSeq = originalStyle.sequences[seqIndex];
+                var mirroredSeq = mirroredStyle.sequences[seqIndex];
+
+                UpdateMirroredBoxPositions(originalSeq.sequenceBoxes, mirroredSeq.sequenceBoxes);
+                
+                UpdateSingleMirroredPosition(originalSeq.startBoxLeft, mirroredSeq.startBoxLeft);
+                UpdateSingleMirroredPosition(originalSeq.startBoxRight, mirroredSeq.startBoxRight);
+                UpdateSingleMirroredPosition(originalSeq.endBoxLeft, mirroredSeq.endBoxLeft);
+                UpdateSingleMirroredPosition(originalSeq.endBoxRight, mirroredSeq.endBoxRight);
+            }
+        }
+    }
+
+    private void UpdateMirroredBoxPositions(GameObject[] original, GameObject[] mirrored)
+    {
+        if (original == null || mirrored == null) return;
+
+        int minLength = Mathf.Min(original.Length, mirrored.Length);
+        for (int i = 0; i < minLength; i++)
+        {
+            UpdateSingleMirroredPosition(original[i], mirrored[i]);
+        }
+    }
+
+    private void UpdateSingleMirroredPosition(GameObject original, GameObject mirrored)
+    {
+        if (original != null && mirrored != null)
+        {
+            MirrorTransform(original.transform, mirrored.transform);
+        }
+    }
+
+    private void MirrorTransform(Transform original, Transform mirrored)
+    {
+        Vector3 mirrorPosition = mirrorPlane.position;
+        Vector3 worldMirrorNormal = mirrorPlane.TransformDirection(mirrorNormal).normalized;
+
+        Vector3 originalPos = original.position;
+        Vector3 toOriginal = originalPos - mirrorPosition;
+        float distanceToPlane = Vector3.Dot(toOriginal, worldMirrorNormal);
+        Vector3 mirroredPos = originalPos - 2 * distanceToPlane * worldMirrorNormal;
+        mirrored.position = mirroredPos;
+
+        Vector3 mirroredForward = Vector3.Reflect(original.forward, worldMirrorNormal);
+        Vector3 mirroredUp = Vector3.Reflect(original.up, worldMirrorNormal);
+        mirrored.rotation = Quaternion.LookRotation(mirroredForward, mirroredUp);
+
+        Vector3 originalScale = original.localScale;
+        Vector3 mirroredScale = originalScale;
+        
+        if (Mathf.Abs(worldMirrorNormal.x) > 0.5f)
+            mirroredScale.x *= -1;
+        else if (Mathf.Abs(worldMirrorNormal.y) > 0.5f)
+            mirroredScale.y *= -1;
+        else if (Mathf.Abs(worldMirrorNormal.z) > 0.5f)
+            mirroredScale.z *= -1;
+            
+        mirrored.localScale = mirroredScale;
+    }
+
+    private void ClearMirroredStances()
+    {
+        if (mirroredObjectsParent != null)
+        {
+            foreach (Transform child in mirroredObjectsParent)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        mirroredBoxes.Clear();
+        mirroredArnisStyles.Clear();
+        mirroredDefaultBoxes = null;
+        mirroredIntroBoxes = null; 
+        mirroredDataInitialized = false;
+    }
+
+    private void DestroyMirroredStances()
+    {
+        if (mirroredObjectsParent != null)
+        {
+            for (int i = mirroredObjectsParent.childCount - 1; i >= 0; i--)
+            {
+                DestroyImmediate(mirroredObjectsParent.GetChild(i).gameObject);
+            }
+        }
+
+        mirroredBoxes.Clear();
+        mirroredArnisStyles.Clear();
+        mirroredDefaultBoxes = null;
+        mirroredIntroBoxes = null;
+        mirroredDataInitialized = false;
+    }
+
+
+    private void RefreshAllVisualMirroring()
+    {
+        StanceDetector[] allStanceDetectors = FindObjectsOfType<StanceDetector>();
+
+        foreach (var detector in allStanceDetectors)
+        {
+            if (detector != null)
+            {
+                detector.RefreshVisualMirroring();
+            }
+        }
+    }
+
+    private GameObject[] GetActiveDefaultBoxes()
+    {
+        return isRightHandDominant && mirroredDefaultBoxes != null ? mirroredDefaultBoxes : defaultBoxes;
+    }
+
+    private List<ArnisStyle> GetActiveArnisStyles()
+    {
+        return isRightHandDominant && mirroredArnisStyles.Count > 0 ? mirroredArnisStyles : arnisStyles;
+    }
+
+    public void SetRightHandDominant(bool rightHandDominant)
+    {
+        if (isRightHandDominant != rightHandDominant)
+        {
+            isRightHandDominant = rightHandDominant;
+
+            if (isRightHandDominant)
+            {
+                if (!mirroredDataInitialized)
+                {
+                    CreateMirroredStances();
+                    mirroredDataInitialized = true;
+                }
+                else
+                {
+                    ActivateMirroredObjects(true);
+                    UpdateMirroredPositions();
+                }
+            }
+            else
+            {
+                ActivateMirroredObjects(false);
+            }
+
+            allDetectors = FindObjectsOfType<StanceDetector>();
+            AssignSequencePositions();
+            RefreshAllVisualMirroring();
+        }
+    }
+
+    private void ActivateMirroredObjects(bool activate)
+    {
+        if (mirroredObjectsParent != null)
+        {
+            foreach (Transform child in mirroredObjectsParent)
+            {
+                child.gameObject.SetActive(activate && child.gameObject.activeSelf);
+            }
+        }
+    }
+
+    public void BatchUpdateMirroredPositions()
+    {
+        if (isRightHandDominant && mirroredDataInitialized)
+        {
+            StartCoroutine(BatchUpdateCoroutine());
+        }
+    }
+
+    private IEnumerator BatchUpdateCoroutine()
+    {
+        UpdateMirroredBoxPositions(defaultBoxes, mirroredDefaultBoxes);
+        yield return null;
+
+        UpdateMirroredBoxPositions(introStanceBoxes, mirroredIntroBoxes);
+        yield return null;
+
+        for (int i = 0; i < arnisStyles.Count && i < mirroredArnisStyles.Count; i++)
+        {
+            UpdateMirroredBoxPositions(arnisStyles[i].stanceBoxes, mirroredArnisStyles[i].stanceBoxes);
+            yield return null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        DestroyMirroredStances();
+    }
+
+    void OnDrawGizmos()
+    {
+        if (isRightHandDominant && mirrorPlane != null)
+        {
+            Gizmos.color = Color.cyan;
+            Vector3 worldNormal = mirrorPlane.TransformDirection(mirrorNormal);
+            
+            Gizmos.matrix = Matrix4x4.TRS(mirrorPlane.position, Quaternion.LookRotation(worldNormal), Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, new Vector3(2, 2, 0.1f));
+            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(mirrorPlane.position, worldNormal * 2);
         }
     }
 
     private void AssignSequencePositions()
     {
-        foreach (var style in arnisStyles)
+        foreach (var style in GetActiveArnisStyles())
         {
             foreach (var sequence in style.sequences)
             {
-                if (sequence.sequenceBoxes != null)
+                for (int i = 0; i < sequence.sequenceBoxes.Length; i++)
                 {
-                    for (int i = 0; i < sequence.sequenceBoxes.Length; i++)
+                    StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
+                    if (detector != null)
                     {
-                        if (sequence.sequenceBoxes[i] != null)
-                        {
-                            StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
-                            if (detector != null)
-                            {
-                                detector.isPartOfSequence = true;
-                                detector.sequencePosition = i;
-                            }
-                        }
+                        detector.isPartOfSequence = true;
+                        detector.sequencePosition = i;
                     }
                 }
 
@@ -461,8 +546,6 @@ public class StanceManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isGameActive) return;
-
         if (currentStance != "Default" && currentAttackSequence == null)
         {
             CheckForSequenceStart();
@@ -475,7 +558,6 @@ public class StanceManager : MonoBehaviour
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                Debug.Log("Attack sequence timed out");
                 ResetSequence();
                 SetStance("Default");
             }
@@ -485,7 +567,6 @@ public class StanceManager : MonoBehaviour
             timer -= Time.deltaTime;
             if (timer <= 0)
             {
-                Debug.Log("Stance timed out, returning to Default");
                 SetStance("Default");
             }
         }
@@ -494,31 +575,18 @@ public class StanceManager : MonoBehaviour
     public void SetGameActive(bool active)
     {
         isGameActive = active;
-        Debug.Log($"Game active state set to: {active}");
     }
 
     public void ActivateDefaultStance()
     {
         if (!isGameActive) return;
 
-        if (defaultBoxes != null)
-        {
-            foreach (var box in defaultBoxes)
-            {
-                if (box != null) box.SetActive(true);
-            }
-        }
+        foreach (var box in GetActiveDefaultBoxes()) box.SetActive(true);
     }
 
     public void EnterStance(string stanceName, bool practiceMode = false)
     {
         if (!isGameActive) return;
-
-        if (string.IsNullOrEmpty(stanceName))
-        {
-            Debug.LogWarning("Attempted to enter stance with null or empty name");
-            return;
-        }
 
         isPracticeMode = practiceMode;
         requiredStanceForPractice = stanceName;
@@ -531,49 +599,54 @@ public class StanceManager : MonoBehaviour
 
         if (stanceName != currentStance && currentStance == "Default")
         {
-            bool validStance = IsValidStance(stanceName);
+            bool validStance = false;
+            foreach (var style in GetActiveArnisStyles())
+            {
+                if (style.styleName == stanceName)
+                {
+                    validStance = true;
+                    break;
+                }
+            }
 
             if (validStance)
             {
                 SetStance(stanceName);
-                NotifyStanceEntered(stanceName);
+
+                if (useSparManager && SparManager.Instance != null)
+                {
+                }
+                else if (useTutorialManager && TutorialLevelManager.Instance != null)
+                {
+                    TutorialLevelManager.Instance.OnStanceEntered(stanceName);
+                }
+                else if (LevelManager.Instance != null)
+                {
+                    LevelManager.Instance.OnStanceEntered(stanceName);
+                }
             }
             else
             {
-                NotifyStanceEntered("Incorrect");
+                if (useTutorialManager && TutorialLevelManager.Instance != null)
+                {
+                    TutorialLevelManager.Instance.OnStanceEntered("Incorrect");
+                }
+                else if (LevelManager.Instance != null && !useSparManager)
+                {
+                    LevelManager.Instance.OnStanceEntered("Incorrect");
+                }
             }
         }
         else
         {
-            NotifyStanceEntered("Incorrect");
-        }
-    }
-
-    private bool IsValidStance(string stanceName)
-    {
-        foreach (var style in arnisStyles)
-        {
-            if (style.styleName == stanceName)
+            if (useTutorialManager && TutorialLevelManager.Instance != null)
             {
-                return true;
+                TutorialLevelManager.Instance.OnStanceEntered("Incorrect");
             }
-        }
-        return false;
-    }
-
-    private void NotifyStanceEntered(string stanceName)
-    {
-        if (useSparManager && SparManager.Instance != null)
-        {
-            // SparManager notification logic here
-        }
-        else if (useTutorialManager && TutorialLevelManager.Instance != null)
-        {
-            TutorialLevelManager.Instance.OnStanceEntered(stanceName);
-        }
-        else if (LevelManager.Instance != null)
-        {
-            LevelManager.Instance.OnStanceEntered(stanceName);
+            else if (LevelManager.Instance != null && !useSparManager)
+            {
+                LevelManager.Instance.OnStanceEntered("Incorrect");
+            }
         }
     }
 
@@ -581,25 +654,21 @@ public class StanceManager : MonoBehaviour
     {
         timer = stanceTimeout;
         currentArnisStyle = null;
-        
-        Debug.Log($"Setting stance from {currentStance} to {newStance}");
-        
         OnStanceChanged?.Invoke(newStance);
 
-        // Reset all detectors
-        if (allDetectors != null)
+        foreach (var detector in allDetectors)
         {
-            foreach (var detector in allDetectors)
-            {
-                if (detector != null)
-                {
-                    detector.ResetStance();
-                }
-            }
+            detector.ResetStance();
         }
 
-        // Deactivate all boxes
-        SetAllBoxesActive(false);
+        ForceResetTriggerStates(GetActiveDefaultBoxes());
+        foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
+
+        foreach (var style in GetActiveArnisStyles())
+        {
+            ForceResetTriggerStates(style.stanceBoxes);
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
+        }
 
         if (newStance == "Default")
         {
@@ -610,8 +679,7 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Find and activate the specific style
-            foreach (var style in arnisStyles)
+            foreach (var style in GetActiveArnisStyles())
             {
                 if (style.styleName == newStance)
                 {
@@ -622,52 +690,68 @@ public class StanceManager : MonoBehaviour
                     }
                     else
                     {
-                        if (style.stanceBoxes != null)
-                        {
-                            foreach (var box in style.stanceBoxes)
-                            {
-                                if (box != null) box.SetActive(true);
-                            }
-                        }
+                        foreach (var box in style.stanceBoxes) box.SetActive(true);
                     }
                     break;
                 }
             }
         }
 
-        ResetSequenceState();
-        currentStance = newStance;
-    }
-
-    private void ResetSequenceState()
-    {
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0;
+        currentStance = newStance; 
     }
 
     public void ClearAllStances()
     {
         Debug.Log("Clearing all stances and sequence boxes");
 
-        // Reset all detectors
-        if (allDetectors != null)
+        foreach (var detector in allDetectors)
         {
-            foreach (var detector in allDetectors)
+            if (detector != null)
             {
-                if (detector != null)
-                {
-                    detector.ResetStance();
-                    detector.ForceResetTriggerState();
-                }
+                detector.ResetStance();
+                detector.ForceResetTriggerState();
             }
         }
 
-        // Deactivate all boxes
-        SetAllBoxesActive(false);
+        foreach (var box in GetActiveDefaultBoxes())
+        {
+            if (box != null)
+            {
+                box.SetActive(false);
+            }
+        }
 
-        // Reset sequence completion states
-        if (currentAttackSequence != null && currentAttackSequence.sequenceBoxes != null)
+        foreach (var style in GetActiveArnisStyles())
+        {
+            foreach (var box in style.stanceBoxes)
+            {
+                if (box != null)
+                {
+                    box.SetActive(false);
+                }
+            }
+
+            foreach (var sequence in style.sequences)
+            {
+                foreach (var box in sequence.sequenceBoxes)
+                {
+                    if (box != null)
+                    {
+                        box.SetActive(false);
+                    }
+                }
+
+                if (sequence.startBoxLeft != null) sequence.startBoxLeft.SetActive(false);
+                if (sequence.startBoxRight != null) sequence.startBoxRight.SetActive(false);
+                if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(false);
+                if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(false);
+            }
+        }
+
+        if (currentAttackSequence != null)
         {
             foreach (var box in currentAttackSequence.sequenceBoxes)
             {
@@ -678,17 +762,25 @@ public class StanceManager : MonoBehaviour
                     {
                         detector.IsCompleted = false;
                     }
+                    box.SetActive(false);
                 }
             }
         }
 
-        // Reset state
-        ResetSequenceState();
+        currentAttackSequence = null;
+        sequenceCounter = 0;
+        totalBoxesTouched = 0;
         currentStance = "Default";
         currentArnisStyle = null;
 
-        // Clear event listeners
-        OnStanceChanged = null;
+        System.Delegate[] delegates = OnStanceChanged?.GetInvocationList();
+        if (delegates != null)
+        {
+            foreach (var del in delegates)
+            {
+                OnStanceChanged -= (StanceChangedDelegate)del;
+            }
+        }
     }
 
     private void ActivateBoxesForPracticeMode(string newStance)
@@ -697,19 +789,11 @@ public class StanceManager : MonoBehaviour
 
         if (newStance == "Default")
         {
-            // Deactivate default boxes
-            if (defaultBoxes != null)
-            {
-                foreach (var box in defaultBoxes)
-                {
-                    if (box != null) box.SetActive(false);
-                }
-            }
+            foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
 
-            // Find sequences for the required practice stance
             List<AttackSequence> targetSequences = new List<AttackSequence>();
 
-            foreach (var style in arnisStyles)
+            foreach (var style in GetActiveArnisStyles())
             {
                 if (style.styleName == requiredStanceForPractice)
                 {
@@ -718,7 +802,6 @@ public class StanceManager : MonoBehaviour
                 }
             }
 
-            // Activate start boxes for target sequences
             foreach (var sequence in targetSequences)
             {
                 if (sequence.startBoxLeft != null)
@@ -735,24 +818,40 @@ public class StanceManager : MonoBehaviour
         }
         else
         {
-            // Activate stance boxes for the specified style
-            foreach (var style in arnisStyles)
+            foreach (var style in GetActiveArnisStyles())
             {
-                if (style.styleName == newStance && style.stanceBoxes != null)
+                if (style.styleName == newStance)
                 {
-                    foreach (var box in style.stanceBoxes)
-                    {
-                        if (box != null) box.SetActive(true);
-                    }
+                    foreach (var box in style.stanceBoxes) box.SetActive(true);
                     break;
                 }
             }
         }
     }
 
+    private void ForceResetTriggerStates(GameObject[] boxes)
+    {
+        foreach (var box in boxes)
+        {
+            StanceDetector detector = box.GetComponent<StanceDetector>();
+            if (detector != null)
+            {
+                detector.ForceResetTriggerState();
+            }
+
+            Collider[] colliders = box.GetComponentsInChildren<Collider>();
+            foreach (Collider col in colliders)
+            {
+                bool wasEnabled = col.enabled;
+                col.enabled = false;
+                col.enabled = wasEnabled;
+            }
+        }
+    }
+
     private void CheckForSequenceStart()
     {
-        if (currentArnisStyle?.sequences == null) return;
+        if (currentArnisStyle == null) return;
 
         foreach (var sequence in currentArnisStyle.sequences)
         {
@@ -771,57 +870,31 @@ public class StanceManager : MonoBehaviour
             var leftDetector = sequence.startBoxLeft.GetComponent<StanceDetector>();
             var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
 
-            if (leftDetector != null && rightDetector != null)
-            {
-                return leftDetector.IsLeftHandInStance() && rightDetector.IsRightHandInStance();
-            }
+            return leftDetector.IsLeftHandInStance() && rightDetector.IsRightHandInStance();
         }
         return false;
     }
 
     private void StartAttackSequence(AttackSequence sequence)
     {
-        if (sequence == null)
-        {
-            Debug.LogError("Attempted to start null attack sequence");
-            return;
-        }
-
-        Debug.Log($"Starting attack sequence: {sequence.sequenceName}");
-        
         currentAttackSequence = sequence;
         timer = stanceTimeout;
         totalBoxesTouched = 0;
 
-        // Reset sequence box states
-        if (sequence.sequenceBoxes != null)
+        ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
+
+        foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
+
+        foreach (var style in GetActiveArnisStyles())
         {
-            foreach (var box in sequence.sequenceBoxes)
-            {
-                if (box != null)
-                {
-                    var detector = box.GetComponent<StanceDetector>();
-                    if (detector != null)
-                    {
-                        detector.IsCompleted = false;
-                    }
-                }
-            }
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
 
-        // Deactivate all boxes first
-        SetAllBoxesActive(false);
-
-        // Activate sequence boxes
-        if (sequence.sequenceBoxes != null)
+        foreach (var box in sequence.sequenceBoxes)
         {
-            foreach (var box in sequence.sequenceBoxes)
-            {
-                if (box != null) box.SetActive(true);
-            }
+            box.SetActive(true);
         }
 
-        // Activate end boxes
         if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
 
@@ -830,69 +903,61 @@ public class StanceManager : MonoBehaviour
 
     private void CheckAttackSequence()
     {
-        if (currentAttackSequence?.sequenceBoxes == null) return;
-
-        // Check sequence boxes
-        for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
+        if (currentAttackSequence != null)
         {
-            var box = currentAttackSequence.sequenceBoxes[i];
-            if (box == null) continue;
-
-            var detector = box.GetComponent<StanceDetector>();
-            if (detector == null) continue;
-
-            if ((detector.IsLeftHandInStance() || detector.IsRightHandInStance()) && !detector.IsCompleted)
+            for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
             {
-                detector.IsCompleted = true;
-                sequenceCounter++;
-                totalBoxesTouched++;
-                Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
+                var box = currentAttackSequence.sequenceBoxes[i];
+                var detector = box.GetComponent<StanceDetector>();
+
+                if ((detector.IsLeftHandInStance() || detector.IsRightHandInStance()) && !detector.IsCompleted)
+                {
+                    detector.IsCompleted = true;
+                    sequenceCounter++;
+                    totalBoxesTouched++;
+                    Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
+                }
             }
-        }
 
-        // Check end condition
-        if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
-        {
-            var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
-            var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
-
-            if (leftEndDetector != null && rightEndDetector != null &&
-                leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance())
+            if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
             {
-                Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} completed. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
+                var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+                var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
 
-                NotifyObjectiveCompletion();
-                ResetSequence();
-                SetStance("Default");
+                if (leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance())
+                {
+                    Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
+
+                    NotifyObjectiveCompletion();
+
+                    ResetSequence();
+                    SetStance("Default");
+                    return;
+                }
             }
         }
     }
 
     private void ResetSequence()
     {
-        if (currentAttackSequence?.sequenceBoxes != null)
+        if (currentAttackSequence != null)
         {
             foreach (var box in currentAttackSequence.sequenceBoxes)
             {
-                if (box != null)
-                {
-                    var detector = box.GetComponent<StanceDetector>();
-                    if (detector != null)
-                    {
-                        detector.IsCompleted = false;
-                    }
-                }
+                var detector = box.GetComponent<StanceDetector>();
+                detector.IsCompleted = false;
             }
-        }
 
-        ResetSequenceState();
-        Debug.Log("Attack sequence reset");
+            currentAttackSequence = null;
+            sequenceCounter = 0;
+        }
+        SetStance("Default");
     }
 
     public void NotifyObjectiveCompletion()
     {
         int touchedBoxes = totalBoxesTouched;
-        int sequenceBoxCount = currentAttackSequence?.sequenceBoxes?.Length ?? 0;
+        int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
 
         if (useSparManager && SparManager.Instance != null)
         {
@@ -922,21 +987,18 @@ public class StanceManager : MonoBehaviour
 
     public void ActivatePhase2Stances(List<string> availableStances)
     {
-        if (availableStances == null || availableStances.Count == 0)
+        Debug.Log("Activating Phase 2 stances");
+
+        foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
+
+        foreach (var style in GetActiveArnisStyles())
         {
-            Debug.LogWarning("No available stances provided for Phase 2");
-            return;
+            foreach (var box in style.stanceBoxes) box.SetActive(false);
         }
 
-        Debug.Log($"Activating Phase 2 stances: {string.Join(", ", availableStances)}");
-
-        // Deactivate all boxes
-        SetAllBoxesActive(false);
-
-        // Activate start boxes for available stances
         foreach (var stanceName in availableStances)
         {
-            foreach (var style in arnisStyles)
+            foreach (var style in GetActiveArnisStyles())
             {
                 if (style.styleName == stanceName)
                 {
@@ -961,19 +1023,16 @@ public class StanceManager : MonoBehaviour
 
     private void UpdateSequenceColorsForSequence(AttackSequence sequence)
     {
-        if (sequence?.sequenceBoxes == null) return;
+        if (sequence == null) return;
         
         int totalBoxes = sequence.sequenceBoxes.Length;
         
         for (int i = 0; i < totalBoxes; i++)
         {
-            if (sequence.sequenceBoxes[i] != null)
+            StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
+            if (detector != null)
             {
-                StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
-                if (detector != null)
-                {
-                    detector.UpdateColorForSequence(totalBoxes);
-                }
+                detector.UpdateColorForSequence(totalBoxes);
             }
         }
     }
@@ -984,20 +1043,6 @@ public class StanceManager : MonoBehaviour
         {
             UpdateSequenceColorsForSequence(currentAttackSequence);
         }
-    }
-
-    // Debug methods
-    [ContextMenu("Log Current State")]
-    private void LogCurrentState()
-    {
-        Debug.Log($"Current State - Stance: {currentStance}, Sequence: {currentAttackSequence?.sequenceName ?? "None"}, " +
-                  $"Counter: {sequenceCounter}, Touched: {totalBoxesTouched}, Timer: {timer:F2}");
-    }
-
-    private void OnDestroy()
-    {
-        // Clean up events
-        OnStanceChanged = null;
     }
 }
 

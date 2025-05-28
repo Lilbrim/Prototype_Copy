@@ -10,24 +10,44 @@ public class InstructionScreens : MonoBehaviour
     [SerializeField] private InputActionAsset inputActions;
     private InputAction acceptAction;
 
-    [Header("Baton Instruction UI")]
-    public Canvas batonInstructionCanvas;
+    [Header("Main Instruction Canvas")]
+    public Canvas instructionCanvas;
+
+    [Header("Baton Instruction Panel")]
+    public GameObject batonInstructionPanel;
     public TextMeshProUGUI batonInstructionText;
     public Image batonInstructionImage;
-    public TextMeshProUGUI batonContinuePrompt;
 
-    [Header("Box Instruction UI")]
-    public Canvas boxInstructionCanvas;
+    [Header("Height Instruction Panel")]
+    public GameObject heightInstructionPanel;
+    public TextMeshProUGUI heightInstructionText;
+    public Image heightInstructionImage;
+    public Slider heightSlider;
+    public TextMeshProUGUI heightValueText;
+    
+    [Header("Box Instruction Panel")]
+    public GameObject boxInstructionPanel;
     public TextMeshProUGUI boxInstructionText;
     public Image boxInstructionImage;
-    public TextMeshProUGUI boxContinuePrompt;
+
+    [Header("Shared UI Elements")]
+    public TextMeshProUGUI continuePrompt;
 
     [Header("Instruction Content")]
-    [SerializeField] private string batonInstructionMessage = "Baton Text";
-    [SerializeField] private string boxInstructionMessage = "Box Text";
+    [SerializeField] private string batonInstructionMessage = "Welcome! Pick up your batons to begin training";
+    [SerializeField] private string heightInstructionMessage = "Adjust the slider to set your height for optimal gameplay";
+    [SerializeField] private string boxInstructionMessage = "Stand in the stance boxes when they appear";
     [SerializeField] private string continueButtonPrompt = "Press A to Continue";
 
+    [Header("Height Settings")]
+    public Transform playerRig;  // Reference to player rig for height adjustment
+    public float minHeight = 0.5f;
+    public float maxHeight = 1.5f;
+    [SerializeField] private float defaultHeight = 1.0f;
+    private const string HEIGHT_PREF_KEY = "PlayerHeight";
+
     public UnityEvent onBatonInstructionComplete;
+    public UnityEvent onHeightInstructionComplete;
     public UnityEvent onBoxInstructionComplete;
 
     private InstructionType currentInstructionType = InstructionType.None;
@@ -36,6 +56,7 @@ public class InstructionScreens : MonoBehaviour
     {
         None,
         Baton,
+        Height,
         Box
     }
 
@@ -46,16 +67,63 @@ public class InstructionScreens : MonoBehaviour
             acceptAction = inputActions.FindAction("Accept");
         }
 
-        if (batonInstructionCanvas != null)
-            batonInstructionCanvas.gameObject.SetActive(false);
-
-        if (boxInstructionCanvas != null)
-            boxInstructionCanvas.gameObject.SetActive(false);
+        // Hide all panels initially
+        HideAllPanels();
+        
+        if (instructionCanvas != null)
+            instructionCanvas.gameObject.SetActive(false);
     }
 
     private void Start()
     {
         inputActions.Enable();
+        InitializeHeightSlider();
+    }
+
+    private void InitializeHeightSlider()
+    {
+        if (heightSlider != null && playerRig != null)
+        {
+            // Load saved height or use default
+            float savedHeight = PlayerPrefs.GetFloat(HEIGHT_PREF_KEY, defaultHeight);
+            savedHeight = Mathf.Clamp(savedHeight, minHeight, maxHeight);
+            
+            // Setup slider
+            heightSlider.minValue = minHeight;
+            heightSlider.maxValue = maxHeight;
+            heightSlider.value = savedHeight;
+            heightSlider.onValueChanged.AddListener(OnHeightSliderChanged);
+            
+            // Apply initial height
+            Vector3 newScale = playerRig.localScale;
+            newScale.y = savedHeight;
+            playerRig.localScale = newScale;
+            
+            UpdateHeightValueText();
+        }
+    }
+
+    private void OnHeightSliderChanged(float value)
+    {
+        if (playerRig != null)
+        {
+            Vector3 newScale = playerRig.localScale;
+            newScale.y = value;
+            playerRig.localScale = newScale;
+            
+            // Save the height preference
+            PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, value);
+            PlayerPrefs.Save();
+        }
+        UpdateHeightValueText();
+    }
+
+    private void UpdateHeightValueText()
+    {
+        if (heightValueText != null && heightSlider != null)
+        {
+            heightValueText.text = $"Height: {heightSlider.value:F2}x";
+        }
     }
 
     private void OnEnable()
@@ -81,43 +149,121 @@ public class InstructionScreens : MonoBehaviour
         switch (currentInstructionType)
         {
             case InstructionType.Baton:
-                HideBatonInstruction();
+                HideInstruction();
                 onBatonInstructionComplete?.Invoke();
                 break;
+            case InstructionType.Height:
+                HideInstruction();
+                onHeightInstructionComplete?.Invoke();
+                break;
             case InstructionType.Box:
-                HideBoxInstruction();
+                HideInstruction();
                 onBoxInstructionComplete?.Invoke();
                 break;
         }
     }
 
+    private void HideAllPanels()
+    {
+        if (batonInstructionPanel != null)
+            batonInstructionPanel.SetActive(false);
+            
+        if (heightInstructionPanel != null)
+            heightInstructionPanel.SetActive(false);
+            
+        if (boxInstructionPanel != null)
+            boxInstructionPanel.SetActive(false);
+    }
+
+    private void ShowInstruction(InstructionType type)
+    {
+        // Hide all panels first
+        HideAllPanels();
+        
+        // Show the canvas
+        if (instructionCanvas != null)
+            instructionCanvas.gameObject.SetActive(true);
+            
+        // Update continue prompt
+        if (continuePrompt != null)
+            continuePrompt.text = continueButtonPrompt;
+        
+        // Show appropriate panel and set content
+        currentInstructionType = type;
+        
+        switch (type)
+        {
+            case InstructionType.Baton:
+                if (batonInstructionPanel != null)
+                {
+                    batonInstructionPanel.SetActive(true);
+                    if (batonInstructionText != null)
+                        batonInstructionText.text = batonInstructionMessage;
+                }
+                break;
+                
+            case InstructionType.Height:
+                if (heightInstructionPanel != null)
+                {
+                    heightInstructionPanel.SetActive(true);
+                    if (heightInstructionText != null)
+                        heightInstructionText.text = heightInstructionMessage;
+                    // Ensure height value is updated when shown
+                    UpdateHeightValueText();
+                }
+                break;
+                
+            case InstructionType.Box:
+                if (boxInstructionPanel != null)
+                {
+                    boxInstructionPanel.SetActive(true);
+                    if (boxInstructionText != null)
+                        boxInstructionText.text = boxInstructionMessage;
+                }
+                break;
+        }
+    }
+
+    private void HideInstruction()
+    {
+        HideAllPanels();
+        
+        if (instructionCanvas != null)
+            instructionCanvas.gameObject.SetActive(false);
+            
+        currentInstructionType = InstructionType.None;
+    }
+
     public void ShowBatonInstruction()
     {
-        batonInstructionText.text = batonInstructionMessage;
-        batonContinuePrompt.text = continueButtonPrompt;
+        ShowInstruction(InstructionType.Baton);
+    }
 
-        batonInstructionCanvas.gameObject.SetActive(true);
-        currentInstructionType = InstructionType.Baton;
+    public void ShowHeightInstruction()
+    {
+        ShowInstruction(InstructionType.Height);
     }
 
     public void ShowBoxInstruction()
     {
-        boxInstructionText.text = boxInstructionMessage;
-        boxContinuePrompt.text = continueButtonPrompt;
-
-        boxInstructionCanvas.gameObject.SetActive(true);
-        currentInstructionType = InstructionType.Box;
+        ShowInstruction(InstructionType.Box);
     }
 
-    private void HideBatonInstruction()
+    public void ResetHeight()
     {
-        batonInstructionCanvas.gameObject.SetActive(false);
-        currentInstructionType = InstructionType.None;
+        if (heightSlider != null)
+        {
+            heightSlider.value = defaultHeight;
+            PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, defaultHeight);
+            PlayerPrefs.Save();
+        }
     }
 
-    private void HideBoxInstruction()
+    private void OnDestroy()
     {
-        boxInstructionCanvas.gameObject.SetActive(false);
-        currentInstructionType = InstructionType.None;
+        if (heightSlider != null)
+        {
+            heightSlider.onValueChanged.RemoveListener(OnHeightSliderChanged);
+        }
     }
 }

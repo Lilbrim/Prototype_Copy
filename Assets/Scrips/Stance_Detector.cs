@@ -9,14 +9,32 @@ public class StanceDetector : MonoBehaviour
     public GameObject[] stanceBoxes;
 
     [Header("Baton & Detection Settings")]
-    public Transform batonTip;
+    public Transform leftBatonTip;
+    public Transform rightBatonTip;
+    public Transform leftHand;
+    public Transform rightHand;
+    
+    [Header("One-Handed Mode")]
+    [SerializeField] private bool isOneHanded = false;
+    
     [SerializeField] private float angleThreshold = 30f;
     [SerializeField] private float positionThreshold = 0.2f;
 
     [Header("Visual Representation")]
     [SerializeField] private GameObject visualPrefab; 
     private GameObject visualInstance; 
-    [SerializeField] private Vector3 visualRotationOffset = Vector3.zero; 
+    [SerializeField] private Vector3 visualRotationOffset = Vector3.zero;
+
+    [Header("Visual Mirroring Settings")]
+    [SerializeField] private bool enableVisualMirroring = true;
+    [SerializeField] private MirrorAxis mirrorAxis = MirrorAxis.X;
+    [SerializeField] private bool invertMirrorAxis = false; 
+    public enum MirrorAxis
+    {
+        X,
+        Y,
+        Z
+    }
 
     [Header("Color Settings")]
     [SerializeField] private Color leftBatonColor = new Color(1.0f, 0.647f, 0.0f);
@@ -45,15 +63,63 @@ public class StanceDetector : MonoBehaviour
     private Material originalMaterial; 
     private static readonly int ColorProperty = Shader.PropertyToID("_Color");
 
-    // Track if we were active in the previous frame to detect activation/deactivation
     private bool wasActiveLastFrame = false;
+
+    private Transform GetBatonTipForHand(bool isLeftHand)
+    {
+        if (StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant)
+        {
+            return isLeftHand ? leftBatonTip : rightBatonTip;
+        }
+        else
+        {
+            return isLeftHand ? leftBatonTip : rightBatonTip;
+        }
+    }
+
+    private Transform GetHandForHand(bool isLeftHand)
+    {
+        if (StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant)
+        {
+            return isLeftHand ? leftHand : rightHand;
+        }
+        else
+        {
+            return isLeftHand ? leftHand : rightHand;
+        }
+    }
+
+    // Helper method to get the appropriate transform based on one-handed mode and hand dominance
+    private Transform GetActiveTransformForHand(bool isLeftHand)
+    {
+        if (isOneHanded)
+        {
+            // In one-handed mode, dominant hand uses baton, non-dominant uses hand
+            bool isDominantHand = (StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant) ? !isLeftHand : isLeftHand;
+            
+            if (isDominantHand)
+            {
+                // Dominant hand uses baton
+                return GetBatonTipForHand(isLeftHand);
+            }
+            else
+            {
+                // Non-dominant hand uses hand transform
+                return GetHandForHand(isLeftHand);
+            }
+        }
+        else
+        {
+            // In two-handed mode, always use baton tips
+            return GetBatonTipForHand(isLeftHand);
+        }
+    }
 
     private void Start()
     {
         propertyBlock = new MaterialPropertyBlock();
         SetupInitialReferences();
         
-        // Only create visual representation if the object starts active
         if (gameObject.activeInHierarchy)
         {
             SetupVisualRepresentation();
@@ -65,33 +131,33 @@ public class StanceDetector : MonoBehaviour
 
     private void Update()
     {
-        // Check if activation state changed
         bool isCurrentlyActive = gameObject.activeInHierarchy;
         
         if (isCurrentlyActive && !wasActiveLastFrame)
         {
-            // Object was just activated
             OnObjectActivated();
         }
         else if (!isCurrentlyActive && wasActiveLastFrame)
         {
-            // Object was just deactivated
             OnObjectDeactivated();
         }
         
         wasActiveLastFrame = isCurrentlyActive;
     }
 
+    public GameObject GetVisualInstance()
+    {
+        return visualInstance;
+    }
     private void OnObjectActivated()
     {
         Debug.Log($"StanceDetector {gameObject.name} activated - creating visual clone");
-        
-        // Ensure we have the necessary references
+
         if (propertyBlock == null)
         {
             propertyBlock = new MaterialPropertyBlock();
         }
-        
+
         SetupInitialReferences();
         SetupVisualRepresentation();
         SetupInitialColors();
@@ -118,7 +184,6 @@ public class StanceDetector : MonoBehaviour
 
     private void OnEnable()
     {
-        // When object is enabled, create visual representation if it doesn't exist
         if (visualPrefab != null && visualInstance == null && gameObject.activeInHierarchy)
         {
             if (propertyBlock == null)
@@ -133,20 +198,17 @@ public class StanceDetector : MonoBehaviour
 
     private void OnDisable()
     {
-        // When object is disabled, clean up
         ForceResetTriggerState();
         DestroyVisualClone();
     }
 
     private void SetupVisualRepresentation()
     {
-        // Don't create visual representation if object is not active
         if (!gameObject.activeInHierarchy)
         {
             return;
         }
 
-        // Clean up existing visual instance first
         if (visualInstance != null)
         {
             DestroyVisualClone();
@@ -174,7 +236,6 @@ public class StanceDetector : MonoBehaviour
                 }
             }
 
-            // Apply mirroring if right hand dominant
             ApplyVisualMirroring();
             
             Debug.Log($"Created visual clone for {gameObject.name}");
@@ -192,20 +253,33 @@ public class StanceDetector : MonoBehaviour
 
     private void ApplyVisualMirroring()
     {
-        if (visualInstance == null || StanceManager.Instance == null) return;
+        if (visualInstance == null || StanceManager.Instance == null || !enableVisualMirroring) return;
 
         if (StanceManager.Instance.isRightHandDominant)
         {
-            // Mirror by flipping X scale
             Vector3 scale = visualInstance.transform.localScale;
-            scale.x = -Mathf.Abs(scale.x); // Make X scale negative
+            
+            switch (mirrorAxis)
+            {
+                case MirrorAxis.X:
+                    scale.x = invertMirrorAxis ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+                    break;
+                case MirrorAxis.Y:
+                    scale.y = invertMirrorAxis ? Mathf.Abs(scale.y) : -Mathf.Abs(scale.y);
+                    break;
+                case MirrorAxis.Z:
+                    scale.z = invertMirrorAxis ? Mathf.Abs(scale.z) : -Mathf.Abs(scale.z);
+                    break;
+            }
+            
             visualInstance.transform.localScale = scale;
         }
         else
         {
-            // Restore original scale
             Vector3 scale = visualInstance.transform.localScale;
-            scale.x = Mathf.Abs(scale.x); // Make X scale positive
+            scale.x = Mathf.Abs(scale.x);
+            scale.y = Mathf.Abs(scale.y);
+            scale.z = Mathf.Abs(scale.z);
             visualInstance.transform.localScale = scale;
         }
     }
@@ -233,13 +307,62 @@ public class StanceDetector : MonoBehaviour
         if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy) return;
 
         Color targetColor;
-        if (CompareTag("Left Baton"))
+        
+        bool shouldSwapColors = StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant;
+        
+        if (CompareTag("Left Baton") || CompareTag("Left Hand"))
         {
-            targetColor = leftBatonColor;
+            targetColor = shouldSwapColors ? rightBatonColor : leftBatonColor;
         }
-        else if (CompareTag("Right Baton"))
+        else if (CompareTag("Right Baton") || CompareTag("Right Hand"))
         {
-            targetColor = rightBatonColor;
+            targetColor = shouldSwapColors ? leftBatonColor : rightBatonColor;
+        }
+        else
+        {
+            targetColor = originalColor;
+        }
+
+        propertyBlock.SetColor(ColorProperty, targetColor);
+        visualRenderer.SetPropertyBlock(propertyBlock);
+    }
+
+    private void UpdateSequenceColor(int totalBoxesInSequence)
+    {
+        if (visualRenderer == null || propertyBlock == null || totalBoxesInSequence <= 1 || !gameObject.activeInHierarchy) return;
+
+        if (sequencePosition == 0 || sequencePosition == totalBoxesInSequence - 1)
+        {
+            SetDefaultColor();
+            return;
+        }
+
+        float t = (float)(sequencePosition - 1) / (totalBoxesInSequence - 3);
+        
+        bool shouldSwapColors = StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant;
+        
+        Color targetColor;
+        if (CompareTag("Left Baton") || CompareTag("Left Hand"))
+        {
+            if (shouldSwapColors)
+            {
+                targetColor = Color.Lerp(rightBatonColor, rightBatonDarkColor, t);
+            }
+            else
+            {
+                targetColor = Color.Lerp(leftBatonColor, leftBatonDarkColor, t);
+            }
+        }
+        else if (CompareTag("Right Baton") || CompareTag("Right Hand"))
+        {
+            if (shouldSwapColors)
+            {
+                targetColor = Color.Lerp(leftBatonColor, leftBatonDarkColor, t);
+            }
+            else
+            {
+                targetColor = Color.Lerp(rightBatonColor, rightBatonDarkColor, t);
+            }
         }
         else
         {
@@ -264,39 +387,11 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    private void UpdateSequenceColor(int totalBoxesInSequence)
-    {
-        if (visualRenderer == null || propertyBlock == null || totalBoxesInSequence <= 1 || !gameObject.activeInHierarchy) return;
-
-        if (sequencePosition == 0 || sequencePosition == totalBoxesInSequence - 1)
-        {
-            SetDefaultColor();
-            return;
-        }
-
-        float t = (float)(sequencePosition - 1) / (totalBoxesInSequence - 3);
-        
-        Color targetColor;
-        if (CompareTag("Left Baton"))
-        {
-            targetColor = Color.Lerp(leftBatonColor, leftBatonDarkColor, t);
-        }
-        else if (CompareTag("Right Baton"))
-        {
-            targetColor = Color.Lerp(rightBatonColor, rightBatonDarkColor, t);
-        }
-        else
-        {
-            targetColor = originalColor;
-        }
-
-        propertyBlock.SetColor(ColorProperty, targetColor);
-        visualRenderer.SetPropertyBlock(propertyBlock);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
+        if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton") || 
+            other.CompareTag("Left Hand") || other.CompareTag("Right Hand"))
         {
             if (!collidersInTrigger.Contains(other))
             {
@@ -309,7 +404,8 @@ public class StanceDetector : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton"))
+        if (other.CompareTag("Left Baton") || other.CompareTag("Right Baton") || 
+            other.CompareTag("Left Hand") || other.CompareTag("Right Hand"))
         {
             CheckOrientation(other);
         }
@@ -317,7 +413,7 @@ public class StanceDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Left Baton"))
+        if (other.CompareTag("Left Baton") || other.CompareTag("Left Hand"))
         {
             leftHandInStance = false;
             
@@ -326,7 +422,7 @@ public class StanceDetector : MonoBehaviour
                 collidersInTrigger.Remove(other);
             }
         }
-        else if (other.CompareTag("Right Baton"))
+        else if (other.CompareTag("Right Baton") || other.CompareTag("Right Hand"))
         {
             rightHandInStance = false;
             
@@ -346,11 +442,11 @@ public class StanceDetector : MonoBehaviour
         {
             if (collider != null)
             {
-                if (collider.CompareTag("Left Baton"))
+                if (collider.CompareTag("Left Baton") || collider.CompareTag("Left Hand"))
                 {
                     leftHandInStance = false;
                 }
-                else if (collider.CompareTag("Right Baton"))
+                else if (collider.CompareTag("Right Baton") || collider.CompareTag("Right Hand"))
                 {
                     rightHandInStance = false;
                 }
@@ -383,14 +479,23 @@ public class StanceDetector : MonoBehaviour
 
     private void CheckOrientation(Collider other)
     {
-        if (visualRenderer == null || propertyBlock == null || batonTip == null || !gameObject.activeInHierarchy)
+        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy)
             return;
 
-        Vector3 batonDirection = (batonTip.position - transform.position).normalized;
+        bool isLeftHand = other.CompareTag("Left Baton") || other.CompareTag("Left Hand");
+        Transform currentTransform = GetActiveTransformForHand(isLeftHand);
+        
+        if (currentTransform == null)
+        {
+            Debug.LogWarning($"Transform not assigned for {(isLeftHand ? "left" : "right")} hand on {gameObject.name}");
+            return;
+        }
+
+        Vector3 transformDirection = (currentTransform.position - transform.position).normalized;
         Vector3 worldCorrectDirection = transform.forward;
 
-        float dot = Vector3.Dot(worldCorrectDirection.normalized, batonDirection);
-        float distance = Vector3.Distance(batonTip.position, transform.position);
+        float dot = Vector3.Dot(worldCorrectDirection.normalized, transformDirection);
+        float distance = Vector3.Distance(currentTransform.position, transform.position);
 
         bool inStance = (dot >= Mathf.Cos(angleThreshold * Mathf.Deg2Rad)) && (distance < positionThreshold);
 
@@ -398,11 +503,11 @@ public class StanceDetector : MonoBehaviour
         propertyBlock.SetColor(ColorProperty, targetColor);
         visualRenderer.SetPropertyBlock(propertyBlock);
 
-        if (other.CompareTag("Left Baton"))
+        if (isLeftHand)
         {
             leftHandInStance = inStance;
         }
-        else if (other.CompareTag("Right Baton"))
+        else
         {
             rightHandInStance = inStance;
         }
@@ -496,7 +601,6 @@ public class StanceDetector : MonoBehaviour
         visualPrefab = newPrefab;
         visualRotationOffset = rotationOffset;
         
-        // Only setup visual representation if object is currently active
         if (gameObject.activeInHierarchy)
         {
             SetupVisualRepresentation();
@@ -511,6 +615,52 @@ public class StanceDetector : MonoBehaviour
         {
             visualInstance.transform.rotation = transform.rotation * Quaternion.Euler(visualRotationOffset);
         }
+    }
+
+    public void SetVisualMirroringEnabled(bool enabled)
+    {
+        enableVisualMirroring = enabled;
+        if (visualInstance != null)
+        {
+            ApplyVisualMirroring();
+        }
+    }
+
+    public void SetMirrorAxis(MirrorAxis axis)
+    {
+        mirrorAxis = axis;
+        if (visualInstance != null)
+        {
+            ApplyVisualMirroring();
+        }
+    }
+
+    public void SetInvertMirrorAxis(bool invert)
+    {
+        invertMirrorAxis = invert;
+        if (visualInstance != null)
+        {
+            ApplyVisualMirroring();
+        }
+    }
+
+    public void RefreshVisualMirroring()
+    {
+        if (visualInstance != null)
+        {
+            ApplyVisualMirroring();
+        }
+    }
+
+    // New public methods for managing one-handed mode
+    public void SetOneHandedMode(bool oneHanded)
+    {
+        isOneHanded = oneHanded;
+    }
+
+    public bool IsOneHandedMode()
+    {
+        return isOneHanded;
     }
 
     private void OnDestroy()

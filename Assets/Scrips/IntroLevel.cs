@@ -28,7 +28,10 @@ public class IntroLevel : MonoBehaviour
     public bool includeSparringPartner = false;
     public GameObject sparringPartnerPrefab;
     public Transform sparringPartnerSpawnPoint;
-    public string sparringPartnerAnimation = "Sinwali";
+    public string sparringPartnerAnimation = "Change This";
+    
+    [Header("Mirroring")]
+    public bool mirrorSparringPartner = false;
     
     private ILevelManager levelManager; 
     private StanceDetector[] stanceDetectors;
@@ -64,7 +67,6 @@ public class IntroLevel : MonoBehaviour
             instantiatedSparringPartner = null;
         }
         
-        if (stanceManager != null) stanceManager.gameObject.SetActive(false);
         if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
 
         InitializeStanceDetection();
@@ -78,43 +80,71 @@ public class IntroLevel : MonoBehaviour
         
         this.enabled = true;
     }
-
-    private void SetupSparringPartner()
+    
+    private GameObject[] GetActiveStanceBoxes()
     {
-        if (sparringPartnerPrefab != null && sparringPartnerSpawnPoint != null)
+        if (stanceManager != null)
         {
-            instantiatedSparringPartner = Instantiate(
-                sparringPartnerPrefab, 
-                sparringPartnerSpawnPoint.position, 
-                sparringPartnerSpawnPoint.rotation
-            );
-            
-            Animator animator = instantiatedSparringPartner.GetComponent<Animator>();
-            if (animator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+            GameObject[] managerBoxes = stanceManager.GetIntroStanceBoxes();
+            if (managerBoxes != null && managerBoxes.Length > 0)
             {
-                animator.Play(sparringPartnerAnimation);
-            }
-            
-            if (stanceInstructionImage != null)
-            {
-                stanceInstructionImage.gameObject.SetActive(false);
+                return managerBoxes;
             }
         }
-        else
+        
+        return stanceBoxes;
+    }
+
+private void SetupSparringPartner()
+{
+    if (sparringPartnerPrefab != null && sparringPartnerSpawnPoint != null)
+    {
+        instantiatedSparringPartner = Instantiate(
+            sparringPartnerPrefab,
+            sparringPartnerSpawnPoint.position,
+            sparringPartnerSpawnPoint.rotation
+        );
+
+        if (stanceManager != null)
         {
-            Debug.LogWarning("Sparring partner or spawn point is missing. Cannot spawn sparring partner.");
+            mirrorSparringPartner = stanceManager.isRightHandDominant;
+        }
+
+        if (mirrorSparringPartner)
+        {
+            Vector3 scale = instantiatedSparringPartner.transform.localScale;
+            scale.x = -Mathf.Abs(scale.x); 
+            instantiatedSparringPartner.transform.localScale = scale;
+        }
+
+        Animator animator = instantiatedSparringPartner.GetComponent<Animator>();
+        if (animator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
+            animator.Play(sparringPartnerAnimation);
+        }
+
+        if (stanceInstructionImage != null)
+        {
+            stanceInstructionImage.gameObject.SetActive(false);
         }
     }
+    else
+    {
+        Debug.LogWarning("Sparring partner or spawn point is missing. Cannot spawn sparring partner.");
+    }
+}
 
     private void InitializeStanceDetection()
     {
-        stanceDetectors = new StanceDetector[stanceBoxes.Length];
-        isBoxHeld = new bool[stanceBoxes.Length];
-        holdTimers = new float[stanceBoxes.Length];
+        GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+        
+        stanceDetectors = new StanceDetector[activeBoxes.Length];
+        isBoxHeld = new bool[activeBoxes.Length];
+        holdTimers = new float[activeBoxes.Length];
 
-        for (int i = 0; i < stanceBoxes.Length; i++)
+        for (int i = 0; i < activeBoxes.Length; i++)
         {
-            stanceDetectors[i] = stanceBoxes[i].GetComponent<StanceDetector>();
+            stanceDetectors[i] = activeBoxes[i].GetComponent<StanceDetector>();
             isBoxHeld[i] = false;
             holdTimers[i] = 0f;
         }
@@ -149,7 +179,8 @@ public class IntroLevel : MonoBehaviour
         {
             stanceCompleted = true;
 
-            foreach (var box in stanceBoxes)
+            GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+            foreach (var box in activeBoxes)
             {
                 box.SetActive(false);
             }
@@ -204,7 +235,8 @@ public class IntroLevel : MonoBehaviour
             stanceInstructionImage.gameObject.SetActive(true);
         }
 
-        foreach (var box in stanceBoxes)
+        GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+        foreach (var box in activeBoxes)
         {
             box.SetActive(true);
         }
@@ -249,16 +281,20 @@ public class IntroLevel : MonoBehaviour
     {
         stanceCompleted = true;
 
-        foreach (var box in stanceBoxes)
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
+        foreach (var box in activeBoxes)
         {
             box.SetActive(false);
         }
+        
         stanceInstructionText.gameObject.SetActive(false);
         
         if (stanceInstructionImage != null && stanceInstructionImage.gameObject.activeSelf)
         {
             stanceInstructionImage.gameObject.SetActive(false);
         }
+
+        yield return new WaitForSeconds(1f);
 
         yield return new WaitForSeconds(1f);
 

@@ -122,6 +122,241 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &508114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 508115}
+  - component: {fileID: 508120}
+  - component: {fileID: 508119}
+  - component: {fileID: 508118}
+  - component: {fileID: 508117}
+  - component: {fileID: 508116}
+  m_Layer: 0
+  m_Name: Left_Baton (2)
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &508115
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5609848, y: -0.43046182, z: -0.56098366, w: 0.4304603}
+  m_LocalPosition: {x: -0.038, y: -0.06900004, z: 0.088}
+  m_LocalScale: {x: 0.04133999, y: 0.13357724, z: 0.041339997}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1517315233}
+  - {fileID: 1342993204}
+  - {fileID: 149736414}
+  m_Father: {fileID: 266563357}
+  m_LocalEulerAnglesHint: {x: 0.00019044487, y: -90.00014, z: -104.99964}
+--- !u!95 &508116
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 16cb10d979822be43b6dac84cb91bce3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &508117
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &508118
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!23 &508119
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 0fb52028c7f417545b280d43d31e080b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &508120
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508114}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &11283825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 11283826}
+  - component: {fileID: 11283828}
+  - component: {fileID: 11283827}
+  m_Layer: 5
+  m_Name: Checkmark
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &11283826
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11283825}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1599808752}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &11283827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11283825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &11283828
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11283825}
+  m_CullTransparentMesh: 1
 --- !u!1 &22812262
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &31079711
 Transform:
   m_ObjectHideFlags: 0
@@ -867,11 +1102,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 61930836}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -1899,6 +2141,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 133901480}
   m_CullTransparentMesh: 1
+--- !u!1 &149736413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 149736414}
+  m_Layer: 0
+  m_Name: BatonTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &149736414
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149736413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 508115}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &152390728
 GameObject:
   m_ObjectHideFlags: 0
@@ -2994,7 +3267,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 22.45728}
+  m_AnchoredPosition: {x: 0, y: 34}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &228874198
@@ -3242,11 +3515,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 233133562}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -3514,11 +3794,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 246055935}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -3648,11 +3935,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 251325358}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -3744,6 +4038,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 508115}
   - {fileID: 2010232236}
   m_Father: {fileID: 665352323}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5361,6 +5656,7 @@ RectTransform:
   - {fileID: 1686463691}
   - {fileID: 1675577626}
   - {fileID: 2123436401}
+  - {fileID: 1130912350}
   m_Father: {fileID: 2076757378}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5426,6 +5722,7 @@ GameObject:
   - component: {fileID: 405019603}
   - component: {fileID: 405019607}
   - component: {fileID: 405019606}
+  - component: {fileID: 405019608}
   m_Layer: 0
   m_Name: Scroll View
   m_TagString: Untagged
@@ -5565,6 +5862,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &405019608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405019601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &407319559
 GameObject:
   m_ObjectHideFlags: 0
@@ -5667,11 +5981,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 1368050364196381540}
-  visualRotationOffset: {x: 0, y: 90, z: 0}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -6388,11 +6709,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 505905084}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -6796,6 +7124,42 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &568747108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 568747109}
+  m_Layer: 0
+  m_Name: Prefabs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &568747109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568747108}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.33117166, y: -0.034, z: -0.471742}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3393256087311002957}
+  - {fileID: 229994874372182084}
+  - {fileID: 4855810489240728894}
+  - {fileID: 2369215978515371407}
+  - {fileID: 8066482418103229011}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &574348377
 GameObject:
   m_ObjectHideFlags: 0
@@ -8005,11 +8369,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 681182666}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -8139,11 +8510,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 690901223}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -8386,6 +8764,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1e14ba0263b9841a819caa2b6caafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &698318587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 698318588}
+  - component: {fileID: 698318590}
+  - component: {fileID: 698318589}
+  m_Layer: 5
+  m_Name: Label
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &698318588
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698318587}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1130912350}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 9, y: -0.5}
+  m_SizeDelta: {x: -28, y: -3}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &698318589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698318587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Right Handed
+--- !u!222 &698318590
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698318587}
+  m_CullTransparentMesh: 1
 --- !u!1 &712300167
 GameObject:
   m_ObjectHideFlags: 0
@@ -8678,11 +9135,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 715669363}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -9174,9 +9638,9 @@ RectTransform:
   m_Father: {fileID: 204203733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &730840104
 MonoBehaviour:
@@ -9399,6 +9863,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747061286}
   m_CullTransparentMesh: 1
+--- !u!1 &748189994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748189996}
+  - component: {fileID: 748189995}
+  m_Layer: 0
+  m_Name: BatonPath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &748189995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748189994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319c92af821cf9549af61400c7299611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHandGuidePrefab: {fileID: 5027143044465991041}
+  rightHandGuidePrefab: {fileID: 8260888157809596331}
+  batonGuidePrefab: {fileID: 1368050364196381540}
+  pathHeight: 0.1
+  guideSpeed: 2
+  loopPath: 1
+  loopDelay: 1
+  showOnlyActiveSequence: 1
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeAtEndpoints: 1
+  fadeDistance: 0.5
+  enableMirroring: 0
+  mirrorPlane: {fileID: 1366419756}
+  mirrorNormal: {x: 0, y: 0, z: 1}
+  showDebugGizmos: 0
+  pathColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!4 &748189996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748189994}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.8223293, y: 1.3437375, z: -0.009978249}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &766313275
 GameObject:
   m_ObjectHideFlags: 0
@@ -10390,11 +10937,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 858872480}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 1368050364196381540}
-  visualRotationOffset: {x: 0, y: 90, z: 0}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -10696,9 +11250,9 @@ RectTransform:
   m_Father: {fileID: 405019602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &885411556
 MonoBehaviour:
@@ -13736,11 +14290,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1115330968}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -13885,6 +14446,92 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116265399}
   m_Mesh: {fileID: 7305168873492875877, guid: 7d471717b0bb79b4ea8940a37c19a385, type: 3}
+--- !u!1 &1130912349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1130912350}
+  - component: {fileID: 1130912351}
+  m_Layer: 5
+  m_Name: Dominant
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1130912350
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130912349}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.43828893, y: 0.43828893, z: 0.43828893}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1599808752}
+  - {fileID: 698318588}
+  m_Father: {fileID: 395028117}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.1, y: -8.4}
+  m_SizeDelta: {x: 160, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1130912351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130912349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1599808753}
+  toggleTransition: 1
+  graphic: {fileID: 11283827}
+  m_Group: {fileID: 0}
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_IsOn: 1
 --- !u!1 &1134131982
 GameObject:
   m_ObjectHideFlags: 0
@@ -14090,11 +14737,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 1134750058}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -14224,11 +14878,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 1142617150}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -14742,9 +15403,9 @@ RectTransform:
   m_Father: {fileID: 405019602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1229121187
 MonoBehaviour:
@@ -14790,7 +15451,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1246054128}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9819556
+  m_Size: 0.99988925
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15215,11 +15876,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1262819068}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -15749,6 +16417,8 @@ MonoBehaviour:
   minHeight: 0.5
   maxHeight: 1.5
   defaultHeight: 1
+  rightHandToggle: {fileID: 0}
+  defaultRightHand: 0
   followThreshold: 30
   followSpeed: 5
   minDistanceToCamera: 1.5
@@ -16006,11 +16676,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1327171741}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -16163,6 +16840,50 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1342993203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1342993204}
+  - component: {fileID: 1342993205}
+  m_Layer: 0
+  m_Name: LeftAttach
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1342993204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342993203}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.18952392, y: 0, z: 0, w: 0.98187613}
+  m_LocalPosition: {x: 0.24, y: -0.548, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 508115}
+  m_LocalEulerAnglesHint: {x: -21.850002, y: 0, z: 0}
+--- !u!114 &1342993205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342993203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1e14ba0263b9841a819caa2b6caafa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1343312240
 GameObject:
   m_ObjectHideFlags: 0
@@ -16368,11 +17089,18 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 1356041558}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 0}
+  rightBatonTip: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  isOneHanded: 0
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 0}
   visualRotationOffset: {x: 0, y: 0, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -16637,7 +17365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 4.9658723}
+  m_AnchoredPosition: {x: 0, y: 18.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1386036440
@@ -17058,6 +17786,50 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1517315232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1517315233}
+  - component: {fileID: 1517315234}
+  m_Layer: 0
+  m_Name: RightAttach
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1517315233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517315232}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.18952392, y: 0, z: 0, w: 0.98187613}
+  m_LocalPosition: {x: -0.24, y: -0.548, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 508115}
+  m_LocalEulerAnglesHint: {x: -21.850002, y: 0, z: 0}
+--- !u!114 &1517315234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517315232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1e14ba0263b9841a819caa2b6caafa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1519131735
 GameObject:
   m_ObjectHideFlags: 0
@@ -17250,11 +18022,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1533832127}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
-  visualPrefab: {fileID: 0}
-  visualRotationOffset: {x: -90, y: 0, z: 90}
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -17684,7 +18463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1555633103
 Transform:
   m_ObjectHideFlags: 0
@@ -17736,11 +18515,18 @@ MonoBehaviour:
   stanceName: Hold
   stanceBoxes:
   - {fileID: 1555633102}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 15
   positionThreshold: 0.7
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -17834,9 +18620,9 @@ RectTransform:
   m_Father: {fileID: 204203733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1562370398
 MonoBehaviour:
@@ -17924,9 +18710,9 @@ RectTransform:
   m_Father: {fileID: 405019602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1565884317
 MonoBehaviour:
@@ -18252,6 +19038,82 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1599808751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1599808752}
+  - component: {fileID: 1599808754}
+  - component: {fileID: 1599808753}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1599808752
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599808751}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 11283826}
+  m_Father: {fileID: 1130912350}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 10, y: -10}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1599808753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599808751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1599808754
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599808751}
+  m_CullTransparentMesh: 1
 --- !u!1 &1613899123
 GameObject:
   m_ObjectHideFlags: 0
@@ -18974,7 +19836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -6.1510925}
+  m_AnchoredPosition: {x: 0, y: 3.8}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1689013167
@@ -19565,7 +20427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.47519}
+  m_AnchoredPosition: {x: -91.5, y: 91.499054}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1745777024
@@ -19699,6 +20561,9 @@ MonoBehaviour:
   - {fileID: 61930836}
   - {fileID: 1356041558}
   - {fileID: 233133562}
+  isRightHandDominant: 1
+  mirrorPlane: {fileID: 1366419756}
+  mirrorNormal: {x: 0, y: 0, z: 1}
   stanceTimeout: 100
   currentAttackSequence:
     sequenceName: 
@@ -19711,11 +20576,11 @@ MonoBehaviour:
     currentIndex: 0
   sequenceCounter: 0
   totalBoxesTouched: 0
+  introStanceBoxes:
+  - {fileID: 1852088525}
+  - {fileID: 1555633102}
   useSparManager: 0
   useTutorialManager: 0
-  isRightHandDominant: 0
-  mirrorCenter: {fileID: 0}
-  mirrorAxis: 0
 --- !u!4 &1749916802
 Transform:
   m_ObjectHideFlags: 0
@@ -19802,11 +20667,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 1765503784}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -20163,6 +21035,7 @@ MonoBehaviour:
   sparringPartnerPrefab: {fileID: 0}
   sparringPartnerSpawnPoint: {fileID: 0}
   sparringPartnerAnimation: Sinwali
+  mirrorSparringPartner: 0
 --- !u!4 &1784065523
 Transform:
   m_ObjectHideFlags: 0
@@ -20212,7 +21085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.47519}
+  m_AnchoredPosition: {x: -91.5, y: 91.499054}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1785708855
@@ -20288,9 +21161,9 @@ RectTransform:
   m_Father: {fileID: 204203733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1792247463
 MonoBehaviour:
@@ -20336,7 +21209,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 230798230}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9819556
+  m_Size: 0.99988925
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20772,11 +21645,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1841006112}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 1368050364196381540}
-  visualRotationOffset: {x: 0, y: 90, z: 0}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -20854,7 +21734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1852088526
 Transform:
   m_ObjectHideFlags: 0
@@ -20906,11 +21786,18 @@ MonoBehaviour:
   stanceName: Hold
   stanceBoxes:
   - {fileID: 1852088525}
-  batonTip: {fileID: 407319560}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 15
   positionThreshold: 0.7
   visualPrefab: {fileID: 1368050364196381540}
   visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -21114,6 +22001,7 @@ MonoBehaviour:
   sparringPartnerPrefab: {fileID: 639691427}
   sparringPartnerSpawnPoint: {fileID: 1246974198}
   sparringPartnerAnimation: Pugaw
+  mirrorSparringPartner: 0
 --- !u!1 &1883966513
 GameObject:
   m_ObjectHideFlags: 0
@@ -22306,11 +23194,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 2058213848}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -22440,11 +23335,18 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 2062755050}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -23065,11 +23967,18 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 2087214849}
-  batonTip: {fileID: 664047078}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
   angleThreshold: 25
   positionThreshold: 1
   visualPrefab: {fileID: 8260888157809596331}
   visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -23547,12 +24456,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368050364196381540}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.33117166, y: -0.6399592, z: 0.471742}
   m_LocalScale: {x: 1.8926903, y: 1.8926898, z: 0.70913494}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 568747109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &936181148776009439
 MeshRenderer:
@@ -23742,11 +24651,11 @@ Transform:
   m_GameObject: {fileID: 1602419296451002678}
   serializedVersion: 2
   m_LocalRotation: {x: 0.50000006, y: -0.50000006, z: 0.49999997, w: -0.49999994}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.33117166, y: -0.6399592, z: 0.471742}
   m_LocalScale: {x: 5.5915794, y: 5.5915794, z: 2.0949998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 568747109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3393256087311002957
 Transform:
@@ -23756,12 +24665,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5027143044465991041}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.5915794, y: 5.5915794, z: 2.0949998}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.33117166, y: -0.6399592, z: 0.471742}
+  m_LocalScale: {x: 5.591579, y: 5.591579, z: 2.0949998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 568747109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!23 &3538366137284273210
 MeshRenderer:
@@ -23864,11 +24773,11 @@ Transform:
   m_GameObject: {fileID: 8260888157809596331}
   serializedVersion: 2
   m_LocalRotation: {x: 0.50000006, y: -0.50000006, z: 0.49999997, w: -0.49999994}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.33117166, y: -0.6399592, z: 0.471742}
   m_LocalScale: {x: 5.5915794, y: 5.5915794, z: 2.0949998}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 568747109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5027143044465991041
 GameObject:
@@ -28123,11 +29032,11 @@ Transform:
   m_GameObject: {fileID: 7812179099152180021}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.33117166, y: -0.6399592, z: 0.471742}
   m_LocalScale: {x: 2.2991302, y: 2.2991302, z: 0.8614162}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 568747109}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
 --- !u!1 &8260888157809596331
 GameObject:
@@ -28155,6 +29064,7 @@ SceneRoots:
   - {fileID: 1317660925}
   - {fileID: 1656208276}
   - {fileID: 436459678}
+  - {fileID: 748189996}
   - {fileID: 1749916802}
   - {fileID: 453271422}
   - {fileID: 375946219}
@@ -28165,9 +29075,5 @@ SceneRoots:
   - {fileID: 800851283}
   - {fileID: 1307241890}
   - {fileID: 197038536}
-  - {fileID: 3393256087311002957}
-  - {fileID: 229994874372182084}
-  - {fileID: 4855810489240728894}
-  - {fileID: 2369215978515371407}
-  - {fileID: 8066482418103229011}
+  - {fileID: 568747109}
   - {fileID: 1366419756}

@@ -27,6 +27,12 @@ public class Pause : MonoBehaviour
     private float initialScale;
     private const string HEIGHT_PREF_KEY = "PlayerHeight";
     
+    [Header("Right-Hand Dominance")]
+    public Toggle rightHandToggle;
+    private const string RIGHT_HAND_PREF_KEY = "RightHandDominant";
+    private const string HAND_DOMINANCE_SET_KEY = "HandDominanceAutoSet";
+    [SerializeField] private bool defaultRightHand = true;
+    
     [Header("Menu Following Settings")]
     public float followThreshold = 30f; 
     public float followSpeed = 5f; 
@@ -72,6 +78,15 @@ public class Pause : MonoBehaviour
             playerRig.localScale = newScale;
             
             UpdateHeightText();
+        }
+        
+        if (rightHandToggle != null)
+        {
+            bool savedRightHand = PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0) == 1;
+            rightHandToggle.isOn = savedRightHand;
+            rightHandToggle.onValueChanged.AddListener(OnRightHandToggleChanged);
+            
+            ApplyRightHandDominanceToStanceManager(savedRightHand);
         }
         
         if (inputActions != null)
@@ -221,6 +236,75 @@ public class Pause : MonoBehaviour
             PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, defaultHeight);
             PlayerPrefs.Save();
         }
+    }
+
+    public void OnRightHandToggleChanged(bool isRightHand)
+    {
+        PlayerPrefs.SetInt(RIGHT_HAND_PREF_KEY, isRightHand ? 1 : 0);
+        PlayerPrefs.Save();
+        
+        ApplyRightHandDominanceToStanceManager(isRightHand);
+        
+        Debug.Log($"Right-hand dominance manually set to: {isRightHand}");
+    }
+    
+    public void SetHandDominanceFromBatonPickup(bool isRightHand)
+    {
+        if (rightHandToggle != null)
+        {
+            rightHandToggle.onValueChanged.RemoveListener(OnRightHandToggleChanged);
+            rightHandToggle.isOn = isRightHand;
+            rightHandToggle.onValueChanged.AddListener(OnRightHandToggleChanged);
+        }
+        
+        // Save the preference
+        PlayerPrefs.SetInt(RIGHT_HAND_PREF_KEY, isRightHand ? 1 : 0);
+        PlayerPrefs.SetInt(HAND_DOMINANCE_SET_KEY, 1);
+        PlayerPrefs.Save();
+        
+        ApplyRightHandDominanceToStanceManager(isRightHand);
+        
+        Debug.Log($"Hand dominance auto-detected as: {(isRightHand ? "Right" : "Left")} handed");
+    }
+    
+    private void ApplyRightHandDominanceToStanceManager(bool isRightHand)
+    {
+        StanceManager stanceManager = StanceManager.Instance;
+        if (stanceManager != null)
+        {
+            stanceManager.SetRightHandDominant(isRightHand);
+        }
+        else
+        {
+            stanceManager = FindObjectOfType<StanceManager>();
+            if (stanceManager != null)
+            {
+                stanceManager.SetRightHandDominant(isRightHand);
+            }
+            else
+            {
+                Debug.LogWarning("StanceManager not found in scene. Right-hand dominance setting will be applied when StanceManager is available.");
+            }
+        }
+    }
+    
+    public void ResetRightHandDominance()
+    {
+        if (rightHandToggle != null)
+        {
+            rightHandToggle.isOn = defaultRightHand;
+            
+            PlayerPrefs.SetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0);
+            PlayerPrefs.SetInt(HAND_DOMINANCE_SET_KEY, 0); 
+            PlayerPrefs.Save();
+            
+            ApplyRightHandDominanceToStanceManager(defaultRightHand);
+        }
+    }
+    
+    public bool GetRightHandDominance()
+    {
+        return PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0) == 1;
     }
 
     public void Menu()
