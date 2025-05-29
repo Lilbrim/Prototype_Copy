@@ -4,80 +4,60 @@ using UnityEngine.Video;
 public class GameProgressManager : MonoBehaviour
 {
     [Header("New Game Settings")]
-    [SerializeField] private bool isNewGameScene = false;
     [SerializeField] private VideoClip newGameCutscene;
     [SerializeField] private CutsceneManager cutsceneManager;
-    [SerializeField] private float delayBeforeCutscene = 1f;
-    [SerializeField] private bool loadNextSceneAfterCutscene = false;
     [SerializeField] private string nextSceneName = "Tutorial";
     
     private const string NEW_GAME_KEY = "newgame";
     private const string SCENE_VISITED_PREFIX = "visited_";
     
-    private void Start()
-    {
-        bool isNewGame = !HasStartedGame();
-        
-        if (isNewGame && isNewGameScene)
-        {
-            Invoke(nameof(PlayNewGameCutscene), delayBeforeCutscene);
-        }
-        
-        if (isNewGameScene)
-        {
-            MarkSceneVisited();
-        }
-    }
+    public static GameProgressManager Instance { get; private set; }
     
-    private void PlayNewGameCutscene()
+    private void Awake()
     {
-        if (cutsceneManager != null)
+        if (Instance == null)
         {
-            cutsceneManager.OnCutsceneEnd += OnCutsceneFinished;
-            cutsceneManager.OnCutsceneSkip += OnCutsceneFinished;
-            
-            if (newGameCutscene != null)
-                cutsceneManager.PlayCutscene(newGameCutscene);
-            else
-                cutsceneManager.PlayCutscene();
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogWarning("CutsceneManager not found! Cannot play new game cutscene.");
-            MarkGameStarted();
+            Destroy(gameObject);
         }
     }
     
-    private void OnCutsceneFinished()
+    private void Start()
+    {
+        MarkSceneVisited();
+    }
+    
+    public void StartNewGameWithCutscene(System.Action onComplete = null)
+    {
+        if (cutsceneManager != null && newGameCutscene != null)
+        {
+            cutsceneManager.OnCutsceneEnd += () => OnNewGameCutsceneFinished(onComplete);
+            cutsceneManager.OnCutsceneSkip += () => OnNewGameCutsceneFinished(onComplete);
+            
+            cutsceneManager.PlayCutscene(newGameCutscene);
+        }
+        else
+        {
+            MarkGameStarted();
+            onComplete?.Invoke();
+        }
+    }
+    
+    private void OnNewGameCutsceneFinished(System.Action onComplete)
     {
         if (cutsceneManager != null)
         {
-            cutsceneManager.OnCutsceneEnd -= OnCutsceneFinished;
-            cutsceneManager.OnCutsceneSkip -= OnCutsceneFinished;
+            cutsceneManager.OnCutsceneEnd -= () => OnNewGameCutsceneFinished(onComplete);
+            cutsceneManager.OnCutsceneSkip -= () => OnNewGameCutsceneFinished(onComplete);
         }
         
         MarkGameStarted();
         
-        Debug.Log("New game cutscene finished - game progress saved");
-        
-        if (loadNextSceneAfterCutscene && !string.IsNullOrEmpty(nextSceneName))
-        {
-            LoadNextScene();
-        }
-    }
-    
-    private void LoadNextScene()
-    {
-        SceneTransitionManager transitionManager = FindObjectOfType<SceneTransitionManager>();
-        if (transitionManager != null)
-        {
-            transitionManager.LoadSceneWithTransition(nextSceneName);
-        }
-        else
-        {
-            Debug.LogWarning("SceneTransitionManager not found, loading scene directly");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneName);
-        }
+        onComplete?.Invoke();
     }
     
     private bool HasStartedGame()
@@ -89,7 +69,6 @@ public class GameProgressManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(NEW_GAME_KEY, 1);
         PlayerPrefs.Save();
-        Debug.Log("Game progress saved - player will see 'Continue' option next time");
     }
     
     private void MarkSceneVisited()
@@ -105,29 +84,19 @@ public class GameProgressManager : MonoBehaviour
         return PlayerPrefs.GetInt(sceneKey, 0) == 1;
     }
     
-
-    /// Call this method to trigger a cutscene for story events
     public void PlayStoryCutscene(VideoClip cutsceneVideo)
     {
         if (cutsceneManager != null)
         {
             cutsceneManager.PlayCutscene(cutsceneVideo);
         }
-        else
-        {
-            Debug.LogWarning("CutsceneManager not found! Cannot play story cutscene.");
-        }
     }
-    
 
-    /// Call this method when the player reaches a save point
     public void SaveGameProgress()
     {
         UIManager.SaveGame();
-        Debug.Log("Game progress saved at checkpoint");
     }
     
-    /// Reset all game progress (for testing or new game+)
     public void ResetGameProgress()
     {
         PlayerPrefs.DeleteAll();

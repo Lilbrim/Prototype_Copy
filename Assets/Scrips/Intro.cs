@@ -29,7 +29,7 @@ public class IntroManager : MonoBehaviour
 
     [Header("Scene References")]
     public Transform roomTransform;
-    public GameObject[] stanceBoxes;
+    public GameObject[] stanceBoxes; 
     public StanceManager stanceManager;
     public TutorialLevelManager TutorialLevelManager;
     
@@ -37,6 +37,9 @@ public class IntroManager : MonoBehaviour
     public float roomRotationSpeed = 10f;
     public float fogDisappearSpeed = 0.5f;
     public float stanceHoldTime = 3f;
+
+    [Header("Dominant Hand Detection")]
+    [SerializeField] private float dominantHandDetectionDelay = 0.5f;
 
     private StanceDetector[] stanceDetectors;
     private bool[] isBoxHeld;
@@ -47,6 +50,12 @@ public class IntroManager : MonoBehaviour
     private bool batonInstructionShown = false;
     private bool heightInstructionShown = false;
     private bool boxInstructionShown = false;
+    
+    private bool leftBatonGrabbed = false;
+    private bool rightBatonGrabbed = false;
+    private bool dominantHandDetected = false;
+    private float firstGrabTime = 0f;
+    private bool isRightHandDominant = false;
 
     private enum IntroState
     {
@@ -76,6 +85,128 @@ public class IntroManager : MonoBehaviour
     private void Start()
     {
         InitializeScene();
+        SetupBatonSocketListeners();
+    }
+
+    private void SetupBatonSocketListeners()
+    {
+        if (leftBatonSocket != null)
+        {
+            leftBatonSocket.selectExited.AddListener(OnLeftBatonRemoved);
+        }
+        
+        if (rightBatonSocket != null)
+        {
+            rightBatonSocket.selectExited.AddListener(OnRightBatonRemoved);
+        }
+    }
+
+    private void OnLeftBatonRemoved(SelectExitEventArgs args)
+    {
+        if (!dominantHandDetected && currentState == IntroState.GrabBaton)
+        {
+            leftBatonGrabbed = true;
+            
+            if (!rightBatonGrabbed)
+            {
+                firstGrabTime = Time.time;
+                StartCoroutine(CheckDominantHand());
+            }
+            else
+            {
+                DetermineDominantHand();
+            }
+        }
+    }
+
+    private void OnRightBatonRemoved(SelectExitEventArgs args)
+    {
+        if (!dominantHandDetected && currentState == IntroState.GrabBaton)
+        {
+            rightBatonGrabbed = true;
+            
+            if (!leftBatonGrabbed)
+            {
+                firstGrabTime = Time.time;
+                StartCoroutine(CheckDominantHand());
+            }
+            else
+            {
+                DetermineDominantHand();
+            }
+        }
+    }
+
+    private IEnumerator CheckDominantHand()
+    {
+        yield return new WaitForSeconds(dominantHandDetectionDelay);
+        
+        if (!dominantHandDetected)
+        {
+            DetermineDominantHand();
+        }
+    }
+
+    private void DetermineDominantHand()
+    {
+        if (dominantHandDetected) return;
+        
+        dominantHandDetected = true;
+        
+        if (leftBatonGrabbed && rightBatonGrabbed)
+        {
+            // Both grabbed, determine by timing or other logic
+        }
+        else if (leftBatonGrabbed && !rightBatonGrabbed)
+        {
+            isRightHandDominant = false;
+            Debug.Log("Left hand dominant detected (grabbed left baton first)");
+        }
+        else if (rightBatonGrabbed && !leftBatonGrabbed)
+        {
+            isRightHandDominant = true;
+            Debug.Log("Right hand dominant detected (grabbed right baton first)");
+        }
+        
+        // IMPORTANT: Set the dominant hand in StanceManager first
+        if (stanceManager != null)
+        {
+            // ENSURE STANCEMANAGER IS ACTIVE BEFORE SETTING DOMINANT HAND
+            if (!stanceManager.gameObject.activeInHierarchy)
+            {
+                stanceManager.gameObject.SetActive(true);
+                Debug.Log("Activated StanceManager for dominant hand setup");
+            }
+            
+            stanceManager.SetRightHandDominant(isRightHandDominant);
+            Debug.Log($"Set StanceManager right hand dominant to: {isRightHandDominant}");
+            
+            // Re-initialize stance detection after updating StanceManager
+            InitializeStanceDetection();
+            
+            // Deactivate again until intro completes (if needed)
+            // stanceManager.gameObject.SetActive(false);
+        }
+        
+        UpdateGrabBatonUI();
+    }
+
+    private void UpdateGrabBatonUI()
+    {
+        if (grabBatonText != null)
+        {
+            string dominantHandText = isRightHandDominant ? "right" : "left";
+            string nonDominantText = isRightHandDominant ? "left" : "right";
+            
+            if (requireBothArnis)
+            {
+                grabBatonText.text = $"Grab remaining baton with {nonDominantText} hand";
+            }
+            else
+            {
+                grabBatonText.text = $"Dominant hand: {dominantHandText}. Continue with tutorial.";
+            }
+        }
     }
 
     private void InitializeScene()
@@ -86,17 +217,31 @@ public class IntroManager : MonoBehaviour
         batonInstructionShown = false;
         heightInstructionShown = false;
         boxInstructionShown = false;
+        
+        // Reset dominant hand detection
+        leftBatonGrabbed = false;
+        rightBatonGrabbed = false;
+        dominantHandDetected = false;
+        isRightHandDominant = false;
+        firstGrabTime = 0f;
+        
         currentState = IntroState.BatonInstruction;
         
         RenderSettings.fog = true;
         RenderSettings.fogColor = Color.black;
         RenderSettings.fogDensity = 0.42f;
 
-        if (stanceManager != null) stanceManager.gameObject.SetActive(false);
+        // MODIFIED: Keep StanceManager active but ensure it's properly initialized
+        if (stanceManager != null) 
+        {
+            stanceManager.gameObject.SetActive(true);
+            Debug.Log("StanceManager kept active during intro initialization");
+        }
+        
         if (TutorialLevelManager != null) TutorialLevelManager.gameObject.SetActive(false);
 
-        InitializeStanceDetection();
-
+        // Initialize stance detection will be called after dominant hand is determined
+        
         if (grabBatonCanvas != null)
             grabBatonCanvas.gameObject.SetActive(false);
             
@@ -106,32 +251,54 @@ public class IntroManager : MonoBehaviour
         if (stanceInstructionImage != null)
             stanceInstructionImage.gameObject.SetActive(false);
             
+        // Hide stance boxes initially
+        HideAllStanceBoxes();
+
+        ShowBatonWelcomeInstruction();
+    }
+
+    private void HideAllStanceBoxes()
+    {
         GameObject[] activeBoxes = GetActiveStanceBoxes();
         foreach (var box in activeBoxes)
         {
-            box.SetActive(false);
+            if (box != null)
+                box.SetActive(false);
         }
-
-        ShowBatonWelcomeInstruction();
     }
 
     private GameObject[] GetActiveStanceBoxes()
     {
         if (stanceManager != null)
         {
+            bool wasActive = stanceManager.gameObject.activeInHierarchy;
+            if (!wasActive)
+            {
+                stanceManager.gameObject.SetActive(true);
+                Debug.Log("Temporarily activated StanceManager to get intro boxes");
+            }
+            
             GameObject[] managerBoxes = stanceManager.GetIntroStanceBoxes();
             if (managerBoxes != null && managerBoxes.Length > 0)
             {
+                Debug.Log($"Using StanceManager intro boxes: {managerBoxes.Length} boxes, Right hand dominant: {isRightHandDominant}");
                 return managerBoxes;
             }
         }
         
-        return stanceBoxes;
+        Debug.Log($"Using local stance boxes: {stanceBoxes?.Length ?? 0} boxes");
+        return stanceBoxes ?? new GameObject[0];
     }
 
     private void InitializeStanceDetection()
     {
         GameObject[] activeBoxes = GetActiveStanceBoxes();
+        
+        if (activeBoxes.Length == 0)
+        {
+            Debug.LogWarning("No stance boxes found for initialization!");
+            return;
+        }
         
         stanceDetectors = new StanceDetector[activeBoxes.Length];
         isBoxHeld = new bool[activeBoxes.Length];
@@ -139,10 +306,20 @@ public class IntroManager : MonoBehaviour
 
         for (int i = 0; i < activeBoxes.Length; i++)
         {
-            stanceDetectors[i] = activeBoxes[i].GetComponent<StanceDetector>();
-            isBoxHeld[i] = false;
-            holdTimers[i] = 0f;
+            if (activeBoxes[i] != null)
+            {
+                stanceDetectors[i] = activeBoxes[i].GetComponent<StanceDetector>();
+                isBoxHeld[i] = false;
+                holdTimers[i] = 0f;
+                
+                if (stanceDetectors[i] == null)
+                {
+                    Debug.LogWarning($"StanceDetector not found on box: {activeBoxes[i].name}");
+                }
+            }
         }
+        
+        Debug.Log($"Initialized stance detection with {activeBoxes.Length} boxes");
     }
 
     private void Update()
@@ -151,7 +328,7 @@ public class IntroManager : MonoBehaviour
         {
             CheckBatonRemoval();
         }
-        else if (!stanceCompleted && stanceInstructionText.gameObject.activeSelf)
+        else if (!stanceCompleted && stanceInstructionText != null && stanceInstructionText.gameObject.activeSelf)
         {
             CheckStanceHold();
         }
@@ -179,6 +356,23 @@ public class IntroManager : MonoBehaviour
             case IntroState.GrabBaton:
                 if (grabBatonCanvas != null)
                     grabBatonCanvas.gameObject.SetActive(false);
+                
+                if (!dominantHandDetected)
+                {
+                    isRightHandDominant = true;
+                    dominantHandDetected = true;
+                    if (stanceManager != null)
+                    {
+                        // ENSURE STANCEMANAGER IS ACTIVE
+                        if (!stanceManager.gameObject.activeInHierarchy)
+                        {
+                            stanceManager.gameObject.SetActive(true);
+                            Debug.Log("Activated StanceManager during skip");
+                        }
+                        stanceManager.SetRightHandDominant(isRightHandDominant);
+                        InitializeStanceDetection();
+                    }
+                }
                 
                 batonsRemoved = true;
                 currentState = IntroState.HeightInstruction;
@@ -218,11 +412,7 @@ public class IntroManager : MonoBehaviour
                 StopAllCoroutines();
                 stanceCompleted = true;
                 
-                GameObject[] activeBoxes = GetActiveStanceBoxes();
-                foreach (var box in activeBoxes)
-                {
-                    box.SetActive(false);
-                }
+                HideAllStanceBoxes();
                 
                 if (stanceInstructionText != null)
                     stanceInstructionText.gameObject.SetActive(false);
@@ -242,10 +432,35 @@ public class IntroManager : MonoBehaviour
 
     private void CompleteIntro()
     {
-        stanceManager.gameObject.SetActive(true);
-        TutorialLevelManager.gameObject.SetActive(true);
-        TutorialLevelManager.StartLevel();
+        // ENSURE STANCEMANAGER IS DEFINITELY ACTIVE
+        if (stanceManager != null)
+        {
+            stanceManager.gameObject.SetActive(true);
+            Debug.Log("StanceManager activated in CompleteIntro()");
+        }
+            
+        if (TutorialLevelManager != null)
+        {
+            TutorialLevelManager.gameObject.SetActive(true);
+            TutorialLevelManager.StartLevel();
+        }
+        
         this.enabled = false;
+    }
+
+    // ADD: Public method to force activate StanceManager (for debugging)
+    [ContextMenu("Force Activate StanceManager")]
+    public void ForceActivateStanceManager()
+    {
+        if (stanceManager != null)
+        {
+            stanceManager.gameObject.SetActive(true);
+            Debug.Log("Force activated StanceManager");
+        }
+        else
+        {
+            Debug.LogError("StanceManager reference is null!");
+        }
     }
 
     private void ShowBatonWelcomeInstruction()
@@ -339,20 +554,42 @@ public class IntroManager : MonoBehaviour
 
     private void StartStancePhase()
     {
-        stanceInstructionText.text = stanceInstructionMessage;
-        stanceInstructionImage.sprite = stanceInstructionSprite;
-        stanceInstructionText.gameObject.SetActive(true);
-        stanceInstructionImage.gameObject.SetActive(true);
+        // Make sure stance detection is initialized before starting the phase
+        if (stanceDetectors == null || stanceDetectors.Length == 0)
+        {
+            InitializeStanceDetection();
+        }
+        
+        if (stanceInstructionText != null)
+            stanceInstructionText.text = stanceInstructionMessage;
+            
+        if (stanceInstructionImage != null)
+            stanceInstructionImage.sprite = stanceInstructionSprite;
+            
+        if (stanceInstructionText != null)
+            stanceInstructionText.gameObject.SetActive(true);
+            
+        if (stanceInstructionImage != null)
+            stanceInstructionImage.gameObject.SetActive(true);
 
         GameObject[] activeBoxes = GetActiveStanceBoxes();
         foreach (var box in activeBoxes)
         {
-            box.SetActive(true);
+            if (box != null)
+                box.SetActive(true);
         }
+        
+        Debug.Log($"Started stance phase with {activeBoxes.Length} boxes");
     }
 
     private void CheckStanceHold()
     {
+        if (stanceDetectors == null || stanceDetectors.Length == 0)
+        {
+            Debug.LogWarning("Stance detectors not initialized!");
+            return;
+        }
+        
         bool allBoxesHeld = true;
 
         for (int i = 0; i < stanceDetectors.Length; i++)
@@ -390,13 +627,13 @@ public class IntroManager : MonoBehaviour
     {
         stanceCompleted = true;
 
-        GameObject[] activeBoxes = GetActiveStanceBoxes();
-        foreach (var box in activeBoxes)
-        {
-            box.SetActive(false);
-        }
-        stanceInstructionText.gameObject.SetActive(false);
-        stanceInstructionImage.gameObject.SetActive(false);
+        HideAllStanceBoxes();
+        
+        if (stanceInstructionText != null)
+            stanceInstructionText.gameObject.SetActive(false);
+            
+        if (stanceInstructionImage != null)
+            stanceInstructionImage.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1f);
 
@@ -406,9 +643,14 @@ public class IntroManager : MonoBehaviour
 
     private void ShowGrabBatonInstruction()
     {
-        grabBatonText.text = "Grab Batons using trigger";
-        grabBatonImage.gameObject.SetActive(true);
-        grabBatonCanvas.gameObject.SetActive(true);
+        if (grabBatonText != null)
+            grabBatonText.text = "Grab Baton Depending on your dominant hand.";
+            
+        if (grabBatonImage != null)
+            grabBatonImage.gameObject.SetActive(true);
+            
+        if (grabBatonCanvas != null)
+            grabBatonCanvas.gameObject.SetActive(true);
     }
 
     private void OnDestroy()
@@ -421,5 +663,25 @@ public class IntroManager : MonoBehaviour
             instructionScreens.onHeightInstructionComplete.RemoveListener(OnHeightInstructionComplete);
             instructionScreens.onBoxInstructionComplete.RemoveListener(OnBoxInstructionComplete);
         }
+        
+        if (leftBatonSocket != null)
+        {
+            leftBatonSocket.selectExited.RemoveListener(OnLeftBatonRemoved);
+        }
+        
+        if (rightBatonSocket != null)
+        {
+            rightBatonSocket.selectExited.RemoveListener(OnRightBatonRemoved);
+        }
+    }
+
+    public bool GetIsRightHandDominant()
+    {
+        return isRightHandDominant;
+    }
+
+    public bool IsDominantHandDetected()
+    {
+        return dominantHandDetected;
     }
 }

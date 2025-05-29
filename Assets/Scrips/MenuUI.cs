@@ -81,14 +81,26 @@ public class UIManager : MonoBehaviour
     
     private void StartNewGame()
     {
-        LoadScene(newGameSceneName);
+        // Clear save data first
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        
+        // Play cutscene then load scene
+        if (GameProgressManager.Instance != null)
+        {
+            GameProgressManager.Instance.StartNewGameWithCutscene(() => {
+                LoadScene(newGameSceneName);
+            });
+        }
+        else
+        {
+            Debug.LogWarning("GameProgressManager not found! Loading scene directly.");
+            LoadScene(newGameSceneName);
+        }
     }
     
     public void OnConfirmNewGame()
     {
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
-        
         if (confirmationPanel != null)
             confirmationPanel.SetActive(false);
         

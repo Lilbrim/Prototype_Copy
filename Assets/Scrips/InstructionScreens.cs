@@ -34,13 +34,13 @@ public class InstructionScreens : MonoBehaviour
     public TextMeshProUGUI continuePrompt;
 
     [Header("Instruction Content")]
-    [SerializeField] private string batonInstructionMessage = "Welcome! Pick up your batons to begin training";
-    [SerializeField] private string heightInstructionMessage = "Adjust the slider to set your height for optimal gameplay";
+    [SerializeField] private string batonInstructionMessage = "Pick up your baton depending on your preferred hand to begin. This can be changed in the settings";
+    [SerializeField] private string heightInstructionMessage = "Adjust the slider to set your height. This can be changed in the settings.";
     [SerializeField] private string boxInstructionMessage = "Stand in the stance boxes when they appear";
     [SerializeField] private string continueButtonPrompt = "Press A to Continue";
 
     [Header("Height Settings")]
-    public Transform playerRig;  // Reference to player rig for height adjustment
+    public Transform playerRig;  
     public float minHeight = 0.5f;
     public float maxHeight = 1.5f;
     [SerializeField] private float defaultHeight = 1.0f;

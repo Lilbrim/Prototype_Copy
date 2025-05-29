@@ -1291,29 +1291,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b4d48a429680249bdc5786da78de82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  batonPrefab: {fileID: 40414112}
-  batonAttachPoint: {fileID: 0}
-  targetSequenceName: 
-  targetStyleName: 
-  useVisualClones: 1
-  pathHeightOffset: {x: 0, y: 0, z: 0}
-  pathObjects: []
-  timestamps: []
-  movementTypes: 
-  batonPath: []
+  batonPath:
+  - position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    timestamp: 0
+    speed: 0
   loop: 1
   autoPlay: 1
   globalSpeedMultiplier: 1
-  autoGenerateTimestamps: 1
-  totalPathDuration: 5
-  showTrail: 1
+  showBaton: 1
   batonTrail: {fileID: 0}
-  trailMaterial: {fileID: 0}
-  trailWidth: 0.1
-  trailPoints: 20
-  showGizmos: 0
-  pathColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  debugSequenceDetection: 0
 --- !u!4 &643154561
 Transform:
   m_ObjectHideFlags: 0

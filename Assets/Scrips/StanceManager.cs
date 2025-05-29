@@ -24,7 +24,7 @@ public class StanceManager : MonoBehaviour
     public Vector3 mirrorNormal = Vector3.right;
     
     private Dictionary<GameObject, GameObject> mirroredBoxes = new Dictionary<GameObject, GameObject>();
-    private List<ArnisStyle> mirroredArnisStyles = new List<ArnisStyle>();
+    public List<ArnisStyle> mirroredArnisStyles = new List<ArnisStyle>();
     private GameObject[] mirroredDefaultBoxes;
     private GameObject[] mirroredIntroBoxes;
     private bool mirroredDataInitialized = false;
@@ -91,6 +91,7 @@ public class StanceManager : MonoBehaviour
 
     private void Start()
     {
+        gameObject.SetActive(true);
         InitializeMirroringSystem();
 
         allDetectors = FindObjectsOfType<StanceDetector>();
@@ -1044,6 +1045,7 @@ public class StanceManager : MonoBehaviour
             UpdateSequenceColorsForSequence(currentAttackSequence);
         }
     }
+    
 }
 
 [System.Serializable]
