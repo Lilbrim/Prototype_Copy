@@ -9884,7 +9884,7 @@ GameObject:
   - component: {fileID: 496968442}
   m_Layer: 0
   m_Name: Left_Baton (1)
-  m_TagString: Right Baton
+  m_TagString: Left Baton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

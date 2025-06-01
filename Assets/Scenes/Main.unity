@@ -9901,10 +9901,8 @@ MonoBehaviour:
   loopDelay: 1
   showOnlyActiveSequence: 1
   speedCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 3
-      time: 0
+    - time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -9912,8 +9910,7 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 1
+    - time: 1
       value: 1
       inSlope: 0
       outSlope: 0
@@ -9930,8 +9927,19 @@ MonoBehaviour:
   mirrorPlane: {fileID: 1366419756}
   mirrorNormal: {x: 0, y: 0, z: 1}
   showDebugGizmos: 0
-  leftPathColor: {r: 0, g: 0, b: 1, a: 1}
-  rightPathColor: {r: 1, g: 0, b: 0, a: 1}
+  leftPathColor:
+    r: 0
+    g: 0
+    b: 1
+    a: 1
+  rightPathColor:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
+  stanceManager: {fileID: 0}
+  guidesParent: {fileID: 0}
+  mirroredGuidesParent: {fileID: 0}
 --- !u!4 &748189996
 Transform:
   m_ObjectHideFlags: 0
@@ -15452,7 +15460,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1246054128}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9915387
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20428,7 +20436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49966}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1745777024
@@ -20565,7 +20573,6 @@ MonoBehaviour:
   isRightHandDominant: 1
   mirrorPlane: {fileID: 1366419756}
   mirrorNormal: {x: 0, y: 0, z: 1}
-  mirroredArnisStyles: []
   stanceTimeout: 100
   currentAttackSequence:
     sequenceName: 
@@ -21087,7 +21094,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49966}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1785708855
@@ -21211,7 +21218,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 230798230}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9915387
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
