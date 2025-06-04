@@ -257,7 +257,6 @@ public class Pause : MonoBehaviour
             rightHandToggle.onValueChanged.AddListener(OnRightHandToggleChanged);
         }
         
-        // Save the preference
         PlayerPrefs.SetInt(RIGHT_HAND_PREF_KEY, isRightHand ? 1 : 0);
         PlayerPrefs.SetInt(HAND_DOMINANCE_SET_KEY, 1);
         PlayerPrefs.Save();

@@ -68,18 +68,16 @@ public class StanceManager : MonoBehaviour
 
     public GameObject[] GetIntroStanceBoxes()
     {
-        return introStanceBoxes; // Always return original boxes
+        return introStanceBoxes;
     }
     private void Start()
     {
         gameObject.SetActive(true);
         
-        // Store original transforms for all objects that might be mirrored
         StoreOriginalTransforms();
         
         allDetectors = FindObjectsOfType<StanceDetector>();
         
-        // Apply mirroring if needed
         if (isRightHandDominant)
         {
             ApplyMirroringToAllObjects();
@@ -90,7 +88,6 @@ public class StanceManager : MonoBehaviour
 
        private void StoreOriginalTransforms()
     {
-        // Store transforms for default boxes
         foreach (var box in defaultBoxes)
         {
             if (box != null)
@@ -99,7 +96,6 @@ public class StanceManager : MonoBehaviour
             }
         }
 
-        // Store transforms for intro boxes
         if (introStanceBoxes != null)
         {
             foreach (var box in introStanceBoxes)
@@ -111,7 +107,6 @@ public class StanceManager : MonoBehaviour
             }
         }
 
-        // Store transforms for all arnis style boxes and sequences
         foreach (var style in arnisStyles)
         {
             foreach (var box in style.stanceBoxes)
@@ -202,20 +197,17 @@ public class StanceManager : MonoBehaviour
         Vector3 mirrorPosition = mirrorPlane.position;
         Vector3 worldMirrorNormal = mirrorPlane.TransformDirection(mirrorNormal).normalized;
 
-        // Mirror position
         Vector3 toOriginal = originalPos - mirrorPosition;
         float distanceToPlane = Vector3.Dot(toOriginal, worldMirrorNormal);
         Vector3 mirroredPos = originalPos - 2 * distanceToPlane * worldMirrorNormal;
         target.position = mirroredPos;
 
-        // Mirror rotation
         Vector3 originalForward = originalRot * Vector3.forward;
         Vector3 originalUp = originalRot * Vector3.up;
         Vector3 mirroredForward = Vector3.Reflect(originalForward, worldMirrorNormal);
         Vector3 mirroredUp = Vector3.Reflect(originalUp, worldMirrorNormal);
         target.rotation = Quaternion.LookRotation(mirroredForward, mirroredUp);
 
-        // Mirror scale
         Vector3 mirroredScale = originalScale;
         if (Mathf.Abs(worldMirrorNormal.x) > 0.5f)
             mirroredScale.x *= -1;
@@ -253,17 +245,17 @@ public class StanceManager : MonoBehaviour
 
     private GameObject[] GetActiveDefaultBoxes()
     {
-        return defaultBoxes; // Always return original objects
+        return defaultBoxes; 
     }
 
     private List<ArnisStyle> GetActiveArnisStyles()
     {
-        return arnisStyles; // Always return original styles
+        return arnisStyles; 
     }
 
     private void OnDestroy()
     {
-        // Clean up dictionaries
+
         originalPositions.Clear();
         originalRotations.Clear();
         originalScales.Clear();
@@ -327,8 +319,14 @@ public class StanceManager : MonoBehaviour
         }
     }
 
+
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            TestActivateFirstSequence();
+        }
+
         if (currentStance != "Default" && currentAttackSequence == null)
         {
             CheckForSequenceStart();
@@ -655,7 +653,6 @@ public class StanceManager : MonoBehaviour
 
             if (isRightHandDominant)
             {
-                // When right-hand dominant, the hand assignments are effectively swapped
                 return leftDetector.IsRightHandInStance() && rightDetector.IsLeftHandInStance();
             }
             else
@@ -670,18 +667,16 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = sequence;
         timer = stanceTimeout;
         totalBoxesTouched = 0;
-        sequenceCounter = 0; // Reset sequence counter
+        sequenceCounter = 0;
 
         ForceResetTriggerStates(currentAttackSequence.sequenceBoxes);
 
-        // Deactivate all stance boxes including start boxes
         foreach (var box in GetActiveDefaultBoxes()) box.SetActive(false);
 
         foreach (var style in GetActiveArnisStyles())
         {
             foreach (var box in style.stanceBoxes) box.SetActive(false);
             
-            // Also deactivate all start and end boxes from other sequences
             foreach (var seq in style.sequences)
             {
                 if (seq.startBoxLeft != null) seq.startBoxLeft.SetActive(false);
@@ -691,13 +686,11 @@ public class StanceManager : MonoBehaviour
             }
         }
 
-        // Activate current sequence boxes
         foreach (var box in sequence.sequenceBoxes)
         {
             box.SetActive(true);
         }
 
-        // Activate only the current sequence's end boxes
         if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
 
@@ -719,7 +712,6 @@ public class StanceManager : MonoBehaviour
                 
                 if (isRightHandDominant)
                 {
-                    // When right-hand dominant, check both hands as the mirroring affects detection
                     handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
                 }
                 else
@@ -745,7 +737,6 @@ public class StanceManager : MonoBehaviour
                 
                 if (isRightHandDominant)
                 {
-                    // When right-hand dominant, the end box assignments are effectively swapped
                     endConditionMet = leftEndDetector.IsRightHandInStance() && rightEndDetector.IsLeftHandInStance();
                 }
                 else
@@ -874,7 +865,28 @@ public class StanceManager : MonoBehaviour
             UpdateSequenceColorsForSequence(currentAttackSequence);
         }
     }
-    
+    private void TestActivateFirstSequence()
+    {
+
+        if (GetActiveArnisStyles().Count > 0)
+        {
+            var firstStyle = GetActiveArnisStyles()[0];
+            if (firstStyle.sequences.Count > 0)
+            {
+                var firstSequence = firstStyle.sequences[0];
+
+                SetStance(firstStyle.styleName);
+                currentArnisStyle = firstStyle;
+
+                Debug.Log($"Set stance to: {firstStyle.styleName}");
+
+                StartAttackSequence(firstSequence);
+
+                Debug.Log($"Activated sequence: {firstSequence.sequenceName} from style: {firstStyle.styleName}");
+            }
+        }
+    }
+
 }
 
 [System.Serializable]

@@ -41,8 +41,10 @@ public class SparManager : MonoBehaviour, ILevelManager
     public bool useResultsManager = true;
 
     [Header("Sparring Partner Settings")]
-    public string sparringPartnerAnimation = "Fighting";
+    public string sparringPartnerAnimation = "Default";
     public bool useSparringPartner = false;
+    [Range(0f, 10f)]
+    public float sparringPartnerDelay = 2f; 
     private GameObject sparringPartner;
     private Animator sparringPartnerAnimator;
 
@@ -81,7 +83,6 @@ public class SparManager : MonoBehaviour, ILevelManager
     private string lastPlayerStance = "";
     private Dictionary<string, int> stanceUseCount = new Dictionary<string, int>();
     
-    // Reference to the results manager
     private SparResultsManager resultsManager;
 
     private void Awake()
@@ -100,7 +101,6 @@ public class SparManager : MonoBehaviour, ILevelManager
     {
         Time.timeScale = gameSpeed;
         
-        // Find the results manager if we're using it
         if (useResultsManager)
         {
             resultsManager = FindObjectOfType<SparResultsManager>();
@@ -111,7 +111,6 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-    // Method to receive the sparring partner from IntroLevel
     public void SetSparringPartner(GameObject partner)
     {
         sparringPartner = partner;
@@ -121,7 +120,6 @@ public class SparManager : MonoBehaviour, ILevelManager
             sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
             if (sparringPartnerAnimator != null)
             {
-                // Keep the current animation running until we need to change it
                 Debug.Log("Sparring partner animator found");
             }
             else
@@ -162,8 +160,27 @@ public class SparManager : MonoBehaviour, ILevelManager
 
         if (useSparringPartner && sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
+            StartCoroutine(StartSparringPartnerWithDelay());
+        }
+    }
+
+    private IEnumerator StartSparringPartnerWithDelay()
+    {
+        Debug.Log($"Waiting {sparringPartnerDelay} seconds before sparring partner starts moving...");
+        
+        if (sparringPartnerAnimator != null)
+        {
+            sparringPartnerAnimator.Play("Idle");
+            sparringPartnerAnimator.speed = 1f;
+        }
+        
+        yield return new WaitForSeconds(sparringPartnerDelay);
+        
+        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
             sparringPartnerAnimator.Play(sparringPartnerAnimation);
-            sparringPartnerAnimator.speed = 1f; // Default speed
+            sparringPartnerAnimator.speed = 1f;
+            Debug.Log("Sparring partner started moving after delay");
         }
     }
 
@@ -199,7 +216,6 @@ public class SparManager : MonoBehaviour, ILevelManager
             if (phase2Value <= 0)
             {
                 Debug.Log("Phase 2 value reached zero, returning to Phase 1");
-                // Clean up Phase 2 before starting Phase 1
                 CleanupPhase2();
                 StartCoroutine(StartPhase1());
             }
@@ -210,10 +226,7 @@ public class SparManager : MonoBehaviour, ILevelManager
             
             if (timer <= 0)
             {
-                opponentScore++;
-                UpdateScoreDisplay();
-                Debug.Log($"Time expired for Phase 1 objective {currentObjectiveIndex + 1}. Opponent score: {opponentScore}");
-                
+                Debug.Log($"Time expired for Phase 1 objective {currentObjectiveIndex + 1}. Moving to next objective.");
                 NextObjective();
             }
         }
@@ -262,15 +275,19 @@ public class SparManager : MonoBehaviour, ILevelManager
         currentPhase = 1;
         currentObjectiveIndex = 0;
 
-        if (useSparringPartner && sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        if (useSparringPartner && sparringPartnerAnimator != null)
         {
             sparringPartnerAnimator.Rebind();
             sparringPartnerAnimator.Update(0f);
             
-            sparringPartnerAnimator.Play(sparringPartnerAnimation);
+            sparringPartnerAnimator.Play("Idle");
             sparringPartnerAnimator.speed = 1f;
             
-            Debug.Log("Resetting Phase 1");
+            
+            if (!string.IsNullOrEmpty(sparringPartnerAnimation))
+            {
+                StartCoroutine(StartSparringPartnerWithDelay());
+            }
         }
 
         StartNextObjective();
@@ -280,6 +297,8 @@ public class SparManager : MonoBehaviour, ILevelManager
     {
         if (currentObjectiveIndex < phase1Objectives.Count)
         {
+            ClearCurrentObjectiveBoxes();
+            
             objectiveActive = true;
             
             float objectiveTimeout = phase1Objectives[currentObjectiveIndex].timeout > 0 ? 
@@ -291,12 +310,7 @@ public class SparManager : MonoBehaviour, ILevelManager
             string requiredStance = phase1Objectives[currentObjectiveIndex].stanceName;
             Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance} with timeout: {objectiveTimeout}s");
             
-            if (useSparringPartner && sparringPartnerAnimator != null)
-            {
-                float animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-                sparringPartnerAnimator.speed = animSpeed;
-                Debug.Log($"animation speed {animSpeed}");
-            }
+            // Animation speed adjustment will be handled by the delayed coroutine
             
             StanceManager.Instance.EnterStance(requiredStance);
         }
@@ -304,6 +318,16 @@ public class SparManager : MonoBehaviour, ILevelManager
         {
             StartCoroutine(StartPhase2());
         }
+    }
+
+    private void ClearCurrentObjectiveBoxes()
+    {
+        if (StanceManager.Instance == null) return;
+        
+        // Clear all currently active boxes before showing new objective
+        StanceManager.Instance.ClearAllStances();
+        
+        Debug.Log($"Cleared boxes for objective transition");
     }
 
     private void NextObjective()
@@ -321,7 +345,8 @@ public class SparManager : MonoBehaviour, ILevelManager
         
         if (stanceName == currentObjective)
         {
-            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed: {stanceName}.{sequenceName}");
+            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed early: {stanceName}.{sequenceName}");
+            // Player completed objective early, move to next objective (no points in Phase 1)
             NextObjective();
         }
     }
@@ -329,6 +354,12 @@ public class SparManager : MonoBehaviour, ILevelManager
     private IEnumerator StartPhase2()
     {
         Debug.Log("Transitioning to Phase 2");
+        
+        // Clear all Phase 1 boxes before transitioning
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.ClearAllStances();
+        }
         
         StanceManager.Instance.EnterStance("Default");
         objectiveActive = false;
@@ -346,7 +377,6 @@ public class SparManager : MonoBehaviour, ILevelManager
         {
             sparringPartnerAnimator.speed = 1f;
             sparringPartnerAnimator.Play("Idle");
-
         }
 
         ResetBlockChance();
@@ -530,30 +560,19 @@ public class SparManager : MonoBehaviour, ILevelManager
     {
         isGameOver = true;
         
-        // Clean up any active Phase 2 stances
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
         }
         
-        // Reset to default stance
         StanceManager.Instance.EnterStance("Default");
         
-        // Remove sparring partner if one exists
         if (useSparringPartner && sparringPartner != null)
         {
             sparringPartner.SetActive(false);
         }
         
-        // Disable all stance boxes similar to LevelManager
         DisableAllBoxes();
-        
-        // Disable the StanceManager
-        if (StanceManager.Instance != null)
-        {
-            StanceManager.Instance.SetGameActive(false);
-            StanceManager.Instance.enabled = false;
-        }
         
         if (useResultsManager && resultsManager != null)
         {
@@ -578,7 +597,6 @@ public class SparManager : MonoBehaviour, ILevelManager
         StanceManager sm = StanceManager.Instance;
         if (sm == null) return;
         
-        // Disable default boxes
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -588,7 +606,6 @@ public class SparManager : MonoBehaviour, ILevelManager
             }
         }
         
-        // Disable all style-specific boxes
         foreach (var style in sm.arnisStyles)
         {
             if (style.stanceBoxes != null)
@@ -611,7 +628,6 @@ public class SparManager : MonoBehaviour, ILevelManager
 
         
         
-        // If there's a current attack sequence, disable those boxes too
         if (sm.currentAttackSequence != null)
         {
             foreach (var box in sm.currentAttackSequence.sequenceBoxes)
@@ -620,7 +636,6 @@ public class SparManager : MonoBehaviour, ILevelManager
                 {
                     box.SetActive(false);
                     
-                    // Reset any StanceDetector components
                     StanceDetector detector = box.GetComponent<StanceDetector>();
                     if (detector != null)
                     {

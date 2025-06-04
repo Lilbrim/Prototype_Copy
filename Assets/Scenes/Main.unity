@@ -282,6 +282,151 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508114}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &3926425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3926426}
+  - component: {fileID: 3926430}
+  - component: {fileID: 3926429}
+  - component: {fileID: 3926428}
+  - component: {fileID: 3926427}
+  m_Layer: 0
+  m_Name: 2_L_End_Seq
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3926426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: -0.5, y: 1.364, z: 1.982}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &3926427
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926425}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3926428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 3926425}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &3926429
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926425}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &3926430
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3926425}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &11283825
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,7 +935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5fb720dab2a9d46811065adf7afcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundDuration: 1
+  roundDuration: 30
   totalRounds: 3
   phaseTransitionDelay: 0
   defaultObjectiveTimeout: 5
@@ -813,11 +958,15 @@ MonoBehaviour:
   - stanceName: BasicStrike
     timeout: 5
     animationSpeed: 1
+  - stanceName: Test
+    timeout: 5
+    animationSpeed: 1
   phase2Stances:
   - Blocking
+  - Test
   baseBlockChance: 0
   blockChanceIncrement: 0
-  blockChanceResetTime: 0
+  blockChanceResetTime: 1000
   blockFeedbackText: {fileID: 0}
 --- !u!1 &47370921
 GameObject:
@@ -1114,6 +1263,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -1691,6 +1844,151 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &98621634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 98621635}
+  - component: {fileID: 98621639}
+  - component: {fileID: 98621638}
+  - component: {fileID: 98621637}
+  - component: {fileID: 98621636}
+  m_Layer: 0
+  m_Name: 1_R
+  m_TagString: Right Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &98621635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98621634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: 0.5, y: 1.364, z: 1.41}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &98621636
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98621634}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &98621637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98621634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 98621634}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 8260888157809596331}
+  visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &98621638
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98621634}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &98621639
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98621634}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &98811275
 GameObject:
   m_ObjectHideFlags: 0
@@ -3527,6 +3825,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -3806,6 +4108,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -3947,6 +4253,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -5993,6 +6303,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -6721,6 +7035,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -6778,6 +7096,151 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505905084}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &535214435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 535214436}
+  - component: {fileID: 535214440}
+  - component: {fileID: 535214439}
+  - component: {fileID: 535214438}
+  - component: {fileID: 535214437}
+  m_Layer: 0
+  m_Name: 1_L
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &535214436
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535214435}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: -0.5, y: 1.364, z: 1.537}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &535214437
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535214435}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &535214438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535214435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 535214435}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &535214439
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535214435}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &535214440
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535214435}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &539758021
 GameObject:
@@ -8381,6 +8844,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -8522,6 +8989,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -9147,6 +9618,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -9879,7 +10354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &748189995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9887,59 +10362,38 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748189994}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 319c92af821cf9549af61400c7299611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandGuidePrefab: {fileID: 5027143044465991041}
-  rightHandGuidePrefab: {fileID: 8260888157809596331}
-  batonGuidePrefab: {fileID: 1368050364196381540}
-  pathHeight: 0.1
-  guideSpeed: 2
-  loopPath: 1
-  loopDelay: 1
-  showOnlyActiveSequence: 1
-  speedCurve:
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  fadeAtEndpoints: 1
-  fadeDistance: 0.5
-  enableMirroring: 0
-  mirrorPlane: {fileID: 1366419756}
-  mirrorNormal: {x: 0, y: 0, z: 1}
-  showDebugGizmos: 0
-  leftPathColor:
-    r: 0
-    g: 0
-    b: 1
-    a: 1
-  rightPathColor:
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  stanceManager: {fileID: 0}
-  guidesParent: {fileID: 0}
-  mirroredGuidesParent: {fileID: 0}
+  leftHandBaton:
+    batonName: Baton
+    batonPrefab: {fileID: 5027143044465991041}
+    showBaton: 1
+    batonTrail: {fileID: 0}
+    batonPath: []
+    loop: 0
+    autoPlay: 1
+    constantSpeed: 5
+    isLeftHand: 1
+  rightHandBaton:
+    batonName: Baton
+    batonPrefab: {fileID: 5027143044465991041}
+    showBaton: 1
+    batonTrail: {fileID: 0}
+    batonPath: []
+    loop: 0
+    autoPlay: 1
+    constantSpeed: 5
+    isLeftHand: 1
+  synchronizeBatons: 0
+  synchronizedDuration: 3
+  useSlowerBatonDuration: 1
+  autoDetectSequences: 1
+  startOnSequenceBegin: 1
+  stopOnSequenceEnd: 1
+  showGizmos: 1
 --- !u!4 &748189996
 Transform:
   m_ObjectHideFlags: 0
@@ -10245,6 +10699,151 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1e14ba0263b9841a819caa2b6caafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &795296956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795296957}
+  - component: {fileID: 795296961}
+  - component: {fileID: 795296960}
+  - component: {fileID: 795296959}
+  - component: {fileID: 795296958}
+  m_Layer: 0
+  m_Name: 0_R_Start_Seq
+  m_TagString: Right Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &795296957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795296956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: 0.5, y: 1.364, z: 1.118}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &795296958
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795296956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &795296959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795296956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 795296956}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 8260888157809596331}
+  visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &795296960
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795296956}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &795296961
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795296956}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &800851282
 GameObject:
   m_ObjectHideFlags: 0
@@ -10404,6 +11003,7 @@ Transform:
   - {fileID: 1251603805}
   - {fileID: 2035648718}
   - {fileID: 1100009518}
+  - {fileID: 1749847799}
   m_Father: {fileID: 800851283}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &835566006
@@ -10958,6 +11558,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -14311,6 +14915,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -14758,6 +15366,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -14899,6 +15511,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -15459,7 +16075,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1246054129}
   m_HandleRect: {fileID: 1246054128}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -15897,6 +16513,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -16697,6 +17317,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -16849,6 +17473,151 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1333966120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1333966121}
+  - component: {fileID: 1333966125}
+  - component: {fileID: 1333966124}
+  - component: {fileID: 1333966123}
+  - component: {fileID: 1333966122}
+  m_Layer: 0
+  m_Name: 0_L_Start_Seq
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1333966121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333966120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: -0.5, y: 1.364, z: 1.159}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &1333966122
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333966120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1333966123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333966120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 1333966120}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1333966124
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333966120}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1333966125
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333966120}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1342993203
 GameObject:
   m_ObjectHideFlags: 0
@@ -17110,6 +17879,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -17960,6 +18733,151 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1519131735}
   m_CullTransparentMesh: 1
+--- !u!1 &1523094819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1523094820}
+  - component: {fileID: 1523094824}
+  - component: {fileID: 1523094823}
+  - component: {fileID: 1523094822}
+  - component: {fileID: 1523094821}
+  m_Layer: 0
+  m_Name: 0_R_End_Seq
+  m_TagString: Right Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1523094820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523094819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: 0.5, y: 1.364, z: 1.735}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &1523094821
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523094819}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1523094822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523094819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 1523094819}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 8260888157809596331}
+  visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1523094823
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523094819}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1523094824
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523094819}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1533832127
 GameObject:
   m_ObjectHideFlags: 0
@@ -18043,6 +18961,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -18128,8 +19050,8 @@ Transform:
   m_GameObject: {fileID: 1536702410}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.00000023841858, y: 0.000000014901161, z: 0}
-  m_LocalScale: {x: 1041.1145, y: 1041.1145, z: 69.40763}
+  m_LocalPosition: {x: -0.0036557, y: 0.00000043549, z: 0.0028282}
+  m_LocalScale: {x: 682.23193, y: 682.23193, z: 45.48213}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 399508511}
@@ -18536,6 +19458,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -20477,6 +21403,45 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1749847798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1749847799}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1749847799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749847798}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1810464130}
+  - {fileID: 1964416910}
+  - {fileID: 795296957}
+  - {fileID: 98621635}
+  - {fileID: 1523094820}
+  - {fileID: 1333966121}
+  - {fileID: 535214436}
+  - {fileID: 3926426}
+  m_Father: {fileID: 807423094}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1749916800
 GameObject:
   m_ObjectHideFlags: 0
@@ -20561,6 +21526,23 @@ MonoBehaviour:
       - {fileID: 1142617150}
       endBoxLeft: {fileID: 715669363}
       endBoxRight: {fileID: 1134750058}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Test
+    stanceBoxes:
+    - {fileID: 795296956}
+    - {fileID: 1333966120}
+    - {fileID: 1523094819}
+    - {fileID: 3926425}
+    - {fileID: 535214435}
+    sequences:
+    - sequenceName: Test
+      startBoxLeft: {fileID: 1964416909}
+      startBoxRight: {fileID: 1810464129}
+      sequenceBoxes:
+      - {fileID: 535214435}
+      endBoxLeft: {fileID: 1333966120}
+      endBoxRight: {fileID: 1523094819}
       timeLimit: 0
       currentIndex: 0
   defaultBoxes:
@@ -20688,6 +21670,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -21217,7 +22203,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 230798231}
   m_HandleRect: {fileID: 230798230}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -21418,6 +22404,151 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1810464129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1810464130}
+  - component: {fileID: 1810464134}
+  - component: {fileID: 1810464133}
+  - component: {fileID: 1810464132}
+  - component: {fileID: 1810464131}
+  m_Layer: 0
+  m_Name: Start_R
+  m_TagString: Right Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1810464130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810464129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: 0.5, y: 1.364, z: 0.75}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &1810464131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810464129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1810464132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810464129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 1810464129}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 8260888157809596331}
+  visualRotationOffset: {x: -90, y: 180, z: 0}
+  enableVisualMirroring: 1
+  mirrorAxis: 0
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1810464133
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810464129}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1810464134
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1810464129}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1817575854
 GameObject:
   m_ObjectHideFlags: 0
@@ -21666,6 +22797,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -21807,6 +22942,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -22768,6 +23907,151 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945164673}
   m_Mesh: {fileID: 7305168873492875877, guid: 7d471717b0bb79b4ea8940a37c19a385, type: 3}
+--- !u!1 &1964416909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964416910}
+  - component: {fileID: 1964416914}
+  - component: {fileID: 1964416913}
+  - component: {fileID: 1964416912}
+  - component: {fileID: 1964416911}
+  m_Layer: 0
+  m_Name: Start_L
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1964416910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964416909}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071059, y: -0.000000029802322, z: 0.000000029802322, w: 0.7071078}
+  m_LocalPosition: {x: -0.5, y: 1.364, z: 0.75}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1749847799}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &1964416911
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964416909}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1964416912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964416909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Test
+  stanceBoxes:
+  - {fileID: 1964416909}
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 25
+  positionThreshold: 1
+  visualPrefab: {fileID: 1368050364196381540}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1964416913
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964416909}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5422559d46c00f64f9a02f754754f5ea, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1964416914
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964416909}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &2010232235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23215,6 +24499,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -23356,6 +24644,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
@@ -23988,6 +25280,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}

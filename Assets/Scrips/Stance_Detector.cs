@@ -36,6 +36,12 @@ public class StanceDetector : MonoBehaviour
         Z
     }
 
+    [Header("Sequence Visual Behavior")]
+    [SerializeField] private bool disappearOnTouch = true;
+    [SerializeField] private float disappearDelay = 0.0f; 
+    [SerializeField] private bool useDisappearAnimation = false;
+    [SerializeField] private float disappearAnimationDuration = 0.5f;
+
     [Header("Color Settings")]
     [SerializeField] private Color leftBatonColor = new Color(1.0f, 0.647f, 0.0f);
     [SerializeField] private Color rightBatonColor = new Color(0.0f, 0.812f, 1.0f); 
@@ -50,6 +56,8 @@ public class StanceDetector : MonoBehaviour
     private bool leftHandInStance = false;
     private bool rightHandInStance = false;
     public bool IsCompleted { get; set; } = false;
+    
+    private bool hasVisualDisappeared = false;
 
     private List<Collider> collidersInTrigger = new List<Collider>();
 
@@ -64,6 +72,7 @@ public class StanceDetector : MonoBehaviour
     private static readonly int ColorProperty = Shader.PropertyToID("_Color");
 
     private bool wasActiveLastFrame = false;
+    private Coroutine disappearCoroutine = null;
 
     private Transform GetBatonTipForHand(bool isLeftHand)
     {
@@ -89,28 +98,23 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    // Helper method to get the appropriate transform based on one-handed mode and hand dominance
     private Transform GetActiveTransformForHand(bool isLeftHand)
     {
         if (isOneHanded)
         {
-            // In one-handed mode, dominant hand uses baton, non-dominant uses hand
             bool isDominantHand = (StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant) ? !isLeftHand : isLeftHand;
             
             if (isDominantHand)
             {
-                // Dominant hand uses baton
                 return GetBatonTipForHand(isLeftHand);
             }
             else
             {
-                // Non-dominant hand uses hand transform
                 return GetHandForHand(isLeftHand);
             }
         }
         else
         {
-            // In two-handed mode, always use baton tips
             return GetBatonTipForHand(isLeftHand);
         }
     }
@@ -158,6 +162,8 @@ public class StanceDetector : MonoBehaviour
             propertyBlock = new MaterialPropertyBlock();
         }
 
+        hasVisualDisappeared = false;
+        
         SetupInitialReferences();
         SetupVisualRepresentation();
         SetupInitialColors();
@@ -166,6 +172,13 @@ public class StanceDetector : MonoBehaviour
     private void OnObjectDeactivated()
     {
         Debug.Log($"StanceDetector {gameObject.name} deactivated - destroying visual clone");
+        
+        if (disappearCoroutine != null)
+        {
+            StopCoroutine(disappearCoroutine);
+            disappearCoroutine = null;
+        }
+        
         DestroyVisualClone();
         ForceResetTriggerState();
     }
@@ -190,6 +203,9 @@ public class StanceDetector : MonoBehaviour
             {
                 propertyBlock = new MaterialPropertyBlock();
             }
+            
+            hasVisualDisappeared = false;
+            
             SetupInitialReferences();
             SetupVisualRepresentation();
             SetupInitialColors();
@@ -198,13 +214,19 @@ public class StanceDetector : MonoBehaviour
 
     private void OnDisable()
     {
+        if (disappearCoroutine != null)
+        {
+            StopCoroutine(disappearCoroutine);
+            disappearCoroutine = null;
+        }
+        
         ForceResetTriggerState();
         DestroyVisualClone();
     }
 
     private void SetupVisualRepresentation()
     {
-        if (!gameObject.activeInHierarchy)
+        if (!gameObject.activeInHierarchy || hasVisualDisappeared)
         {
             return;
         }
@@ -286,7 +308,7 @@ public class StanceDetector : MonoBehaviour
 
     private void SetupInitialColors()
     {
-        if (visualRenderer == null || !gameObject.activeInHierarchy) return;
+        if (visualRenderer == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
         if (isPartOfSequence)
         {
@@ -304,7 +326,7 @@ public class StanceDetector : MonoBehaviour
 
     private void SetDefaultColor()
     {
-        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy) return;
+        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
         Color targetColor;
         
@@ -329,7 +351,7 @@ public class StanceDetector : MonoBehaviour
 
     private void UpdateSequenceColor(int totalBoxesInSequence)
     {
-        if (visualRenderer == null || propertyBlock == null || totalBoxesInSequence <= 1 || !gameObject.activeInHierarchy) return;
+        if (visualRenderer == null || propertyBlock == null || totalBoxesInSequence <= 1 || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
         if (sequencePosition == 0 || sequencePosition == totalBoxesInSequence - 1)
         {
@@ -375,7 +397,7 @@ public class StanceDetector : MonoBehaviour
 
     public void UpdateColorForSequence(int totalBoxesInSequence)
     {
-        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy) return;
+        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
         
         if (isPartOfSequence && totalBoxesInSequence > 1)
         {
@@ -386,7 +408,6 @@ public class StanceDetector : MonoBehaviour
             SetDefaultColor();
         }
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -477,9 +498,82 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
+    private void HandleSequenceTouch()
+    {
+        if (!isPartOfSequence || !disappearOnTouch || hasVisualDisappeared) return;
+
+        Debug.Log($"Visual disappearing for sequence box: {gameObject.name}");
+        
+        if (disappearCoroutine != null)
+        {
+            StopCoroutine(disappearCoroutine);
+        }
+        
+        disappearCoroutine = StartCoroutine(DisappearVisualCoroutine());
+    }
+
+    private IEnumerator DisappearVisualCoroutine()
+    {
+        if (disappearDelay > 0)
+        {
+            yield return new WaitForSeconds(disappearDelay);
+        }
+
+        if (visualInstance != null)
+        {
+            if (useDisappearAnimation && disappearAnimationDuration > 0)
+            {
+                Vector3 originalScale = visualInstance.transform.localScale;
+                float elapsedTime = 0f;
+
+                while (elapsedTime < disappearAnimationDuration)
+                {
+                    if (visualInstance == null) yield break; 
+                    
+                    float t = elapsedTime / disappearAnimationDuration;
+                    float scale = Mathf.Lerp(1f, 0f, t);
+                    visualInstance.transform.localScale = originalScale * scale;
+                    
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+
+            hasVisualDisappeared = true;
+            DestroyVisualClone();
+        }
+
+        disappearCoroutine = null;
+    }
+
+    public void TriggerVisualDisappear()
+    {
+        HandleSequenceTouch();
+    }
+
+    public void RestoreVisual()
+    {
+        if (hasVisualDisappeared)
+        {
+            hasVisualDisappeared = false;
+            
+            if (disappearCoroutine != null)
+            {
+                StopCoroutine(disappearCoroutine);
+                disappearCoroutine = null;
+            }
+            
+            if (gameObject.activeInHierarchy)
+            {
+                SetupVisualRepresentation();
+                SetupInitialColors();
+            }
+        }
+    }
+
     private void CheckOrientation(Collider other)
     {
-        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy)
+        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared)
             return;
 
         bool isLeftHand = other.CompareTag("Left Baton") || other.CompareTag("Left Hand");
@@ -498,6 +592,11 @@ public class StanceDetector : MonoBehaviour
         float distance = Vector3.Distance(currentTransform.position, transform.position);
 
         bool inStance = (dot >= Mathf.Cos(angleThreshold * Mathf.Deg2Rad)) && (distance < positionThreshold);
+
+        if (inStance && isPartOfSequence)
+        {
+            HandleSequenceTouch();
+        }
 
         Color targetColor = inStance ? successColor : failureColor;
         propertyBlock.SetColor(ColorProperty, targetColor);
@@ -569,11 +668,13 @@ public class StanceDetector : MonoBehaviour
         rightHandInStance = false;
         ResetColor();
         IsCompleted = false;
+        
+        RestoreVisual();
     }
 
     private void ResetColor()
     {
-        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy) return;
+        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
         if (isPartOfSequence)
         {
@@ -600,6 +701,8 @@ public class StanceDetector : MonoBehaviour
 
         visualPrefab = newPrefab;
         visualRotationOffset = rotationOffset;
+        
+        hasVisualDisappeared = false;
         
         if (gameObject.activeInHierarchy)
         {
@@ -652,7 +755,6 @@ public class StanceDetector : MonoBehaviour
         }
     }
 
-    // New public methods for managing one-handed mode
     public void SetOneHandedMode(bool oneHanded)
     {
         isOneHanded = oneHanded;
@@ -663,14 +765,43 @@ public class StanceDetector : MonoBehaviour
         return isOneHanded;
     }
 
+    public void SetDisappearOnTouch(bool disappear)
+    {
+        disappearOnTouch = disappear;
+    }
+
+    public void SetDisappearDelay(float delay)
+    {
+        disappearDelay = delay;
+    }
+
+    public void SetUseDisappearAnimation(bool useAnimation)
+    {
+        useDisappearAnimation = useAnimation;
+    }
+
+    public void SetDisappearAnimationDuration(float duration)
+    {
+        disappearAnimationDuration = duration;
+    }
+
+    public bool HasVisualDisappeared()
+    {
+        return hasVisualDisappeared;
+    }
+
     private void OnDestroy()
     {
+        if (disappearCoroutine != null)
+        {
+            StopCoroutine(disappearCoroutine);
+        }
         DestroyVisualClone();
     }
     
     public bool HasVisualClone()
     {
-        return visualInstance != null;
+        return visualInstance != null && !hasVisualDisappeared;
     }
 
     public void RecreateVisualClone()
@@ -678,6 +809,7 @@ public class StanceDetector : MonoBehaviour
         if (visualPrefab != null && gameObject.activeInHierarchy)
         {
             DestroyVisualClone();
+            hasVisualDisappeared = false; 
             SetupVisualRepresentation();
             SetupInitialColors();
         }

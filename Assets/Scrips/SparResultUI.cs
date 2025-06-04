@@ -112,22 +112,24 @@ public class SparResultsManager : MonoBehaviour
     {
         HideResults();
         
+        IntroLevel introLevel = FindObjectOfType<IntroLevel>();
         SparManager sparManager = FindObjectOfType<SparManager>();
-        if (sparManager != null)
+        
+        if (introLevel != null)
         {
-            IntroLevel introLevel = FindObjectOfType<IntroLevel>();
-            if (introLevel != null)
+            if (introLevel.includeSparringPartner)
             {
-                if (introLevel.includeSparringPartner)
+                GameObject sparringPartner = GameObject.FindGameObjectWithTag("SparringPartner");
+                if (sparringPartner != null)
                 {
-                    GameObject sparringPartner = GameObject.FindGameObjectWithTag("SparringPartner");
-                    if (sparringPartner != null)
-                    {
-                        Destroy(sparringPartner);
-                    }
+                    Destroy(sparringPartner);
                 }
             }
             
+            introLevel.ActivateIntro();
+        }
+        else if (sparManager != null)
+        {
             sparManager.Restart();
         }
     }

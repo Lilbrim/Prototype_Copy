@@ -996,6 +996,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -1661,6 +1665,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -7120,6 +7128,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -8883,6 +8895,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -9314,6 +9330,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -12022,6 +12042,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -12274,6 +12298,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -12901,6 +12929,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -13215,6 +13247,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -14164,6 +14200,7 @@ GameObject:
   - component: {fileID: 1062512847}
   - component: {fileID: 1062512846}
   - component: {fileID: 1062512845}
+  - component: {fileID: 1062512848}
   m_Layer: 5
   m_Name: UI_Baton_Instructions
   m_TagString: Untagged
@@ -14257,6 +14294,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1062512848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062512843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1063722493
 GameObject:
   m_ObjectHideFlags: 0
@@ -14371,6 +14427,7 @@ Transform:
   - {fileID: 1405271599}
   - {fileID: 2017103569}
   - {fileID: 1510557946}
+  - {fileID: 1936066973}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1110527985
@@ -16064,6 +16121,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -16205,6 +16266,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -16338,7 +16403,6 @@ MonoBehaviour:
   isRightHandDominant: 1
   mirrorPlane: {fileID: 285522796}
   mirrorNormal: {x: 0, y: 0, z: 1}
-  mirroredArnisStyles: []
   stanceTimeout: 100
   currentAttackSequence:
     sequenceName: 
@@ -18054,6 +18118,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -18624,6 +18692,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 0
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -19892,6 +19964,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -20573,7 +20649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1917907858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20581,51 +20657,38 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917907857}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 319c92af821cf9549af61400c7299611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandGuidePrefab: {fileID: 874846453}
-  rightHandGuidePrefab: {fileID: 1405271598}
-  batonGuidePrefab: {fileID: 136025689}
-  pathHeight: 0.1
-  guideSpeed: 2
-  loopPath: 1
-  loopDelay: 1
-  showOnlyActiveSequence: 1
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  fadeAtEndpoints: 1
-  fadeDistance: 0.5
-  enableMirroring: 0
-  mirrorPlane: {fileID: 498175247}
-  mirrorNormal: {x: 0, y: 0, z: 1}
-  showDebugGizmos: 0
-  leftPathColor: {r: 1, g: 1, b: 1, a: 1}
-  rightPathColor: {r: 1, g: 1, b: 1, a: 1}
+  leftHandBaton:
+    batonName: Baton
+    batonPrefab: {fileID: 1936066972}
+    showBaton: 1
+    batonTrail: {fileID: 0}
+    batonPath: []
+    loop: 1
+    autoPlay: 1
+    constantSpeed: 1
+    isLeftHand: 1
+  rightHandBaton:
+    batonName: Baton
+    batonPrefab: {fileID: 1936066972}
+    showBaton: 1
+    batonTrail: {fileID: 0}
+    batonPath: []
+    loop: 1
+    autoPlay: 1
+    constantSpeed: 1
+    isLeftHand: 1
+  synchronizeBatons: 1
+  synchronizedDuration: 3
+  useSlowerBatonDuration: 1
+  autoDetectSequences: 1
+  startOnSequenceBegin: 1
+  stopOnSequenceEnd: 1
+  showGizmos: 1
 --- !u!4 &1917907859
 Transform:
   m_ObjectHideFlags: 0
@@ -20757,6 +20820,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -20814,6 +20881,111 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932097039}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1936066972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1936066973}
+  - component: {fileID: 1936066976}
+  - component: {fileID: 1936066975}
+  - component: {fileID: 1936066974}
+  m_Layer: 0
+  m_Name: Cube (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1936066973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936066972}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.7992983, y: -0.92, z: 0.530249}
+  m_LocalScale: {x: 0.12094245, y: 0.12094245, z: 0.12094245}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1103321136}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1936066974
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936066972}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1936066975
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936066972}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1936066976
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936066972}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1955501387
 GameObject:
@@ -21126,6 +21298,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -21940,6 +22116,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}
@@ -22081,6 +22261,10 @@ MonoBehaviour:
   enableVisualMirroring: 1
   mirrorAxis: 2
   invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
   leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
   rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
   leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 1}

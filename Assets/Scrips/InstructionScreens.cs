@@ -24,7 +24,7 @@ public class InstructionScreens : MonoBehaviour
     public Image heightInstructionImage;
     public Slider heightSlider;
     public TextMeshProUGUI heightValueText;
-    
+
     [Header("Box Instruction Panel")]
     public GameObject boxInstructionPanel;
     public TextMeshProUGUI boxInstructionText;
@@ -40,11 +40,25 @@ public class InstructionScreens : MonoBehaviour
     [SerializeField] private string continueButtonPrompt = "Press A to Continue";
 
     [Header("Height Settings")]
-    public Transform playerRig;  
+    public Transform playerRig;
     public float minHeight = 0.5f;
     public float maxHeight = 1.5f;
     [SerializeField] private float defaultHeight = 1.0f;
     private const string HEIGHT_PREF_KEY = "PlayerHeight";
+
+    [Header("Recenter Instruction Panel")]
+    public GameObject recenterInstructionPanel;
+    public TextMeshProUGUI recenterInstructionText;
+    public Image recenterInstructionImage;
+    public Button recenterButton;
+
+    [Header("Recenter Settings")]
+    public Recenter recenterScript;
+
+    [Header("Instruction Content")]
+    [SerializeField] private string recenterInstructionMessage = "Press the button below to recenter your position and orientation.";
+    [SerializeField] private string recenterButtonText = "Recenter Position";
+    public UnityEvent onRecenterInstructionComplete;
 
     public UnityEvent onBatonInstructionComplete;
     public UnityEvent onHeightInstructionComplete;
@@ -57,6 +71,7 @@ public class InstructionScreens : MonoBehaviour
         None,
         Baton,
         Height,
+        Recenter,
         Box
     }
 
@@ -69,7 +84,7 @@ public class InstructionScreens : MonoBehaviour
 
         // Hide all panels initially
         HideAllPanels();
-        
+
         if (instructionCanvas != null)
             instructionCanvas.gameObject.SetActive(false);
     }
@@ -87,18 +102,18 @@ public class InstructionScreens : MonoBehaviour
             // Load saved height or use default
             float savedHeight = PlayerPrefs.GetFloat(HEIGHT_PREF_KEY, defaultHeight);
             savedHeight = Mathf.Clamp(savedHeight, minHeight, maxHeight);
-            
+
             // Setup slider
             heightSlider.minValue = minHeight;
             heightSlider.maxValue = maxHeight;
             heightSlider.value = savedHeight;
             heightSlider.onValueChanged.AddListener(OnHeightSliderChanged);
-            
+
             // Apply initial height
             Vector3 newScale = playerRig.localScale;
             newScale.y = savedHeight;
             playerRig.localScale = newScale;
-            
+
             UpdateHeightValueText();
         }
     }
@@ -110,7 +125,7 @@ public class InstructionScreens : MonoBehaviour
             Vector3 newScale = playerRig.localScale;
             newScale.y = value;
             playerRig.localScale = newScale;
-            
+
             // Save the height preference
             PlayerPrefs.SetFloat(HEIGHT_PREF_KEY, value);
             PlayerPrefs.Save();
@@ -156,6 +171,10 @@ public class InstructionScreens : MonoBehaviour
                 HideInstruction();
                 onHeightInstructionComplete?.Invoke();
                 break;
+            case InstructionType.Recenter:
+                HideInstruction();
+                onRecenterInstructionComplete?.Invoke();
+                break;
             case InstructionType.Box:
                 HideInstruction();
                 onBoxInstructionComplete?.Invoke();
@@ -163,34 +182,33 @@ public class InstructionScreens : MonoBehaviour
         }
     }
 
+
     private void HideAllPanels()
     {
         if (batonInstructionPanel != null)
             batonInstructionPanel.SetActive(false);
-            
+
         if (heightInstructionPanel != null)
             heightInstructionPanel.SetActive(false);
-            
+
+        if (recenterInstructionPanel != null)
+            recenterInstructionPanel.SetActive(false);
+
         if (boxInstructionPanel != null)
             boxInstructionPanel.SetActive(false);
     }
-
     private void ShowInstruction(InstructionType type)
     {
-        // Hide all panels first
         HideAllPanels();
-        
-        // Show the canvas
+
         if (instructionCanvas != null)
             instructionCanvas.gameObject.SetActive(true);
-            
-        // Update continue prompt
+
         if (continuePrompt != null)
             continuePrompt.text = continueButtonPrompt;
-        
-        // Show appropriate panel and set content
+
         currentInstructionType = type;
-        
+
         switch (type)
         {
             case InstructionType.Baton:
@@ -201,18 +219,34 @@ public class InstructionScreens : MonoBehaviour
                         batonInstructionText.text = batonInstructionMessage;
                 }
                 break;
-                
+
             case InstructionType.Height:
                 if (heightInstructionPanel != null)
                 {
                     heightInstructionPanel.SetActive(true);
                     if (heightInstructionText != null)
                         heightInstructionText.text = heightInstructionMessage;
-                    // Ensure height value is updated when shown
                     UpdateHeightValueText();
                 }
                 break;
-                
+
+            case InstructionType.Recenter:
+                if (recenterInstructionPanel != null)
+                {
+                    recenterInstructionPanel.SetActive(true);
+                    if (recenterInstructionText != null)
+                        recenterInstructionText.text = recenterInstructionMessage;
+                    if (recenterButton != null)
+                    {
+                        recenterButton.onClick.RemoveAllListeners();
+                        recenterButton.onClick.AddListener(OnRecenterButtonClicked);
+                        TextMeshProUGUI buttonText = recenterButton.GetComponentInChildren<TextMeshProUGUI>();
+                        if (buttonText != null)
+                            buttonText.text = recenterButtonText;
+                    }
+                }
+                break;
+
             case InstructionType.Box:
                 if (boxInstructionPanel != null)
                 {
@@ -223,14 +257,13 @@ public class InstructionScreens : MonoBehaviour
                 break;
         }
     }
-
     private void HideInstruction()
     {
         HideAllPanels();
-        
+
         if (instructionCanvas != null)
             instructionCanvas.gameObject.SetActive(false);
-            
+
         currentInstructionType = InstructionType.None;
     }
 
@@ -264,6 +297,22 @@ public class InstructionScreens : MonoBehaviour
         if (heightSlider != null)
         {
             heightSlider.onValueChanged.RemoveListener(OnHeightSliderChanged);
+        }
+    }
+    public void ShowRecenterInstruction()
+{
+    ShowInstruction(InstructionType.Recenter);
+}
+
+    private void OnRecenterButtonClicked()
+    {
+        if (recenterScript != null)
+        {
+            recenterScript.recenter();
+        }
+        else
+        {
+            Debug.LogWarning("Recenter script reference is missing!");
         }
     }
 }
