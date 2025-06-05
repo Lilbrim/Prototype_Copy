@@ -12,6 +12,7 @@ TagManager:
   - Right Sequence
   - Left_Holder
   - Right_Holder
+  - SparringPartner
   layers:
   - Default
   - TransparentFX

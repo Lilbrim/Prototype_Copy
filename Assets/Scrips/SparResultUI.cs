@@ -112,28 +112,57 @@ public class SparResultsManager : MonoBehaviour
     {
         HideResults();
         
+        Time.timeScale = 1f;
+        
         IntroLevel introLevel = FindObjectOfType<IntroLevel>();
         SparManager sparManager = FindObjectOfType<SparManager>();
         
+        GameObject[] sparringPartners = GameObject.FindGameObjectsWithTag("SparringPartner");
+        foreach (GameObject partner in sparringPartners)
+        {
+            if (partner != null)
+            {
+                Destroy(partner);
+            }
+        }
+       
+        if (sparManager != null)
+        {
+            sparManager.gameObject.SetActive(false);
+            
+            if (StanceManager.Instance != null)
+            {
+                StanceManager.Instance.useSparManager = false;
+            }
+        }
+        
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.EnterStance("Default");
+            StanceManager.Instance.ClearAllStances();
+        }
+        
         if (introLevel != null)
         {
-            if (introLevel.includeSparringPartner)
-            {
-                GameObject sparringPartner = GameObject.FindGameObjectWithTag("SparringPartner");
-                if (sparringPartner != null)
-                {
-                    Destroy(sparringPartner);
-                }
-            }
+            // Make sure IntroLevel is properly reset and will show intro animation
+            introLevel.gameObject.SetActive(true);
+            
+            // Reset any intro completion flags
+            introLevel.enabled = true;
             
             introLevel.ActivateIntro();
         }
         else if (sparManager != null)
         {
+            // Fallback: restart SparManager directly
+            sparManager.gameObject.SetActive(true);
             sparManager.Restart();
         }
+        else
+        {
+            Debug.LogError("No IntroLevel or SparManager found for restart!");
+        }
     }
-    
     public void ReturnToLevelSelector()
     {
         HideResults();

@@ -95,48 +95,51 @@ public class IntroLevel : MonoBehaviour
         return stanceBoxes;
     }
 
-private void SetupSparringPartner()
-{
-    if (sparringPartnerPrefab != null && sparringPartnerSpawnPoint != null)
+    private void SetupSparringPartner()
     {
-        instantiatedSparringPartner = Instantiate(
-            sparringPartnerPrefab,
-            sparringPartnerSpawnPoint.position,
-            sparringPartnerSpawnPoint.rotation
-        );
-
-        if (stanceManager != null)
+        if (sparringPartnerPrefab != null && sparringPartnerSpawnPoint != null)
         {
-            mirrorSparringPartner = stanceManager.isRightHandDominant;
+            instantiatedSparringPartner = Instantiate(
+                sparringPartnerPrefab,
+                sparringPartnerSpawnPoint.position,
+                sparringPartnerSpawnPoint.rotation
+            );
+
+            if (stanceManager != null)
+            {
+                mirrorSparringPartner = stanceManager.isRightHandDominant;
+            }
+
+            if (mirrorSparringPartner)
+            {
+                Vector3 scale = instantiatedSparringPartner.transform.localScale;
+                scale.x = -Mathf.Abs(scale.x); 
+                instantiatedSparringPartner.transform.localScale = scale;
+            }
+
+            instantiatedSparringPartner.tag = "SparringPartner";
+
+            Animator animator = instantiatedSparringPartner.GetComponent<Animator>();
+            if (animator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+            {
+                animator.enabled = true;
+                animator.Play(sparringPartnerAnimation);
+                Debug.Log($"Playing intro animation: {sparringPartnerAnimation}");
+            }
+
+            if (stanceInstructionImage != null)
+            {
+                stanceInstructionImage.gameObject.SetActive(false);
+            }
         }
-
-        if (mirrorSparringPartner)
+        else
         {
-            Vector3 scale = instantiatedSparringPartner.transform.localScale;
-            scale.x = -Mathf.Abs(scale.x); 
-            instantiatedSparringPartner.transform.localScale = scale;
-        }
-
-        Animator animator = instantiatedSparringPartner.GetComponent<Animator>();
-        if (animator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
-        {
-            animator.Play(sparringPartnerAnimation);
-        }
-
-        if (stanceInstructionImage != null)
-        {
-            stanceInstructionImage.gameObject.SetActive(false);
+            Debug.LogWarning("Sparring partner or spawn point is missing. Cannot spawn sparring partner.");
         }
     }
-    else
-    {
-        Debug.LogWarning("Sparring partner or spawn point is missing. Cannot spawn sparring partner.");
-    }
-}
-
     private void InitializeStanceDetection()
     {
-        GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+        GameObject[] activeBoxes = GetActiveStanceBoxes();
         
         stanceDetectors = new StanceDetector[activeBoxes.Length];
         isBoxHeld = new bool[activeBoxes.Length];

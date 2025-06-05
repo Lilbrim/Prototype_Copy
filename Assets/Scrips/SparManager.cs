@@ -22,12 +22,15 @@ public class SparManager : MonoBehaviour, ILevelManager
     public int phase2SequenceReduction = 5; 
     public int phase2BlockReduction = 10; 
     private int phase2Value; 
+    private Coroutine sparringPartnerCoroutine;
 
     [Header("Game Speed ")]
     [Range(0.1f, 2.0f)]
-    public float gameSpeed = 1.0f; 
-    
+    public float gameSpeed = 1.0f;
+
     [Header("UI References")]
+    
+    public GameObject sparManagerUIPanel;
     public TextMeshProUGUI phaseText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI playerScoreText;
@@ -120,7 +123,8 @@ public class SparManager : MonoBehaviour, ILevelManager
             sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
             if (sparringPartnerAnimator != null)
             {
-                Debug.Log("Sparring partner animator found");
+                sparringPartnerAnimator.enabled = false;
+                Debug.Log("Sparring partner animator found and disabled to prevent T-pose");
             }
             else
             {
@@ -129,8 +133,16 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
+
+
     public void StartLevel()
     {
+        if (sparManagerUIPanel != null)
+        {
+            sparManagerUIPanel.SetActive(true);
+            Debug.Log("SparManager UI enabled");
+        }
+        
         isGameActive = true;
         isGameOver = false;
         playerScore = 0;
@@ -157,33 +169,42 @@ public class SparManager : MonoBehaviour, ILevelManager
         phase2Value = phase2InitialValue;
         roundTimer = roundDuration;
         StartCoroutine(StartPhase1());
-
-        if (useSparringPartner && sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
-        {
-            StartCoroutine(StartSparringPartnerWithDelay());
-        }
     }
-
     private IEnumerator StartSparringPartnerWithDelay()
     {
         Debug.Log($"Waiting {sparringPartnerDelay} seconds before sparring partner starts moving...");
         
         if (sparringPartnerAnimator != null)
         {
-            sparringPartnerAnimator.Play("Idle");
-            sparringPartnerAnimator.speed = 1f;
+            sparringPartnerAnimator.enabled = false;
         }
         
         yield return new WaitForSeconds(sparringPartnerDelay);
         
-        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation) && 
+            currentPhase == 1 && isGameActive && !isGameOver)
         {
+            sparringPartnerAnimator.enabled = true;
+            
+            yield return null; 
+            
+            float animSpeed = 1f;
+            if (currentObjectiveIndex < phase1Objectives.Count)
+            {
+                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
+            }
+            
+            sparringPartnerAnimator.speed = animSpeed;
             sparringPartnerAnimator.Play(sparringPartnerAnimation);
-            sparringPartnerAnimator.speed = 1f;
-            Debug.Log("Sparring partner started moving after delay");
+            
+            Debug.Log($"Sparring partner started moving with animation: {sparringPartnerAnimation} at speed: {animSpeed}");
+        }
+        else
+        {
+            Debug.LogWarning("Sparring partner animation not started - conditions not met");
         }
     }
-
+        
     private void Update()
     {
         if (!isGameActive || isGameOver) return;
@@ -205,7 +226,7 @@ public class SparManager : MonoBehaviour, ILevelManager
         if (currentPhase == 2)
         {
             phase2Value -= Mathf.RoundToInt(Time.deltaTime);
-            
+
             blockChanceResetTimer -= Time.deltaTime;
             if (blockChanceResetTimer <= 0)
             {
@@ -223,7 +244,7 @@ public class SparManager : MonoBehaviour, ILevelManager
         else if (currentPhase == 1 && objectiveActive)
         {
             timer -= Time.deltaTime;
-            
+
             if (timer <= 0)
             {
                 Debug.Log($"Time expired for Phase 1 objective {currentObjectiveIndex + 1}. Moving to next objective.");
@@ -263,7 +284,7 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-     private IEnumerator StartPhase1()
+    private IEnumerator StartPhase1()
     {
         yield return new WaitForSeconds(1f);
         
@@ -275,22 +296,143 @@ public class SparManager : MonoBehaviour, ILevelManager
         currentPhase = 1;
         currentObjectiveIndex = 0;
 
-        if (useSparringPartner && sparringPartnerAnimator != null)
+        if (useSparringPartner && sparringPartner != null)
         {
-            sparringPartnerAnimator.Rebind();
-            sparringPartnerAnimator.Update(0f);
-            
-            sparringPartnerAnimator.Play("Idle");
-            sparringPartnerAnimator.speed = 1f;
-            
-            
-            if (!string.IsNullOrEmpty(sparringPartnerAnimation))
-            {
-                StartCoroutine(StartSparringPartnerWithDelay());
-            }
+            Debug.Log("Preparing sparring partner for Phase 1");
+            PrepareSparringPartnerForPhase1();
         }
 
         StartNextObjective();
+    }
+
+    private void PrepareSparringPartnerForPhase1()
+    {
+        if (sparringPartner == null) return;
+        
+        if (sparringPartnerCoroutine != null)
+        {
+            StopCoroutine(sparringPartnerCoroutine);
+            sparringPartnerCoroutine = null;
+        }
+        
+        if (sparringPartnerAnimator == null)
+        {
+            sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
+        }
+        
+        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
+            sparringPartnerAnimator.enabled = false;
+            Debug.Log("Sparring partner animator disabled to prevent T-pose during delay");
+            
+            sparringPartnerCoroutine = StartCoroutine(StartSparringPartnerWithProperSetup());
+        }
+        else
+        {
+            Debug.LogWarning("Sparring partner animator or animation name is missing");
+        }
+    }
+
+    private IEnumerator StartSparringPartnerWithProperSetup()
+    {
+        Debug.Log($"Waiting {sparringPartnerDelay} seconds before enabling sparring partner animation...");
+        
+        yield return new WaitForSeconds(sparringPartnerDelay);
+        
+        if (currentPhase == 1 && isGameActive && !isGameOver && 
+            sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
+            float animSpeed = 1f;
+            if (currentObjectiveIndex < phase1Objectives.Count)
+            {
+                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
+            }
+            
+            sparringPartnerAnimator.enabled = true;
+            
+            yield return null;
+            
+            sparringPartnerAnimator.speed = animSpeed;
+            sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
+            
+            Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
+        }
+        else
+        {
+            Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
+        }
+    }
+
+    private void SetupSparringPartnerForPhase1()
+    {
+        if (sparringPartner == null) return;
+
+        if (sparringPartnerCoroutine != null)
+        {
+            StopCoroutine(sparringPartnerCoroutine);
+            sparringPartnerCoroutine = null;
+        }
+
+        if (sparringPartnerAnimator == null)
+        {
+            sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
+        }
+
+        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
+            sparringPartnerAnimator.enabled = true;
+            sparringPartnerAnimator.Rebind(); 
+            sparringPartnerAnimator.Update(0f); 
+
+            Debug.Log($"Sparring partner animator reset and ready for Phase 1");
+
+            sparringPartnerCoroutine = StartCoroutine(StartSparringPartnerAnimation());
+        }
+        else
+        {
+            Debug.LogWarning("Sparring partner animator or animation name is missing");
+        }
+    }
+
+    private IEnumerator StartSparringPartnerAnimation()
+    {
+        Debug.Log($"Starting sparring partner animation after {sparringPartnerDelay} seconds delay");
+        
+        yield return new WaitForSeconds(sparringPartnerDelay);
+        
+        if (currentPhase == 1 && isGameActive && !isGameOver && 
+            sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        {
+            float animSpeed = 1f;
+            if (currentObjectiveIndex < phase1Objectives.Count)
+            {
+                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
+            }
+            
+            sparringPartnerAnimator.speed = animSpeed;
+            sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
+            
+            Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
+        }
+        else
+        {
+            Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
+        }
+    }
+    
+    private void StopSparringPartnerAnimation()
+    {
+        if (sparringPartnerCoroutine != null)
+        {
+            StopCoroutine(sparringPartnerCoroutine);
+            sparringPartnerCoroutine = null;
+        }
+        
+        if (sparringPartnerAnimator != null)
+        {
+            sparringPartnerAnimator.enabled = false;
+            Debug.Log("Sparring partner animation stopped and animator disabled");
+        }
     }
 
     private void StartNextObjective()
@@ -298,20 +440,26 @@ public class SparManager : MonoBehaviour, ILevelManager
         if (currentObjectiveIndex < phase1Objectives.Count)
         {
             ClearCurrentObjectiveBoxes();
-            
+
             objectiveActive = true;
-            
-            float objectiveTimeout = phase1Objectives[currentObjectiveIndex].timeout > 0 ? 
-                                     phase1Objectives[currentObjectiveIndex].timeout : 
-                                     defaultObjectiveTimeout;
-            
+
+            float objectiveTimeout = phase1Objectives[currentObjectiveIndex].timeout > 0 ?
+                                    phase1Objectives[currentObjectiveIndex].timeout :
+                                    defaultObjectiveTimeout;
+
             timer = objectiveTimeout;
-            
+
             string requiredStance = phase1Objectives[currentObjectiveIndex].stanceName;
+            float animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
+
             Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance} with timeout: {objectiveTimeout}s");
-            
-            // Animation speed adjustment will be handled by the delayed coroutine
-            
+
+            if (useSparringPartner && sparringPartnerAnimator != null && sparringPartnerAnimator.enabled)
+            {
+                sparringPartnerAnimator.speed = animSpeed;
+                Debug.Log($"Updated sparring partner animation speed to: {animSpeed}");
+            }
+
             StanceManager.Instance.EnterStance(requiredStance);
         }
         else
@@ -320,11 +468,12 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
+
+
     private void ClearCurrentObjectiveBoxes()
     {
         if (StanceManager.Instance == null) return;
         
-        // Clear all currently active boxes before showing new objective
         StanceManager.Instance.ClearAllStances();
         
         Debug.Log($"Cleared boxes for objective transition");
@@ -333,9 +482,19 @@ public class SparManager : MonoBehaviour, ILevelManager
     private void NextObjective()
     {
         objectiveActive = false;
+        
+        if (timer <= 0)
+        {
+            opponentScore++;
+            Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+            UpdateScoreDisplay();
+
+        }
+        
         currentObjectiveIndex++;
         StartNextObjective();
     }
+
     
     public void NotifyPhase1Completion(string stanceName, string sequenceName)
     {
@@ -345,9 +504,10 @@ public class SparManager : MonoBehaviour, ILevelManager
         
         if (stanceName == currentObjective)
         {
-            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed early: {stanceName}.{sequenceName}");
-            // Player completed objective early, move to next objective (no points in Phase 1)
-            NextObjective();
+            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
+            objectiveActive = false;
+            currentObjectiveIndex++;
+            StartNextObjective();
         }
     }
 
@@ -355,7 +515,11 @@ public class SparManager : MonoBehaviour, ILevelManager
     {
         Debug.Log("Transitioning to Phase 2");
         
-        // Clear all Phase 1 boxes before transitioning
+        if (useSparringPartner)
+        {
+            StopSparringPartnerAnimation();
+        }
+        
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.ClearAllStances();
@@ -373,19 +537,12 @@ public class SparManager : MonoBehaviour, ILevelManager
         
         currentPhase = 2;
 
-        if (useSparringPartner && sparringPartnerAnimator != null)
-        {
-            sparringPartnerAnimator.speed = 1f;
-            sparringPartnerAnimator.Play("Idle");
-        }
-
         ResetBlockChance();
         stanceUseCount.Clear();
         blockChanceResetTimer = blockChanceResetTime;
         
         ActivatePhase2Stances();
     }
-
     private void ActivatePhase2Stances()
     {
         if (StanceManager.Instance != null)
@@ -556,42 +713,49 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-    private void EndGame()
+private void EndGame()
+{
+    isGameOver = true;
+    
+    if (StanceManager.Instance != null)
     {
-        isGameOver = true;
-        
-        if (StanceManager.Instance != null)
+        StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
+    }
+    
+    StanceManager.Instance.EnterStance("Default");
+    
+    if (useSparringPartner && sparringPartner != null)
+    {
+        sparringPartner.SetActive(false);
+    }
+    
+    DisableAllBoxes();
+    
+    if (sparManagerUIPanel != null)
+    {
+        sparManagerUIPanel.SetActive(false);
+        Debug.Log("SparManager UI disabled");
+    }
+    
+    if (useResultsManager && resultsManager != null)
+    {
+        resultsManager.ShowSparResults(playerScore, opponentScore, totalRounds);
+    }
+    else if (Result != null)
+    {        
+        if (finalScoreText != null)
         {
-            StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
+            finalScoreText.text = $"Player: {playerScore} - Opponent: {opponentScore}";
         }
         
-        StanceManager.Instance.EnterStance("Default");
-        
-        if (useSparringPartner && sparringPartner != null)
+        SaveSparScore scoreSaver = GetComponent<SaveSparScore>();
+        if (scoreSaver != null)
         {
-            sparringPartner.SetActive(false);
-        }
-        
-        DisableAllBoxes();
-        
-        if (useResultsManager && resultsManager != null)
-        {
-            resultsManager.ShowSparResults(playerScore, opponentScore, totalRounds);
-        }
-        else if (Result != null)
-        {        
-            if (finalScoreText != null)
-            {
-                finalScoreText.text = $"Player: {playerScore} - Opponent: {opponentScore}";
-            }
-            
-            SaveSparScore scoreSaver = GetComponent<SaveSparScore>();
-            if (scoreSaver != null)
-            {
-                scoreSaver.OnSparCompleted(playerScore, opponentScore);
-            }
+            scoreSaver.OnSparCompleted(playerScore, opponentScore);
         }
     }
+}
+
         private void DisableAllBoxes()
     {
         StanceManager sm = StanceManager.Instance;
@@ -699,6 +863,12 @@ public class SparManager : MonoBehaviour, ILevelManager
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
         }
         
+        if (sparManagerUIPanel != null)
+        {
+            sparManagerUIPanel.SetActive(false);
+            Debug.Log("SparManager UI disabled for restart");
+        }
+        
         IntroLevel introLevel = FindObjectOfType<IntroLevel>();
         if (introLevel != null)
         {
@@ -717,7 +887,6 @@ public class SparManager : MonoBehaviour, ILevelManager
             introLevel.ActivateIntro();
         }
     }
-    
     private void OnDestroy()
     {
         if (StanceManager.Instance != null)
