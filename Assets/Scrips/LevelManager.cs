@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
 
 public class LevelManager : MonoBehaviour, ILevelManager
 {
@@ -19,6 +20,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
     public TextMeshProUGUI objectiveText;
     public TextMeshProUGUI scoreText;
     public Image objectiveImage;
+    public VideoPlayer objectiveVideoPlayer; 
     public Image feedbackImage;
     public Image stanceEntryImage;
     
@@ -41,6 +43,10 @@ public class LevelManager : MonoBehaviour, ILevelManager
     public InputActionAsset inputActions;
     private InputAction acceptAction;
     private InputAction backAction;
+
+    [Header("Stance Guide ")]
+    public bool enableAutoDetectSequences = false;
+
     
     private int totalScore = 0;
     private bool isWaitingForStanceEntry = false;
@@ -81,11 +87,28 @@ public class LevelManager : MonoBehaviour, ILevelManager
         {
             Debug.LogError("Input Action Asset not assigned");
         }
+
+        
+        if (objectiveVideoPlayer != null)
+        {
+            objectiveVideoPlayer.isLooping = true;
+            objectiveVideoPlayer.playOnAwake = false;
+        }
     }
-    
+
     private void Start()
     {
         inputActions.Enable();
+        ConfigureStanceGuide();
+    }
+
+    private void ConfigureStanceGuide()
+    {
+        StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+        if (stanceGuide != null)
+        {
+            stanceGuide.autoDetectSequences = enableAutoDetectSequences;
+        }
     }
 
     private void OnEnable()
@@ -229,6 +252,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         if (objectiveText != null) objectiveText.gameObject.SetActive(true);
         if (scoreText != null) scoreText.gameObject.SetActive(true);
         if (objectiveImage != null) objectiveImage.gameObject.SetActive(true);
+        if (objectiveVideoPlayer != null) objectiveVideoPlayer.gameObject.SetActive(true);
         if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(true);
         
         if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
@@ -245,6 +269,11 @@ public class LevelManager : MonoBehaviour, ILevelManager
             if (objectiveText != null) objectiveText.gameObject.SetActive(false);
             if (scoreText != null) scoreText.gameObject.SetActive(false);
             if (objectiveImage != null) objectiveImage.gameObject.SetActive(false);
+            if (objectiveVideoPlayer != null) 
+            {
+                objectiveVideoPlayer.Stop();
+                objectiveVideoPlayer.gameObject.SetActive(false);
+            }
             if (feedbackImage != null) feedbackImage.gameObject.SetActive(false);
             if (stanceEntryImage != null) stanceEntryImage.gameObject.SetActive(false);
         }
@@ -268,6 +297,13 @@ public class LevelManager : MonoBehaviour, ILevelManager
         currentRequiredStance = objective.requiredStance;
         objectiveText.text = objective.stanceEntryInstruction;
         stanceEntryImage.sprite = objective.stanceEntryImage;
+        
+        
+        if (objectiveVideoPlayer != null)
+        {
+            objectiveVideoPlayer.Stop();
+            objectiveVideoPlayer.gameObject.SetActive(false);
+        }
         objectiveImage.gameObject.SetActive(false);
         stanceEntryImage.gameObject.SetActive(true);
         
@@ -384,14 +420,41 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
         objectiveText.text = objective.instruction;
         stanceEntryImage.gameObject.SetActive(false);
-        objectiveImage.gameObject.SetActive(true);
-        objectiveImage.sprite = objective.instructionImage;
+        
+        
+        if (objective.instructionVideo != null && objectiveVideoPlayer != null)
+        {
+            
+            objectiveImage.gameObject.SetActive(false);
+            objectiveVideoPlayer.gameObject.SetActive(true);
+            objectiveVideoPlayer.clip = objective.instructionVideo;
+            objectiveVideoPlayer.Play();
+        }
+        else if (objective.instructionImage != null)
+        {
+            
+            objectiveVideoPlayer?.gameObject.SetActive(false);
+            objectiveImage.gameObject.SetActive(true);
+            objectiveImage.sprite = objective.instructionImage;
+        }
+        else
+        {
+            Debug.LogWarning("No instruction video or image found for objective");
+            objectiveVideoPlayer?.gameObject.SetActive(false);
+            objectiveImage.gameObject.SetActive(false);
+        }
 
         StanceManager.Instance.EnterStance(objective.requiredStance, trainingMode);
     }
 
     public void EndObjective()
     {
+        
+        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+        {
+            objectiveVideoPlayer.Stop();
+        }
+
         int score = 0;
         if (!trainingMode)
         {
@@ -402,7 +465,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
         objectiveAccuracies[currentObjectiveIndex] = currentObjectiveAccuracy;
         
-        //DisplayFeedback(score);
+        
 
         if (trainingMode)
         {
@@ -584,6 +647,12 @@ public class LevelManager : MonoBehaviour, ILevelManager
 
     private void EndLevel()
     {
+        
+        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+        {
+            objectiveVideoPlayer.Stop();
+        }
+
         DisableLevelUI();
         
         if (StanceManager.Instance != null)
@@ -788,7 +857,8 @@ public class LevelObjective
 
     [Header("Sequence")]
     public string instruction;
-    public Sprite instructionImage;
+    public Sprite instructionImage; 
+    public VideoClip instructionVideo; 
     public string requiredStance;
     public float timeLimit;
 }

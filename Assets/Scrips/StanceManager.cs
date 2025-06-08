@@ -662,7 +662,7 @@ public class StanceManager : MonoBehaviour
         }
         return false;
     }
-    private void StartAttackSequence(AttackSequence sequence)
+    public void StartAttackSequence(AttackSequence sequence)
     {
         currentAttackSequence = sequence;
         timer = stanceTimeout;

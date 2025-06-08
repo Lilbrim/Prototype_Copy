@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Video;
 
 public interface ILevelManager
 {
@@ -32,6 +33,13 @@ public class IntroLevel : MonoBehaviour
     
     [Header("Mirroring")]
     public bool mirrorSparringPartner = false;
+
+    [Header("Cutscene")]
+    public CutsceneManager cutsceneManager;
+    public bool includeCutscene = false;
+    public VideoClip levelCutsceneVideo;
+    public string cutsceneId;
+
     
     private ILevelManager levelManager; 
     private StanceDetector[] stanceDetectors;
@@ -51,37 +59,111 @@ public class IntroLevel : MonoBehaviour
         }
     }
 
-    public void ActivateIntro()
+  public void ActivateIntro()
     {
         gameObject.SetActive(true);
+        
+        if (includeCutscene && cutsceneManager != null && !HasCutsceneBeenViewed())
+        {
+            StartCutsceneSequence();
+        }
+        else
+        {
+            InitializeScene();
+        }
+    }
+    
+    
+    
+    private void StartCutsceneSequence()
+    {
+        cutsceneManager.OnCutsceneEnd += OnCutsceneFinished;
+        cutsceneManager.OnCutsceneSkip += OnCutsceneFinished;
+        
+        if (levelCutsceneVideo != null)
+        {
+            cutsceneManager.PlayCutscene(levelCutsceneVideo);
+        }
+        else
+        {
+            cutsceneManager.PlayCutscene();
+        }
+    }
+
+    private void OnCutsceneFinished()
+    {
+        MarkCutsceneAsViewed();
+        
+        if (cutsceneManager != null)
+        {
+            cutsceneManager.OnCutsceneEnd -= OnCutsceneFinished;
+            cutsceneManager.OnCutsceneSkip -= OnCutsceneFinished;
+        }
         InitializeScene();
     }
+
+    
+    private bool HasCutsceneBeenViewed()
+    {
+        if (string.IsNullOrEmpty(cutsceneId))
+        {
+            Debug.LogWarning($"Cutscene ID not set for {gameObject.name}. Cutscene will play every time.");
+            return false;
+        }
+        string saveKey = $"Cutscene_Viewed_{cutsceneId}";
+        return PlayerPrefs.GetInt(saveKey, 0) == 1;
+    }
+
+    private void MarkCutsceneAsViewed()
+    {
+        if (string.IsNullOrEmpty(cutsceneId))
+        {
+            Debug.LogWarning($"Cutscene ID not set for {gameObject.name}. Cannot save cutscene view state.");
+            return;
+        }
+        
+        string saveKey = $"Cutscene_Viewed_{cutsceneId}";
+        PlayerPrefs.SetInt(saveKey, 1);
+        PlayerPrefs.Save();
+        
+        Debug.Log($"Marked cutscene '{cutsceneId}' as viewed.");
+    }
+
+    
+    private void OnDestroy()
+    {
+        if (cutsceneManager != null)
+        {
+            cutsceneManager.OnCutsceneEnd -= OnCutsceneFinished;
+            cutsceneManager.OnCutsceneSkip -= OnCutsceneFinished;
+        }
+    }
+
 
     private void InitializeScene()
     {
         stanceCompleted = false;
-        
+
         if (instantiatedSparringPartner != null)
         {
             Destroy(instantiatedSparringPartner);
             instantiatedSparringPartner = null;
         }
-        
+
         if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
 
         InitializeStanceDetection();
-        
+
         if (includeSparringPartner)
         {
             SetupSparringPartner();
         }
-        
+
         StartStancePhase();
-        
+
         this.enabled = true;
     }
-    
-    private GameObject[] GetActiveStanceBoxes()
+        private GameObject[] GetActiveStanceBoxes()
     {
         if (stanceManager != null)
         {
@@ -182,7 +264,7 @@ public class IntroLevel : MonoBehaviour
         {
             stanceCompleted = true;
 
-            GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+            GameObject[] activeBoxes = GetActiveStanceBoxes(); 
             foreach (var box in activeBoxes)
             {
                 box.SetActive(false);
@@ -238,7 +320,7 @@ public class IntroLevel : MonoBehaviour
             stanceInstructionImage.gameObject.SetActive(true);
         }
 
-        GameObject[] activeBoxes = GetActiveStanceBoxes(); // CHANGED
+        GameObject[] activeBoxes = GetActiveStanceBoxes(); 
         foreach (var box in activeBoxes)
         {
             box.SetActive(true);

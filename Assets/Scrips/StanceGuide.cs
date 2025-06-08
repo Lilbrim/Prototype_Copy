@@ -80,16 +80,18 @@ public class StanceGuide : MonoBehaviour
     private AttackSequence currentSequence;
     private bool wasSequenceActive = false;
 
-    void Awake()
-    {
-        leftHandBaton.batonName = "Left Hand Baton";
-        leftHandBaton.isLeftHand = true;
-        
-        rightHandBaton.batonName = "Right Hand Baton";
-        rightHandBaton.isLeftHand = false;
-        
-        batonConfigs = new BatonConfig[] { leftHandBaton, rightHandBaton };
-    }
+void Awake()
+{
+    leftHandBaton.batonName = "Left Hand Baton";
+    leftHandBaton.isLeftHand = true;
+    
+    rightHandBaton.batonName = "Right Hand Baton";
+    rightHandBaton.isLeftHand = false;
+    
+    batonConfigs = new BatonConfig[] { leftHandBaton, rightHandBaton };
+    
+    autoDetectSequences = false;
+}
     
     void Start()
     {

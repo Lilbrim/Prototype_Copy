@@ -15,8 +15,9 @@ public class LevelSelector : MonoBehaviour
         public string levelDescription;
         public string levelId;
         public bool isSparLevel = false;
+        public bool isTournamentLevel = false;
         
-        [Tooltip("Minimum score required to unlock this spar level (only used for spar levels)")]
+        [Tooltip("Minimum score required to unlock this spar/tournament level")]
         public int requiredScore = 0;
         
         [Tooltip("Minimum accuracy required to unlock next level (only used for prac levels)")]
@@ -29,12 +30,14 @@ public class LevelSelector : MonoBehaviour
     [Header("Levels")]
     public List<LevelData> availableLevels = new List<LevelData>();
     public List<LevelData> availableSparLevels = new List<LevelData>();
+    public List<LevelData> availableTournamentLevels = new List<LevelData>();
 
     [Header("UI Stuff")]
     public GameObject levelSelectionPanel;
     public GameObject levelButtonPrefab;
     public Transform levelButtonContainer;
     public Transform sparLevelButtonContainer; 
+    public Transform tournamentLevelButtonContainer;
     public TextMeshProUGUI levelDescriptionText;
     public Image levelPreviewImage;
     public TextMeshProUGUI scoreText;
@@ -43,17 +46,21 @@ public class LevelSelector : MonoBehaviour
     [Header("Tabs")]
     public GameObject pracLevelsTab;
     public GameObject sparLevelsTab;
+    public GameObject tournamentLevelsTab;
     public Button pracLevelsTabButton;
     public Button sparLevelsTabButton;
+    public Button tournamentLevelsTabButton;
 
     private IntroLevel selectedIntroLevel;
     public int selectedLevelIndex = -1;
     private bool isViewingSparLevels = false;
+    private bool isViewingTournamentLevels = false;
     private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
     private const string SCORE_SAVE_PREFIX = "LevelScore_";
     private const string NO_RECORD_TEXT = "No Record";
     private List<Button> levelButtons = new List<Button>();
     private List<Button> sparLevelButtons = new List<Button>();
+    private List<Button> tournamentLevelButtons = new List<Button>();
 
     private void Start()
     {
@@ -68,17 +75,24 @@ public class LevelSelector : MonoBehaviour
         
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
+            
+        if (tournamentLevelsTabButton != null)
+            tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
     }
     
     public void ShowpracLevelsTab()
     {
         isViewingSparLevels = false;
+        isViewingTournamentLevels = false;
         
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(true);
         
         if (sparLevelsTab != null)
             sparLevelsTab.SetActive(false);
+            
+        if (tournamentLevelsTab != null)
+            tournamentLevelsTab.SetActive(false);
         
         selectedLevelIndex = -1;
         selectedIntroLevel = null;
@@ -90,17 +104,24 @@ public class LevelSelector : MonoBehaviour
         
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.interactable = true;
+            
+        if (tournamentLevelsTabButton != null)
+            tournamentLevelsTabButton.interactable = true;
     }
     
     public void ShowSparLevelsTab()
     {
         isViewingSparLevels = true;
+        isViewingTournamentLevels = false;
         
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(false);
         
         if (sparLevelsTab != null)
             sparLevelsTab.SetActive(true);
+            
+        if (tournamentLevelsTab != null)
+            tournamentLevelsTab.SetActive(false);
         
         selectedLevelIndex = -1;
         selectedIntroLevel = null;
@@ -112,18 +133,52 @@ public class LevelSelector : MonoBehaviour
         
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.interactable = false;
+            
+        if (tournamentLevelsTabButton != null)
+            tournamentLevelsTabButton.interactable = true;
+    }
+    
+    public void ShowTournamentLevelsTab()
+    {
+        isViewingSparLevels = false;
+        isViewingTournamentLevels = true;
+        
+        if (pracLevelsTab != null)
+            pracLevelsTab.SetActive(false);
+        
+        if (sparLevelsTab != null)
+            sparLevelsTab.SetActive(false);
+            
+        if (tournamentLevelsTab != null)
+            tournamentLevelsTab.SetActive(true);
+        
+        selectedLevelIndex = -1;
+        selectedIntroLevel = null;
+        UpdateLevelInfoPanel(-1);
+        startLevelButton.interactable = false;
+        
+        if (pracLevelsTabButton != null)
+            pracLevelsTabButton.interactable = true;
+        
+        if (sparLevelsTabButton != null)
+            sparLevelsTabButton.interactable = true;
+            
+        if (tournamentLevelsTabButton != null)
+            tournamentLevelsTabButton.interactable = false;
     }
 
     private void GenerateLevelButtons()
     {
-        GenerateButtonsForList(availableLevels, levelButtonContainer, levelButtons, false);
+        GenerateButtonsForList(availableLevels, levelButtonContainer, levelButtons, false, false);
         
-        GenerateButtonsForList(availableSparLevels, sparLevelButtonContainer, sparLevelButtons, true);
+        GenerateButtonsForList(availableSparLevels, sparLevelButtonContainer, sparLevelButtons, true, false);
+        
+        GenerateButtonsForList(availableTournamentLevels, tournamentLevelButtonContainer, tournamentLevelButtons, false, true);
         
         UpdateLevelButtonsState();
     }
     
-    private void GenerateButtonsForList(List<LevelData> levels, Transform container, List<Button> buttonsList, bool isSparLevel)
+    private void GenerateButtonsForList(List<LevelData> levels, Transform container, List<Button> buttonsList, bool isSparLevel, bool isTournamentLevel)
     {
         foreach (Transform child in container)
         {
@@ -159,6 +214,18 @@ public class LevelSelector : MonoBehaviour
                         indicator.text = NO_RECORD_TEXT;
                     }
                 }
+                else if (isTournamentLevel)
+                {
+                    int savedScore = GetSavedScore(levelData.levelId);
+                    if (savedScore > 0)
+                    {
+                        indicator.text = $"Score: {savedScore}";
+                    }
+                    else
+                    {
+                        indicator.text = NO_RECORD_TEXT;
+                    }
+                }
                 else
                 {
                     float savedAccuracy = GetSavedAccuracy(levelData.levelId);
@@ -183,6 +250,10 @@ public class LevelSelector : MonoBehaviour
                 {
                     button.onClick.AddListener(() => SelectSparLevel(levelIndex));
                 }
+                else if (isTournamentLevel)
+                {
+                    button.onClick.AddListener(() => SelectTournamentLevel(levelIndex));
+                }
                 else
                 {
                     button.onClick.AddListener(() => SelectLevel(levelIndex));
@@ -193,12 +264,14 @@ public class LevelSelector : MonoBehaviour
 
     public void UpdateLevelButtonsState()
     {
-        UpdateButtonsStateForList(levelButtons, availableLevels, false);
+        UpdateButtonsStateForList(levelButtons, availableLevels, false, false);
         
-        UpdateButtonsStateForList(sparLevelButtons, availableSparLevels, true);
+        UpdateButtonsStateForList(sparLevelButtons, availableSparLevels, true, false);
+        
+        UpdateButtonsStateForList(tournamentLevelButtons, availableTournamentLevels, false, true);
     }
     
-    private void UpdateButtonsStateForList(List<Button> buttons, List<LevelData> levels, bool isSparLevel)
+    private void UpdateButtonsStateForList(List<Button> buttons, List<LevelData> levels, bool isSparLevel, bool isTournamentLevel)
     {
         for (int i = 0; i < buttons.Count; i++)
         {
@@ -212,6 +285,10 @@ public class LevelSelector : MonoBehaviour
             else if (isSparLevel)
             {
                 isUnlocked = CheckSparLevelUnlockRequirements(levelData);
+            }
+            else if (isTournamentLevel)
+            {
+                isUnlocked = CheckTournamentLevelUnlockRequirements(levelData);
             }
             else
             {
@@ -257,7 +334,29 @@ public class LevelSelector : MonoBehaviour
             return true;
         }
         
-        foreach (string requiredLevelId in sparLevel.requiredLevelIds)
+        return CheckLevelUnlockRequirements(sparLevel, GetSavedScore);
+    }
+    
+    private bool CheckTournamentLevelUnlockRequirements(LevelData tournamentLevel)
+    {
+        if (tournamentLevel.requiredLevelIds.Count == 0)
+        {
+            int index = availableTournamentLevels.IndexOf(tournamentLevel);
+            if (index > 0)
+            {
+                string previousLevelId = availableTournamentLevels[index - 1].levelId;
+                int previousLevelScore = GetSavedScore(previousLevelId);
+                return previousLevelScore >= tournamentLevel.requiredScore;
+            }
+            return true;
+        }
+        
+        return CheckLevelUnlockRequirements(tournamentLevel, GetSavedScore);
+    }
+    
+    private bool CheckLevelUnlockRequirements(LevelData level, System.Func<string, int> getScoreFunc)
+    {
+        foreach (string requiredLevelId in level.requiredLevelIds)
         {
             bool found = false;
             
@@ -283,7 +382,24 @@ public class LevelSelector : MonoBehaviour
                     {
                         found = true;
                         int score = GetSavedScore(requiredLevelId);
-                        if (score < sparLevel.requiredScore)
+                        if (score < level.requiredScore)
+                        {
+                            return false;
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (!found)
+            {
+                foreach (LevelData otherTournamentLevel in availableTournamentLevels)
+                {
+                    if (otherTournamentLevel.levelId == requiredLevelId)
+                    {
+                        found = true;
+                        int score = getScoreFunc(requiredLevelId);
+                        if (score < level.requiredScore)
                         {
                             return false;
                         }
@@ -303,15 +419,20 @@ public class LevelSelector : MonoBehaviour
 
     public void SelectLevel(int levelIndex)
     {
-        SelectLevelFromList(levelIndex, availableLevels, levelButtons, false);
+        SelectLevelFromList(levelIndex, availableLevels, levelButtons, false, false);
     }
     
     public void SelectSparLevel(int levelIndex)
     {
-        SelectLevelFromList(levelIndex, availableSparLevels, sparLevelButtons, true);
+        SelectLevelFromList(levelIndex, availableSparLevels, sparLevelButtons, true, false);
     }
     
-    public void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel)
+    public void SelectTournamentLevel(int levelIndex)
+    {
+        SelectLevelFromList(levelIndex, availableTournamentLevels, tournamentLevelButtons, false, true);
+    }
+    
+    public void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel, bool isTournamentLevel)
     {
         if (levelIndex >= 0 && levelIndex < levels.Count)
         {
@@ -328,7 +449,7 @@ public class LevelSelector : MonoBehaviour
                 LevelData levelData = levels[levelIndex];
                 string unlockMessage = "Level locked! ";
                 
-                if (isSparLevel && levelData.requiredLevelIds.Count > 0)
+                if ((isSparLevel || isTournamentLevel) && levelData.requiredLevelIds.Count > 0)
                 {
                     unlockMessage += "Complete required levels:";
                     foreach (string requiredId in levelData.requiredLevelIds)
@@ -346,6 +467,11 @@ public class LevelSelector : MonoBehaviour
                 {
                     string previousLevelName = levels[levelIndex - 1].levelName;
                     if (isSparLevel)
+                    {
+                        int score = GetSavedScore(levels[levelIndex - 1].levelId);
+                        unlockMessage += $"Complete {previousLevelName} with minimum score of {levelData.requiredScore} (current: {score})";
+                    }
+                    else if (isTournamentLevel)
                     {
                         int score = GetSavedScore(levels[levelIndex - 1].levelId);
                         unlockMessage += $"Complete {previousLevelName} with minimum score of {levelData.requiredScore} (current: {score})";
@@ -378,6 +504,12 @@ public class LevelSelector : MonoBehaviour
                 return level.levelName;
         }
         
+        foreach (LevelData level in availableTournamentLevels)
+        {
+            if (level.levelId == levelId)
+                return level.levelName;
+        }
+        
         return "Unknown Level";
     }
 
@@ -386,6 +518,10 @@ public class LevelSelector : MonoBehaviour
         if (isViewingSparLevels)
         {
             UpdateLevelInfoPanel(levelIndex, availableSparLevels);
+        }
+        else if (isViewingTournamentLevels)
+        {
+            UpdateLevelInfoPanel(levelIndex, availableTournamentLevels);
         }
         else
         {
@@ -407,6 +543,18 @@ public class LevelSelector : MonoBehaviour
                 scoreText.gameObject.SetActive(true);
                 
                 if (levelData.isSparLevel)
+                {
+                    int savedScore = GetSavedScore(levelData.levelId);
+                    if (savedScore > 0)
+                    {
+                        scoreText.text = $"Best Score: {savedScore}";
+                    }
+                    else
+                    {
+                        scoreText.text = NO_RECORD_TEXT;
+                    }
+                }
+                else if (levelData.isTournamentLevel)
                 {
                     int savedScore = GetSavedScore(levelData.levelId);
                     if (savedScore > 0)
@@ -451,20 +599,39 @@ public class LevelSelector : MonoBehaviour
             levelSelectionPanel.SetActive(false);
             
             string levelId;
-            bool isSparLevel;
+            bool isSparLevel = false;
+            bool isTournamentLevel = false;
             
             if (isViewingSparLevels)
             {
                 levelId = availableSparLevels[selectedLevelIndex].levelId;
                 isSparLevel = true;
             }
+            else if (isViewingTournamentLevels)
+            {
+                levelId = availableTournamentLevels[selectedLevelIndex].levelId;
+                isTournamentLevel = true;
+            }
             else
             {
                 levelId = availableLevels[selectedLevelIndex].levelId;
-                isSparLevel = false;
             }
             
             if (isSparLevel)
+            {
+                if (selectedIntroLevel.gameObject.GetComponent<SaveSparScore>() == null)
+                {
+                    SaveSparScore observer = selectedIntroLevel.gameObject.AddComponent<SaveSparScore>();
+                    observer.Initialize(this, levelId);
+                }
+                
+                SparResultsManager resultsManager = FindObjectOfType<SparResultsManager>();
+                if (resultsManager != null)
+                {
+                    resultsManager.InitializeForLevel(levelId);
+                }
+            }
+            else if (isTournamentLevel)
             {
                 if (selectedIntroLevel.gameObject.GetComponent<SaveSparScore>() == null)
                 {
