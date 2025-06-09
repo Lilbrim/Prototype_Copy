@@ -6357,7 +6357,7 @@ RectTransform:
   m_GameObject: {fileID: 373430140}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.046264566, y: 0.046264566, z: 0.046264566}
+  m_LocalScale: {x: 0.53167236, y: 0.53167236, z: 0.53167236}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1214385016}
@@ -18625,7 +18625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1214385016
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18650,7 +18650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.1777005, y: 1.1386274}
+  m_AnchoredPosition: {x: -2.1777005, y: 0.63}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1214385017
@@ -19357,7 +19357,7 @@ MonoBehaviour:
   skipUIDelay: 2
   playOnStart: 0
   cutsceneEndDelay: 1
-  returnToOriginalPosition: 0
+  returnToOriginalPosition: 1
   inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
 --- !u!4 &1276659254
 Transform:
@@ -21049,13 +21049,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366419755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1366666329
 GameObject:
   m_ObjectHideFlags: 0
@@ -21971,7 +21971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1474926517
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22303,7 +22303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.499825}
+  m_AnchoredPosition: {x: -91.5, y: 91.49999}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1521180598
@@ -25656,7 +25656,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.499825}
+  m_AnchoredPosition: {x: -91.5, y: 91.49999}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1745777024
@@ -26380,7 +26380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.499825}
+  m_AnchoredPosition: {x: -91.5, y: 91.49999}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1785708855
@@ -27522,9 +27522,10 @@ MonoBehaviour:
   objectiveText: {fileID: 563866865}
   scoreText: {fileID: 1089864350}
   objectiveImage: {fileID: 478318141}
-  objectiveVideoPlayer: {fileID: 2002797369}
+  objectiveVideoPlayer: {fileID: 1718001608}
   feedbackImage: {fileID: 859272578}
   stanceEntryImage: {fileID: 1766740783}
+  videoPlayer: {fileID: 1718001608}
   levelUI: {fileID: 1214385015}
   incorrectStanceSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
   missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
@@ -27537,7 +27538,7 @@ MonoBehaviour:
   accuracyText: {fileID: 62698955}
   trainingModeInstructionText: {fileID: 47370923}
   inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
-  enableAutoDetectSequences: 0
+  enableAutoDetectSequences: 1
 --- !u!1 &1870491780
 GameObject:
   m_ObjectHideFlags: 0

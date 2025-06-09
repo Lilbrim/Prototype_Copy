@@ -23,6 +23,8 @@ public class LevelManager : MonoBehaviour, ILevelManager
     public VideoPlayer objectiveVideoPlayer; 
     public Image feedbackImage;
     public Image stanceEntryImage;
+    public VideoPlayer videoPlayer;
+
     
     [Header("UI Container")]
     public GameObject levelUI; 

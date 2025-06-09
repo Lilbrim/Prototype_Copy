@@ -90,7 +90,7 @@ void Awake()
     
     batonConfigs = new BatonConfig[] { leftHandBaton, rightHandBaton };
     
-    autoDetectSequences = false;
+    autoDetectSequences = true;
 }
     
     void Start()

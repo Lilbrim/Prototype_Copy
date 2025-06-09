@@ -180,6 +180,8 @@ public class IntroManager : MonoBehaviour
             }
             
             stanceManager.SetRightHandDominant(isRightHandDominant);
+            // Keep game inactive during intro to prevent objective triggering
+            stanceManager.SetGameActive(false);
             Debug.Log($"Set StanceManager right hand dominant to: {isRightHandDominant}");
             
             InitializeStanceDetection();
@@ -233,10 +235,16 @@ public class IntroManager : MonoBehaviour
         if (stanceManager != null) 
         {
             stanceManager.gameObject.SetActive(true);
+            // Tell StanceManager we're in intro mode to prevent triggering objectives
+            stanceManager.SetGameActive(false);
             Debug.Log("StanceManager kept active during intro initialization");
         }
         
-        if (TutorialLevelManager != null) TutorialLevelManager.gameObject.SetActive(false);
+        if (TutorialLevelManager != null) 
+        {
+            TutorialLevelManager.gameObject.SetActive(false);
+            TutorialLevelManager.enabled = false; // Fully disable it
+        }
 
         
         if (grabBatonCanvas != null)
@@ -364,6 +372,7 @@ public class IntroManager : MonoBehaviour
                             Debug.Log("Activated StanceManager during skip");
                         }
                         stanceManager.SetRightHandDominant(isRightHandDominant);
+                        stanceManager.SetGameActive(false); // Keep in intro mode
                         InitializeStanceDetection();
                     }
                 }
@@ -436,11 +445,13 @@ public class IntroManager : MonoBehaviour
         if (stanceManager != null)
         {
             stanceManager.gameObject.SetActive(true);
+            stanceManager.SetGameActive(true); // Now activate game mode
             Debug.Log("StanceManager activated in CompleteIntro()");
         }
             
         if (TutorialLevelManager != null)
         {
+            TutorialLevelManager.enabled = true; // Re-enable the component
             TutorialLevelManager.gameObject.SetActive(true);
             TutorialLevelManager.StartLevel();
         }
@@ -569,6 +580,12 @@ public class IntroManager : MonoBehaviour
         if (stanceDetectors == null || stanceDetectors.Length == 0)
         {
             InitializeStanceDetection();
+        }
+
+        // Ensure StanceManager is in intro mode, not game mode
+        if (stanceManager != null)
+        {
+            stanceManager.SetGameActive(false);
         }
 
         if (stanceInstructionText != null)
