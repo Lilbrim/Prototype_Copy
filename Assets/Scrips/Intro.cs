@@ -6,26 +6,20 @@ using TMPro;
 
 public class IntroManager : MonoBehaviour
 {
-    [Header("Arnis Requirements")]
-    [SerializeField] private bool requireBothArnis = true;
-    
     [Header("Instruction Screens")]
     [SerializeField] private InstructionScreens instructionScreens;
-    
-    [Header("Grab Batons UI")]
-    public Canvas grabBatonCanvas;
-    public TextMeshProUGUI grabBatonText;
-    public Image grabBatonImage;
     
     [Header("Stance UI")]
     public TextMeshProUGUI stanceInstructionText;
     public Image stanceInstructionImage;
     public string stanceInstructionMessage = "Stand in ready position";
     public Sprite stanceInstructionSprite;
-    
-    [Header("XR References")]
-    public XRSocketInteractor leftBatonSocket;
-    public XRSocketInteractor rightBatonSocket;
+
+    [Header("Hand Selection UI")]
+    public Canvas handSelectionCanvas;
+    public Button leftHandButton;
+    public Button rightHandButton;
+    public TextMeshProUGUI handSelectionText;
 
     [Header("Scene References")]
     public Transform roomTransform;
@@ -44,24 +38,19 @@ public class IntroManager : MonoBehaviour
     private StanceDetector[] stanceDetectors;
     private bool[] isBoxHeld;
     private float[] holdTimers;
-    private bool batonsRemoved = false;
     private bool heightCompleted = false;
     private bool stanceCompleted = false;
-    private bool batonInstructionShown = false;
     private bool heightInstructionShown = false;
     private bool boxInstructionShown = false;
     
-    private bool leftBatonGrabbed = false;
-    private bool rightBatonGrabbed = false;
     private bool dominantHandDetected = false;
-    private float firstGrabTime = 0f;
     private bool isRightHandDominant = false;
     private bool recenterCompleted = false;
     private bool recenterInstructionShown = false;
+    
     private enum IntroState
     {
-        BatonInstruction,
-        GrabBaton,
+        HandSelection,
         HeightInstruction,
         RecenterInstruction,
         RoomRotation,
@@ -69,7 +58,7 @@ public class IntroManager : MonoBehaviour
         StancePhase,
         Complete
     }
-    private IntroState currentState = IntroState.BatonInstruction;
+    private IntroState currentState = IntroState.HandSelection;
 
     private void Awake()
     {
@@ -79,98 +68,56 @@ public class IntroManager : MonoBehaviour
             return;
         }
         
-        instructionScreens.onBatonInstructionComplete.AddListener(OnBatonInstructionComplete);
         instructionScreens.onHeightInstructionComplete.AddListener(OnHeightInstructionComplete);
         instructionScreens.onRecenterInstructionComplete.AddListener(OnRecenterInstructionComplete);
         instructionScreens.onBoxInstructionComplete.AddListener(OnBoxInstructionComplete);
     }
 
-
     private void Start()
     {
         InitializeScene();
-        SetupBatonSocketListeners();
+        SetupHandSelectionButtons();
     }
 
-    private void SetupBatonSocketListeners()
+    private void SetupHandSelectionButtons()
     {
-        if (leftBatonSocket != null)
+        if (leftHandButton != null)
         {
-            leftBatonSocket.selectExited.AddListener(OnLeftBatonRemoved);
+            leftHandButton.onClick.AddListener(OnLeftHandSelected);
         }
         
-        if (rightBatonSocket != null)
+        if (rightHandButton != null)
         {
-            rightBatonSocket.selectExited.AddListener(OnRightBatonRemoved);
+            rightHandButton.onClick.AddListener(OnRightHandSelected);
         }
     }
-
-    private void OnLeftBatonRemoved(SelectExitEventArgs args)
+    
+    private void OnLeftHandSelected()
     {
-        if (!dominantHandDetected && currentState == IntroState.GrabBaton)
-        {
-            leftBatonGrabbed = true;
-            
-            if (!rightBatonGrabbed)
-            {
-                firstGrabTime = Time.time;
-                StartCoroutine(CheckDominantHand());
-            }
-            else
-            {
-                DetermineDominantHand();
-            }
-        }
-    }
-
-    private void OnRightBatonRemoved(SelectExitEventArgs args)
-    {
-        if (!dominantHandDetected && currentState == IntroState.GrabBaton)
-        {
-            rightBatonGrabbed = true;
-            
-            if (!leftBatonGrabbed)
-            {
-                firstGrabTime = Time.time;
-                StartCoroutine(CheckDominantHand());
-            }
-            else
-            {
-                DetermineDominantHand();
-            }
-        }
-    }
-
-    private IEnumerator CheckDominantHand()
-    {
-        yield return new WaitForSeconds(dominantHandDetectionDelay);
-        
-        if (!dominantHandDetected)
-        {
-            DetermineDominantHand();
-        }
-    }
-
-    private void DetermineDominantHand()
-    {
-        if (dominantHandDetected) return;
-        
-        dominantHandDetected = true;
-        
-        if (leftBatonGrabbed && rightBatonGrabbed)
-        {
-        }
-        else if (leftBatonGrabbed && !rightBatonGrabbed)
+        if (!dominantHandDetected && currentState == IntroState.HandSelection)
         {
             isRightHandDominant = false;
-            Debug.Log("Left hand dominant detected (grabbed left baton first)");
+            dominantHandDetected = true;
+            Debug.Log("Left hand selected as dominant");
+            
+            SetupDominantHand();
         }
-        else if (rightBatonGrabbed && !leftBatonGrabbed)
+    }
+
+    private void OnRightHandSelected()
+    {
+        if (!dominantHandDetected && currentState == IntroState.HandSelection)
         {
             isRightHandDominant = true;
-            Debug.Log("Right hand dominant detected (grabbed right baton first)");
+            dominantHandDetected = true;
+            Debug.Log("Right hand selected as dominant");
+            
+            SetupDominantHand();
         }
-        
+    }
+
+    private void SetupDominantHand()
+    {
         if (stanceManager != null)
         {
             if (!stanceManager.gameObject.activeInHierarchy)
@@ -180,53 +127,32 @@ public class IntroManager : MonoBehaviour
             }
             
             stanceManager.SetRightHandDominant(isRightHandDominant);
-            // Keep game inactive during intro to prevent objective triggering
-            stanceManager.SetGameActive(false);
+            stanceManager.SetGameActive(false); 
             Debug.Log($"Set StanceManager right hand dominant to: {isRightHandDominant}");
             
             InitializeStanceDetection();
-            
         }
         
-        UpdateGrabBatonUI();
-    }
-
-    private void UpdateGrabBatonUI()
-    {
-        if (grabBatonText != null)
-        {
-            string dominantHandText = isRightHandDominant ? "right" : "left";
-            string nonDominantText = isRightHandDominant ? "left" : "right";
+        
+        if (handSelectionCanvas != null)
+            handSelectionCanvas.gameObject.SetActive(false);
             
-            if (requireBothArnis)
-            {
-                grabBatonText.text = $"Grab remaining baton with {nonDominantText} hand";
-            }
-            else
-            {
-                grabBatonText.text = $"Dominant hand: {dominantHandText}. Continue with tutorial.";
-            }
-        }
+        StartIntroSequence();
     }
 
     private void InitializeScene()
     {
-        batonsRemoved = false;
         heightCompleted = false;
         recenterCompleted = false;
         stanceCompleted = false;
-        batonInstructionShown = false;
         heightInstructionShown = false;
         recenterInstructionShown = false;
         boxInstructionShown = false;
         
-        leftBatonGrabbed = false;
-        rightBatonGrabbed = false;
         dominantHandDetected = false;
         isRightHandDominant = false;
-        firstGrabTime = 0f;
         
-        currentState = IntroState.BatonInstruction;
+        currentState = IntroState.HandSelection;
         
         RenderSettings.fog = true;
         RenderSettings.fogColor = Color.black;
@@ -235,7 +161,6 @@ public class IntroManager : MonoBehaviour
         if (stanceManager != null) 
         {
             stanceManager.gameObject.SetActive(true);
-            // Tell StanceManager we're in intro mode to prevent triggering objectives
             stanceManager.SetGameActive(false);
             Debug.Log("StanceManager kept active during intro initialization");
         }
@@ -243,12 +168,12 @@ public class IntroManager : MonoBehaviour
         if (TutorialLevelManager != null) 
         {
             TutorialLevelManager.gameObject.SetActive(false);
-            TutorialLevelManager.enabled = false; // Fully disable it
+            TutorialLevelManager.enabled = false;
         }
 
         
-        if (grabBatonCanvas != null)
-            grabBatonCanvas.gameObject.SetActive(false);
+        if (handSelectionCanvas != null)
+            handSelectionCanvas.gameObject.SetActive(true);
             
         if (stanceInstructionText != null)
             stanceInstructionText.gameObject.SetActive(false);
@@ -258,8 +183,9 @@ public class IntroManager : MonoBehaviour
             
         HideAllStanceBoxes();
 
-        ShowBatonWelcomeInstruction();
+        ShowHandSelectionInstruction();
     }
+    
     private void HideAllStanceBoxes()
     {
         GameObject[] activeBoxes = GetActiveStanceBoxes();
@@ -327,11 +253,7 @@ public class IntroManager : MonoBehaviour
 
     private void Update()
     {
-        if (!batonsRemoved && batonInstructionShown)
-        {
-            CheckBatonRemoval();
-        }
-        else if (!stanceCompleted && stanceInstructionText != null && stanceInstructionText.gameObject.activeSelf)
+        if (!stanceCompleted && stanceInstructionText != null && stanceInstructionText.gameObject.activeSelf)
         {
             CheckStanceHold();
         }
@@ -348,17 +270,9 @@ public class IntroManager : MonoBehaviour
         
         switch (currentState)
         {
-            case IntroState.BatonInstruction:
-                if (instructionScreens != null && instructionScreens.instructionCanvas != null)
-                    instructionScreens.instructionCanvas.gameObject.SetActive(false);
-                
-                OnBatonInstructionComplete();
-                currentState = IntroState.GrabBaton;
-                break;
-                
-            case IntroState.GrabBaton:
-                if (grabBatonCanvas != null)
-                    grabBatonCanvas.gameObject.SetActive(false);
+            case IntroState.HandSelection:
+                if (handSelectionCanvas != null)
+                    handSelectionCanvas.gameObject.SetActive(false);
                 
                 if (!dominantHandDetected)
                 {
@@ -372,12 +286,11 @@ public class IntroManager : MonoBehaviour
                             Debug.Log("Activated StanceManager during skip");
                         }
                         stanceManager.SetRightHandDominant(isRightHandDominant);
-                        stanceManager.SetGameActive(false); // Keep in intro mode
+                        stanceManager.SetGameActive(false);
                         InitializeStanceDetection();
                     }
                 }
                 
-                batonsRemoved = true;
                 currentState = IntroState.HeightInstruction;
                 ShowHeightInstruction();
                 break;
@@ -440,18 +353,19 @@ public class IntroManager : MonoBehaviour
                 break;
         }
     }
+    
     private void CompleteIntro()
     {
         if (stanceManager != null)
         {
             stanceManager.gameObject.SetActive(true);
-            stanceManager.SetGameActive(true); // Now activate game mode
+            stanceManager.SetGameActive(true); 
             Debug.Log("StanceManager activated in CompleteIntro()");
         }
             
         if (TutorialLevelManager != null)
         {
-            TutorialLevelManager.enabled = true; // Re-enable the component
+            TutorialLevelManager.enabled = true; 
             TutorialLevelManager.gameObject.SetActive(true);
             TutorialLevelManager.StartLevel();
         }
@@ -473,36 +387,19 @@ public class IntroManager : MonoBehaviour
         }
     }
 
-    private void ShowBatonWelcomeInstruction()
+    private void ShowHandSelectionInstruction()
     {
-        currentState = IntroState.BatonInstruction;
-        instructionScreens.ShowBatonInstruction();
+        if (handSelectionText != null)
+            handSelectionText.text = "Select your dominant hand:";
+            
+        if (handSelectionCanvas != null)
+            handSelectionCanvas.gameObject.SetActive(true);
     }
     
-    private void OnBatonInstructionComplete()
-    {
-        batonInstructionShown = true;
-        currentState = IntroState.GrabBaton;
-        ShowGrabBatonInstruction();
-    }
-
-    private void CheckBatonRemoval()
-    {
-        bool shouldProceed = requireBothArnis 
-            ? (!leftBatonSocket.hasSelection && !rightBatonSocket.hasSelection)
-            : (!leftBatonSocket.hasSelection || !rightBatonSocket.hasSelection);
-
-        if (shouldProceed)
-        {
-            batonsRemoved = true;
-            StartIntroSequence();
-        }
-    }
-
     private void StartIntroSequence()
     {
-        if (grabBatonCanvas != null)
-            grabBatonCanvas.gameObject.SetActive(false);
+        if (handSelectionCanvas != null)
+            handSelectionCanvas.gameObject.SetActive(false);
             
         currentState = IntroState.HeightInstruction;
         ShowHeightInstruction();
@@ -582,7 +479,7 @@ public class IntroManager : MonoBehaviour
             InitializeStanceDetection();
         }
 
-        // Ensure StanceManager is in intro mode, not game mode
+        
         if (stanceManager != null)
         {
             stanceManager.SetGameActive(false);
@@ -669,38 +566,26 @@ public class IntroManager : MonoBehaviour
         CompleteIntro();
     }
 
-    private void ShowGrabBatonInstruction()
-    {
-        if (grabBatonText != null)
-            grabBatonText.text = "Grab Baton Depending on your dominant hand.";
-            
-        if (grabBatonImage != null)
-            grabBatonImage.gameObject.SetActive(true);
-            
-        if (grabBatonCanvas != null)
-            grabBatonCanvas.gameObject.SetActive(true);
-    }
-
     private void OnDestroy()
     {
         RenderSettings.fog = false;
         
         if (instructionScreens != null)
         {
-            instructionScreens.onBatonInstructionComplete.RemoveListener(OnBatonInstructionComplete);
             instructionScreens.onHeightInstructionComplete.RemoveListener(OnHeightInstructionComplete);
             instructionScreens.onRecenterInstructionComplete.RemoveListener(OnRecenterInstructionComplete);
             instructionScreens.onBoxInstructionComplete.RemoveListener(OnBoxInstructionComplete);
         }
         
-        if (leftBatonSocket != null)
+        
+        if (leftHandButton != null)
         {
-            leftBatonSocket.selectExited.RemoveListener(OnLeftBatonRemoved);
+            leftHandButton.onClick.RemoveListener(OnLeftHandSelected);
         }
         
-        if (rightBatonSocket != null)
+        if (rightHandButton != null)
         {
-            rightBatonSocket.selectExited.RemoveListener(OnRightBatonRemoved);
+            rightHandButton.onClick.RemoveListener(OnRightHandSelected);
         }
     }
     

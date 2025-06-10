@@ -25,6 +25,10 @@ public class IntroLevel : MonoBehaviour
     [Header("Time")]
     public float stanceHoldTime = 3f;
 
+    [Header("Baton Configuration")]
+    public StanceManager.BatonMode levelBatonMode = StanceManager.BatonMode.BothHands;
+    public bool overrideBatonMode = false;
+
     [Header("Partner")]
     public bool includeSparringPartner = false;
     public GameObject sparringPartnerPrefab;
@@ -140,29 +144,35 @@ public class IntroLevel : MonoBehaviour
     }
 
 
-    private void InitializeScene()
+private void InitializeScene()
+{
+    stanceCompleted = false;
+
+    if (instantiatedSparringPartner != null)
     {
-        stanceCompleted = false;
-
-        if (instantiatedSparringPartner != null)
-        {
-            Destroy(instantiatedSparringPartner);
-            instantiatedSparringPartner = null;
-        }
-
-        if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
-
-        InitializeStanceDetection();
-
-        if (includeSparringPartner)
-        {
-            SetupSparringPartner();
-        }
-
-        StartStancePhase();
-
-        this.enabled = true;
+        Destroy(instantiatedSparringPartner);
+        instantiatedSparringPartner = null;
     }
+
+    if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
+
+    InitializeStanceDetection();
+
+    if (includeSparringPartner)
+    {
+        SetupSparringPartner();
+    }
+
+    if (overrideBatonMode && stanceManager != null)
+    {
+        stanceManager.SetBatonMode(levelBatonMode);
+        Debug.Log($"IntroLevel set baton mode to: {levelBatonMode}");
+    }
+
+    StartStancePhase();
+
+    this.enabled = true;
+}
         private GameObject[] GetActiveStanceBoxes()
     {
         if (stanceManager != null)
@@ -288,6 +298,12 @@ public class IntroLevel : MonoBehaviour
 
         if (stanceManager != null)
         {
+            if (overrideBatonMode)
+            {
+                stanceManager.SetBatonMode(levelBatonMode);
+                Debug.Log($"IntroLevel (skip) set baton mode to: {levelBatonMode}");
+            }
+            
             stanceManager.gameObject.SetActive(true);
         }
         

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,10 +28,30 @@ public class LevelSelector : MonoBehaviour
         public List<string> requiredLevelIds = new List<string>();
     }
 
+    public enum LevelBackground
+    {
+        House,
+        Gym,
+        Tournament
+    }
+
     [Header("Levels")]
     public List<LevelData> availableLevels = new List<LevelData>();
     public List<LevelData> availableSparLevels = new List<LevelData>();
     public List<LevelData> availableTournamentLevels = new List<LevelData>();
+
+    [Header("Level Backgrounds")]
+    [Tooltip("Current selected background for levels")]
+    public LevelBackground currentBackground = LevelBackground.House;
+    
+    [Tooltip("Background GameObjects - assign these in the inspector")]
+    public GameObject houseBackground;
+    public GameObject gymBackground;
+    public GameObject tournamentBackground;
+    
+    [Tooltip("Fade duration for background transitions")]
+    [Range(0.1f, 3f)]
+    public float backgroundTransitionDuration = 1.0f;
 
     [Header("UI Stuff")]
     public GameObject levelSelectionPanel;
@@ -61,6 +82,9 @@ public class LevelSelector : MonoBehaviour
     private List<Button> levelButtons = new List<Button>();
     private List<Button> sparLevelButtons = new List<Button>();
     private List<Button> tournamentLevelButtons = new List<Button>();
+    
+    // Background transition control
+    private bool isTransitioningBackground = false;
 
     private void Start()
     {
@@ -70,6 +94,9 @@ public class LevelSelector : MonoBehaviour
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
         
+        // Initialize background
+        SetBackground(currentBackground);
+        
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
         
@@ -78,6 +105,154 @@ public class LevelSelector : MonoBehaviour
             
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
+    }
+    
+    /// <summary>
+    /// Changes the level background with fade transition. Call this from inspector or other scripts.
+    /// </summary>
+    /// <param name="newBackground">The background to switch to</param>
+    public void ChangeBackground(LevelBackground newBackground)
+    {
+        if (currentBackground != newBackground && !isTransitioningBackground)
+        {
+            StartCoroutine(TransitionToNewBackground(newBackground));
+        }
+    }
+    
+    /// <summary>
+    /// Inspector-accessible methods for changing backgrounds
+    /// </summary>
+    [ContextMenu("Set House Background")]
+    public void SetHouseBackground()
+    {
+        ChangeBackground(LevelBackground.House);
+    }
+    
+    [ContextMenu("Set Gym Background")]
+    public void SetGymBackground()
+    {
+        ChangeBackground(LevelBackground.Gym);
+    }
+    
+    [ContextMenu("Set Tournament Background")]
+    public void SetTournamentBackground()
+    {
+        ChangeBackground(LevelBackground.Tournament);
+    }
+    
+    private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
+    {
+        isTransitioningBackground = true;
+        
+        // Use SceneTransitionManager for fade to black
+        SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
+        if (transitionManager != null)
+        {
+            // Start fade to black
+            yield return StartCoroutine(FadeToBlack(transitionManager));
+            
+            // Change background while screen is black
+            SetBackground(newBackground);
+            currentBackground = newBackground;
+            
+            // Small delay to ensure background is set
+            yield return new WaitForSeconds(0.1f);
+            
+            // Fade back from black
+            yield return StartCoroutine(FadeFromBlack(transitionManager));
+        }
+        else
+        {
+            // Fallback if no transition manager
+            Debug.LogWarning("SceneTransitionManager not found. Changing background without fade.");
+            SetBackground(newBackground);
+            currentBackground = newBackground;
+        }
+        
+        isTransitioningBackground = false;
+    }
+    
+    private IEnumerator FadeToBlack(SceneTransitionManager transitionManager)
+    {
+        if (transitionManager.fadeCanvasGroup != null)
+        {
+            transitionManager.fadeCanvasGroup.blocksRaycasts = true;
+            
+            float elapsedTime = 0f;
+            while (elapsedTime < backgroundTransitionDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                transitionManager.fadeCanvasGroup.alpha = Mathf.Clamp01(elapsedTime / backgroundTransitionDuration);
+                yield return null;
+            }
+            
+            transitionManager.fadeCanvasGroup.alpha = 1f;
+        }
+    }
+    
+    private IEnumerator FadeFromBlack(SceneTransitionManager transitionManager)
+    {
+        if (transitionManager.fadeCanvasGroup != null)
+        {
+            float elapsedTime = 0f;
+            while (elapsedTime < backgroundTransitionDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                transitionManager.fadeCanvasGroup.alpha = 1f - Mathf.Clamp01(elapsedTime / backgroundTransitionDuration);
+                yield return null;
+            }
+            
+            transitionManager.fadeCanvasGroup.alpha = 0f;
+            transitionManager.fadeCanvasGroup.blocksRaycasts = false;
+        }
+    }
+    
+    private void SetBackground(LevelBackground background)
+    {
+        // Deactivate all backgrounds first
+        if (houseBackground != null) houseBackground.SetActive(false);
+        if (gymBackground != null) gymBackground.SetActive(false);
+        if (tournamentBackground != null) tournamentBackground.SetActive(false);
+        
+        // Activate the selected background
+        switch (background)
+        {
+            case LevelBackground.House:
+                if (houseBackground != null) 
+                {
+                    houseBackground.SetActive(true);
+                    Debug.Log("Switched to House background");
+                }
+                else
+                {
+                    Debug.LogWarning("House background GameObject not assigned!");
+                }
+                break;
+                
+            case LevelBackground.Gym:
+                if (gymBackground != null) 
+                {
+                    gymBackground.SetActive(true);
+                    Debug.Log("Switched to Gym background");
+                }
+                else
+                {
+                    Debug.LogWarning("Gym background GameObject not assigned!");
+                }
+                break;
+                
+            case LevelBackground.Tournament:
+                if (tournamentBackground != null) 
+                {
+                    tournamentBackground.SetActive(true);
+                    Debug.Log("Switched to Tournament background");
+                }
+                else
+                {
+                    Debug.LogWarning("Tournament background GameObject not assigned!");
+                }
+                break;
+        }
     }
     
     public void ShowpracLevelsTab()

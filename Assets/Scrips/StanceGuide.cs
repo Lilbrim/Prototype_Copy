@@ -72,6 +72,7 @@ public class StanceGuide : MonoBehaviour
     public bool autoDetectSequences = true;
     public bool startOnSequenceBegin = true;
     public bool stopOnSequenceEnd = true;
+    public bool hideBatonsWhenNoSequence = true; 
     
     [Header("Debug Settings")]
     public bool showGizmos = true;
@@ -104,6 +105,12 @@ void Awake()
         {
             InitializeBaton(i);
         }
+        
+        
+        if (hideBatonsWhenNoSequence && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
+        {
+            HideAllBatons();
+        }
     }
     
     void Update()
@@ -131,6 +138,12 @@ void Awake()
             currentSequence = newSequence;
             GeneratePathsFromCurrentSequence();
             
+            
+            if (hideBatonsWhenNoSequence)
+            {
+                ShowAllBatons();
+            }
+            
             if (startOnSequenceBegin)
             {
                 StartAllBatons();
@@ -142,6 +155,13 @@ void Awake()
             {
                 StopAllBatons();
             }
+            
+            
+            if (hideBatonsWhenNoSequence)
+            {
+                HideAllBatons();
+            }
+            
             currentSequence = null;
         }
         else if (isSequenceActive && currentSequence != newSequence)
@@ -149,6 +169,12 @@ void Awake()
             currentSequence = newSequence;
             GeneratePathsFromCurrentSequence();
             ResetAllBatons();
+            
+            
+            if (hideBatonsWhenNoSequence)
+            {
+                ShowAllBatons();
+            }
             
             if (startOnSequenceBegin)
             {
@@ -159,6 +185,60 @@ void Awake()
         wasSequenceActive = isSequenceActive;
     }
     
+    
+    void HideAllBatons()
+    {
+        for (int i = 0; i < batonConfigs.Length; i++)
+        {
+            HideBaton(i);
+        }
+    }
+    
+    
+    void ShowAllBatons()
+    {
+        for (int i = 0; i < batonConfigs.Length; i++)
+        {
+            ShowBaton(i);
+        }
+    }
+    
+    
+    void HideBaton(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+        
+        var config = batonConfigs[batonIndex];
+        if (config.batonInstance != null)
+        {
+            config.batonInstance.SetActive(false);
+        }
+        
+        
+        if (config.batonTrail != null)
+        {
+            config.batonTrail.positionCount = 0;
+        }
+    }
+    
+    
+    void ShowBaton(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+        
+        var config = batonConfigs[batonIndex];
+        
+        
+        if (config.batonInstance == null && config.batonPrefab != null)
+        {
+            CreateBatonInstance(batonIndex);
+        }
+        
+        if (config.batonInstance != null)
+        {
+            config.batonInstance.SetActive(true);
+        }
+    }
 
     void GeneratePathsFromCurrentSequence()
     {
@@ -234,7 +314,9 @@ void Awake()
         
         CalculatePathDistances(batonIndex);
         
-        if (config.batonPrefab != null && config.batonInstance == null)
+        
+        if (config.batonPrefab != null && config.batonInstance == null && 
+            (!hideBatonsWhenNoSequence || currentSequence != null))
         {
             CreateBatonInstance(batonIndex);
         }
@@ -284,6 +366,12 @@ void Awake()
         if (config.batonPrefab != null)
         {
             CreateBatonInstance(batonIndex);
+            
+            
+            if (hideBatonsWhenNoSequence && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
+            {
+                HideBaton(batonIndex);
+            }
         }
     }
     
@@ -471,6 +559,12 @@ void Awake()
         if (config.batonInstance == null && config.batonPrefab != null)
             CreateBatonInstance(batonIndex);
         
+        
+        if (config.batonInstance != null)
+        {
+            config.batonInstance.SetActive(true);
+        }
+        
         config.isPlaying = true;
         config.currentDistance = 0f;
         config.currentIndex = 0;
@@ -490,6 +584,12 @@ void Awake()
         if (batonIndex >= batonConfigs.Length) return;
         
         batonConfigs[batonIndex].isPlaying = false;
+        
+        
+        if (hideBatonsWhenNoSequence && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
+        {
+            HideBaton(batonIndex);
+        }
     }
     
     public void ResetBaton(int batonIndex)
@@ -587,6 +687,22 @@ void Awake()
         return config.totalPathDistance / speedToUse;
     }
     
+    
+    public void SetHideBatonsWhenNoSequence(bool hide)
+    {
+        hideBatonsWhenNoSequence = hide;
+        
+        
+        if (hide && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
+        {
+            HideAllBatons();
+        }
+        else if (!hide)
+        {
+            ShowAllBatons();
+        }
+    }
+    
     public void StartGuide() => StartBaton(0);
     public void StopGuide() => StopBaton(0);
     public void ResetGuide() => ResetBaton(0);
@@ -634,6 +750,13 @@ void Awake()
     {
         EnableSynchronization(!synchronizeBatons);
         Debug.Log($"Synchronization {(synchronizeBatons ? "enabled" : "disabled")}");
+    }
+    
+    [ContextMenu("Toggle Hide Batons When No Sequence")]
+    void EditorToggleHideBatons()
+    {
+        SetHideBatonsWhenNoSequence(!hideBatonsWhenNoSequence);
+        Debug.Log($"Hide Batons When No Sequence {(hideBatonsWhenNoSequence ? "enabled" : "disabled")}");
     }
     
     void OnDrawGizmos()

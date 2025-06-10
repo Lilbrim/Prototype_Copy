@@ -45,7 +45,7 @@ public class StanceManager : MonoBehaviour
     private ArnisStyle currentArnisStyle;
 
     [Header("Intro Level Integration")]
-    public GameObject[] introStanceBoxes; 
+    public GameObject[] introStanceBoxes;
 
     [Header("Manager Settings")]
     public bool useSparManager = false;
@@ -53,6 +53,25 @@ public class StanceManager : MonoBehaviour
 
     public delegate void StanceChangedDelegate(string newStance);
     public event StanceChangedDelegate OnStanceChanged;
+
+    [Header("Hand-to-Baton Transform Settings")]
+    public bool enableHandToBatonTransform = true;
+    public GameObject leftHandBaton;  
+    public GameObject rightHandBaton; 
+    public Transform leftHandTransform;
+    public Transform rightHandTransform;
+
+    [Header("Baton Configuration")]
+    public BatonMode defaultBatonMode = BatonMode.BothHands;
+    public enum BatonMode
+    {
+        BothHands,
+        SingleBaton,
+        NoHands
+    }
+    private GameObject leftHandOriginal;
+    private GameObject rightHandOriginal;
+    private bool handsTransformed = false;
 
     private void Awake()
     {
@@ -70,23 +89,45 @@ public class StanceManager : MonoBehaviour
     {
         return introStanceBoxes;
     }
-    private void Start()
+
+   private void Start()
     {
         gameObject.SetActive(true);
-        
+
         StoreOriginalTransforms();
         
+
+        if (leftHandTransform != null)
+            StoreTransform(leftHandTransform);
+        if (rightHandTransform != null)
+            StoreTransform(rightHandTransform);
+
         allDetectors = FindObjectsOfType<StanceDetector>();
-        
+
         if (isRightHandDominant)
         {
             ApplyMirroringToAllObjects();
         }
+
+        if (enableHandToBatonTransform && !IsInLevel())
+        {
+            ApplyBatonTransformation();
+        }
+
         AssignSequencePositions();
         currentStance = "Default";
     }
 
-       private void StoreOriginalTransforms()
+
+
+    private bool IsInLevel()
+    {
+        return (useSparManager && SparManager.Instance != null) ||
+            (useTutorialManager && TutorialLevelManager.Instance != null) ||
+            (LevelManager.Instance != null);
+    }
+
+    private void StoreOriginalTransforms()
     {
         foreach (var box in defaultBoxes)
         {
@@ -135,6 +176,106 @@ public class StanceManager : MonoBehaviour
         }
     }
 
+    public void SetBatonMode(BatonMode mode)
+    {
+        defaultBatonMode = mode;
+
+        if (enableHandToBatonTransform)
+        {
+            ApplyBatonTransformation();
+        }
+    }
+
+    private void ApplyBatonTransformation()
+    {
+        
+        ResetHandTransformation();
+
+        switch (defaultBatonMode)
+        {
+            case BatonMode.BothHands:
+                ActivateBaton(leftHandTransform, leftHandBaton, ref leftHandOriginal);
+                ActivateBaton(rightHandTransform, rightHandBaton, ref rightHandOriginal);
+                break;
+
+            case BatonMode.SingleBaton:
+                if (isRightHandDominant)
+                {
+                    ActivateBaton(rightHandTransform, rightHandBaton, ref rightHandOriginal);
+                }
+                else
+                {
+                    ActivateBaton(leftHandTransform, leftHandBaton, ref leftHandOriginal);
+                }
+                break;
+
+            case BatonMode.NoHands:
+                
+                break;
+        }
+
+        handsTransformed = (defaultBatonMode != BatonMode.NoHands);
+    }
+    
+    private void ActivateBaton(Transform handTransform, GameObject batonObject, ref GameObject originalHand)
+    {
+        if (handTransform == null || batonObject == null) return;
+
+        
+        originalHand = handTransform.gameObject;
+        originalHand.SetActive(false);
+
+        
+        batonObject.SetActive(true);
+
+        
+        if (defaultBatonMode == BatonMode.SingleBaton)
+        {
+            batonObject.tag = isRightHandDominant ? "Right Baton" : "Left Baton";
+        }
+        else
+        {
+            if (handTransform == leftHandTransform)
+            {
+                batonObject.tag = "Left Baton";
+            }
+            else if (handTransform == rightHandTransform)
+            {
+                batonObject.tag = "Right Baton";
+            }
+        }
+    }
+
+
+    public void ResetHandTransformation()
+    {
+        
+        if (leftHandBaton != null)
+        {
+            leftHandBaton.SetActive(false);
+        }
+
+        if (rightHandBaton != null)
+        {
+            rightHandBaton.SetActive(false);
+        }
+
+        
+        if (leftHandOriginal != null)
+        {
+            leftHandOriginal.SetActive(true);
+        }
+
+        if (rightHandOriginal != null)
+        {
+            rightHandOriginal.SetActive(true);
+        }
+
+        handsTransformed = false;
+    }
+
+
+
     private void StoreTransform(Transform t)
     {
         originalPositions[t] = t.position;
@@ -142,7 +283,7 @@ public class StanceManager : MonoBehaviour
         originalScales[t] = t.localScale;
     }
 
-       public void SetRightHandDominant(bool rightHandDominant)
+    public void SetRightHandDominant(bool rightHandDominant)
     {
         if (isRightHandDominant != rightHandDominant)
         {
@@ -157,9 +298,31 @@ public class StanceManager : MonoBehaviour
                 RestoreOriginalTransforms();
             }
 
+            
+            if (enableHandToBatonTransform && handsTransformed)
+            {
+                ApplyBatonTransformation();
+            }
+
             RefreshAllVisualMirroring();
         }
     }
+
+    public void ToggleHandToBatonTransform(bool enable)
+    {
+        enableHandToBatonTransform = enable;
+
+        if (enableHandToBatonTransform)
+        {
+            ApplyBatonTransformation();
+        }
+        else
+        {
+            ResetHandTransformation();
+        }
+    }
+
+
 
     private void ApplyMirroringToAllObjects()
     {
@@ -168,6 +331,12 @@ public class StanceManager : MonoBehaviour
             Transform t = kvp.Key;
             if (t != null)
             {
+                
+                if (t == leftHandTransform || t == rightHandTransform)
+                {
+                    continue;
+                }
+                
                 ApplyMirroredTransform(t, kvp.Value, originalRotations[t], originalScales[t]);
             }
         }
@@ -215,9 +384,10 @@ public class StanceManager : MonoBehaviour
             mirroredScale.y *= -1;
         else if (Mathf.Abs(worldMirrorNormal.z) > 0.5f)
             mirroredScale.z *= -1;
-            
+
         target.localScale = mirroredScale;
     }
+
 
     private void SetupDefaultMirrorPlane()
     {
@@ -245,16 +415,17 @@ public class StanceManager : MonoBehaviour
 
     private GameObject[] GetActiveDefaultBoxes()
     {
-        return defaultBoxes; 
+        return defaultBoxes;
     }
 
     private List<ArnisStyle> GetActiveArnisStyles()
     {
-        return arnisStyles; 
+        return arnisStyles;
     }
 
     private void OnDestroy()
     {
+        ResetHandTransformation();
 
         originalPositions.Clear();
         originalRotations.Clear();
@@ -267,10 +438,10 @@ public class StanceManager : MonoBehaviour
         {
             Gizmos.color = Color.cyan;
             Vector3 worldNormal = mirrorPlane.TransformDirection(mirrorNormal);
-            
+
             Gizmos.matrix = Matrix4x4.TRS(mirrorPlane.position, Quaternion.LookRotation(worldNormal), Vector3.one);
             Gizmos.DrawWireCube(Vector3.zero, new Vector3(2, 2, 0.1f));
-            
+
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(mirrorPlane.position, worldNormal * 2);
         }
@@ -481,7 +652,7 @@ public class StanceManager : MonoBehaviour
         currentAttackSequence = null;
         sequenceCounter = 0;
         totalBoxesTouched = 0;
-        currentStance = newStance; 
+        currentStance = newStance;
     }
 
     public void ClearAllStances()
@@ -676,7 +847,7 @@ public class StanceManager : MonoBehaviour
         foreach (var style in GetActiveArnisStyles())
         {
             foreach (var box in style.stanceBoxes) box.SetActive(false);
-            
+
             foreach (var seq in style.sequences)
             {
                 if (seq.startBoxLeft != null) seq.startBoxLeft.SetActive(false);
@@ -695,7 +866,7 @@ public class StanceManager : MonoBehaviour
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
 
         UpdateSequenceColors();
-        
+
         Debug.Log($"Started attack sequence: {sequence.sequenceName} with {sequence.sequenceBoxes.Length} boxes");
     }
 
@@ -709,7 +880,7 @@ public class StanceManager : MonoBehaviour
                 var detector = box.GetComponent<StanceDetector>();
 
                 bool handInStance = false;
-                
+
                 if (isRightHandDominant)
                 {
                     handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
@@ -734,7 +905,7 @@ public class StanceManager : MonoBehaviour
                 var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
 
                 bool endConditionMet = false;
-                
+
                 if (isRightHandDominant)
                 {
                     endConditionMet = leftEndDetector.IsRightHandInStance() && rightEndDetector.IsLeftHandInStance();
@@ -845,9 +1016,9 @@ public class StanceManager : MonoBehaviour
     private void UpdateSequenceColorsForSequence(AttackSequence sequence)
     {
         if (sequence == null) return;
-        
+
         int totalBoxes = sequence.sequenceBoxes.Length;
-        
+
         for (int i = 0; i < totalBoxes; i++)
         {
             StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
@@ -857,7 +1028,7 @@ public class StanceManager : MonoBehaviour
             }
         }
     }
-    
+
     public void UpdateSequenceColors()
     {
         if (currentAttackSequence != null)
@@ -886,8 +1057,28 @@ public class StanceManager : MonoBehaviour
             }
         }
     }
-
+    public bool AreHandsTransformed()
+{
+    return handsTransformed;
 }
+
+    public BatonMode GetCurrentBatonMode()
+    {
+        return defaultBatonMode;
+    }
+
+        public void SetHandTransforms(Transform leftHand, Transform rightHand)
+        {
+            leftHandTransform = leftHand;
+            rightHandTransform = rightHand;
+
+            if (leftHandTransform != null)
+                StoreTransform(leftHandTransform);
+            if (rightHandTransform != null)
+                StoreTransform(rightHandTransform);
+        }
+
+    }
 
 [System.Serializable]
 public class AttackSequence

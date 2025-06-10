@@ -12,7 +12,14 @@ public class Recenter : MonoBehaviour
 
     private void Start()
     {
-        pauseScript = FindObjectOfType<Pause>();
+        pauseScript = FindObjectOfType<Pause>();    
+        StartCoroutine(RecenterAfterDelay(0.1f));
+    }
+
+    private IEnumerator RecenterAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        recenter();
     }
 
     public void recenter()
@@ -22,11 +29,7 @@ public class Recenter : MonoBehaviour
             Debug.LogWarning("Recenter: Missing required transform references");
             return;
         }
-
-        Vector3 headOffset = head.position - origin.position;
         
-        origin.position = target.position - headOffset;
-
         Vector3 targetForward = target.forward;
         targetForward.y = 0;
         targetForward.Normalize();
@@ -36,8 +39,10 @@ public class Recenter : MonoBehaviour
         headForward.Normalize();
         
         float angleToRotate = Vector3.SignedAngle(headForward, targetForward, Vector3.up);
-        
         origin.Rotate(0, angleToRotate, 0);
+
+        Vector3 headOffset = head.position - origin.position;
+        origin.position = target.position - headOffset;
 
         if (pauseScript != null && Time.timeScale == 0)
         {
