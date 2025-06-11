@@ -79,38 +79,56 @@ public class LevelSelector : MonoBehaviour
     private const string ACCURACY_SAVE_PREFIX = "LevelAccuracy_";
     private const string SCORE_SAVE_PREFIX = "LevelScore_";
     private const string NO_RECORD_TEXT = "No Record";
+    private const string BACKGROUND_SAVE_KEY = "CurrentBackground";
     private List<Button> levelButtons = new List<Button>();
     private List<Button> sparLevelButtons = new List<Button>();
     private List<Button> tournamentLevelButtons = new List<Button>();
+
+    public Button houseBackgroundButton;
+    public Button gymBackgroundButton;
+
+    [Header("StoryMode")]
+    public GameObject storyUIPanel;
+    public Button nextLevelButton;
+    public TextMeshProUGUI storyLevelNameText;
+    public TextMeshProUGUI storyProgressText;
+    public Image storyLevelPreviewImage;
+    public TextMeshProUGUI storyLevelDescriptionText;
+
+    private int currentStoryLevelIndex = 0;
+    private List<LevelData> allLevelsInOrder = new List<LevelData>();
+    private bool isInStoryMode = false;
+
     
-    // Background transition control
     private bool isTransitioningBackground = false;
 
     private void Start()
     {
         ShowpracLevelsTab();
-        
+
         GenerateLevelButtons();
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
-        
-        // Initialize background
-        SetBackground(currentBackground);
-        
+        InitializeStoryModeOrder();
+
+        LoadSavedBackground();
+
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
-        
+
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
-            
+
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
-    }
+            
+        if (houseBackgroundButton != null)
+            houseBackgroundButton.onClick.AddListener(SetHouseBackground);
     
-    /// <summary>
-    /// Changes the level background with fade transition. Call this from inspector or other scripts.
-    /// </summary>
-    /// <param name="newBackground">The background to switch to</param>
+        if (gymBackgroundButton != null)
+            gymBackgroundButton.onClick.AddListener(SetGymBackground);
+    }
+
     public void ChangeBackground(LevelBackground newBackground)
     {
         if (currentBackground != newBackground && !isTransitioningBackground)
@@ -118,14 +136,32 @@ public class LevelSelector : MonoBehaviour
             StartCoroutine(TransitionToNewBackground(newBackground));
         }
     }
+
+    private void LoadSavedBackground()
+    {
+        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.House);
+        currentBackground = (LevelBackground)savedBackground;
+        SetBackground(currentBackground);
+    }
+
+    private void SaveCurrentBackground()
+    {
+        PlayerPrefs.SetInt(BACKGROUND_SAVE_KEY, (int)currentBackground);
+        PlayerPrefs.Save();
+    }
+
     
-    /// <summary>
-    /// Inspector-accessible methods for changing backgrounds
-    /// </summary>
     [ContextMenu("Set House Background")]
     public void SetHouseBackground()
     {
-        ChangeBackground(LevelBackground.House);
+        if (isInStoryMode && currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
+        {
+            ChangeBackground(LevelBackground.Tournament);
+        }
+        else
+        {
+            ChangeBackground(LevelBackground.House);
+        }
     }
     
     [ContextMenu("Set Gym Background")]
@@ -140,38 +176,35 @@ public class LevelSelector : MonoBehaviour
         ChangeBackground(LevelBackground.Tournament);
     }
     
-    private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
+  private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
     {
         isTransitioningBackground = true;
         
-        // Use SceneTransitionManager for fade to black
         SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
         if (transitionManager != null)
         {
-            // Start fade to black
             yield return StartCoroutine(FadeToBlack(transitionManager));
             
-            // Change background while screen is black
             SetBackground(newBackground);
             currentBackground = newBackground;
             
-            // Small delay to ensure background is set
+            SaveCurrentBackground();
+            
             yield return new WaitForSeconds(0.1f);
             
-            // Fade back from black
             yield return StartCoroutine(FadeFromBlack(transitionManager));
         }
         else
         {
-            // Fallback if no transition manager
             Debug.LogWarning("SceneTransitionManager not found. Changing background without fade.");
             SetBackground(newBackground);
             currentBackground = newBackground;
+            SaveCurrentBackground(); 
         }
         
         isTransitioningBackground = false;
     }
-    
+        
     private IEnumerator FadeToBlack(SceneTransitionManager transitionManager)
     {
         if (transitionManager.fadeCanvasGroup != null)
@@ -209,12 +242,15 @@ public class LevelSelector : MonoBehaviour
     
     private void SetBackground(LevelBackground background)
     {
-        // Deactivate all backgrounds first
+        
         if (houseBackground != null) houseBackground.SetActive(false);
         if (gymBackground != null) gymBackground.SetActive(false);
         if (tournamentBackground != null) tournamentBackground.SetActive(false);
         
-        // Activate the selected background
+        
+        if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
+        if (storyUIPanel != null) storyUIPanel.SetActive(false);
+        
         switch (background)
         {
             case LevelBackground.House:
@@ -223,9 +259,14 @@ public class LevelSelector : MonoBehaviour
                     houseBackground.SetActive(true);
                     Debug.Log("Switched to House background");
                 }
-                else
+                
+                
+                isInStoryMode = true;
+                if (storyUIPanel != null)
                 {
-                    Debug.LogWarning("House background GameObject not assigned!");
+                    storyUIPanel.SetActive(true);
+                    InitializeStoryModeOrder();
+                    UpdateStoryUI();
                 }
                 break;
                 
@@ -235,9 +276,13 @@ public class LevelSelector : MonoBehaviour
                     gymBackground.SetActive(true);
                     Debug.Log("Switched to Gym background");
                 }
-                else
+                
+                
+                isInStoryMode = false;
+                if (levelSelectionPanel != null)
                 {
-                    Debug.LogWarning("Gym background GameObject not assigned!");
+                    levelSelectionPanel.SetActive(true);
+                    ShowpracLevelsTab();
                 }
                 break;
                 
@@ -247,11 +292,164 @@ public class LevelSelector : MonoBehaviour
                     tournamentBackground.SetActive(true);
                     Debug.Log("Switched to Tournament background");
                 }
+                
+                
+                if (isInStoryMode)
+                {
+                    if (storyUIPanel != null)
+                    {
+                        storyUIPanel.SetActive(true);
+                        UpdateStoryUI();
+                    }
+                }
                 else
                 {
-                    Debug.LogWarning("Tournament background GameObject not assigned!");
+                    
+                    if (levelSelectionPanel != null)
+                    {
+                        levelSelectionPanel.SetActive(true);
+                        ShowTournamentLevelsTab();
+                    }
                 }
                 break;
+        }
+    }
+
+    
+    private void InitializeStoryModeOrder()
+    {
+        allLevelsInOrder.Clear();
+        allLevelsInOrder.AddRange(availableLevels);
+        allLevelsInOrder.AddRange(availableSparLevels);
+        allLevelsInOrder.AddRange(availableTournamentLevels);
+        
+        
+        currentStoryLevelIndex = 0;
+        for (int i = 0; i < allLevelsInOrder.Count; i++)
+        {
+            if (IsLevelCompleted(allLevelsInOrder[i]))
+            {
+                currentStoryLevelIndex = i + 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        
+        if (currentStoryLevelIndex >= allLevelsInOrder.Count)
+        {
+            currentStoryLevelIndex = allLevelsInOrder.Count - 1;
+        }
+    }
+
+    private bool IsLevelCompleted(LevelData level)
+    {
+        if (level.isSparLevel || level.isTournamentLevel)
+        {
+            return GetSavedScore(level.levelId) >= level.requiredScore;
+        }
+        else
+        {
+            return GetSavedAccuracy(level.levelId) >= level.requiredAccuracy;
+        }
+    }
+
+    private void UpdateStoryUI()
+    {
+        if (currentStoryLevelIndex < allLevelsInOrder.Count)
+        {
+            LevelData currentLevel = allLevelsInOrder[currentStoryLevelIndex];
+            
+            
+            if (storyLevelNameText != null)
+                storyLevelNameText.text = currentLevel.levelName;
+                
+            if (storyLevelDescriptionText != null)
+                storyLevelDescriptionText.text = currentLevel.levelDescription;
+                
+            if (storyLevelPreviewImage != null)
+                storyLevelPreviewImage.sprite = currentLevel.levelThumbnail;
+                
+            if (storyProgressText != null)
+            {
+                int completedLevels = currentStoryLevelIndex;
+                int totalLevels = allLevelsInOrder.Count;
+                storyProgressText.text = $"Progress: {completedLevels}/{totalLevels}";
+            }
+            
+            
+            if (nextLevelButton != null)
+            {
+                nextLevelButton.interactable = true;
+                
+                
+                if (currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
+                {
+                    
+                    if (currentBackground != LevelBackground.Tournament)
+                    {
+                        ChangeBackground(LevelBackground.Tournament);
+                    }
+                }
+            }
+        }
+        else
+        {
+            
+            if (storyLevelNameText != null)
+                storyLevelNameText.text = "All Levels Complete";
+                
+            if (storyLevelDescriptionText != null)
+                storyLevelDescriptionText.text = "All Levels done";
+                
+            if (nextLevelButton != null)
+                nextLevelButton.interactable = false;
+        }
+    }
+
+    public void StartNextLevel()
+    {
+        if (currentStoryLevelIndex < allLevelsInOrder.Count)
+        {
+            LevelData levelToStart = allLevelsInOrder[currentStoryLevelIndex];
+            selectedIntroLevel = levelToStart.introLevel;
+            
+            if (selectedIntroLevel != null)
+            {
+                
+                if (storyUIPanel != null)
+                    storyUIPanel.SetActive(false);
+                    
+                string levelId = levelToStart.levelId;
+                
+                
+                if (levelToStart.isSparLevel || levelToStart.isTournamentLevel)
+                {
+                    if (selectedIntroLevel.gameObject.GetComponent<SaveSparScore>() == null)
+                    {
+                        SaveSparScore observer = selectedIntroLevel.gameObject.AddComponent<SaveSparScore>();
+                        observer.Initialize(this, levelId);
+                    }
+                    
+                    SparResultsManager resultsManager = FindObjectOfType<SparResultsManager>();
+                    if (resultsManager != null)
+                    {
+                        resultsManager.InitializeForLevel(levelId);
+                    }
+                }
+                else
+                {
+                    if (selectedIntroLevel.gameObject.GetComponent<SaveAccuracy>() == null)
+                    {
+                        SaveAccuracy observer = selectedIntroLevel.gameObject.AddComponent<SaveAccuracy>();
+                        observer.Initialize(this, levelId);
+                    }
+                }
+                
+                selectedIntroLevel.ActivateIntro();
+            }
         }
     }
     
@@ -259,27 +457,27 @@ public class LevelSelector : MonoBehaviour
     {
         isViewingSparLevels = false;
         isViewingTournamentLevels = false;
-        
+
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(true);
-        
+
         if (sparLevelsTab != null)
             sparLevelsTab.SetActive(false);
-            
+
         if (tournamentLevelsTab != null)
             tournamentLevelsTab.SetActive(false);
-        
+
         selectedLevelIndex = -1;
         selectedIntroLevel = null;
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
-        
+
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.interactable = false;
-        
+
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.interactable = true;
-            
+
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.interactable = true;
     }
@@ -591,6 +789,7 @@ public class LevelSelector : MonoBehaviour
         
         return true;
     }
+    
 
     public void SelectLevel(int levelIndex)
     {
@@ -841,6 +1040,12 @@ public class LevelSelector : MonoBehaviour
             PlayerPrefs.SetFloat(ACCURACY_SAVE_PREFIX + levelId, accuracy);
             PlayerPrefs.Save();
             UpdateLevelButtonsState();
+            
+            
+            if (isInStoryMode)
+            {
+                OnLevelCompleted();
+            }
         }
     }
 
@@ -857,8 +1062,26 @@ public class LevelSelector : MonoBehaviour
             PlayerPrefs.SetInt(SCORE_SAVE_PREFIX + levelId, score);
             PlayerPrefs.Save();
             UpdateLevelButtonsState();
+            
+            if (isInStoryMode)
+            {
+                OnLevelCompleted();
+            }
         }
     }
+
+    public void OnLevelCompleted()
+    {
+        if (isInStoryMode)
+        {
+            InitializeStoryModeOrder();
+            UpdateStoryUI();
+            
+            if (storyUIPanel != null)
+                storyUIPanel.SetActive(true);
+        }
+    }
+
     
     public int GetSavedScore(string levelId)
     {
