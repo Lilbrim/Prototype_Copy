@@ -111,10 +111,10 @@ public class SceneTransitionManager : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Load a new scene with a fade to black transition
-    /// </summary>
-    /// <param name="sceneName">Name of the scene to load</param>
+    
+    
+    
+    
     public void LoadSceneWithTransition(string sceneName)
     {
         if (!_isTransitioning)
@@ -127,10 +127,10 @@ public class SceneTransitionManager : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Load a new scene with a fade to black transition
-    /// </summary>
-    /// <param name="sceneIndex">Build index of the scene to load</param>
+    
+    
+    
+    
     public void LoadSceneWithTransition(int sceneIndex)
     {
         if (!_isTransitioning)

@@ -34,6 +34,10 @@ public class IntroLevel : MonoBehaviour
     public GameObject sparringPartnerPrefab;
     public Transform sparringPartnerSpawnPoint;
     public string sparringPartnerAnimation = "Change This";
+
+    public bool includeDummyPartner = false;
+    public GameObject dummyPartnerPrefab;
+    public Transform dummyPartnerSpawnPoint;
     
     [Header("Mirroring")]
     public bool mirrorSparringPartner = false;
@@ -43,6 +47,7 @@ public class IntroLevel : MonoBehaviour
     public bool includeCutscene = false;
     public VideoClip levelCutsceneVideo;
     public string cutsceneId;
+    public bool useScreenTransition = true;
 
     
     private ILevelManager levelManager; 
@@ -51,11 +56,12 @@ public class IntroLevel : MonoBehaviour
     private float[] holdTimers;
     private bool stanceCompleted = false;
     private GameObject instantiatedSparringPartner;
+    private GameObject instantiatedDummyPartner;
 
     private void Awake()
     {
         gameObject.SetActive(false);
-        
+
         levelManager = levelManagerComponent as ILevelManager;
         if (levelManager == null)
         {
@@ -63,9 +69,35 @@ public class IntroLevel : MonoBehaviour
         }
     }
 
-  public void ActivateIntro()
+    public void ActivateIntro()
     {
         gameObject.SetActive(true);
+        
+        if (useScreenTransition && SceneTransitionManager.Instance != null)
+        {
+            StartCoroutine(StartIntroWithTransition());
+        }
+        else
+        {
+            if (includeCutscene && cutsceneManager != null && !HasCutsceneBeenViewed())
+            {
+                StartCutsceneSequence();
+            }
+            else
+            {
+                InitializeScene();
+            }
+        }
+    }
+    
+    private IEnumerator StartIntroWithTransition()
+    {
+        
+        yield return StartCoroutine(FadeToBlack());
+        
+        
+        yield return new WaitForSeconds(0.2f);
+        
         
         if (includeCutscene && cutsceneManager != null && !HasCutsceneBeenViewed())
         {
@@ -75,15 +107,68 @@ public class IntroLevel : MonoBehaviour
         {
             InitializeScene();
         }
+        
+        
+        yield return new WaitForSeconds(0.3f);
+        
+        
+        yield return StartCoroutine(FadeFromBlack());
+        
+        
+        if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.fadeCanvasGroup != null)
+        {
+            SceneTransitionManager.Instance.fadeCanvasGroup.gameObject.SetActive(false);
+        }
     }
-    
+
+    private IEnumerator FadeToBlack()
+    {
+        if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.fadeCanvasGroup != null)
+        {
+            CanvasGroup fadeGroup = SceneTransitionManager.Instance.fadeCanvasGroup;
+            float fadeDuration = SceneTransitionManager.Instance.fadeDuration;
+            
+            fadeGroup.blocksRaycasts = true;
+            
+            float elapsedTime = 0f;
+            while (elapsedTime < fadeDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                fadeGroup.alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
+                yield return null;
+            }
+            
+            fadeGroup.alpha = 1f;
+        }
+    }
+
+    private IEnumerator FadeFromBlack()
+{
+    if (SceneTransitionManager.Instance != null && SceneTransitionManager.Instance.fadeCanvasGroup != null)
+    {
+        CanvasGroup fadeGroup = SceneTransitionManager.Instance.fadeCanvasGroup;
+        float fadeDuration = SceneTransitionManager.Instance.fadeDuration;
+        
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            fadeGroup.alpha = 1f - Mathf.Clamp01(elapsedTime / fadeDuration);
+            yield return null;
+        }
+        
+        fadeGroup.alpha = 0f;
+        fadeGroup.blocksRaycasts = false;
+    }
+}
+        
     
     
     private void StartCutsceneSequence()
     {
         cutsceneManager.OnCutsceneEnd += OnCutsceneFinished;
         cutsceneManager.OnCutsceneSkip += OnCutsceneFinished;
-        
+
         if (levelCutsceneVideo != null)
         {
             cutsceneManager.PlayCutscene(levelCutsceneVideo);
@@ -144,35 +229,46 @@ public class IntroLevel : MonoBehaviour
     }
 
 
-private void InitializeScene()
-{
-    stanceCompleted = false;
-
-    if (instantiatedSparringPartner != null)
+   private void InitializeScene()
     {
-        Destroy(instantiatedSparringPartner);
-        instantiatedSparringPartner = null;
+        stanceCompleted = false;
+
+        if (instantiatedSparringPartner != null)
+        {
+            Destroy(instantiatedSparringPartner);
+            instantiatedSparringPartner = null;
+        }
+
+        if (instantiatedDummyPartner != null)
+        {
+            Destroy(instantiatedDummyPartner);
+            instantiatedDummyPartner = null;
+        }
+
+        if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
+
+        InitializeStanceDetection();
+
+        if (includeSparringPartner)
+        {
+            SetupSparringPartner();
+        }
+
+        if (includeDummyPartner)
+        {
+            SetupDummyPartner();
+        }
+
+        if (overrideBatonMode && stanceManager != null)
+        {
+            stanceManager.SetBatonMode(levelBatonMode);
+            Debug.Log($"IntroLevel set baton mode to: {levelBatonMode}");
+        }
+
+        StartStancePhase();
+
+        this.enabled = true;
     }
-
-    if (levelManagerComponent != null) levelManagerComponent.gameObject.SetActive(false);
-
-    InitializeStanceDetection();
-
-    if (includeSparringPartner)
-    {
-        SetupSparringPartner();
-    }
-
-    if (overrideBatonMode && stanceManager != null)
-    {
-        stanceManager.SetBatonMode(levelBatonMode);
-        Debug.Log($"IntroLevel set baton mode to: {levelBatonMode}");
-    }
-
-    StartStancePhase();
-
-    this.enabled = true;
-}
         private GameObject[] GetActiveStanceBoxes()
     {
         if (stanceManager != null)
@@ -185,6 +281,27 @@ private void InitializeScene()
         }
         
         return stanceBoxes;
+    }
+    
+    private void SetupDummyPartner()
+    {
+        if (dummyPartnerPrefab != null && dummyPartnerSpawnPoint != null)
+        {
+            instantiatedDummyPartner = Instantiate(
+                dummyPartnerPrefab,
+                dummyPartnerSpawnPoint.position,
+                dummyPartnerSpawnPoint.rotation
+            );
+
+            
+            instantiatedDummyPartner.tag = "DummyPartner";
+
+            Debug.Log("Dummy partner spawned");
+        }
+        else
+        {
+            Debug.LogWarning("Dummy partner prefab or spawn point is missing. Cannot spawn dummy partner.");
+        }
     }
 
     private void SetupSparringPartner()
@@ -205,7 +322,7 @@ private void InitializeScene()
             if (mirrorSparringPartner)
             {
                 Vector3 scale = instantiatedSparringPartner.transform.localScale;
-                scale.x = -Mathf.Abs(scale.x); 
+                scale.x = -Mathf.Abs(scale.x);
                 instantiatedSparringPartner.transform.localScale = scale;
             }
 
@@ -341,7 +458,13 @@ private void InitializeScene()
         {
             box.SetActive(true);
         }
+        
+        if (includeDummyPartner && instantiatedDummyPartner != null)
+        {
+            instantiatedDummyPartner.SetActive(true);
+        }
     }
+
 
     private void CheckStanceHold()
     {

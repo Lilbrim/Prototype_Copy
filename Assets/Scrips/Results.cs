@@ -97,17 +97,21 @@ public class ResultsManager : MonoBehaviour
     public void RestartLevel()
     {
         HideResults();
+        
         LevelManager.Instance.StartLevel();
     }
 
+
     public void ExitToMenu()
     {
+        CleanupDummyPartners();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
-
     public void ReturnToLevelSelector()
     {
         HideResults();
+        
+        CleanupDummyPartners();
 
         if (levelSelector != null)
         {
@@ -123,6 +127,17 @@ public class ResultsManager : MonoBehaviour
             else
             {
                 ExitToMenu();
+            }
+        }
+    }
+    private void CleanupDummyPartners()
+    {
+        GameObject[] dummyPartners = GameObject.FindGameObjectsWithTag("DummyPartner");
+        foreach (GameObject dummy in dummyPartners)
+        {
+            if (dummy != null)
+            {
+                Destroy(dummy);
             }
         }
     }

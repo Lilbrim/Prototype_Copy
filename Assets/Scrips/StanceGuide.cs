@@ -45,6 +45,13 @@ public class StanceGuide : MonoBehaviour
         [Header("Path Configuration")]
         public BatonKeyframe[] batonPath;
         public bool loop = false;
+        
+        [Header("Loop Delay Settings")]
+        [Tooltip("Delay in seconds before starting the next loop iteration")]
+        public float loopDelay = 1f;
+        [Tooltip("Should the baton be hidden during the loop delay?")]
+        public bool hideDuringDelay = false;
+        
         public bool autoPlay = true;
         public float constantSpeed = 5f;
         
@@ -58,7 +65,12 @@ public class StanceGuide : MonoBehaviour
         [System.NonSerialized] public int currentIndex = 0;
         [System.NonSerialized] public bool isPlaying = false;
         [System.NonSerialized] public GameObject batonInstance;
-        [System.NonSerialized] public float effectiveSpeed = 5f; 
+        [System.NonSerialized] public float effectiveSpeed = 5f;
+        
+        
+        [System.NonSerialized] public bool isWaitingForLoop = false;
+        [System.NonSerialized] public float loopDelayTimer = 0f;
+        [System.NonSerialized] public bool wasHiddenForDelay = false;
     }
     
     public BatonConfig leftHandBaton = new BatonConfig();
@@ -383,6 +395,41 @@ void Awake()
         
         if (!config.isPlaying || config.batonPath == null || config.batonPath.Length < 2) return;
         
+        
+        if (config.isWaitingForLoop)
+        {
+            config.loopDelayTimer -= Time.deltaTime;
+            
+            if (config.loopDelayTimer <= 0f)
+            {
+                
+                config.isWaitingForLoop = false;
+                config.currentDistance = 0f;
+                config.currentIndex = 0;
+                
+                
+                if (config.wasHiddenForDelay && config.batonInstance != null)
+                {
+                    config.batonInstance.SetActive(true);
+                    config.wasHiddenForDelay = false;
+                }
+                
+                
+                if (config.batonInstance != null)
+                {
+                    config.batonInstance.transform.position = config.batonPath[0].position;
+                    config.batonInstance.transform.rotation = config.batonPath[0].rotation;
+                }
+                
+                
+                if (config.batonTrail != null)
+                {
+                    config.batonTrail.positionCount = 0;
+                }
+            }
+            return; 
+        }
+        
         UpdateKeyframesFromSources(batonIndex);
         CalculatePathDistances(batonIndex);
         
@@ -472,8 +519,17 @@ void Awake()
         {
             if (config.loop)
             {
-                config.currentDistance = 0f;
-                config.currentIndex = 0;
+                
+                config.isWaitingForLoop = true;
+                config.loopDelayTimer = config.loopDelay;
+                
+                
+                if (config.hideDuringDelay && config.batonInstance != null)
+                {
+                    config.batonInstance.SetActive(false);
+                    config.wasHiddenForDelay = true;
+                }
+                
                 return;
             }
             else
@@ -569,6 +625,11 @@ void Awake()
         config.currentDistance = 0f;
         config.currentIndex = 0;
         
+        
+        config.isWaitingForLoop = false;
+        config.loopDelayTimer = 0f;
+        config.wasHiddenForDelay = false;
+        
         if (config.batonInstance != null && config.batonPath != null && config.batonPath.Length > 0)
         {
             config.batonInstance.transform.position = config.batonPath[0].position;
@@ -583,7 +644,13 @@ void Awake()
     {
         if (batonIndex >= batonConfigs.Length) return;
         
-        batonConfigs[batonIndex].isPlaying = false;
+        var config = batonConfigs[batonIndex];
+        config.isPlaying = false;
+        
+        
+        config.isWaitingForLoop = false;
+        config.loopDelayTimer = 0f;
+        config.wasHiddenForDelay = false;
         
         
         if (hideBatonsWhenNoSequence && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
@@ -600,6 +667,17 @@ void Awake()
         
         config.currentDistance = 0f;
         config.currentIndex = 0;
+        
+        
+        config.isWaitingForLoop = false;
+        config.loopDelayTimer = 0f;
+        
+        
+        if (config.wasHiddenForDelay && config.batonInstance != null)
+        {
+            config.batonInstance.SetActive(true);
+            config.wasHiddenForDelay = false;
+        }
         
         if (config.batonInstance != null && config.batonPath != null && config.batonPath.Length > 0)
         {
@@ -684,7 +762,41 @@ void Awake()
         if (config.totalPathDistance <= 0) return 0f;
         
         float speedToUse = synchronizeBatons ? config.effectiveSpeed : config.constantSpeed;
-        return config.totalPathDistance / speedToUse;
+        float baseTime = config.totalPathDistance / speedToUse;
+        
+        
+        if (config.loop)
+        {
+            baseTime += config.loopDelay;
+        }
+        
+        return baseTime;
+    }
+    
+    
+    public void SetLoopDelay(int batonIndex, float delay)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+        batonConfigs[batonIndex].loopDelay = delay;
+    }
+    
+    public void SetHideDuringDelay(int batonIndex, bool hide)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+        batonConfigs[batonIndex].hideDuringDelay = hide;
+    }
+    
+    public bool IsWaitingForLoop(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return false;
+        return batonConfigs[batonIndex].isWaitingForLoop;
+    }
+    
+    public float GetRemainingDelayTime(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return 0f;
+        var config = batonConfigs[batonIndex];
+        return config.isWaitingForLoop ? config.loopDelayTimer : 0f;
     }
     
     
@@ -749,14 +861,12 @@ void Awake()
     void EditorToggleSync()
     {
         EnableSynchronization(!synchronizeBatons);
-        Debug.Log($"Synchronization {(synchronizeBatons ? "enabled" : "disabled")}");
     }
     
     [ContextMenu("Toggle Hide Batons When No Sequence")]
     void EditorToggleHideBatons()
     {
         SetHideBatonsWhenNoSequence(!hideBatonsWhenNoSequence);
-        Debug.Log($"Hide Batons When No Sequence {(hideBatonsWhenNoSequence ? "enabled" : "disabled")}");
     }
     
     void OnDrawGizmos()
@@ -789,7 +899,12 @@ void Awake()
             {
                 Vector3 labelPos = config.batonPath.Length > 0 ? config.batonPath[0].position + Vector3.up * 0.5f : Vector3.zero;
 #if UNITY_EDITOR
-                UnityEditor.Handles.Label(labelPos, $"{config.batonName}\nSpeed: {config.effectiveSpeed:F1}");
+                string label = $"{config.batonName}\nSpeed: {config.effectiveSpeed:F1}";
+                if (config.isWaitingForLoop)
+                {
+                    label += $"\nLoop Delay: {config.loopDelayTimer:F1}s";
+                }
+                UnityEditor.Handles.Label(labelPos, label);
 #endif
             }
         }

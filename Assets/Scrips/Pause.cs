@@ -34,7 +34,7 @@ public class Pause : MonoBehaviour
     [SerializeField] private bool defaultRightHand = true;
     
     [Header("Passthrough Integration")]
-    public PassthroughManager passthroughManager; // Reference to PassthroughManager
+    public PassthroughManager passthroughManager; 
     
     [Header("Menu Following Settings")]
     public float followThreshold = 30f; 
@@ -63,7 +63,6 @@ public class Pause : MonoBehaviour
         mainPausePanel.SetActive(true);
         Time.timeScale = 1;
         
-        // Initialize PassthroughManager reference if not set
         if (passthroughManager == null)
         {
             passthroughManager = FindObjectOfType<PassthroughManager>();
@@ -319,7 +318,7 @@ public class Pause : MonoBehaviour
         return PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0) == 1;
     }
 
-    // Passthrough integration methods
+    
     public void TogglePassthrough()
     {
         if (passthroughManager != null)

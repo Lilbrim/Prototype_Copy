@@ -13,6 +13,7 @@ TagManager:
   - Left_Holder
   - Right_Holder
   - SparringPartner
+  - DummyPartner
   layers:
   - Default
   - TransparentFX

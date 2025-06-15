@@ -104,10 +104,11 @@ public class StanceManager : MonoBehaviour
 
         allDetectors = FindObjectsOfType<StanceDetector>();
 
-        if (isRightHandDominant)
+        if (!isRightHandDominant)
         {
             ApplyMirroringToAllObjects();
         }
+
 
         if (enableHandToBatonTransform && !IsInLevel())
         {
@@ -283,30 +284,29 @@ public class StanceManager : MonoBehaviour
         originalScales[t] = t.localScale;
     }
 
-    public void SetRightHandDominant(bool rightHandDominant)
+public void SetRightHandDominant(bool rightHandDominant)
+{
+    if (isRightHandDominant != rightHandDominant)
     {
-        if (isRightHandDominant != rightHandDominant)
+        isRightHandDominant = rightHandDominant;
+
+        if (!isRightHandDominant) 
         {
-            isRightHandDominant = rightHandDominant;
-
-            if (isRightHandDominant)
-            {
-                ApplyMirroringToAllObjects();
-            }
-            else
-            {
-                RestoreOriginalTransforms();
-            }
-
-            
-            if (enableHandToBatonTransform && handsTransformed)
-            {
-                ApplyBatonTransformation();
-            }
-
-            RefreshAllVisualMirroring();
+            ApplyMirroringToAllObjects();
         }
+        else
+        {
+            RestoreOriginalTransforms();
+        }
+
+        if (enableHandToBatonTransform && handsTransformed)
+        {
+            ApplyBatonTransformation();
+        }
+
+        RefreshAllVisualMirroring();
     }
+}
 
     public void ToggleHandToBatonTransform(bool enable)
     {
@@ -815,23 +815,46 @@ public class StanceManager : MonoBehaviour
         }
     }
 
-    private bool IsSequenceStartConditionMet(AttackSequence sequence)
+   private bool IsSequenceStartConditionMet(AttackSequence sequence)
     {
-        if (sequence.startBoxLeft != null && sequence.startBoxRight != null)
+        bool leftCondition = false;
+        bool rightCondition = false;
+        
+        if (sequence.startBoxLeft != null)
         {
             var leftDetector = sequence.startBoxLeft.GetComponent<StanceDetector>();
-            var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
-
             if (isRightHandDominant)
             {
-                return leftDetector.IsRightHandInStance() && rightDetector.IsLeftHandInStance();
+                leftCondition = leftDetector.IsRightHandInStance();
             }
             else
             {
-                return leftDetector.IsLeftHandInStance() && rightDetector.IsRightHandInStance();
+                leftCondition = leftDetector.IsLeftHandInStance();
             }
         }
-        return false;
+        else
+        {
+            leftCondition = true;
+        }
+        
+        if (sequence.startBoxRight != null)
+        {
+            var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
+            if (isRightHandDominant)
+            {
+                rightCondition = rightDetector.IsLeftHandInStance();
+            }
+            else
+            {
+                rightCondition = rightDetector.IsRightHandInStance();
+            }
+        }
+        else
+        {
+            rightCondition = true;
+        }
+        
+        return leftCondition && rightCondition;
     }
     public void StartAttackSequence(AttackSequence sequence)
     {
@@ -869,6 +892,51 @@ public class StanceManager : MonoBehaviour
 
         Debug.Log($"Started attack sequence: {sequence.sequenceName} with {sequence.sequenceBoxes.Length} boxes");
     }
+
+    private bool CheckSequenceEndCondition()
+    {
+        if (currentAttackSequence == null) return false;
+        
+        bool leftEndCondition = false;
+        bool rightEndCondition = false;
+        
+        if (currentAttackSequence.endBoxLeft != null)
+        {
+            var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+            if (isRightHandDominant)
+            {
+                leftEndCondition = leftEndDetector.IsRightHandInStance();
+            }
+            else
+            {
+                leftEndCondition = leftEndDetector.IsLeftHandInStance();
+            }
+        }
+        else
+        {
+            leftEndCondition = true;
+        }
+        
+        if (currentAttackSequence.endBoxRight != null)
+        {
+            var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
+            if (isRightHandDominant)
+            {
+                rightEndCondition = rightEndDetector.IsLeftHandInStance();
+            }
+            else
+            {
+                rightEndCondition = rightEndDetector.IsRightHandInStance();
+            }
+        }
+        else
+        {
+            rightEndCondition = true;
+        }
+        
+        return leftEndCondition && rightEndCondition;
+    }
+
 
     private void CheckAttackSequence()
     {
@@ -915,12 +983,12 @@ public class StanceManager : MonoBehaviour
                     endConditionMet = leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance();
                 }
 
-                if (endConditionMet)
+                if (CheckSequenceEndCondition())
                 {
                     Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
-
+                    
                     NotifyObjectiveCompletion();
-
+                    
                     ResetSequence();
                     SetStance("Default");
                     return;

@@ -412,7 +412,7 @@ public class LevelManager : MonoBehaviour, ILevelManager
         feedbackImage.gameObject.SetActive(true);
     }
 
-    public void StartObjective(LevelObjective objective)
+   public void StartObjective(LevelObjective objective)
     {
         if (objective == null)
         {
@@ -420,13 +420,13 @@ public class LevelManager : MonoBehaviour, ILevelManager
             return;
         }
 
-        objectiveText.text = objective.instruction;
-        stanceEntryImage.gameObject.SetActive(false);
+        bool isRightHandDominant = GetRightHandDominance();
+        objectiveText.text = objective.GetInstruction(isRightHandDominant);
         
+        stanceEntryImage.gameObject.SetActive(false);
         
         if (objective.instructionVideo != null && objectiveVideoPlayer != null)
         {
-            
             objectiveImage.gameObject.SetActive(false);
             objectiveVideoPlayer.gameObject.SetActive(true);
             objectiveVideoPlayer.clip = objective.instructionVideo;
@@ -434,19 +434,29 @@ public class LevelManager : MonoBehaviour, ILevelManager
         }
         else if (objective.instructionImage != null)
         {
-            
             objectiveVideoPlayer?.gameObject.SetActive(false);
             objectiveImage.gameObject.SetActive(true);
             objectiveImage.sprite = objective.instructionImage;
         }
         else
         {
-            Debug.LogWarning("No instruction video or image found for objective");
             objectiveVideoPlayer?.gameObject.SetActive(false);
             objectiveImage.gameObject.SetActive(false);
         }
 
         StanceManager.Instance.EnterStance(objective.requiredStance, trainingMode);
+    }
+
+    private bool GetRightHandDominance()
+    {   
+        Pause pauseScript = FindObjectOfType<Pause>();
+        if (pauseScript != null)
+        {
+            return pauseScript.GetRightHandDominance();
+        }
+        
+        const string RIGHT_HAND_PREF_KEY = "RightHandDominant";
+        return PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, 1) == 1; 
     }
 
     public void EndObjective()
@@ -857,10 +867,27 @@ public class LevelObjective
     public string stanceEntryInstruction;
     public Sprite stanceEntryImage;
 
-    [Header("Sequence")]
-    public string instruction;
+    [Header("Sequence Instructions")]
+    public string instruction; 
+    public string rightHandInstruction; 
+    
+    [Header("Visual Content")]
     public Sprite instructionImage; 
     public VideoClip instructionVideo; 
+    
+    [Header("Requirements")]
     public string requiredStance;
     public float timeLimit;
+    
+    
+    public string GetInstruction(bool isRightHandDominant)
+    {
+        
+        if (isRightHandDominant && !string.IsNullOrEmpty(rightHandInstruction))
+        {
+            return rightHandInstruction;
+        }
+        
+        return instruction;
+    }
 }

@@ -968,14 +968,16 @@ public class LevelSelector : MonoBehaviour
 
     public void StartSelectedLevel()
     {
+            Debug.Log("StartSelectedLevel called!");
+             Debug.Log($"selectedIntroLevel is null: {selectedIntroLevel == null}");
         if (selectedIntroLevel != null)
         {
             levelSelectionPanel.SetActive(false);
-            
+
             string levelId;
             bool isSparLevel = false;
             bool isTournamentLevel = false;
-            
+
             if (isViewingSparLevels)
             {
                 levelId = availableSparLevels[selectedLevelIndex].levelId;
@@ -990,7 +992,7 @@ public class LevelSelector : MonoBehaviour
             {
                 levelId = availableLevels[selectedLevelIndex].levelId;
             }
-            
+
             if (isSparLevel)
             {
                 if (selectedIntroLevel.gameObject.GetComponent<SaveSparScore>() == null)
@@ -998,7 +1000,7 @@ public class LevelSelector : MonoBehaviour
                     SaveSparScore observer = selectedIntroLevel.gameObject.AddComponent<SaveSparScore>();
                     observer.Initialize(this, levelId);
                 }
-                
+
                 SparResultsManager resultsManager = FindObjectOfType<SparResultsManager>();
                 if (resultsManager != null)
                 {
@@ -1012,7 +1014,7 @@ public class LevelSelector : MonoBehaviour
                     SaveSparScore observer = selectedIntroLevel.gameObject.AddComponent<SaveSparScore>();
                     observer.Initialize(this, levelId);
                 }
-                
+
                 SparResultsManager resultsManager = FindObjectOfType<SparResultsManager>();
                 if (resultsManager != null)
                 {
@@ -1027,7 +1029,7 @@ public class LevelSelector : MonoBehaviour
                     observer.Initialize(this, levelId);
                 }
             }
-            
+
             selectedIntroLevel.ActivateIntro();
         }
     }
