@@ -1380,11 +1380,6 @@ MonoBehaviour:
   tutorialInstructionPanel: {fileID: 859441151}
   tutorialInstructionTextUI: {fileID: 601883584}
   enableAutoDetectSequences: 1
---- !u!1 &46470115 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1045101670571601690, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &46771984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9025513322688193129, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -21227,11 +21222,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7239296267508065615, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &363801741 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 706565918843234782, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &372198508
 GameObject:
   m_ObjectHideFlags: 0
@@ -23210,11 +23200,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &483775734 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1109458412543150271, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &489955394 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 105159470759806586, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -25648,11 +25633,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e470ed8cb12eadd42901f3c3b6763011, type: 3}
   m_PrefabInstance: {fileID: 197038536}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &641169374 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2520633245040300821, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &664047077
 GameObject:
   m_ObjectHideFlags: 0
@@ -27887,11 +27867,6 @@ RectTransform:
 --- !u!1 &766971203 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3072867188578753356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &770822484 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3274125148310497750, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &773642254
@@ -36929,11 +36904,6 @@ Transform:
   - {fileID: 399508511}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1313423891 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4663172531305919795, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1313502346
 GameObject:
   m_ObjectHideFlags: 0
@@ -45385,48 +45355,6 @@ MonoBehaviour:
       endBoxRight: {fileID: 2054267636}
       timeLimit: 1000
       currentIndex: 0
-  - styleName: Left_Abdomen
-    stanceBoxes:
-    - {fileID: 1046664846}
-    - {fileID: 156409098}
-    - {fileID: 1637278356}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    sequences:
-    - sequenceName: Left_Abdomen
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1336456895}
-      sequenceBoxes:
-      - {fileID: 156409098}
-      - {fileID: 1637278356}
-      - {fileID: 0}
-      - {fileID: 0}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 0}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Right_Abdomen
-    stanceBoxes:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 1810980059}
-    - {fileID: 816632837}
-    - {fileID: 325455730}
-    sequences:
-    - sequenceName: Right_Abdomen
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 0}
-      sequenceBoxes:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 1810980059}
-      - {fileID: 816632837}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 325455730}
-      timeLimit: 1000
-      currentIndex: 0
   - styleName: Stomach
     stanceBoxes:
     - {fileID: 2139394115}
@@ -45442,43 +45370,6 @@ MonoBehaviour:
       - {fileID: 924308128}
       endBoxLeft: {fileID: 0}
       endBoxRight: {fileID: 1714108298}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Stomach?
-    stanceBoxes:
-    - {fileID: 489955394}
-    - {fileID: 588139643}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    sequences:
-    - sequenceName: Stomach?
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 489955394}
-      sequenceBoxes:
-      - {fileID: 588139643}
-      - {fileID: 0}
-      - {fileID: 0}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 0}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Left_Chest?
-    stanceBoxes:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 483775734}
-    - {fileID: 46470115}
-    sequences:
-    - sequenceName: Left_Chest?
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 0}
-      sequenceBoxes:
-      - {fileID: 588139643}
-      - {fileID: 0}
-      - {fileID: 0}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 46470115}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Left_Leg
@@ -45500,43 +45391,6 @@ MonoBehaviour:
       - {fileID: 612727548}
       endBoxLeft: {fileID: 0}
       endBoxRight: {fileID: 957444999}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Right_Leg
-    stanceBoxes:
-    - {fileID: 1313423891}
-    - {fileID: 641169374}
-    - {fileID: 1965259283}
-    - {fileID: 0}
-    - {fileID: 0}
-    sequences:
-    - sequenceName: Right_Leg
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1313423891}
-      sequenceBoxes:
-      - {fileID: 641169374}
-      - {fileID: 641169374}
-      - {fileID: 1965259283}
-      - {fileID: 0}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 0}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Left_Eye
-    stanceBoxes:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 770822484}
-    - {fileID: 363801741}
-    sequences:
-    - sequenceName: Left_Eye
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 0}
-      sequenceBoxes:
-      - {fileID: 0}
-      - {fileID: 770822484}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 363801741}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Right_Eye
@@ -50818,11 +50672,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964416909}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1965259283 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2536953596714220021, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
-  m_PrefabInstance: {fileID: 181232301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1966876133
 GameObject:
   m_ObjectHideFlags: 0
