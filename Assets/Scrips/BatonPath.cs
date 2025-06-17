@@ -4,32 +4,40 @@ using UnityEngine;
 
 public class BatonGuide : MonoBehaviour
 {
+    public enum BatonHandMode
+    {
+        BothHands,
+        LeftHandOnly,
+        RightHandOnly,
+        DominantHandOnly
+    }
     [System.Serializable]
     public struct BatonKeyframe
     {
         public Vector3 position;
         public Quaternion rotation;
-        
+
         [SerializeField] private Transform sourceTransform;
-        public Transform SourceTransform 
-        { 
-            get => sourceTransform; 
-            set => sourceTransform = value; 
+        public Transform SourceTransform
+        {
+            get => sourceTransform;
+            set => sourceTransform = value;
         }
-        
+
         public BatonKeyframe(Vector3 pos, Quaternion rot)
         {
             position = pos;
             rotation = rot;
             sourceTransform = null;
         }
-        
+
         public BatonKeyframe(Transform source)
         {
             sourceTransform = source;
             position = source != null ? source.position : Vector3.zero;
             rotation = source != null ? source.rotation : Quaternion.identity;
         }
+        
     }
 
     [System.Serializable]
@@ -53,6 +61,10 @@ public class BatonGuide : MonoBehaviour
         [Header("Runtime Options")]
         public bool useRealTimeData = false;
         public bool autoGenerateFromReferences = true;
+
+        [Header("Hand Configuration")]
+        public BatonHandMode handMode = BatonHandMode.BothHands;
+        public bool followDominantHand = true; 
         
         [System.NonSerialized] public float totalPathDistance = 0f;
         [System.NonSerialized] public float[] segmentDistances;
@@ -89,12 +101,22 @@ public class BatonGuide : MonoBehaviour
             UpdateBaton(i);
         }
     }
-    
+    void OnStanceManagerHandDominanceChanged()
+    {
+        SyncWithStanceManager();
+    }
+        
     void InitializeBaton(int batonIndex)
     {
         if (batonIndex >= batonConfigs.Length) return;
         
         var config = batonConfigs[batonIndex];
+        
+        
+        if (config.followDominantHand && StanceManager.Instance != null)
+        {
+            UpdateBatonHandModeFromStanceManager(batonIndex);
+        }
         
         if (config.autoGenerateFromReferences && config.referenceObjects != null && config.referenceObjects.Length > 0)
         {
@@ -108,6 +130,33 @@ public class BatonGuide : MonoBehaviour
             CreateBatonInstance(batonIndex);
         }
     }
+
+    void UpdateBatonHandModeFromStanceManager(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length || StanceManager.Instance == null) return;
+        
+        var config = batonConfigs[batonIndex];
+        
+        if (!config.followDominantHand) return;
+        
+        var stanceManagerBatonMode = StanceManager.Instance.GetCurrentBatonMode();
+        
+        switch (stanceManagerBatonMode)
+        {
+            case StanceManager.BatonMode.BothHands:
+                config.handMode = BatonHandMode.BothHands;
+                break;
+                
+            case StanceManager.BatonMode.SingleBaton:
+                config.handMode = BatonHandMode.DominantHandOnly;
+                break;
+                
+            case StanceManager.BatonMode.NoHands:
+                
+                break;
+        }
+    }
+
     
     void UpdateBaton(int batonIndex)
     {
@@ -287,27 +336,149 @@ public class BatonGuide : MonoBehaviour
     }
     
     public void GeneratePathFromReferences(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+    
+    var config = batonConfigs[batonIndex];
+    
+    if (config.referenceObjects == null || config.referenceObjects.Length == 0)
     {
-        if (batonIndex >= batonConfigs.Length) return;
-        
-        var config = batonConfigs[batonIndex];
-        
-        if (config.referenceObjects == null || config.referenceObjects.Length == 0)
-        {
-            Debug.LogWarning($"No reference objects provided for baton {batonIndex}");
-            return;
-        }
-        
-        config.batonPath = new BatonKeyframe[config.referenceObjects.Length];
-        
-        for (int i = 0; i < config.referenceObjects.Length; i++)
-        {
-            config.batonPath[i] = new BatonKeyframe(config.referenceObjects[i]);
-        }
-        
-        CalculatePathDistances(batonIndex);
-        Debug.Log($"Generated path for {config.batonName} with {config.batonPath.Length} keyframes. Total distance: {config.totalPathDistance:F2}");
+        Debug.LogWarning($"No reference objects provided for baton {batonIndex}");
+        return;
     }
+    
+    
+    var filteredReferences = FilterReferencesByHandMode(config.referenceObjects, config.handMode);
+    
+    if (filteredReferences.Length == 0)
+    {
+        Debug.LogWarning($"No valid reference objects found for baton {batonIndex} with hand mode {config.handMode}");
+        return;
+    }
+    
+    config.batonPath = new BatonKeyframe[filteredReferences.Length];
+    
+    for (int i = 0; i < filteredReferences.Length; i++)
+    {
+        config.batonPath[i] = new BatonKeyframe(filteredReferences[i]);
+    }
+    
+    CalculatePathDistances(batonIndex);
+    Debug.Log($"Generated path for {config.batonName} with {config.batonPath.Length} keyframes. Total distance: {config.totalPathDistance:F2}. Hand mode: {config.handMode}");
+}
+
+
+Transform[] FilterReferencesByHandMode(Transform[] references, BatonHandMode handMode)
+{
+    if (handMode == BatonHandMode.BothHands)
+    {
+        return references; 
+    }
+    
+    List<Transform> filteredList = new List<Transform>();
+    
+    foreach (var reference in references)
+    {
+        if (reference == null) continue;
+        
+        bool includeReference = false;
+        
+        
+        string tag = reference.gameObject.tag;
+        
+        switch (handMode)
+        {
+            case BatonHandMode.LeftHandOnly:
+                includeReference = tag.Contains("Left") || tag.Contains("left") || 
+                                 reference.name.Contains("Left") || reference.name.Contains("left");
+                break;
+                
+            case BatonHandMode.RightHandOnly:
+                includeReference = tag.Contains("Right") || tag.Contains("right") || 
+                                 reference.name.Contains("Right") || reference.name.Contains("right");
+                break;
+                
+            case BatonHandMode.DominantHandOnly:
+                if (StanceManager.Instance != null)
+                {
+                    bool isRightDominant = StanceManager.Instance.isRightHandDominant;
+                    if (isRightDominant)
+                    {
+                        includeReference = tag.Contains("Right") || tag.Contains("right") || 
+                                         reference.name.Contains("Right") || reference.name.Contains("right");
+                    }
+                    else
+                    {
+                        includeReference = tag.Contains("Left") || tag.Contains("left") || 
+                                         reference.name.Contains("Left") || reference.name.Contains("left");
+                    }
+                }
+                else
+                {
+                    includeReference = true; 
+                }
+                break;
+        }
+        
+        
+        if (!includeReference && handMode != BatonHandMode.BothHands)
+        {
+            
+            bool hasHandIndication = tag.Contains("Left") || tag.Contains("Right") || 
+                                   tag.Contains("left") || tag.Contains("right") ||
+                                   reference.name.Contains("Left") || reference.name.Contains("Right") ||
+                                   reference.name.Contains("left") || reference.name.Contains("right");
+            
+            if (!hasHandIndication)
+            {
+                includeReference = true; 
+            }
+        }
+        
+        if (includeReference)
+        {
+            filteredList.Add(reference);
+        }
+    }
+    
+    return filteredList.ToArray();
+}
+
+
+public void SetBatonHandMode(int batonIndex, BatonHandMode handMode)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+    
+    var config = batonConfigs[batonIndex];
+    config.handMode = handMode;
+    
+    
+    if (config.autoGenerateFromReferences && config.referenceObjects != null && config.referenceObjects.Length > 0)
+    {
+        GeneratePathFromReferences(batonIndex);
+    }
+}
+
+
+public void SyncWithStanceManager()
+{
+    for (int i = 0; i < batonConfigs.Length; i++)
+    {
+        if (batonConfigs[i].followDominantHand)
+        {
+            UpdateBatonHandModeFromStanceManager(i);
+            
+            
+            if (batonConfigs[i].autoGenerateFromReferences && 
+                batonConfigs[i].referenceObjects != null && 
+                batonConfigs[i].referenceObjects.Length > 0)
+            {
+                GeneratePathFromReferences(i);
+            }
+        }
+    }
+}
+
     
     public void StartBaton(int batonIndex)
     {

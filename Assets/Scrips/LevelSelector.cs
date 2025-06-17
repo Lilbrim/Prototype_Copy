@@ -41,17 +41,16 @@ public class LevelSelector : MonoBehaviour
     public List<LevelData> availableTournamentLevels = new List<LevelData>();
 
     [Header("Level Backgrounds")]
-    [Tooltip("Current selected background for levels")]
-    public LevelBackground currentBackground = LevelBackground.House;
+    public LevelBackground currentBackground = LevelBackground.Gym;
     
-    [Tooltip("Background GameObjects - assign these in the inspector")]
     public GameObject houseBackground;
     public GameObject gymBackground;
     public GameObject tournamentBackground;
     
-    [Tooltip("Fade duration for background transitions")]
     [Range(0.1f, 3f)]
     public float backgroundTransitionDuration = 1.0f;
+
+    public int tutorialLevelIndex = 0;
 
     [Header("UI Stuff")]
     public GameObject levelSelectionPanel;
@@ -265,7 +264,6 @@ public class LevelSelector : MonoBehaviour
                 if (storyUIPanel != null)
                 {
                     storyUIPanel.SetActive(true);
-                    InitializeStoryModeOrder();
                     UpdateStoryUI();
                 }
                 break;
@@ -278,11 +276,25 @@ public class LevelSelector : MonoBehaviour
                 }
                 
                 
-                isInStoryMode = false;
-                if (levelSelectionPanel != null)
+                if (isInStoryMode && currentStoryLevelIndex == tutorialLevelIndex)
                 {
-                    levelSelectionPanel.SetActive(true);
-                    ShowpracLevelsTab();
+                    
+                    if (storyUIPanel != null)
+                    {
+                        storyUIPanel.SetActive(true);
+                        UpdateStoryUI();
+                    }
+                    Debug.Log("Tutorial level: Story mode in Gym background");
+                }
+                else
+                {
+                    
+                    isInStoryMode = false;
+                    if (levelSelectionPanel != null)
+                    {
+                        levelSelectionPanel.SetActive(true);
+                        ShowpracLevelsTab();
+                    }
                 }
                 break;
                 
@@ -292,7 +304,6 @@ public class LevelSelector : MonoBehaviour
                     tournamentBackground.SetActive(true);
                     Debug.Log("Switched to Tournament background");
                 }
-                
                 
                 if (isInStoryMode)
                 {
@@ -304,7 +315,6 @@ public class LevelSelector : MonoBehaviour
                 }
                 else
                 {
-                    
                     if (levelSelectionPanel != null)
                     {
                         levelSelectionPanel.SetActive(true);
@@ -314,6 +324,22 @@ public class LevelSelector : MonoBehaviour
                 break;
         }
     }
+    
+    public void StartStoryModeWithTutorialInGym()
+    {
+        isInStoryMode = true;
+        InitializeStoryModeOrder();
+        
+        if (currentStoryLevelIndex == tutorialLevelIndex)
+        {
+            ChangeBackground(LevelBackground.Gym);
+        }
+        else
+        {
+            ChangeBackground(LevelBackground.House);
+        }
+        
+    }
 
     
     private void InitializeStoryModeOrder()
@@ -322,8 +348,8 @@ public class LevelSelector : MonoBehaviour
         allLevelsInOrder.AddRange(availableLevels);
         allLevelsInOrder.AddRange(availableSparLevels);
         allLevelsInOrder.AddRange(availableTournamentLevels);
-        
-        
+
+
         currentStoryLevelIndex = 0;
         for (int i = 0; i < allLevelsInOrder.Count; i++)
         {
@@ -336,8 +362,8 @@ public class LevelSelector : MonoBehaviour
                 break;
             }
         }
-        
-        
+
+
         if (currentStoryLevelIndex >= allLevelsInOrder.Count)
         {
             currentStoryLevelIndex = allLevelsInOrder.Count - 1;
@@ -1077,6 +1103,22 @@ public class LevelSelector : MonoBehaviour
         if (isInStoryMode)
         {
             InitializeStoryModeOrder();
+            
+            
+            if (currentStoryLevelIndex > tutorialLevelIndex && currentBackground == LevelBackground.Gym)
+            {
+                ChangeBackground(LevelBackground.House);
+                Debug.Log("Tutorial completed, switching to House background");
+            }
+            
+            else if (currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
+            {
+                if (currentBackground != LevelBackground.Tournament)
+                {
+                    ChangeBackground(LevelBackground.Tournament);
+                }
+            }
+            
             UpdateStoryUI();
             
             if (storyUIPanel != null)

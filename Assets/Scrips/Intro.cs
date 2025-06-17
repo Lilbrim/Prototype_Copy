@@ -6,6 +6,10 @@ using TMPro;
 
 public class IntroManager : MonoBehaviour
 {
+    [Header("Intro Completion Settings")]
+    [SerializeField] private bool forceIntroComplete = false;
+    [SerializeField] private bool resetIntroOnStart = false;
+    
     [Header("Instruction Screens")]
     [SerializeField] private InstructionScreens instructionScreens;
     
@@ -22,41 +26,38 @@ public class IntroManager : MonoBehaviour
     public TextMeshProUGUI handSelectionText;
 
     [Header("Scene References")]
-    public Transform roomTransform;
-    public GameObject[] stanceBoxes; 
     public StanceManager stanceManager;
-    public TutorialLevelManager TutorialLevelManager;
+    public LevelSelector levelSelector;
     
     [Header("Effect Settings")]
-    public float roomRotationSpeed = 10f;
     public float fogDisappearSpeed = 0.5f;
-    public float stanceHoldTime = 3f;
 
     [Header("Dominant Hand Detection")]
     [SerializeField] private float dominantHandDetectionDelay = 0.5f;
 
-    private StanceDetector[] stanceDetectors;
-    private bool[] isBoxHeld;
-    private float[] holdTimers;
+    private const string INTRO_COMPLETE_KEY = "IntroManagerComplete";
+    
     private bool heightCompleted = false;
-    private bool stanceCompleted = false;
     private bool heightInstructionShown = false;
+    private bool recenterCompleted = false;
+    private bool recenterInstructionShown = false;
+    private bool batonCompleted = false;
+    private bool batonInstructionShown = false;
+    private bool boxCompleted = false;
     private bool boxInstructionShown = false;
     
     private bool dominantHandDetected = false;
     private bool isRightHandDominant = false;
-    private bool recenterCompleted = false;
-    private bool recenterInstructionShown = false;
     
     private enum IntroState
     {
         HandSelection,
         HeightInstruction,
         RecenterInstruction,
-        RoomRotation,
+        BatonInstruction,
         BoxInstruction,
-        StancePhase,
-        Complete
+        FogClear,
+        Complete 
     }
     private IntroState currentState = IntroState.HandSelection;
 
@@ -70,13 +71,91 @@ public class IntroManager : MonoBehaviour
         
         instructionScreens.onHeightInstructionComplete.AddListener(OnHeightInstructionComplete);
         instructionScreens.onRecenterInstructionComplete.AddListener(OnRecenterInstructionComplete);
+        instructionScreens.onBatonInstructionComplete.AddListener(OnBatonInstructionComplete);
         instructionScreens.onBoxInstructionComplete.AddListener(OnBoxInstructionComplete);
     }
 
     private void Start()
     {
-        InitializeScene();
-        SetupHandSelectionButtons();
+        
+        if (resetIntroOnStart)
+        {
+            PlayerPrefs.SetInt(INTRO_COMPLETE_KEY, 0);
+            PlayerPrefs.Save();
+            Debug.Log("Intro completion reset via inspector setting");
+        }
+        
+        if (forceIntroComplete)
+        {
+            PlayerPrefs.SetInt(INTRO_COMPLETE_KEY, 1);
+            PlayerPrefs.Save();
+            Debug.Log("Intro completion forced via inspector setting");
+        }
+        
+        
+        bool introCompleted = PlayerPrefs.GetInt(INTRO_COMPLETE_KEY, 0) == 1;
+        
+        if (introCompleted)
+        {
+            Debug.Log("Intro already completed, skipping to level selector");
+            SkipIntroToLevelSelector();
+        }
+        else
+        {
+            Debug.Log("Starting intro sequence");
+            InitializeScene();
+            SetupHandSelectionButtons();
+        }
+    }
+    
+
+    private void SkipIntroToLevelSelector()
+    {
+        
+        if (handSelectionCanvas != null)
+            handSelectionCanvas.gameObject.SetActive(false);
+            
+        if (stanceInstructionText != null)
+            stanceInstructionText.gameObject.SetActive(false);
+            
+        if (stanceInstructionImage != null)
+            stanceInstructionImage.gameObject.SetActive(false);
+            
+        if (instructionScreens != null && instructionScreens.instructionCanvas != null)
+            instructionScreens.instructionCanvas.gameObject.SetActive(false);
+        
+        
+        RenderSettings.fog = false;
+        RenderSettings.fogDensity = 0;
+        
+        
+        isRightHandDominant = PlayerPrefs.GetInt("DominantHandRight", 1) == 1;
+        dominantHandDetected = true;
+        
+        
+        if (stanceManager != null)
+        {
+            stanceManager.gameObject.SetActive(true);
+            stanceManager.SetRightHandDominant(isRightHandDominant);
+            stanceManager.SetGameActive(true);
+            Debug.Log($"StanceManager setup with saved dominant hand: {(isRightHandDominant ? "Right" : "Left")}");
+        }
+        
+        
+        if (levelSelector != null)
+        {
+            levelSelector.enabled = true;
+            levelSelector.gameObject.SetActive(true);
+            
+            
+            levelSelector.StartStoryModeWithTutorialInGym();
+            
+            Debug.Log("Level selector activated in story mode");
+        }
+        
+        
+        currentState = IntroState.Complete;
+        this.enabled = false;
     }
 
     private void SetupHandSelectionButtons()
@@ -100,6 +179,10 @@ public class IntroManager : MonoBehaviour
             dominantHandDetected = true;
             Debug.Log("Left hand selected as dominant");
             
+            
+            PlayerPrefs.SetInt("DominantHandRight", 0);
+            PlayerPrefs.Save();
+            
             SetupDominantHand();
         }
     }
@@ -111,6 +194,10 @@ public class IntroManager : MonoBehaviour
             isRightHandDominant = true;
             dominantHandDetected = true;
             Debug.Log("Right hand selected as dominant");
+            
+            
+            PlayerPrefs.SetInt("DominantHandRight", 1);
+            PlayerPrefs.Save();
             
             SetupDominantHand();
         }
@@ -129,10 +216,7 @@ public class IntroManager : MonoBehaviour
             stanceManager.SetRightHandDominant(isRightHandDominant);
             stanceManager.SetGameActive(false); 
             Debug.Log($"Set StanceManager right hand dominant to: {isRightHandDominant}");
-            
-            InitializeStanceDetection();
         }
-        
         
         if (handSelectionCanvas != null)
             handSelectionCanvas.gameObject.SetActive(false);
@@ -144,9 +228,11 @@ public class IntroManager : MonoBehaviour
     {
         heightCompleted = false;
         recenterCompleted = false;
-        stanceCompleted = false;
+        batonCompleted = false;
+        boxCompleted = false;
         heightInstructionShown = false;
         recenterInstructionShown = false;
+        batonInstructionShown = false;
         boxInstructionShown = false;
         
         dominantHandDetected = false;
@@ -165,13 +251,12 @@ public class IntroManager : MonoBehaviour
             Debug.Log("StanceManager kept active during intro initialization");
         }
         
-        if (TutorialLevelManager != null) 
+        if (levelSelector != null) 
         {
-            TutorialLevelManager.gameObject.SetActive(false);
-            TutorialLevelManager.enabled = false;
+            levelSelector.gameObject.SetActive(false);
+            levelSelector.enabled = false;
         }
 
-        
         if (handSelectionCanvas != null)
             handSelectionCanvas.gameObject.SetActive(true);
             
@@ -180,84 +265,13 @@ public class IntroManager : MonoBehaviour
             
         if (stanceInstructionImage != null)
             stanceInstructionImage.gameObject.SetActive(false);
-            
-        HideAllStanceBoxes();
 
         ShowHandSelectionInstruction();
     }
-    
-    private void HideAllStanceBoxes()
-    {
-        GameObject[] activeBoxes = GetActiveStanceBoxes();
-        foreach (var box in activeBoxes)
-        {
-            if (box != null)
-                box.SetActive(false);
-        }
-    }
 
-    private GameObject[] GetActiveStanceBoxes()
-    {
-        if (stanceManager != null)
-        {
-            bool wasActive = stanceManager.gameObject.activeInHierarchy;
-            if (!wasActive)
-            {
-                stanceManager.gameObject.SetActive(true);
-                Debug.Log("Temporarily activated StanceManager to get intro boxes");
-            }
-            
-            GameObject[] managerBoxes = stanceManager.GetIntroStanceBoxes();
-            if (managerBoxes != null && managerBoxes.Length > 0)
-            {
-                Debug.Log($"Using StanceManager intro boxes: {managerBoxes.Length} boxes, Right hand dominant: {isRightHandDominant}");
-                return managerBoxes;
-            }
-        }
-        
-        Debug.Log($"Using local stance boxes: {stanceBoxes?.Length ?? 0} boxes");
-        return stanceBoxes ?? new GameObject[0];
-    }
-
-    private void InitializeStanceDetection()
-    {
-        GameObject[] activeBoxes = GetActiveStanceBoxes();
-        
-        if (activeBoxes.Length == 0)
-        {
-            Debug.LogWarning("No stance boxes found for initialization!");
-            return;
-        }
-        
-        stanceDetectors = new StanceDetector[activeBoxes.Length];
-        isBoxHeld = new bool[activeBoxes.Length];
-        holdTimers = new float[activeBoxes.Length];
-
-        for (int i = 0; i < activeBoxes.Length; i++)
-        {
-            if (activeBoxes[i] != null)
-            {
-                stanceDetectors[i] = activeBoxes[i].GetComponent<StanceDetector>();
-                isBoxHeld[i] = false;
-                holdTimers[i] = 0f;
-                
-                if (stanceDetectors[i] == null)
-                {
-                    Debug.LogWarning($"StanceDetector not found on box: {activeBoxes[i].name}");
-                }
-            }
-        }
-        
-        Debug.Log($"Initialized stance detection with {activeBoxes.Length} boxes");
-    }
 
     private void Update()
     {
-        if (!stanceCompleted && stanceInstructionText != null && stanceInstructionText.gameObject.activeSelf)
-        {
-            CheckStanceHold();
-        }
-
         if (Input.GetKeyDown(KeyCode.S))
         {
             SkipToNextStep();
@@ -278,6 +292,11 @@ public class IntroManager : MonoBehaviour
                 {
                     isRightHandDominant = true;
                     dominantHandDetected = true;
+                    
+                    
+                    PlayerPrefs.SetInt("DominantHandRight", 1);
+                    PlayerPrefs.Save();
+                    
                     if (stanceManager != null)
                     {
                         if (!stanceManager.gameObject.activeInHierarchy)
@@ -287,7 +306,6 @@ public class IntroManager : MonoBehaviour
                         }
                         stanceManager.SetRightHandDominant(isRightHandDominant);
                         stanceManager.SetGameActive(false);
-                        InitializeStanceDetection();
                     }
                 }
                 
@@ -300,7 +318,6 @@ public class IntroManager : MonoBehaviour
                     instructionScreens.instructionCanvas.gameObject.SetActive(false);
                 
                 OnHeightInstructionComplete();
-                currentState = IntroState.RecenterInstruction;
                 break;
                 
             case IntroState.RecenterInstruction:
@@ -308,20 +325,13 @@ public class IntroManager : MonoBehaviour
                     instructionScreens.instructionCanvas.gameObject.SetActive(false);
                 
                 OnRecenterInstructionComplete();
-                currentState = IntroState.RoomRotation;
                 break;
                 
-            case IntroState.RoomRotation:
-                StopAllCoroutines();
+            case IntroState.BatonInstruction:
+                if (instructionScreens != null && instructionScreens.instructionCanvas != null)
+                    instructionScreens.instructionCanvas.gameObject.SetActive(false);
                 
-                float targetYRotation = roomTransform.eulerAngles.y - 0;
-                roomTransform.rotation = Quaternion.Euler(0, targetYRotation, 0);
-                
-                RenderSettings.fog = false;
-                RenderSettings.fogDensity = 0;
-                
-                currentState = IntroState.BoxInstruction;
-                ShowBoxStanceInstruction();
+                OnBatonInstructionComplete();
                 break;
                 
             case IntroState.BoxInstruction:
@@ -329,20 +339,13 @@ public class IntroManager : MonoBehaviour
                     instructionScreens.instructionCanvas.gameObject.SetActive(false);
                 
                 OnBoxInstructionComplete();
-                currentState = IntroState.StancePhase;
                 break;
                 
-            case IntroState.StancePhase:
+            case IntroState.FogClear:
                 StopAllCoroutines();
-                stanceCompleted = true;
                 
-                HideAllStanceBoxes();
-                
-                if (stanceInstructionText != null)
-                    stanceInstructionText.gameObject.SetActive(false);
-                    
-                if (stanceInstructionImage != null)
-                    stanceInstructionImage.gameObject.SetActive(false);
+                RenderSettings.fog = false;
+                RenderSettings.fogDensity = 0;
                 
                 currentState = IntroState.Complete;
                 CompleteIntro();
@@ -356,6 +359,10 @@ public class IntroManager : MonoBehaviour
     
     private void CompleteIntro()
     {
+        PlayerPrefs.SetInt(INTRO_COMPLETE_KEY, 1);
+        PlayerPrefs.Save();
+        Debug.Log("Intro completed and saved to PlayerPrefs");
+        
         if (stanceManager != null)
         {
             stanceManager.gameObject.SetActive(true);
@@ -363,13 +370,19 @@ public class IntroManager : MonoBehaviour
             Debug.Log("StanceManager activated in CompleteIntro()");
         }
             
-        if (TutorialLevelManager != null)
+        if (levelSelector != null)
         {
-            TutorialLevelManager.enabled = true; 
-            TutorialLevelManager.gameObject.SetActive(true);
-            TutorialLevelManager.StartLevel();
+            levelSelector.enabled = true; 
+            levelSelector.gameObject.SetActive(true);
+            
+            
+            levelSelector.StartStoryModeWithTutorialInGym();
+            
+            Debug.Log("Story mode started with tutorial in gym");
         }
         
+        
+        currentState = IntroState.Complete;
         this.enabled = false;
     }
 
@@ -385,6 +398,22 @@ public class IntroManager : MonoBehaviour
         {
             Debug.LogError("StanceManager reference is null!");
         }
+    }
+    
+    [ContextMenu("Reset Intro Completion")]
+    public void ResetIntroCompletion()
+    {
+        PlayerPrefs.SetInt(INTRO_COMPLETE_KEY, 0);
+        PlayerPrefs.Save();
+        Debug.Log("Intro completion status reset - intro will play next time");
+    }
+    
+    [ContextMenu("Force Complete Intro")]
+    public void ForceCompleteIntro()
+    {
+        PlayerPrefs.SetInt(INTRO_COMPLETE_KEY, 1);
+        PlayerPrefs.Save();
+        Debug.Log("Intro marked as completed - intro will be skipped next time");
     }
 
     private void ShowHandSelectionInstruction()
@@ -423,22 +452,42 @@ public class IntroManager : MonoBehaviour
         instructionScreens.ShowRecenterInstruction();
     }
 
-    private IEnumerator RotateRoomAndClearFog()
+    private void OnRecenterInstructionComplete()
     {
-        float targetYRotation = roomTransform.eulerAngles.y - 0;
+        recenterInstructionShown = true;
+        recenterCompleted = true;
+        currentState = IntroState.BatonInstruction;
+        ShowBatonInstruction();
+    }
 
-        while (Mathf.Abs(Mathf.DeltaAngle(roomTransform.eulerAngles.y, targetYRotation)) > 0.1f)
-        {
-            roomTransform.rotation = Quaternion.RotateTowards(
-                roomTransform.rotation,
-                Quaternion.Euler(0, targetYRotation, 0),
-                roomRotationSpeed * Time.deltaTime
-            );
-            yield return null;
-        }
+    private void ShowBatonInstruction()
+    {
+        instructionScreens.ShowBatonInstruction();
+    }
 
-        roomTransform.rotation = Quaternion.Euler(0, targetYRotation, 0);
+    private void OnBatonInstructionComplete()
+    {
+        batonInstructionShown = true;
+        batonCompleted = true;
+        currentState = IntroState.BoxInstruction;
+        ShowBoxInstruction();
+    }
 
+    private void ShowBoxInstruction()
+    {
+        instructionScreens.ShowBoxInstruction();
+    }
+
+    private void OnBoxInstructionComplete()
+    {
+        boxInstructionShown = true;
+        boxCompleted = true;
+        currentState = IntroState.FogClear;
+        StartCoroutine(ClearFog());
+    }
+
+    private IEnumerator ClearFog()
+    {
         while (RenderSettings.fogDensity > 0.01f)
         {
             RenderSettings.fogDensity = Mathf.Max(RenderSettings.fogDensity - fogDisappearSpeed * Time.deltaTime, 0);
@@ -448,124 +497,10 @@ public class IntroManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        currentState = IntroState.BoxInstruction;
-        ShowBoxStanceInstruction();
-    }
-    
-    private void ShowBoxStanceInstruction()
-    {
-        instructionScreens.ShowBoxInstruction();
-    }
-    
-    private void OnBoxInstructionComplete()
-    {
-        boxInstructionShown = true;
-        currentState = IntroState.StancePhase;
-        StartStancePhase();
-    }
-    
-    private void OnRecenterInstructionComplete()
-    {
-        recenterInstructionShown = true;
-        recenterCompleted = true;
-        currentState = IntroState.RoomRotation;
-        StartCoroutine(RotateRoomAndClearFog());
-    }
-
-    private void StartStancePhase()
-    {
-        if (stanceDetectors == null || stanceDetectors.Length == 0)
-        {
-            InitializeStanceDetection();
-        }
-
-        
-        if (stanceManager != null)
-        {
-            stanceManager.SetGameActive(false);
-        }
-
-        if (stanceInstructionText != null)
-            stanceInstructionText.text = stanceInstructionMessage;
-
-        if (stanceInstructionImage != null)
-            stanceInstructionImage.sprite = stanceInstructionSprite;
-
-        if (stanceInstructionText != null)
-            stanceInstructionText.gameObject.SetActive(true);
-
-        if (stanceInstructionImage != null)
-            stanceInstructionImage.gameObject.SetActive(true);
-
-        GameObject[] activeBoxes = GetActiveStanceBoxes();
-        foreach (var box in activeBoxes)
-        {
-            if (box != null)
-                box.SetActive(true);
-        }
-
-        Debug.Log($"Started stance phase with {activeBoxes.Length} boxes");
-    }
-
-    private void CheckStanceHold()
-    {
-        if (stanceDetectors == null || stanceDetectors.Length == 0)
-        {
-            Debug.LogWarning("Stance detectors not initialized!");
-            return;
-        }
-        
-        bool allBoxesHeld = true;
-
-        for (int i = 0; i < stanceDetectors.Length; i++)
-        {
-            if (stanceDetectors[i] != null && (stanceDetectors[i].IsLeftHandInStance() || stanceDetectors[i].IsRightHandInStance()))
-            {
-                if (!isBoxHeld[i])
-                {
-                    isBoxHeld[i] = true;
-                    holdTimers[i] = 0f;
-                }
-
-                holdTimers[i] += Time.deltaTime;
-
-                if (holdTimers[i] < stanceHoldTime)
-                {
-                    allBoxesHeld = false;
-                }
-            }
-            else
-            {
-                isBoxHeld[i] = false;
-                holdTimers[i] = 0f;
-                allBoxesHeld = false;
-            }
-        }
-
-        if (allBoxesHeld && !stanceCompleted)
-        {
-            StartCoroutine(CompleteStancePhase());
-        }
-    }
-
-    private IEnumerator CompleteStancePhase()
-    {
-        stanceCompleted = true;
-
-        HideAllStanceBoxes();
-        
-        if (stanceInstructionText != null)
-            stanceInstructionText.gameObject.SetActive(false);
-            
-        if (stanceInstructionImage != null)
-            stanceInstructionImage.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(1f);
-
         currentState = IntroState.Complete;
         CompleteIntro();
     }
-
+    
     private void OnDestroy()
     {
         RenderSettings.fog = false;
@@ -574,9 +509,9 @@ public class IntroManager : MonoBehaviour
         {
             instructionScreens.onHeightInstructionComplete.RemoveListener(OnHeightInstructionComplete);
             instructionScreens.onRecenterInstructionComplete.RemoveListener(OnRecenterInstructionComplete);
+            instructionScreens.onBatonInstructionComplete.RemoveListener(OnBatonInstructionComplete);
             instructionScreens.onBoxInstructionComplete.RemoveListener(OnBoxInstructionComplete);
         }
-        
         
         if (leftHandButton != null)
         {
@@ -597,5 +532,10 @@ public class IntroManager : MonoBehaviour
     public bool IsDominantHandDetected()
     {
         return dominantHandDetected;
+    }
+    
+    public bool IsIntroCompleted()
+    {
+        return PlayerPrefs.GetInt(INTRO_COMPLETE_KEY, 0) == 1;
     }
 }

@@ -815,47 +815,37 @@ public void SetRightHandDominant(bool rightHandDominant)
         }
     }
 
-   private bool IsSequenceStartConditionMet(AttackSequence sequence)
+  private bool IsSequenceStartConditionMet(AttackSequence sequence)
+{
+    bool leftCondition = true;  
+    bool rightCondition = true; 
+    
+    
+    if (sequence.startBoxLeft != null)
     {
-        bool leftCondition = false;
-        bool rightCondition = false;
+        var leftDetector = sequence.startBoxLeft.GetComponent<StanceDetector>();
+        leftCondition = leftDetector.IsLeftHandInStance() || leftDetector.IsRightHandInStance();
+    }
+    
+    
+    if (sequence.startBoxRight != null)
+    {
+        var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
+        rightCondition = rightDetector.IsLeftHandInStance() || rightDetector.IsRightHandInStance();
+    }
+    
+    
+    if (sequence.startBoxLeft != null && sequence.startBoxRight != null)
+    {
         
-        if (sequence.startBoxLeft != null)
-        {
-            var leftDetector = sequence.startBoxLeft.GetComponent<StanceDetector>();
-            if (isRightHandDominant)
-            {
-                leftCondition = leftDetector.IsRightHandInStance();
-            }
-            else
-            {
-                leftCondition = leftDetector.IsLeftHandInStance();
-            }
-        }
-        else
-        {
-            leftCondition = true;
-        }
-        
-        if (sequence.startBoxRight != null)
-        {
-            var rightDetector = sequence.startBoxRight.GetComponent<StanceDetector>();
-            if (isRightHandDominant)
-            {
-                rightCondition = rightDetector.IsLeftHandInStance();
-            }
-            else
-            {
-                rightCondition = rightDetector.IsRightHandInStance();
-            }
-        }
-        else
-        {
-            rightCondition = true;
-        }
+        return leftCondition || rightCondition; 
+    }
+    else
+    {
         
         return leftCondition && rightCondition;
     }
+}
     public void StartAttackSequence(AttackSequence sequence)
     {
         currentAttackSequence = sequence;
@@ -893,109 +883,82 @@ public void SetRightHandDominant(bool rightHandDominant)
         Debug.Log($"Started attack sequence: {sequence.sequenceName} with {sequence.sequenceBoxes.Length} boxes");
     }
 
-    private bool CheckSequenceEndCondition()
+   private bool CheckSequenceEndCondition()
+{
+    if (currentAttackSequence == null) return false;
+    
+    bool leftEndCondition = true;  
+    bool rightEndCondition = true; 
+    
+    
+    if (currentAttackSequence.endBoxLeft != null)
     {
-        if (currentAttackSequence == null) return false;
+        var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+        leftEndCondition = leftEndDetector.IsLeftHandInStance() || leftEndDetector.IsRightHandInStance();
+    }
+    
+    
+    if (currentAttackSequence.endBoxRight != null)
+    {
+        var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
+        rightEndCondition = rightEndDetector.IsLeftHandInStance() || rightEndDetector.IsRightHandInStance();
+    }
+    
+    
+    if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
+    {
         
-        bool leftEndCondition = false;
-        bool rightEndCondition = false;
-        
-        if (currentAttackSequence.endBoxLeft != null)
-        {
-            var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
-            if (isRightHandDominant)
-            {
-                leftEndCondition = leftEndDetector.IsRightHandInStance();
-            }
-            else
-            {
-                leftEndCondition = leftEndDetector.IsLeftHandInStance();
-            }
-        }
-        else
-        {
-            leftEndCondition = true;
-        }
-        
-        if (currentAttackSequence.endBoxRight != null)
-        {
-            var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
-            if (isRightHandDominant)
-            {
-                rightEndCondition = rightEndDetector.IsLeftHandInStance();
-            }
-            else
-            {
-                rightEndCondition = rightEndDetector.IsRightHandInStance();
-            }
-        }
-        else
-        {
-            rightEndCondition = true;
-        }
+        return leftEndCondition || rightEndCondition; 
+    }
+    else
+    {
         
         return leftEndCondition && rightEndCondition;
     }
+}
 
-
-    private void CheckAttackSequence()
+   private void CheckAttackSequence()
+{
+    if (currentAttackSequence != null)
     {
-        if (currentAttackSequence != null)
+        for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
         {
-            for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
+            var box = currentAttackSequence.sequenceBoxes[i];
+            var detector = box.GetComponent<StanceDetector>();
+
+            bool handInStance = false;
+
+            if (isRightHandDominant)
             {
-                var box = currentAttackSequence.sequenceBoxes[i];
-                var detector = box.GetComponent<StanceDetector>();
-
-                bool handInStance = false;
-
-                if (isRightHandDominant)
-                {
-                    handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
-                }
-                else
-                {
-                    handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
-                }
-
-                if (handInStance && !detector.IsCompleted)
-                {
-                    detector.IsCompleted = true;
-                    sequenceCounter++;
-                    totalBoxesTouched++;
-                    Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
-                }
+                handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
+            }
+            else
+            {
+                handInStance = detector.IsLeftHandInStance() || detector.IsRightHandInStance();
             }
 
-            if (currentAttackSequence.endBoxLeft != null && currentAttackSequence.endBoxRight != null)
+            if (handInStance && !detector.IsCompleted)
             {
-                var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
-                var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
-
-                bool endConditionMet = false;
-
-                if (isRightHandDominant)
-                {
-                    endConditionMet = leftEndDetector.IsRightHandInStance() && rightEndDetector.IsLeftHandInStance();
-                }
-                else
-                {
-                    endConditionMet = leftEndDetector.IsLeftHandInStance() && rightEndDetector.IsRightHandInStance();
-                }
-
-                if (CheckSequenceEndCondition())
-                {
-                    Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
-                    
-                    NotifyObjectiveCompletion();
-                    
-                    ResetSequence();
-                    SetStance("Default");
-                    return;
-                }
+                detector.IsCompleted = true;
+                sequenceCounter++;
+                totalBoxesTouched++;
+                Debug.Log($"Box {box.name} completed. Total completed: {sequenceCounter}");
             }
         }
+
+        
+        if (CheckSequenceEndCondition())
+        {
+            Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
+            
+            NotifyObjectiveCompletion();
+            
+            ResetSequence();
+            SetStance("Default");
+            return;
+        }
     }
+}
 
 
     private void ResetSequence()
@@ -1126,9 +1089,9 @@ public void SetRightHandDominant(bool rightHandDominant)
         }
     }
     public bool AreHandsTransformed()
-{
-    return handsTransformed;
-}
+    {
+        return handsTransformed;
+    }
 
     public BatonMode GetCurrentBatonMode()
     {

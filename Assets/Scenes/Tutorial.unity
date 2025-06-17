@@ -25963,6 +25963,8 @@ MonoBehaviour:
     batonTrail: {fileID: 0}
     batonPath: []
     loop: 1
+    loopDelay: 1
+    hideDuringDelay: 0
     autoPlay: 1
     constantSpeed: 1
     isLeftHand: 1
@@ -25973,6 +25975,8 @@ MonoBehaviour:
     batonTrail: {fileID: 0}
     batonPath: []
     loop: 1
+    loopDelay: 1
+    hideDuringDelay: 0
     autoPlay: 1
     constantSpeed: 1
     isLeftHand: 1
