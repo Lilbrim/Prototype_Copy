@@ -917,10 +917,11 @@ public void SetRightHandDominant(bool rightHandDominant)
     }
 }
 
-   private void CheckAttackSequence()
+  private void CheckAttackSequence()
 {
     if (currentAttackSequence != null)
     {
+        
         for (int i = 0; i < currentAttackSequence.sequenceBoxes.Length; i++)
         {
             var box = currentAttackSequence.sequenceBoxes[i];
@@ -949,7 +950,51 @@ public void SetRightHandDominant(bool rightHandDominant)
         
         if (CheckSequenceEndCondition())
         {
-            Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}");
+            
+            int endBoxesTouched = 0;
+            int totalEndBoxes = 0;
+
+            
+            if (currentAttackSequence.endBoxLeft != null)
+            {
+                totalEndBoxes++;
+                var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+                if (leftEndDetector != null && !leftEndDetector.IsCompleted)
+                {
+                    if (leftEndDetector.IsLeftHandInStance() || leftEndDetector.IsRightHandInStance())
+                    {
+                        leftEndDetector.IsCompleted = true;
+                        endBoxesTouched++;
+                        totalBoxesTouched++;
+                    }
+                }
+                else if (leftEndDetector != null && leftEndDetector.IsCompleted)
+                {
+                    endBoxesTouched++;
+                }
+            }
+
+            
+            if (currentAttackSequence.endBoxRight != null)
+            {
+                totalEndBoxes++;
+                var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
+                if (rightEndDetector != null && !rightEndDetector.IsCompleted)
+                {
+                    if (rightEndDetector.IsLeftHandInStance() || rightEndDetector.IsRightHandInStance())
+                    {
+                        rightEndDetector.IsCompleted = true;
+                        endBoxesTouched++;
+                        totalBoxesTouched++;
+                    }
+                }
+                else if (rightEndDetector != null && rightEndDetector.IsCompleted)
+                {
+                    endBoxesTouched++;
+                }
+            }
+
+            Debug.Log($"{currentStance}.{currentAttackSequence.sequenceName} done. Sequence boxes triggered: {totalBoxesTouched - endBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length}, End boxes triggered: {endBoxesTouched} out of {totalEndBoxes}, Total boxes triggered: {totalBoxesTouched} out of {currentAttackSequence.sequenceBoxes.Length + totalEndBoxes}");
             
             NotifyObjectiveCompletion();
             
@@ -961,52 +1006,87 @@ public void SetRightHandDominant(bool rightHandDominant)
 }
 
 
-    private void ResetSequence()
+private void ResetSequence()
+{
+    if (currentAttackSequence != null)
     {
-        if (currentAttackSequence != null)
+        
+        foreach (var box in currentAttackSequence.sequenceBoxes)
         {
-            foreach (var box in currentAttackSequence.sequenceBoxes)
+            var detector = box.GetComponent<StanceDetector>();
+            if (detector != null)
             {
-                var detector = box.GetComponent<StanceDetector>();
                 detector.IsCompleted = false;
             }
-
-            currentAttackSequence = null;
-            sequenceCounter = 0;
         }
-        SetStance("Default");
+
+        
+        if (currentAttackSequence.endBoxLeft != null)
+        {
+            var leftEndDetector = currentAttackSequence.endBoxLeft.GetComponent<StanceDetector>();
+            if (leftEndDetector != null)
+            {
+                leftEndDetector.IsCompleted = false;
+            }
+        }
+
+        if (currentAttackSequence.endBoxRight != null)
+        {
+            var rightEndDetector = currentAttackSequence.endBoxRight.GetComponent<StanceDetector>();
+            if (rightEndDetector != null)
+            {
+                rightEndDetector.IsCompleted = false;
+            }
+        }
+
+        currentAttackSequence = null;
+        sequenceCounter = 0;
     }
+    SetStance("Default");
+}
 
     public void NotifyObjectiveCompletion()
+{
+    int touchedBoxes = totalBoxesTouched;
+    int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
+    
+    
+    int totalEndBoxes = 0;
+    if (currentAttackSequence != null)
     {
-        int touchedBoxes = totalBoxesTouched;
-        int sequenceBoxCount = currentAttackSequence != null ? currentAttackSequence.sequenceBoxes.Length : 0;
+        if (currentAttackSequence.endBoxLeft != null) totalEndBoxes++;
+        if (currentAttackSequence.endBoxRight != null) totalEndBoxes++;
+    }
+    
+    int totalBoxCount = sequenceBoxCount + totalEndBoxes;
 
-        if (useSparManager && SparManager.Instance != null)
+    if (useSparManager && SparManager.Instance != null)
+    {
+        SparManager.Instance.NotifySequenceCompletion(currentStance, currentAttackSequence.sequenceName);
+    }
+    else if (useTutorialManager && TutorialLevelManager.Instance != null)
+    {
+        if (AccuracyTracker.Instance != null)
         {
-            SparManager.Instance.NotifySequenceCompletion(currentStance, currentAttackSequence.sequenceName);
+            
+            AccuracyTracker.Instance.RecordSequenceData(totalBoxCount, touchedBoxes);
         }
-        else if (useTutorialManager && TutorialLevelManager.Instance != null)
+        TutorialLevelManager.Instance.EndObjective();
+    }
+    else
+    {
+        if (AccuracyTracker.Instance != null)
         {
-            if (AccuracyTracker.Instance != null)
-            {
-                AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
-            }
-            TutorialLevelManager.Instance.EndObjective();
+            
+            AccuracyTracker.Instance.RecordSequenceData(totalBoxCount, touchedBoxes);
         }
-        else
-        {
-            if (AccuracyTracker.Instance != null)
-            {
-                AccuracyTracker.Instance.RecordSequenceData(sequenceBoxCount, touchedBoxes);
-            }
 
-            if (LevelManager.Instance != null)
-            {
-                LevelManager.Instance.EndObjective();
-            }
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.EndObjective();
         }
     }
+}
 
     public void ActivatePhase2Stances(List<string> availableStances)
     {

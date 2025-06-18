@@ -99,7 +99,6 @@ public class StanceGuide : MonoBehaviour
         public string batonName = "Baton";
         public GameObject batonPrefab;
         public bool showBaton = true;
-        public LineRenderer batonTrail;
 
         [Header("Path Configuration")]
         public BatonKeyframe[] batonPath;
@@ -126,6 +125,21 @@ public class StanceGuide : MonoBehaviour
 
         [Header("Hand Assignment")]
         public bool isLeftHand = true;
+         [Header("Trail Settings")]
+        [Tooltip("Enable trail effect for this baton")]
+        public bool enableTrail = true;
+        [Tooltip("Trail time duration")]
+        [Range(0.1f, 10f)]
+        public float trailTime = 2f;
+        [Tooltip("Trail width")]
+        [Range(0.01f, 1f)]
+        public float trailWidth = 0.05f;
+        [Tooltip("Trail material")]
+        public Material trailMaterial;
+        [Tooltip("Trail color gradient")]
+
+        [System.NonSerialized] public TrailRenderer batonTrail;
+        public Gradient trailColorGradient = new Gradient();
 
         [System.NonSerialized] public float totalPathDistance = 0f;
         [System.NonSerialized] public float[] segmentDistances;
@@ -176,23 +190,36 @@ public class StanceGuide : MonoBehaviour
     }
 
     void Start()
+{
+    if (StanceManager.Instance != null)
     {
-        if (StanceManager.Instance != null)
-        {
-            StanceManager.Instance.OnStanceChanged += OnStanceChanged;
-        }
+        StanceManager.Instance.OnStanceChanged += OnStanceChanged;
+        
+        
+        currentSequence = StanceManager.Instance.currentAttackSequence;
+        wasSequenceActive = IsSequenceValid(currentSequence);
+    }
 
-        for (int i = 0; i < batonConfigs.Length; i++)
-        {
-            InitializeBaton(i);
-        }
+    for (int i = 0; i < batonConfigs.Length; i++)
+    {
+        InitializeBaton(i);
+    }
 
-
-        if (hideBatonsWhenNoSequence && (currentSequence == null || StanceManager.Instance?.currentAttackSequence == null))
+    
+    if (!IsSequenceValid(currentSequence))
+    {
+        HideAllBatons();
+    }
+    
+    else if (IsSequenceValid(currentSequence))
+    {
+        GeneratePathsFromCurrentSequence();
+        if (startOnSequenceBegin)
         {
-            HideAllBatons();
+            StartAllBatons();
         }
     }
+}
 
     void Update()
     {
@@ -207,64 +234,80 @@ public class StanceGuide : MonoBehaviour
         }
     }
 
+    private bool IsSequenceValid(AttackSequence sequence)
+{
+    return sequence != null && 
+           sequence.sequenceBoxes != null && 
+           sequence.sequenceBoxes.Length > 0;
+}
+
     void CheckForSequenceChanges()
+{
+    if (StanceManager.Instance == null) return;
+
+    AttackSequence newSequence = StanceManager.Instance.currentAttackSequence;
+    bool isSequenceActive = IsSequenceValid(newSequence);
+
+    if (isSequenceActive && !wasSequenceActive)
     {
-        if (StanceManager.Instance == null) return;
+        currentSequence = newSequence;
+        GeneratePathsFromCurrentSequence();
 
-        AttackSequence newSequence = StanceManager.Instance.currentAttackSequence;
-        bool isSequenceActive = newSequence != null;
-
-        if (isSequenceActive && !wasSequenceActive)
+        if (hideBatonsWhenNoSequence)
         {
-            currentSequence = newSequence;
-            GeneratePathsFromCurrentSequence();
-
-
-            if (hideBatonsWhenNoSequence)
-            {
-                ShowAllBatons();
-            }
-
-            if (startOnSequenceBegin)
-            {
-                StartAllBatons();
-            }
-        }
-        else if (!isSequenceActive && wasSequenceActive)
-        {
-            if (stopOnSequenceEnd)
-            {
-                StopAllBatons();
-            }
-
-
-            if (hideBatonsWhenNoSequence)
-            {
-                HideAllBatons();
-            }
-
-            currentSequence = null;
-        }
-        else if (isSequenceActive && currentSequence != newSequence)
-        {
-            currentSequence = newSequence;
-            GeneratePathsFromCurrentSequence();
-            ResetAllBatons();
-
-
-            if (hideBatonsWhenNoSequence)
-            {
-                ShowAllBatons();
-            }
-
-            if (startOnSequenceBegin)
-            {
-                StartAllBatons();
-            }
+            ShowAllBatons();
         }
 
-        wasSequenceActive = isSequenceActive;
+        if (startOnSequenceBegin)
+        {
+            StartAllBatons();
+        }
     }
+    else if (!isSequenceActive && wasSequenceActive)
+    {
+        
+        if (stopOnSequenceEnd)
+        {
+            StopAllBatons();
+        }
+
+        
+        HideAllBatons();
+
+        currentSequence = null;
+    }
+    else if (isSequenceActive && currentSequence != newSequence)
+    {
+        currentSequence = newSequence;
+        GeneratePathsFromCurrentSequence();
+        ResetAllBatons();
+
+        if (hideBatonsWhenNoSequence)
+        {
+            ShowAllBatons();
+        }
+
+        if (startOnSequenceBegin)
+        {
+            StartAllBatons();
+        }
+    }
+    
+    else if (!isSequenceActive && currentSequence != null)
+    {
+        if (stopOnSequenceEnd)
+        {
+            StopAllBatons();
+        }
+
+        
+        HideAllBatons();
+
+        currentSequence = null;
+    }
+
+    wasSequenceActive = isSequenceActive;
+}
 
 
     public void ShowAllBatons()
@@ -294,10 +337,10 @@ public class StanceGuide : MonoBehaviour
             config.batonInstance.SetActive(false);
         }
 
-
+        
         if (config.batonTrail != null)
         {
-            config.batonTrail.positionCount = 0;
+            config.batonTrail.Clear();
         }
     }
 
@@ -652,66 +695,77 @@ public class StanceGuide : MonoBehaviour
     }
 
     void UpdateBaton(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+
+    var config = batonConfigs[batonIndex];
+
+    
+    if (autoDetectSequences && !IsSequenceValid(currentSequence))
     {
-        if (batonIndex >= batonConfigs.Length) return;
-
-        var config = batonConfigs[batonIndex];
-
-
-        if (!config.isPlaying || config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
+        if (config.isPlaying)
         {
+            StopBaton(batonIndex);
+        }
+        
+        if (config.batonInstance != null && config.batonInstance.activeSelf)
+        {
+            config.batonInstance.SetActive(false);
+        }
+        return;
+    }
+
+    if (!config.isPlaying || config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
+    {
+        if (config.batonInstance != null)
+        {
+            config.batonInstance.SetActive(false);
+        }
+        return;
+    }
+
+    if (config.batonInstance != null && !config.batonInstance.activeSelf && config.showBaton)
+    {
+        config.batonInstance.SetActive(true);
+    }
+
+    if (config.isWaitingForLoop)
+    {
+        config.loopDelayTimer -= Time.deltaTime;
+
+        if (config.loopDelayTimer <= 0f)
+        {
+            config.isWaitingForLoop = false;
+            config.currentDistance = 0f;
+            config.currentIndex = 0;
+
+            if (config.wasHiddenForDelay && config.batonInstance != null)
+            {
+                config.batonInstance.SetActive(true);
+                config.wasHiddenForDelay = false;
+            }
 
             if (config.batonInstance != null)
             {
-                config.batonInstance.SetActive(false);
+                config.batonInstance.transform.position = config.batonPath[0].position;
+                config.batonInstance.transform.rotation = config.batonPath[0].rotation;
             }
-            return;
-        }
 
-
-        if (config.batonInstance != null && !config.batonInstance.activeSelf && config.showBaton)
-        {
-            config.batonInstance.SetActive(true);
-        }
-
-
-        if (config.isWaitingForLoop)
-        {
-            config.loopDelayTimer -= Time.deltaTime;
-
-            if (config.loopDelayTimer <= 0f)
+            if (config.batonTrail != null)
             {
-                config.isWaitingForLoop = false;
-                config.currentDistance = 0f;
-                config.currentIndex = 0;
-
-                if (config.wasHiddenForDelay && config.batonInstance != null)
-                {
-                    config.batonInstance.SetActive(true);
-                    config.wasHiddenForDelay = false;
-                }
-
-                if (config.batonInstance != null)
-                {
-                    config.batonInstance.transform.position = config.batonPath[0].position;
-                    config.batonInstance.transform.rotation = config.batonPath[0].rotation;
-                }
-
-                if (config.batonTrail != null)
-                {
-                    config.batonTrail.positionCount = 0;
-                }
+                config.batonTrail.Clear();
             }
-            return;
         }
-
-        UpdateKeyframesFromSources(batonIndex);
-        CalculatePathDistances(batonIndex);
-
-        float speedToUse = synchronizeBatons ? config.effectiveSpeed : config.constantSpeed;
-        config.currentDistance += speedToUse * Time.deltaTime;
-        UpdateBatonPosition(batonIndex);
+        return;
     }
+
+    UpdateKeyframesFromSources(batonIndex);
+    CalculatePathDistances(batonIndex);
+
+    float speedToUse = synchronizeBatons ? config.effectiveSpeed : config.constantSpeed;
+    config.currentDistance += speedToUse * Time.deltaTime;
+    UpdateBatonPosition(batonIndex);
+}
 
 
     void CalculatePathDistances(int batonIndex)
@@ -739,37 +793,35 @@ public class StanceGuide : MonoBehaviour
     }
 
 
-    void CreateBatonInstance(int batonIndex)
+void CreateBatonInstance(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+
+    var config = batonConfigs[batonIndex];
+
+    if (config.batonPrefab == null) return;
+
+    if (config.batonInstance != null)
     {
-        if (batonIndex >= batonConfigs.Length) return;
-
-        var config = batonConfigs[batonIndex];
-
-        if (config.batonPrefab == null) return;
-
-        if (config.batonInstance != null)
-        {
-            if (Application.isPlaying)
-                Destroy(config.batonInstance);
-            else
-                DestroyImmediate(config.batonInstance);
-        }
-
-        config.batonInstance = Instantiate(config.batonPrefab);
-        config.batonInstance.name = config.batonName + " (Baton Guide)";
-
-        if (config.batonPath != null && config.batonPath.Length > 0)
-        {
-            config.batonInstance.transform.position = config.batonPath[0].position;
-            config.batonInstance.transform.rotation = config.batonPath[0].rotation;
-        }
-
-        if (config.batonTrail == null)
-        {
-            config.batonTrail = config.batonInstance.GetComponent<LineRenderer>() ??
-                              config.batonInstance.GetComponentInChildren<LineRenderer>();
-        }
+        if (Application.isPlaying)
+            Destroy(config.batonInstance);
+        else
+            DestroyImmediate(config.batonInstance);
     }
+
+    config.batonInstance = Instantiate(config.batonPrefab);
+    config.batonInstance.name = config.batonName + " (Baton Guide)";
+
+    if (config.batonPath != null && config.batonPath.Length > 0)
+    {
+        config.batonInstance.transform.position = config.batonPath[0].position;
+        config.batonInstance.transform.rotation = config.batonPath[0].rotation;
+    }
+
+    
+    InitializeTrail(batonIndex);
+}
+
 
     void UpdateKeyframesFromSources(int batonIndex)
     {
@@ -855,78 +907,108 @@ public class StanceGuide : MonoBehaviour
         }
     }
 
-    void UpdateBatonTrail(int batonIndex)
+void UpdateBatonTrail(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+
+    var config = batonConfigs[batonIndex];
+    
+    if (!config.enableTrail || config.batonTrail == null || config.batonInstance == null)
+        return;
+
+    
+    config.batonTrail.enabled = true;
+}
+
+void InitializeTrail(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+
+    var config = batonConfigs[batonIndex];
+    
+    if (config.batonInstance != null)
     {
-        if (batonIndex >= batonConfigs.Length) return;
-
-        var config = batonConfigs[batonIndex];
-
-        Vector3 batonTip = config.batonInstance.transform.position + config.batonInstance.transform.forward * 1f;
-
-        if (config.batonTrail.positionCount == 0)
+        
+        config.batonTrail = config.batonInstance.GetComponent<TrailRenderer>();
+        
+        if (config.batonTrail == null)
         {
-            config.batonTrail.positionCount = 1;
-            config.batonTrail.SetPosition(0, batonTip);
+            config.batonTrail = config.batonInstance.AddComponent<TrailRenderer>();
+        }
+
+        
+        config.batonTrail.time = config.trailTime;
+        config.batonTrail.startWidth = config.trailWidth;
+        config.batonTrail.endWidth = config.trailWidth * 0.1f;
+        config.batonTrail.enabled = config.enableTrail;
+        
+        
+        if (config.trailMaterial != null)
+        {
+            config.batonTrail.material = config.trailMaterial;
         }
         else
         {
-            config.batonTrail.positionCount++;
-            config.batonTrail.SetPosition(config.batonTrail.positionCount - 1, batonTip);
+            
+            Material defaultMaterial = new Material(Shader.Find("Sprites/Default"));
+            defaultMaterial.color = config.isLeftHand ? Color.yellow : Color.cyan;
+            config.batonTrail.material = defaultMaterial;
         }
 
-        if (config.batonTrail.positionCount > 100)
+        
+        if (config.trailColorGradient.colorKeys.Length == 0)
         {
-            Vector3[] positions = new Vector3[config.batonTrail.positionCount];
-            config.batonTrail.GetPositions(positions);
-
-            Vector3[] newPositions = new Vector3[99];
-            System.Array.Copy(positions, 1, newPositions, 0, 99);
-
-            config.batonTrail.positionCount = 99;
-            config.batonTrail.SetPositions(newPositions);
+            
+            Color trailColor = config.isLeftHand ? Color.yellow : Color.cyan;
+            config.trailColorGradient.SetKeys(
+                new GradientColorKey[] { new GradientColorKey(trailColor, 0.0f), new GradientColorKey(trailColor, 1.0f) },
+                new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) }
+            );
         }
+        config.batonTrail.colorGradient = config.trailColorGradient;
     }
+}
+
 
     public void StartBaton(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
+
+    var config = batonConfigs[batonIndex];
+
+    if (config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
     {
-        if (batonIndex >= batonConfigs.Length) return;
-
-        var config = batonConfigs[batonIndex];
-
-
-        if (config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
-        {
-            Debug.Log($"Cannot start {config.batonName} - no valid path available");
-            return;
-        }
-
-        if (config.batonInstance == null && config.batonPrefab != null)
-            CreateBatonInstance(batonIndex);
-
-        if (config.batonInstance != null)
-        {
-            config.batonInstance.SetActive(true);
-        }
-
-        config.isPlaying = true;
-        config.currentDistance = 0f;
-        config.currentIndex = 0;
-
-        config.isWaitingForLoop = false;
-        config.loopDelayTimer = 0f;
-        config.wasHiddenForDelay = false;
-
-        if (config.batonInstance != null && config.batonPath != null && config.batonPath.Length > 0)
-        {
-            config.batonInstance.transform.position = config.batonPath[0].position;
-            config.batonInstance.transform.rotation = config.batonPath[0].rotation;
-        }
-
-        if (config.batonTrail != null)
-            config.batonTrail.positionCount = 0;
-
-        Debug.Log($"Started {config.batonName} with {config.batonPath.Length} waypoints");
+        Debug.Log($"Cannot start {config.batonName} - no valid path available");
+        return;
     }
+
+    if (config.batonInstance == null && config.batonPrefab != null)
+        CreateBatonInstance(batonIndex);
+
+    if (config.batonInstance != null)
+    {
+        config.batonInstance.SetActive(true);
+    }
+
+    config.isPlaying = true;
+    config.currentDistance = 0f;
+    config.currentIndex = 0;
+
+    config.isWaitingForLoop = false;
+    config.loopDelayTimer = 0f;
+    config.wasHiddenForDelay = false;
+
+    if (config.batonInstance != null && config.batonPath != null && config.batonPath.Length > 0)
+    {
+        config.batonInstance.transform.position = config.batonPath[0].position;
+        config.batonInstance.transform.rotation = config.batonPath[0].rotation;
+    }
+
+    
+    ClearTrail(batonIndex);
+
+    Debug.Log($"Started {config.batonName} with {config.batonPath.Length} waypoints");
+}
 
     public void StopBaton(int batonIndex)
     {
@@ -946,6 +1028,18 @@ public class StanceGuide : MonoBehaviour
             HideBaton(batonIndex);
         }
     }
+    
+    public void ClearTrail(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+
+        var config = batonConfigs[batonIndex];
+        
+        if (config.batonTrail != null)
+        {
+            config.batonTrail.Clear();
+        }
+    }
 
     public void ResetBaton(int batonIndex)
     {
@@ -956,10 +1050,11 @@ public class StanceGuide : MonoBehaviour
         config.currentDistance = 0f;
         config.currentIndex = 0;
 
-
         config.isWaitingForLoop = false;
         config.loopDelayTimer = 0f;
-
+        
+        
+        ClearTrail(batonIndex);
 
         if (config.wasHiddenForDelay && config.batonInstance != null)
         {
@@ -972,9 +1067,6 @@ public class StanceGuide : MonoBehaviour
             config.batonInstance.transform.position = config.batonPath[0].position;
             config.batonInstance.transform.rotation = config.batonPath[0].rotation;
         }
-
-        if (config.batonTrail != null)
-            config.batonTrail.positionCount = 0;
     }
 
     public void StartAllBatons()

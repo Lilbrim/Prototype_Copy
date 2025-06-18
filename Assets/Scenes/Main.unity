@@ -402,7 +402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1043678}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -410,7 +410,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -1419,7 +1419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -26}
+  m_AnchoredPosition: {x: 0, y: -1.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &47370923
@@ -1472,8 +1472,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11
-  m_fontSizeBase: 11
+  m_fontSize: 9
+  m_fontSizeBase: 9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1508,7 +1508,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -29.797802, y: 70.130104, z: -29.995983, w: 13.251003}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2020,7 +2020,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 28.3}
+  m_AnchoredPosition: {x: -0, y: 28.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62698955
@@ -2072,10 +2072,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.4
-  m_fontSizeBase: 14.81
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2108,7 +2108,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -39.17916, y: 28.369705, z: -40.58528, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3413,7 +3413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 140872947}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -3421,7 +3421,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -4544,6 +4544,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 428569662472233828, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 428569662472233828, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -4554,7 +4558,7 @@ PrefabInstance:
     - target: {fileID: 428569662472233828, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 428569662472233828, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -4598,7 +4602,7 @@ PrefabInstance:
     - target: {fileID: 428569662472233828, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 957444999}
     - target: {fileID: 448449401862944953, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4796,6 +4800,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 596757650906860511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Eye(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 596757650906860511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -4846,7 +4854,7 @@ PrefabInstance:
     - target: {fileID: 596757650906860511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498577}
     - target: {fileID: 620274668100757425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4964,6 +4972,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -4974,7 +4986,7 @@ PrefabInstance:
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5018,7 +5030,7 @@ PrefabInstance:
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1645743507}
     - target: {fileID: 788065533451879481, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -5108,6 +5120,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 796431608619780988, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Top_Head(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 796431608619780988, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -5118,7 +5134,7 @@ PrefabInstance:
     - target: {fileID: 796431608619780988, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 796431608619780988, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5162,7 +5178,7 @@ PrefabInstance:
     - target: {fileID: 796431608619780988, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1118663149}
     - target: {fileID: 805234713782478409, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5242,7 +5258,7 @@ PrefabInstance:
     - target: {fileID: 886749655498908016, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 551538645}
     - target: {fileID: 889115344465352974, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -5278,7 +5294,7 @@ PrefabInstance:
     - target: {fileID: 921198226821792921, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 921198226821792921, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5322,7 +5338,7 @@ PrefabInstance:
     - target: {fileID: 921198226821792921, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 924308128}
     - target: {fileID: 933217189744161485, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5420,6 +5436,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 968900415919420786, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 968900415919420786, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -5430,7 +5450,7 @@ PrefabInstance:
     - target: {fileID: 968900415919420786, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 968900415919420786, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5474,7 +5494,7 @@ PrefabInstance:
     - target: {fileID: 968900415919420786, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1433252213}
     - target: {fileID: 976035523159176706, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5510,7 +5530,7 @@ PrefabInstance:
     - target: {fileID: 982151993220263916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 982151993220263916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5554,7 +5574,7 @@ PrefabInstance:
     - target: {fileID: 982151993220263916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 588139643}
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -5582,7 +5602,7 @@ PrefabInstance:
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5626,7 +5646,7 @@ PrefabInstance:
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1684403151}
     - target: {fileID: 1017097554334672613, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -5654,7 +5674,7 @@ PrefabInstance:
     - target: {fileID: 1017097554334672613, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1017097554334672613, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5698,7 +5718,7 @@ PrefabInstance:
     - target: {fileID: 1017097554334672613, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 325455730}
     - target: {fileID: 1031145594138507287, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5868,6 +5888,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1122291082030361927, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1122291082030361927, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -5878,7 +5902,7 @@ PrefabInstance:
     - target: {fileID: 1122291082030361927, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1122291082030361927, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5922,7 +5946,7 @@ PrefabInstance:
     - target: {fileID: 1122291082030361927, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 612727548}
     - target: {fileID: 1122763381729987887, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5938,6 +5962,10 @@ PrefabInstance:
     - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Spar)
       objectReference: {fileID: 0}
     - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -5990,7 +6018,7 @@ PrefabInstance:
     - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476712}
     - target: {fileID: 1159540012827701526, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -6152,6 +6180,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6202,7 +6234,7 @@ PrefabInstance:
     - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498572}
     - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -6216,6 +6248,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Eye(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6266,7 +6302,7 @@ PrefabInstance:
     - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498579}
     - target: {fileID: 1295903141721690960, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6352,6 +6388,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1467892736299190861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467892736299190861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6362,7 +6402,7 @@ PrefabInstance:
     - target: {fileID: 1467892736299190861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1467892736299190861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -6406,7 +6446,7 @@ PrefabInstance:
     - target: {fileID: 1467892736299190861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1668034430}
     - target: {fileID: 1468585598303178343, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560005
@@ -6436,6 +6476,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1490345053538367100, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1490345053538367100, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6446,7 +6490,7 @@ PrefabInstance:
     - target: {fileID: 1490345053538367100, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1490345053538367100, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -6490,7 +6534,7 @@ PrefabInstance:
     - target: {fileID: 1490345053538367100, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1787698016}
     - target: {fileID: 1494970537640910241, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -6538,7 +6582,7 @@ PrefabInstance:
     - target: {fileID: 1572653913669321384, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1572653913669321384, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -6582,7 +6626,7 @@ PrefabInstance:
     - target: {fileID: 1572653913669321384, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1853013488}
     - target: {fileID: 1578635247379116594, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6812,6 +6856,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Head(Block)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6862,7 +6910,7 @@ PrefabInstance:
     - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1936982676}
     - target: {fileID: 1661227298715519831, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -6940,6 +6988,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1664584565034316350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Top_Head(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1664584565034316350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -6950,7 +7002,7 @@ PrefabInstance:
     - target: {fileID: 1664584565034316350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1664584565034316350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -6994,7 +7046,7 @@ PrefabInstance:
     - target: {fileID: 1664584565034316350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1585497646}
     - target: {fileID: 1664687707840907497, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -7024,6 +7076,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1692952810845305277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Head(Block)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692952810845305277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7074,7 +7130,7 @@ PrefabInstance:
     - target: {fileID: 1692952810845305277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1936982675}
     - target: {fileID: 1694880823558663133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7100,6 +7156,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7110,7 +7170,7 @@ PrefabInstance:
     - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -7154,7 +7214,7 @@ PrefabInstance:
     - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 692517140}
     - target: {fileID: 1741071294059680621, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -7240,6 +7300,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1959102981688043669, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959102981688043669, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7290,7 +7354,7 @@ PrefabInstance:
     - target: {fileID: 1959102981688043669, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476718}
     - target: {fileID: 1986805798239801769, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7312,6 +7376,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Temple_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7362,7 +7430,7 @@ PrefabInstance:
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 181232304}
     - target: {fileID: 2021757541469605376, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -7384,6 +7452,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2028487232705972929, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Temple_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028487232705972929, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7434,7 +7506,7 @@ PrefabInstance:
     - target: {fileID: 2028487232705972929, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187622}
     - target: {fileID: 2065433874948519322, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -7518,7 +7590,7 @@ PrefabInstance:
     - target: {fileID: 2179354419602757916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 2179354419602757916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -7562,7 +7634,7 @@ PrefabInstance:
     - target: {fileID: 2179354419602757916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1637278356}
     - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -7574,6 +7646,10 @@ PrefabInstance:
     - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Pectoral(Block)
       objectReference: {fileID: 0}
     - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -7626,7 +7702,7 @@ PrefabInstance:
     - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476719}
     - target: {fileID: 2181557943812014187, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7764,6 +7840,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2555600518156868663, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Shoulder_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2555600518156868663, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -7814,7 +7894,7 @@ PrefabInstance:
     - target: {fileID: 2555600518156868663, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187618}
     - target: {fileID: 2571626788300790751, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -7966,7 +8046,7 @@ PrefabInstance:
     - target: {fileID: 2774433342450358207, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 2774433342450358207, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -8108,6 +8188,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2839822399224523260, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839822399224523260, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8172,6 +8256,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2846836037299249576, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2846836037299249576, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8182,7 +8270,7 @@ PrefabInstance:
     - target: {fileID: 2846836037299249576, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 2846836037299249576, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -8226,7 +8314,7 @@ PrefabInstance:
     - target: {fileID: 2846836037299249576, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 858637127}
     - target: {fileID: 2874997369171935209, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8242,6 +8330,10 @@ PrefabInstance:
     - target: {fileID: 2880551098720586450, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880551098720586450, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Ready)
       objectReference: {fileID: 0}
     - target: {fileID: 2880551098720586450, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -8312,6 +8404,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2904284402204913699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Pectoral(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904284402204913699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8362,7 +8458,7 @@ PrefabInstance:
     - target: {fileID: 2904284402204913699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476721}
     - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -8376,6 +8472,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Pectoral(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8426,7 +8526,7 @@ PrefabInstance:
     - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187606}
     - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -8440,6 +8540,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Abdomen_(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8490,7 +8594,7 @@ PrefabInstance:
     - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187613}
     - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -8582,7 +8686,7 @@ PrefabInstance:
     - target: {fileID: 3158180308802609236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 3158180308802609236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -8626,7 +8730,7 @@ PrefabInstance:
     - target: {fileID: 3158180308802609236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1085044923}
     - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -8928,6 +9032,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3272289129263785082, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Abdomen_(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272289129263785082, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -8978,7 +9086,7 @@ PrefabInstance:
     - target: {fileID: 3272289129263785082, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187611}
     - target: {fileID: 3274125148310497750, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9000,6 +9108,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Temple_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9050,7 +9162,7 @@ PrefabInstance:
     - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187623}
     - target: {fileID: 3319157313881688680, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9136,6 +9248,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Temple_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9186,7 +9302,7 @@ PrefabInstance:
     - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 181232305}
     - target: {fileID: 3429427966543674258, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -9208,6 +9324,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Temple_Block_Ready
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9258,7 +9378,7 @@ PrefabInstance:
     - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 181232303}
     - target: {fileID: 3498392050205908522, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9364,6 +9484,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3582522446882921701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Shoulder_(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582522446882921701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9414,7 +9538,7 @@ PrefabInstance:
     - target: {fileID: 3582522446882921701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187615}
     - target: {fileID: 3601340598288634789, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -9440,6 +9564,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9490,7 +9618,7 @@ PrefabInstance:
     - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476717}
     - target: {fileID: 3626032666723006350, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -9568,6 +9696,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3637032058926210441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Top_Head(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637032058926210441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -9578,7 +9710,7 @@ PrefabInstance:
     - target: {fileID: 3637032058926210441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 3637032058926210441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -9622,7 +9754,7 @@ PrefabInstance:
     - target: {fileID: 3637032058926210441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 917288895}
     - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -9634,6 +9766,10 @@ PrefabInstance:
     - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Ready)
       objectReference: {fileID: 0}
     - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -9686,7 +9822,7 @@ PrefabInstance:
     - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476713}
     - target: {fileID: 3690194719103300321, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -9718,7 +9854,7 @@ PrefabInstance:
     - target: {fileID: 3711995095052346904, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 3711995095052346904, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -9762,7 +9898,7 @@ PrefabInstance:
     - target: {fileID: 3711995095052346904, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1067883867}
     - target: {fileID: 3726779009966099520, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10072,6 +10208,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Pectoral(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -10122,7 +10262,7 @@ PrefabInstance:
     - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187608}
     - target: {fileID: 4006254264126761137, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10138,6 +10278,10 @@ PrefabInstance:
     - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Strike)
       objectReference: {fileID: 0}
     - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -10194,7 +10338,7 @@ PrefabInstance:
     - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 103806248}
     - target: {fileID: 4026846802965311732, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -10262,7 +10406,7 @@ PrefabInstance:
     - target: {fileID: 4144671920637624158, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 4144671920637624158, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -10306,7 +10450,7 @@ PrefabInstance:
     - target: {fileID: 4144671920637624158, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 489955394}
     - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10318,6 +10462,10 @@ PrefabInstance:
     - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Shoulder_(Spar)
       objectReference: {fileID: 0}
     - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -10370,7 +10518,7 @@ PrefabInstance:
     - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187614}
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10382,6 +10530,10 @@ PrefabInstance:
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Spar)
       objectReference: {fileID: 0}
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -10434,7 +10586,7 @@ PrefabInstance:
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498573}
     - target: {fileID: 4178608855401259273, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10908,6 +11060,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4503647523628972643, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Shoulder_(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503647523628972643, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -10958,7 +11114,7 @@ PrefabInstance:
     - target: {fileID: 4503647523628972643, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187616}
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10986,7 +11142,7 @@ PrefabInstance:
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11030,7 +11186,7 @@ PrefabInstance:
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 2139394115}
     - target: {fileID: 4518900436351238560, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -11058,7 +11214,7 @@ PrefabInstance:
     - target: {fileID: 4518900436351238560, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4518900436351238560, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11102,7 +11258,7 @@ PrefabInstance:
     - target: {fileID: 4518900436351238560, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1661033835}
     - target: {fileID: 4523045169166044204, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11134,7 +11290,7 @@ PrefabInstance:
     - target: {fileID: 4527970792033421101, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4527970792033421101, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11178,7 +11334,7 @@ PrefabInstance:
     - target: {fileID: 4527970792033421101, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1733741181}
     - target: {fileID: 4532711141382867165, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -11352,6 +11508,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4811223522324103463, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811223522324103463, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -11406,7 +11566,7 @@ PrefabInstance:
     - target: {fileID: 4811223522324103463, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1635593066}
     - target: {fileID: 4826316513506439701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11422,6 +11582,10 @@ PrefabInstance:
     - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Shoulder_Block(Ready)
       objectReference: {fileID: 0}
     - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -11474,7 +11638,7 @@ PrefabInstance:
     - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187621}
     - target: {fileID: 4867662071239152253, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -11522,7 +11686,7 @@ PrefabInstance:
     - target: {fileID: 4973945572216850534, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4973945572216850534, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11566,7 +11730,7 @@ PrefabInstance:
     - target: {fileID: 4973945572216850534, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1804456356}
     - target: {fileID: 4985715834641618043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -11660,6 +11824,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Shoulder_(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -11710,7 +11878,7 @@ PrefabInstance:
     - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187617}
     - target: {fileID: 5173135888831728920, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11748,6 +11916,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -11798,7 +11970,7 @@ PrefabInstance:
     - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476715}
     - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -11812,6 +11984,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -11822,7 +11998,7 @@ PrefabInstance:
     - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11866,7 +12042,7 @@ PrefabInstance:
     - target: {fileID: 5281208186070133043, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 639313329}
     - target: {fileID: 5292280747281736990, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -11890,6 +12066,10 @@ PrefabInstance:
     - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Eye(Spar)
       objectReference: {fileID: 0}
     - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -11942,7 +12122,7 @@ PrefabInstance:
     - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498576}
     - target: {fileID: 5369803907923783548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -12052,6 +12232,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5714315241962041802, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5714315241962041802, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -12102,7 +12286,7 @@ PrefabInstance:
     - target: {fileID: 5714315241962041802, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476714}
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -12130,7 +12314,7 @@ PrefabInstance:
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -12174,7 +12358,7 @@ PrefabInstance:
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 674308431}
     - target: {fileID: 5735294319427681695, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -12938,7 +13122,7 @@ PrefabInstance:
     - target: {fileID: 6424912133959145276, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 6424912133959145276, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -12982,7 +13166,7 @@ PrefabInstance:
     - target: {fileID: 6424912133959145276, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 2054267636}
     - target: {fileID: 6528594825779387654, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -13152,6 +13336,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -13202,7 +13390,7 @@ PrefabInstance:
     - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476716}
     - target: {fileID: 6733420880738292136, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -13296,6 +13484,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6778278398577264687, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Knee(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6778278398577264687, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -13306,7 +13498,7 @@ PrefabInstance:
     - target: {fileID: 6778278398577264687, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 6778278398577264687, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -13350,7 +13542,7 @@ PrefabInstance:
     - target: {fileID: 6778278398577264687, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1318358092}
     - target: {fileID: 6790429729539287185, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.20365494
@@ -13628,6 +13820,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Head(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -13678,7 +13874,7 @@ PrefabInstance:
     - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1936982678}
     - target: {fileID: 7071509788216494251, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -13750,7 +13946,7 @@ PrefabInstance:
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -13788,6 +13984,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceBoxes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualRotationOffset.y
       value: 90
       objectReference: {fileID: 0}
@@ -13798,7 +13998,7 @@ PrefabInstance:
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1401414837}
+      objectReference: {fileID: 1531016760}
     - target: {fileID: 7239296267508065615, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -13898,7 +14098,7 @@ PrefabInstance:
     - target: {fileID: 7252612630751489029, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 7252612630751489029, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -13942,7 +14142,7 @@ PrefabInstance:
     - target: {fileID: 7252612630751489029, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1714108298}
     - target: {fileID: 7279632816419873277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -14036,6 +14236,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Pectoral(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14086,7 +14290,7 @@ PrefabInstance:
     - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187607}
     - target: {fileID: 7347800210689454992, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -14114,7 +14318,7 @@ PrefabInstance:
     - target: {fileID: 7347800210689454992, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 7347800210689454992, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -14158,7 +14362,7 @@ PrefabInstance:
     - target: {fileID: 7347800210689454992, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 156409098}
     - target: {fileID: 7356822781218803345, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -14336,6 +14540,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14390,7 +14598,7 @@ PrefabInstance:
     - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 542703013}
     - target: {fileID: 7562074725671006709, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -14500,6 +14708,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7673720258694635598, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Temple_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673720258694635598, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14550,7 +14762,7 @@ PrefabInstance:
     - target: {fileID: 7673720258694635598, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 181232306}
     - target: {fileID: 7678672589781377000, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -14684,6 +14896,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Knee(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14734,7 +14950,7 @@ PrefabInstance:
     - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476711}
     - target: {fileID: 8026853130970804006, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -14800,6 +15016,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8134392797298090941, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Pectoral(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134392797298090941, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14850,7 +15070,7 @@ PrefabInstance:
     - target: {fileID: 8134392797298090941, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476722}
     - target: {fileID: 8159253637992803999, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -14948,6 +15168,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8168580016981512311, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Shoulder_Block(Spar)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8168580016981512311, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -14998,7 +15222,7 @@ PrefabInstance:
     - target: {fileID: 8168580016981512311, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187619}
     - target: {fileID: 8171798866670061699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15020,6 +15244,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Pectoral(Block)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -15070,7 +15298,7 @@ PrefabInstance:
     - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1707476720}
     - target: {fileID: 8222976459173361853, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15092,6 +15320,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Shoulder_Block(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -15142,7 +15374,7 @@ PrefabInstance:
     - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187620}
     - target: {fileID: 8239029076044857745, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15250,7 +15482,7 @@ PrefabInstance:
     - target: {fileID: 8277090300750015455, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 8277090300750015455, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15294,7 +15526,7 @@ PrefabInstance:
     - target: {fileID: 8277090300750015455, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1336456895}
     - target: {fileID: 8285211206311550573, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15406,7 +15638,7 @@ PrefabInstance:
     - target: {fileID: 8333665597126431666, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8333665597126431666, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15450,7 +15682,7 @@ PrefabInstance:
     - target: {fileID: 8333665597126431666, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 816632837}
     - target: {fileID: 8349267062349427022, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15470,6 +15702,10 @@ PrefabInstance:
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Abdomen_(Spar)
       objectReference: {fileID: 0}
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -15522,7 +15758,7 @@ PrefabInstance:
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187610}
     - target: {fileID: 8417693834709164211, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15570,7 +15806,7 @@ PrefabInstance:
     - target: {fileID: 8440684934258860681, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8440684934258860681, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15614,7 +15850,7 @@ PrefabInstance:
     - target: {fileID: 8440684934258860681, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 417857210}
     - target: {fileID: 8441047232919767707, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560005
@@ -15650,7 +15886,7 @@ PrefabInstance:
     - target: {fileID: 8455011491757607647, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8455011491757607647, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15694,7 +15930,7 @@ PrefabInstance:
     - target: {fileID: 8455011491757607647, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 2011004318}
     - target: {fileID: 8483946693163609053, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -15776,6 +16012,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8496691162360965591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Pectoral(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8496691162360965591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -15826,7 +16066,7 @@ PrefabInstance:
     - target: {fileID: 8496691162360965591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187609}
     - target: {fileID: 8499162198464795489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -15922,7 +16162,7 @@ PrefabInstance:
     - target: {fileID: 8505727788253265366, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 8505727788253265366, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15966,7 +16206,7 @@ PrefabInstance:
     - target: {fileID: 8505727788253265366, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1810980059}
     - target: {fileID: 8526713367281917351, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -16138,7 +16378,7 @@ PrefabInstance:
     - target: {fileID: 8581948556953047967, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8581948556953047967, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -16292,6 +16532,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Head(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -16342,7 +16586,7 @@ PrefabInstance:
     - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1936982677}
     - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -16356,6 +16600,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Abdomen_(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -16406,7 +16654,7 @@ PrefabInstance:
     - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1546187612}
     - target: {fileID: 8709091648881092560, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -16482,6 +16730,10 @@ PrefabInstance:
     - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Strike)
       objectReference: {fileID: 0}
     - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -16538,7 +16790,7 @@ PrefabInstance:
     - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 936235199}
     - target: {fileID: 8749790961829641183, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16566,6 +16818,10 @@ PrefabInstance:
     - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Left_Eye(Ready)
       objectReference: {fileID: 0}
     - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -16618,7 +16874,7 @@ PrefabInstance:
     - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 1200498578}
     - target: {fileID: 8767908634329809799, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -16772,6 +17028,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8894303797342069104, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Top_Head(Ready)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8894303797342069104, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -16826,7 +17086,7 @@ PrefabInstance:
     - target: {fileID: 8894303797342069104, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 531073694}
     - target: {fileID: 8896046087314898976, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16852,6 +17112,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Temple_Block_Ready
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -16902,7 +17166,7 @@ PrefabInstance:
     - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 412442451}
+      objectReference: {fileID: 181232302}
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -16914,6 +17178,10 @@ PrefabInstance:
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: mirrorAxis
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Top_Head(Strike)
       objectReference: {fileID: 0}
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
@@ -16970,7 +17238,7 @@ PrefabInstance:
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 475184906}
     - target: {fileID: 8963847748919415039, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -17010,7 +17278,7 @@ PrefabInstance:
     - target: {fileID: 9023304126179596356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 9023304126179596356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -17054,7 +17322,7 @@ PrefabInstance:
     - target: {fileID: 9023304126179596356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1046664846}
     - target: {fileID: 9037719792363857950, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -17148,6 +17416,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9109709372327403349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: stanceName
+      value: Right_Eye(Strike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109709372327403349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: isOneHanded
       value: 1
       objectReference: {fileID: 0}
@@ -17158,7 +17430,7 @@ PrefabInstance:
     - target: {fileID: 9109709372327403349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 9109709372327403349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -17202,7 +17474,7 @@ PrefabInstance:
     - target: {fileID: 9109709372327403349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: stanceBoxes.Array.data[0]
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 1646693707}
     - target: {fileID: 9151441208779191191, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -17454,6 +17726,74 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186716573}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &189548467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 189548468}
+  - component: {fileID: 189548469}
+  m_Layer: 0
+  m_Name: IntroLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &189548468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189548467}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.46616948, y: 1.0790883, z: 0.54413074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1317934832}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &189548469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 189548467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f18da6c11a62fd4b8f8c24539b85b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceInstructionText: {fileID: 718589772}
+  stanceInstructionImage: {fileID: 210054412}
+  stanceInstructionMessage: Ready Position
+  stanceInstructionSprite: {fileID: 21300000, guid: eea95c308847f47408255e7977af8d4b, type: 3}
+  stanceBoxes:
+  - {fileID: 1852088525}
+  stanceManager: {fileID: 1749916801}
+  levelManagerComponent: {fileID: 2020957338}
+  stanceHoldTime: 1
+  levelBatonMode: 1
+  overrideBatonMode: 1
+  includeSparringPartner: 0
+  sparringPartnerPrefab: {fileID: 0}
+  sparringPartnerSpawnPoint: {fileID: 0}
+  sparringPartnerAnimation: 
+  includeDummyPartner: 1
+  dummyPartnerPrefab: {fileID: 691306807}
+  dummyPartnerSpawnPoint: {fileID: 1246974198}
+  mirrorSparringPartner: 0
+  cutsceneManager: {fileID: 1276659253}
+  includeCutscene: 0
+  levelCutsceneVideo: {fileID: 32900000, guid: 7e7f7442ac272474c96d155224e66843, type: 3}
+  cutsceneId: 1
+  useScreenTransition: 0
 --- !u!1 &192747782
 GameObject:
   m_ObjectHideFlags: 0
@@ -18580,7 +18920,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 159718331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.000011146069}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -20037,6 +20377,74 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &282579934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 282579935}
+  - component: {fileID: 282579936}
+  m_Layer: 0
+  m_Name: IntroLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &282579935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282579934}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.46616948, y: 1.0790883, z: 0.54413074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2014887550}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &282579936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282579934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f18da6c11a62fd4b8f8c24539b85b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceInstructionText: {fileID: 718589772}
+  stanceInstructionImage: {fileID: 210054412}
+  stanceInstructionMessage: Ready Position
+  stanceInstructionSprite: {fileID: 21300000, guid: eea95c308847f47408255e7977af8d4b, type: 3}
+  stanceBoxes:
+  - {fileID: 1852088525}
+  stanceManager: {fileID: 1749916801}
+  levelManagerComponent: {fileID: 1232727741}
+  stanceHoldTime: 1
+  levelBatonMode: 1
+  overrideBatonMode: 1
+  includeSparringPartner: 0
+  sparringPartnerPrefab: {fileID: 0}
+  sparringPartnerSpawnPoint: {fileID: 0}
+  sparringPartnerAnimation: 
+  includeDummyPartner: 1
+  dummyPartnerPrefab: {fileID: 691306807}
+  dummyPartnerSpawnPoint: {fileID: 1246974198}
+  mirrorSparringPartner: 0
+  cutsceneManager: {fileID: 1276659253}
+  includeCutscene: 1
+  levelCutsceneVideo: {fileID: 32900000, guid: 7e7f7442ac272474c96d155224e66843, type: 3}
+  cutsceneId: 1
+  useScreenTransition: 1
 --- !u!1 &285115799
 GameObject:
   m_ObjectHideFlags: 0
@@ -20622,17 +21030,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323349892}
-  m_LocalRotation: {x: -0, y: 0.017452328, z: -0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 0, z: -0.02}
-  m_LocalScale: {x: 0.29703307, y: 0.34864193, z: 0.029428266}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00007320027}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1214385016}
+  m_Father: {fileID: 1721155815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 235.29999, y: 10.199989}
-  m_SizeDelta: {x: 60, y: -70}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323349894
 MonoBehaviour:
@@ -21129,9 +21537,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Right_Pectoral(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 339819317}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -21139,7 +21547,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -23077,7 +23485,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1440349172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.000011146069}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -24491,7 +24899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 605232861}
   m_Layer: 0
-  m_Name: TestLevel
+  m_Name: 12BasicStrikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24814,7 +25222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 615119416}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -24822,7 +25230,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -27614,6 +28022,7 @@ GameObject:
   m_Component:
   - component: {fileID: 748189996}
   - component: {fileID: 748189995}
+  - component: {fileID: 748189997}
   m_Layer: 0
   m_Name: BatonPath
   m_TagString: Untagged
@@ -27637,7 +28046,6 @@ MonoBehaviour:
     batonName: Baton
     batonPrefab: {fileID: 5027143044465991041}
     showBaton: 1
-    batonTrail: {fileID: 0}
     batonPath: []
     loop: 1
     loopDelay: 1
@@ -27648,11 +28056,44 @@ MonoBehaviour:
     autoPlay: 1
     constantSpeed: 0.5
     isLeftHand: 1
+    enableTrail: 1
+    trailTime: 2
+    trailWidth: 0.05
+    trailMaterial: {fileID: 2100000, guid: 5de176a2ee62bfd4b8348d5fb79b5866, type: 2}
+    trailColorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
   rightHandBaton:
     batonName: Baton
     batonPrefab: {fileID: 5027143044465991041}
     showBaton: 1
-    batonTrail: {fileID: 0}
     batonPath: []
     loop: 1
     loopDelay: 1
@@ -27663,6 +28104,40 @@ MonoBehaviour:
     autoPlay: 1
     constantSpeed: 0.5
     isLeftHand: 1
+    enableTrail: 1
+    trailTime: 2
+    trailWidth: 0.05
+    trailMaterial: {fileID: 2100000, guid: d23f3211513f7b348aeb2903a6a4f8aa, type: 2}
+    trailColorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
   synchronizeBatons: 1
   synchronizedDuration: 5
   useSlowerBatonDuration: 1
@@ -27689,6 +28164,110 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!120 &748189997
+LineRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748189994}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.09239197
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MaskInteraction: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1 &758803978 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4258170599046499747, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -28640,13 +29219,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833419203}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 451d73b6763d6fc44a437dee22586acf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   availableLevels:
   - levelName: Tutorial
+    introLevel: {fileID: 189548469}
+    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
+    levelDescription: Basic
+    levelId: 0
+    isSparLevel: 0
+    isTournamentLevel: 0
+    requiredScore: 0
+    requiredAccuracy: 0.3
+    requiredLevelIds: []
+  - levelName: 12 Basic Strikes
     introLevel: {fileID: 1784065522}
     levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
     levelDescription: Basics
@@ -28654,17 +29243,7 @@ MonoBehaviour:
     isSparLevel: 0
     isTournamentLevel: 0
     requiredScore: 0
-    requiredAccuracy: 0.7
-    requiredLevelIds: []
-  - levelName: Single Sinawali
-    introLevel: {fileID: 0}
-    levelThumbnail: {fileID: 21300000, guid: ddcaf444fbde07e4ea0ce60299bf83d7, type: 3}
-    levelDescription: Test2
-    levelId: 2
-    isSparLevel: 0
-    isTournamentLevel: 0
-    requiredScore: 0
-    requiredAccuracy: 0.7
+    requiredAccuracy: 1
     requiredLevelIds: []
   availableSparLevels:
   - levelName: Basic Strike
@@ -29192,6 +29771,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847723994}
   m_CullTransparentMesh: 1
+--- !u!1 &858637127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2520633245040300821, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &858872480
 GameObject:
   m_ObjectHideFlags: 0
@@ -29491,7 +30075,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &859441155
 Canvas:
   m_ObjectHideFlags: 0
@@ -31704,6 +32288,11 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -1758520528963094988, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   HandAnim: {fileID: 935559594}
+--- !u!1 &936235199 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3274125148310497750, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &940465648
 GameObject:
   m_ObjectHideFlags: 0
@@ -32267,9 +32856,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Right_Pectoral(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 977026541}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -32277,7 +32866,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -32563,9 +33152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Right_Pectoral(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 990306205}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -32573,7 +33162,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -33190,9 +33779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Left_Eye(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1085274952}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -33951,7 +34540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1123511187}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -33959,7 +34548,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 7812179099152180021}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -34980,7 +35569,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 473593404}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99998885
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -35452,7 +36041,6 @@ RectTransform:
   - {fileID: 1979969531}
   - {fileID: 2028960215}
   - {fileID: 1721155815}
-  - {fileID: 323349893}
   - {fileID: 1386036441}
   m_Father: {fileID: 436459678}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -35631,7 +36219,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1246054128}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99998885
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -35679,6 +36267,279 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7071509788216494251, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1232727738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1232727739}
+  - component: {fileID: 1232727741}
+  - component: {fileID: 1232727740}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1232727739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232727738}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.5405806, y: 1.389696, z: 1.4905214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2014887550}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1232727740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232727738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee6b480d100e734291177f235a26beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalBoxes: 0
+  totalBoxesTouched: 0
+  objectiveTotalBoxes: 
+  objectiveTouchedBoxes: 
+  showDebugLogs: 0
+--- !u!114 &1232727741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232727738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelName: 12 Basic Blocks
+  objectives:
+  - instruction: Left Temple Block
+    rightHandInstruction: Right Temple Block
+    instructionImage: {fileID: 21300000, guid: f4e2ff6468cbff94c94465054c0a7dfb, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 84c4bf37ec803274382299581b65ddaf, type: 3}
+    requiredStance: Left_Temple_Block(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Temple Ready Block
+    rightHandInstruction: Left Temple Ready Block
+    instructionImage: {fileID: 21300000, guid: a2a265114d964894e911bce32c95691a, type: 3}
+    instructionVideo: {fileID: 32900000, guid: c82443ab2f47d314bb783245ef846ada, type: 3}
+    requiredStance: Right_Temple_Block_Ready
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Temple Block
+    rightHandInstruction: Left Temple Block
+    instructionImage: {fileID: 21300000, guid: 8219a8952d2fbf84f8af87c132c347ab, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 287f358d1fd247a4993fb199a5762a7c, type: 3}
+    requiredStance: Right_Temple_Block(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Shoulder Ready Block
+    rightHandInstruction: Right Shoulder Ready Block
+    instructionImage: {fileID: 21300000, guid: 11dde52001b8cfe4087d9ee11b23ebf2, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 45f3fcc5675551e4ab1c6b71535379a7, type: 3}
+    requiredStance: Left_Shoulder_Block(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Shoulder Block
+    rightHandInstruction: Right Shoulder Block
+    instructionImage: {fileID: 21300000, guid: 342bae888ae20564aa669c2db60174e8, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 0993fd7780cb99c4d9aaa5486f7c2a37, type: 3}
+    requiredStance: Left_Shoulder_Block(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Shoulder Ready Block
+    rightHandInstruction: Left Shoulder Ready Block
+    instructionImage: {fileID: 21300000, guid: 8f509ab8eec540d468cabca5d5a838dd, type: 3}
+    instructionVideo: {fileID: 32900000, guid: ecb7ea3e1faf352418bfedf1384c7318, type: 3}
+    requiredStance: Right_Shoulder_(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Shoulder Block
+    rightHandInstruction: Left Shoulder Block
+    instructionImage: {fileID: 21300000, guid: b5a60c809df053540b1d8688648734b8, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 03f8f7c7c1773c04c868765900b9c990, type: 3}
+    requiredStance: Right_Shoulder_(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Abdomen Ready
+    rightHandInstruction: Abdomen Ready
+    instructionImage: {fileID: 21300000, guid: a47f5ab775eb5c54cb03e774ba80500b, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
+    requiredStance: Right_Abdomen_(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Abdomen Block
+    rightHandInstruction: Abdomen Block
+    instructionImage: {fileID: 21300000, guid: b759c6f4c55f23242b623e69dd944904, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
+    requiredStance: Abdomen_(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Pectoral Ready Block
+    rightHandInstruction: Right Pectoral Ready Block
+    instructionImage: {fileID: 21300000, guid: 9671cf5b552e19a49b5899bca65384fa, type: 3}
+    instructionVideo: {fileID: 32900000, guid: ee20df0de9c9deb48956c18673042d00, type: 3}
+    requiredStance: Left_Pectoral(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Pectoral Block
+    rightHandInstruction: Right Pectoral Block
+    instructionImage: {fileID: 21300000, guid: fad6c4658e9897645b44359a7a16f05b, type: 3}
+    instructionVideo: {fileID: 32900000, guid: ca678e7ff23c4444a8a1ce17087c6ea3, type: 3}
+    requiredStance: Left_Pectoral(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Pectoral Ready Block
+    rightHandInstruction: Left Pectoral Ready Block
+    instructionImage: {fileID: 21300000, guid: 67ff7335877ccda42adc879c5e09485e, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 87bac036d4d5fb14b81e18bbc0fe79a0, type: 3}
+    requiredStance: Right_Pectoral(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Pectoral Block
+    rightHandInstruction: Left Pectoral Block
+    instructionImage: {fileID: 21300000, guid: 44820bab60b30064ea865ad9467c193b, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 5e257545e1bfbe74f9c3f769d20023ff, type: 3}
+    requiredStance: Right_Pectoral(Block)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Knee Ready Block
+    rightHandInstruction: Left Knee Ready Block
+    instructionImage: {fileID: 21300000, guid: 5559578932342124da486d9f01605147, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 11cfde7d0c36cca49b93b484a1b29768, type: 3}
+    requiredStance: Right_Knee(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Knee Block
+    rightHandInstruction: Left Knee Block
+    instructionImage: {fileID: 21300000, guid: 127ecc430db74c24980dd1549e579a8a, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 1612f9b1d4c32f14384f21028df21cb6, type: 3}
+    requiredStance: Right_Knee(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Knee Ready Block
+    rightHandInstruction: Right Knee Ready Block
+    instructionImage: {fileID: 21300000, guid: 32c22dba10e96d8488937ada5d24bf77, type: 3}
+    instructionVideo: {fileID: 32900000, guid: cae6f680370ca4042a5e7ac2a5a2d73d, type: 3}
+    requiredStance: Left_Knee(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Knee Block
+    rightHandInstruction: Right Knee Block
+    instructionImage: {fileID: 21300000, guid: 6063070e6a16ae14ba7f696628a181ca, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8082b744d25cb014094bd331b58a6525, type: 3}
+    requiredStance: Left_Knee(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Eye Ready Block
+    rightHandInstruction: Right Eye Ready Block
+    instructionImage: {fileID: 21300000, guid: 3a43786ed5574ed45b8638b2c866626a, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 80b06b6a80fb4714799ec388a4fb5dc9, type: 3}
+    requiredStance: Left_Eye(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Eye Block
+    rightHandInstruction: Right Eye Block
+    instructionImage: {fileID: 21300000, guid: 7f675b0bd3d63324585238709fb52d72, type: 3}
+    instructionVideo: {fileID: 32900000, guid: cbc7f82d5b285c241b778563f10f891f, type: 3}
+    requiredStance: Left_Eye(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Eye Ready Block
+    rightHandInstruction: Left Eye Ready Block
+    instructionImage: {fileID: 21300000, guid: d44496a9f7509d84da1835ec55df7ad4, type: 3}
+    instructionVideo: {fileID: 32900000, guid: fbf46e59be4fcf845b3ea9c99e6e4319, type: 3}
+    requiredStance: Right_Eye(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Eye Block
+    rightHandInstruction: Left Eye Block
+    instructionImage: {fileID: 21300000, guid: 62ec0a0818282f845bee1724018b5d6a, type: 3}
+    instructionVideo: {fileID: 32900000, guid: e5e917913b3d370439cf8a5d114580f2, type: 3}
+    requiredStance: Right_Eye(Spar)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Head Ready Block
+    rightHandInstruction: Head Ready Block
+    instructionImage: {fileID: 21300000, guid: d1afdb905a3f9fd459f5e326ab60a205, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 92f6d10cf8c17774bb1dd4145c44568d, type: 3}
+    requiredStance: Head(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Head Block
+    rightHandInstruction: Head Block
+    instructionImage: {fileID: 21300000, guid: 25967bb8542b4d94aab33d57ff0a9308, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 05c93ce1186e7874990dafd867232232, type: 3}
+    requiredStance: Head(Block)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  objectiveText: {fileID: 563866865}
+  repeatCountText: {fileID: 1979969532}
+  scoreText: {fileID: 1089864350}
+  objectiveImage: {fileID: 478318141}
+  objectiveVideoPlayer: {fileID: 1718001608}
+  feedbackImage: {fileID: 859272578}
+  stanceEntryImage: {fileID: 1766740783}
+  videoPlayer: {fileID: 1718001608}
+  toggleVideoButton: {fileID: 2028960216}
+  objectiveVideoRawImage: {fileID: 373430142}
+  levelUI: {fileID: 1214385015}
+  incorrectStanceSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  poorSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  goodSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  excellentSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  perfectSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  trainingMode: 1
+  trainingModePanel: {fileID: 1386036440}
+  accuracyText: {fileID: 62698955}
+  trainingModeInstructionText: {fileID: 47370923}
+  inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
+  enableAutoDetectSequences: 0
+  stanceGuideToggleButton: {fileID: 1721155816}
+  stanceGuideButtonText: {fileID: 323349894}
 --- !u!1 &1237807787 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4181615292928961939, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -35837,7 +36698,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 429922887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.000011146069}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -36316,7 +37177,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265067143}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -37270,6 +38131,39 @@ MonoBehaviour:
   sceneSkybox: {fileID: 0}
   defaultPassthrough: 1
   passthroughToggle: {fileID: 0}
+--- !u!1 &1317934831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1317934832}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1317934832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317934831}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 189548468}
+  - {fileID: 2020957336}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1318358092 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 131312731561758591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -37395,7 +38289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1325449177}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -37403,7 +38297,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -38489,13 +39383,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366419755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1372710819
 GameObject:
   m_ObjectHideFlags: 0
@@ -39079,9 +39973,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Left_Eye(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1429520567}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -39735,7 +40629,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474926516}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -1.228}
+  m_LocalPosition: {x: 0, y: 0, z: -0.387}
   m_LocalScale: {x: 0.008186475, y: 0.0069746473, z: 0.0826299}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39745,7 +40639,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.691, y: 0.596}
+  m_AnchoredPosition: {x: -1.442, y: 0.596}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1474926518
@@ -40238,7 +41132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49947}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1521180598
@@ -40427,6 +41321,11 @@ MeshFilter:
 --- !u!1 &1527153181 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6120415511334434042, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1531016760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 197095095446521946, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1533832127
@@ -42540,9 +43439,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Right_Pectoral(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1587752998}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -42550,7 +43449,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -43250,9 +44149,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1632846035}
   m_CullTransparentMesh: 1
+--- !u!1 &1635593066 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4663172531305919795, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1637278356 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7164367177885826547, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1645743507 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1109458412543150271, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1646693707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 706565918843234782, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1656208274
@@ -43435,6 +44349,11 @@ GameObject:
 --- !u!1 &1663068717 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1906083109919455362, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1668034430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2536953596714220021, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1675577625
@@ -44457,7 +45376,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -0.02}
   m_LocalScale: {x: 0.29703307, y: 0.34864193, z: 0.029428266}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 323349893}
   m_Father: {fileID: 1214385016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -44969,7 +45889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49947}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1745777024
@@ -45238,6 +46158,145 @@ MonoBehaviour:
       endBoxRight: {fileID: 0}
       timeLimit: 0
       currentIndex: 0
+  - styleName: Right_Pectoral(Strike)
+    stanceBoxes:
+    - {fileID: 2056721846}
+    - {fileID: 990306205}
+    - {fileID: 1587752998}
+    - {fileID: 977026541}
+    - {fileID: 339819317}
+    sequences:
+    - sequenceName: Right_Pectoral(Strike)
+      startBoxLeft: {fileID: 2056721846}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 990306205}
+      - {fileID: 1587752998}
+      - {fileID: 977026541}
+      endBoxLeft: {fileID: 339819317}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Right_Knee(Strike)
+    stanceBoxes:
+    - {fileID: 1645743507}
+    - {fileID: 1787698016}
+    - {fileID: 1318358092}
+    - {fileID: 692517140}
+    - {fileID: 639313329}
+    sequences:
+    - sequenceName: Right_Pectoral(Strike)
+      startBoxLeft: {fileID: 1645743507}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 1787698016}
+      - {fileID: 1318358092}
+      - {fileID: 692517140}
+      endBoxLeft: {fileID: 639313329}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Left_Knee(Ready)
+    stanceBoxes:
+    - {fileID: 542703013}
+    - {fileID: 612727548}
+    - {fileID: 957444999}
+    sequences:
+    - sequenceName: Left_Knee(Ready)
+      startBoxLeft: {fileID: 542703013}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 612727548}
+      endBoxLeft: {fileID: 957444999}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Left_Knee(Strike)
+    stanceBoxes:
+    - {fileID: 1635593066}
+    - {fileID: 858637127}
+    - {fileID: 1668034430}
+    sequences:
+    - sequenceName: Left_Knee(Strike)
+      startBoxLeft: {fileID: 1635593066}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 858637127}
+      endBoxLeft: {fileID: 1668034430}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Left_Eye(Ready)
+    stanceBoxes:
+    - {fileID: 1429520567}
+    - {fileID: 1085274952}
+    sequences:
+    - sequenceName: Left_Eye(Ready)
+      startBoxLeft: {fileID: 1429520567}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1085274952}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Left_Eye(Strike)
+    stanceBoxes:
+    - {fileID: 1923035836}
+    - {fileID: 1878846980}
+    sequences:
+    - sequenceName: Left_Eye(Strike)
+      startBoxLeft: {fileID: 1923035836}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1878846980}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Right_Eye(Strike)
+    stanceBoxes:
+    - {fileID: 936235199}
+    - {fileID: 1646693707}
+    - {fileID: 103806248}
+    - {fileID: 1433252213}
+    sequences:
+    - sequenceName: Right_Eye(Strike)
+      startBoxLeft: {fileID: 936235199}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 1646693707}
+      - {fileID: 103806248}
+      endBoxLeft: {fileID: 1433252213}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Top_Head(Ready)
+    stanceBoxes:
+    - {fileID: 531073694}
+    - {fileID: 917288895}
+    sequences:
+    - sequenceName: Top_Head(Ready)
+      startBoxLeft: {fileID: 531073694}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 917288895}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Top_Head(Strike)
+    stanceBoxes:
+    - {fileID: 475184906}
+    - {fileID: 1118663149}
+    - {fileID: 1585497646}
+    sequences:
+    - sequenceName: Top_Head(Strike)
+      startBoxLeft: {fileID: 475184906}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 1118663149}
+      endBoxLeft: {fileID: 1585497646}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
   - styleName: Test
     stanceBoxes:
     - {fileID: 795296956}
@@ -45440,14 +46499,12 @@ MonoBehaviour:
     - {fileID: 181232302}
     sequences:
     - sequenceName: Left_Temple_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 181232306}
+      startBoxLeft: {fileID: 181232306}
+      startBoxRight: {fileID: 0}
       sequenceBoxes:
       - {fileID: 181232305}
-      - {fileID: 181232304}
-      - {fileID: 181232303}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 181232302}
+      endBoxLeft: {fileID: 181232304}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Left_Temple_Block(Spar)
@@ -45465,21 +46522,17 @@ MonoBehaviour:
       endBoxRight: {fileID: 181232304}
       timeLimit: 1000
       currentIndex: 0
-  - styleName: Right_Temple_Block
+  - styleName: Right_Temple_Block_Ready
     stanceBoxes:
-    - {fileID: 1546187623}
-    - {fileID: 1546187622}
-    - {fileID: 1546187621}
-    - {fileID: 1546187620}
+    - {fileID: 181232303}
+    - {fileID: 181232302}
     sequences:
-    - sequenceName: Right_Temple_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187623}
-      sequenceBoxes:
-      - {fileID: 1546187622}
-      - {fileID: 1546187621}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187620}
+    - sequenceName: Right_Temple_Block_Ready
+      startBoxLeft: {fileID: 181232303}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 181232302}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Right_Temple_Block(Spar)
@@ -45487,75 +46540,272 @@ MonoBehaviour:
     - {fileID: 1546187623}
     - {fileID: 1546187622}
     sequences:
-    - sequenceName: Right_Temple_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187623}
-      sequenceBoxes:
-      - {fileID: 1546187622}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187622}
+    - sequenceName: Right_Temple_Block(Spar)
+      startBoxLeft: {fileID: 1546187623}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187622}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
-  - styleName: Left_Abdomen_Block
+  - styleName: Left_Shoulder_Block(Ready)
+    stanceBoxes:
+    - {fileID: 1546187621}
+    - {fileID: 1546187620}
+    sequences:
+    - sequenceName: Left_Shoulder_Block(Ready)
+      startBoxLeft: {fileID: 1546187621}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187620}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Shoulder_Block(Spar)
     stanceBoxes:
     - {fileID: 1546187619}
     - {fileID: 1546187618}
+    sequences:
+    - sequenceName: Left_Shoulder_Block(Spar)
+      startBoxLeft: {fileID: 1546187619}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187618}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Shoulder_(Ready)
+    stanceBoxes:
     - {fileID: 1546187617}
     - {fileID: 1546187616}
     sequences:
-    - sequenceName: Left_Abdomen_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187619}
-      sequenceBoxes:
-      - {fileID: 1546187618}
-      - {fileID: 1546187617}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187616}
+    - sequenceName: Right_Shoulder_(Ready)
+      startBoxLeft: {fileID: 1546187617}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187616}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
-  - styleName: Left_Abdomen_Block(Spar)
-    stanceBoxes:
-    - {fileID: 1546187619}
-    - {fileID: 1546187618}
-    sequences:
-    - sequenceName: Left_Abdomen_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187619}
-      sequenceBoxes:
-      - {fileID: 1546187618}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187618}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Right_Abdomen_Block
+  - styleName: Right_Shoulder_(Spar)
     stanceBoxes:
     - {fileID: 1546187615}
     - {fileID: 1546187614}
+    sequences:
+    - sequenceName: Right_Shoulder_(Spar)
+      startBoxLeft: {fileID: 1546187615}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187614}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Abdomen_(Ready)
+    stanceBoxes:
     - {fileID: 1546187613}
     - {fileID: 1546187612}
     sequences:
-    - sequenceName: Right_Abdomen_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187615}
-      sequenceBoxes:
-      - {fileID: 1546187614}
-      - {fileID: 1546187613}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187612}
+    - sequenceName: Abdomen_(Ready)
+      startBoxLeft: {fileID: 1546187613}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187612}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
-  - styleName: Right_Abdomen_Block(Spar)
+  - styleName: Abdomen_(Spar)
     stanceBoxes:
-    - {fileID: 1546187615}
-    - {fileID: 1546187614}
+    - {fileID: 1546187611}
+    - {fileID: 1546187610}
     sequences:
-    - sequenceName: Right_Abdomen_Block(Spar)
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 1546187615}
-      sequenceBoxes:
-      - {fileID: 1546187614}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 1546187614}
+    - sequenceName: Abdomen_(Spar)
+      startBoxLeft: {fileID: 1546187611}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187610}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Pectoral(Ready)
+    stanceBoxes:
+    - {fileID: 1546187609}
+    - {fileID: 1546187608}
+    sequences:
+    - sequenceName: Left_Pectoral(Ready)
+      startBoxLeft: {fileID: 1546187609}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187608}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Pectoral(Spar)
+    stanceBoxes:
+    - {fileID: 1546187607}
+    - {fileID: 1546187606}
+    sequences:
+    - sequenceName: Left_Pectoral(Spar)
+      startBoxLeft: {fileID: 1546187607}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187606}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Pectoral(Ready)
+    stanceBoxes:
+    - {fileID: 1707476722}
+    - {fileID: 1707476721}
+    sequences:
+    - sequenceName: Right_Pectoral(Ready)
+      startBoxLeft: {fileID: 1707476722}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476721}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Pectoral(Block)
+    stanceBoxes:
+    - {fileID: 1707476720}
+    - {fileID: 1707476719}
+    sequences:
+    - sequenceName: Right_Pectoral(Block)
+      startBoxLeft: {fileID: 1707476720}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476719}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Knee(Ready)
+    stanceBoxes:
+    - {fileID: 1707476718}
+    - {fileID: 1707476717}
+    sequences:
+    - sequenceName: Right_Knee(Ready)
+      startBoxLeft: {fileID: 1707476718}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476717}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Knee(Spar)
+    stanceBoxes:
+    - {fileID: 1707476716}
+    - {fileID: 1707476715}
+    sequences:
+    - sequenceName: Right_Knee(Spar)
+      startBoxLeft: {fileID: 1707476716}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476715}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Knee(Ready)
+    stanceBoxes:
+    - {fileID: 1707476714}
+    - {fileID: 1707476713}
+    sequences:
+    - sequenceName: Left_Knee(Ready)
+      startBoxLeft: {fileID: 1707476714}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476713}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Knee(Spar)
+    stanceBoxes:
+    - {fileID: 1707476712}
+    - {fileID: 1707476711}
+    sequences:
+    - sequenceName: Left_Knee(Spar)
+      startBoxLeft: {fileID: 1707476712}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1707476711}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Eye(Ready)
+    stanceBoxes:
+    - {fileID: 1200498579}
+    - {fileID: 1200498578}
+    sequences:
+    - sequenceName: Left_Eye(Ready)
+      startBoxLeft: {fileID: 1200498579}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1200498578}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Left_Eye(Spar)
+    stanceBoxes:
+    - {fileID: 1200498577}
+    - {fileID: 1200498576}
+    sequences:
+    - sequenceName: Left_Eye(Spar)
+      startBoxLeft: {fileID: 1200498577}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1200498576}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Eye(Ready)
+    stanceBoxes:
+    - {fileID: 1200498575}
+    - {fileID: 1200498574}
+    sequences:
+    - sequenceName: Right_Eye(Ready)
+      startBoxLeft: {fileID: 1200498575}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1200498574}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Eye(Spar)
+    stanceBoxes:
+    - {fileID: 1200498573}
+    - {fileID: 1200498572}
+    sequences:
+    - sequenceName: Right_Eye(Spar)
+      startBoxLeft: {fileID: 1200498573}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1200498572}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Head(Ready)
+    stanceBoxes:
+    - {fileID: 1936982678}
+    - {fileID: 1936982677}
+    sequences:
+    - sequenceName: Head(Ready)
+      startBoxLeft: {fileID: 1936982678}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1936982677}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Head(Block)
+    stanceBoxes:
+    - {fileID: 1936982676}
+    - {fileID: 1936982675}
+    sequences:
+    - sequenceName: Head(Block)
+      startBoxLeft: {fileID: 1936982676}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1936982675}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Stomach_Block
@@ -46747,7 +47997,7 @@ MonoBehaviour:
   includeCutscene: 1
   levelCutsceneVideo: {fileID: 32900000, guid: 7e7f7442ac272474c96d155224e66843, type: 3}
   cutsceneId: 1
-  useScreenTransition: 0
+  useScreenTransition: 1
 --- !u!4 &1784065523
 Transform:
   m_ObjectHideFlags: 0
@@ -46797,7 +48047,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.49947}
+  m_AnchoredPosition: {x: -91.5, y: 91.5}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1785708855
@@ -46838,6 +48088,11 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1787698016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1045101670571601690, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1792247461
 GameObject:
   m_ObjectHideFlags: 0
@@ -46921,7 +48176,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 230798230}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99998885
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -48204,7 +49459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1855809283}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -48212,7 +49467,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 7812179099152180021}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -48419,8 +49674,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Tutorial
   objectives:
-  - instruction: Left Temple Strike
-    rightHandInstruction: Right Temple Strike
+  - instruction: 
+    rightHandInstruction: 
     instructionImage: {fileID: 21300000, guid: bb51c13ec4b14c14f86fae50e6f6af54, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
     requiredStance: Left_Temple(Strike)
@@ -48507,6 +49762,78 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
+  - instruction: Right Pectoral Thrust
+    rightHandInstruction: Left Pectoral Thrust
+    instructionImage: {fileID: 21300000, guid: 513e3c2114bef414991359defdd5ee3b, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 92c687f15c2c8344487d608c29085213, type: 3}
+    requiredStance: Right_Pectoral(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Knee
+    rightHandInstruction: 'Left Knee '
+    instructionImage: {fileID: 21300000, guid: 29941b015527b3644be9ea679356bee1, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 7c3f807c548f3b5488ec72feeb2829cc, type: 3}
+    requiredStance: Right_Knee(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Knee Ready
+    rightHandInstruction: Right Knee Ready
+    instructionImage: {fileID: 21300000, guid: a3bc3089b95827443ad0c69eab55c00a, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f9ed84c38c9415f4db176f8f94353ed0, type: 3}
+    requiredStance: Left_Knee(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Knee Strike
+    rightHandInstruction: Right Knee Strike
+    instructionImage: {fileID: 21300000, guid: 2eecd90ac50c3384fa408c64f45f0cfc, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 75c61cf5f3520b8408ff68854e22d47b, type: 3}
+    requiredStance: Left_Knee(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Eye Ready
+    rightHandInstruction: Right Eye Ready
+    instructionImage: {fileID: 21300000, guid: 3ab5752c58e02204b86b1cd96442e6a7, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8095dfbb172ca75408fed6002b45f9aa, type: 3}
+    requiredStance: Left_Eye(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Left Eye Thrust
+    rightHandInstruction: Right Eye Thrust
+    instructionImage: {fileID: 21300000, guid: c961c6ac1f636f342897b399d6b934e2, type: 3}
+    instructionVideo: {fileID: 32900000, guid: fc36bfee54acc6449a94dd0545497bca, type: 3}
+    requiredStance: Left_Eye(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Right Eye Thrust
+    rightHandInstruction: Left Eye Thrust
+    instructionImage: {fileID: 21300000, guid: dd2e79c0e1da9594eab64fc1880bbe58, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f5d1de9184bb70b4185c6d6d026345b0, type: 3}
+    requiredStance: Right_Eye(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Top Head
+    rightHandInstruction: Top Head
+    instructionImage: {fileID: 21300000, guid: 3b79b410eb613bb45a395c47cbb5f573, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8e8585c5f47574f40a6e2bfabbd66100, type: 3}
+    requiredStance: Top_Head(Ready)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  - instruction: Top Head Strike
+    rightHandInstruction: Top Head Strike
+    instructionImage: {fileID: 21300000, guid: d4d3050192610d940b58f6f62442278f, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f07ecbe500a9a864eb8f13369dba5317, type: 3}
+    requiredStance: Top_Head(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
   objectiveText: {fileID: 563866865}
   repeatCountText: {fileID: 1979969532}
   scoreText: {fileID: 1089864350}
@@ -48531,7 +49858,7 @@ MonoBehaviour:
   inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
   enableAutoDetectSequences: 0
   stanceGuideToggleButton: {fileID: 1721155816}
-  stanceGuideButtonText: {fileID: 0}
+  stanceGuideButtonText: {fileID: 323349894}
 --- !u!1 &1870491780
 GameObject:
   m_ObjectHideFlags: 0
@@ -48922,7 +50249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Left_Temple(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1878846980}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -48930,7 +50257,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -49111,7 +50438,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Spar
+  m_text: Storymode
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -49700,7 +51027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stanceName: Left_Temple(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 1923035836}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -51976,6 +53303,136 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5414394697665842879, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2014887549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014887550}
+  m_Layer: 0
+  m_Name: 12BasicBlocks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2014887550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014887549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 282579935}
+  - {fileID: 1232727739}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2020957335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2020957336}
+  - component: {fileID: 2020957338}
+  - component: {fileID: 2020957337}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2020957336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020957335}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.5405806, y: 1.389696, z: 1.4905214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1317934832}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2020957337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020957335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee6b480d100e734291177f235a26beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalBoxes: 0
+  totalBoxesTouched: 0
+  objectiveTotalBoxes: 
+  objectiveTouchedBoxes: 
+  showDebugLogs: 0
+--- !u!114 &2020957338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020957335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelName: BasicStrike
+  objectives:
+  - instruction: 
+    rightHandInstruction: 
+    instructionImage: {fileID: 21300000, guid: bb51c13ec4b14c14f86fae50e6f6af54, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
+    requiredStance: Left_Temple(Strike)
+    timeLimit: 100
+    enableRepeat: 1
+    repeatCount: 3
+  objectiveText: {fileID: 563866865}
+  repeatCountText: {fileID: 1979969532}
+  scoreText: {fileID: 1089864350}
+  objectiveImage: {fileID: 478318141}
+  objectiveVideoPlayer: {fileID: 1718001608}
+  feedbackImage: {fileID: 859272578}
+  stanceEntryImage: {fileID: 1766740783}
+  videoPlayer: {fileID: 1718001608}
+  toggleVideoButton: {fileID: 2028960216}
+  objectiveVideoRawImage: {fileID: 373430142}
+  levelUI: {fileID: 1214385015}
+  incorrectStanceSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  poorSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  goodSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  excellentSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  perfectSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  trainingMode: 1
+  trainingModePanel: {fileID: 1386036440}
+  accuracyText: {fileID: 62698955}
+  trainingModeInstructionText: {fileID: 47370923}
+  inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
+  enableAutoDetectSequences: 0
+  stanceGuideToggleButton: {fileID: 1721155816}
+  stanceGuideButtonText: {fileID: 323349894}
 --- !u!1 &2028960214
 GameObject:
   m_ObjectHideFlags: 0
@@ -52585,9 +54042,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stanceName: Left_Temple(Strike)
+  stanceName: Right_Pectoral(Strike)
   stanceBoxes:
-  - {fileID: 1265067143}
+  - {fileID: 2056721846}
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -52595,7 +54052,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 7812179099152180021}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -54463,7 +55920,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5027143044465991041}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -59075,6 +60532,8 @@ SceneRoots:
   - {fileID: 748189996}
   - {fileID: 1042007935}
   - {fileID: 605232861}
+  - {fileID: 2014887550}
+  - {fileID: 1317934832}
   - {fileID: 607056643}
   - {fileID: 1749916802}
   - {fileID: 181232301}

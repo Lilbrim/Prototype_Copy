@@ -471,35 +471,6 @@ private void DisableLevelUI()
         }
     }
 
-
-    
-    private void ShowTrainingModeRepeatPanel()
-    {
-        isWaitingForTrainingInput = true;
-
-        if (trainingModePanel != null)
-        {
-            trainingModePanel.SetActive(true);
-
-            if (accuracyText != null)
-            {
-                float avgAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
-                accuracyText.text = $"Average Accuracy: {(avgAccuracy * 100):F1}%\nCurrent: {(currentObjectiveAccuracy * 100):F1}%";
-            }
-
-            if (trainingModeInstructionText != null)
-            {
-                LevelObjective currentObjective = objectives[currentObjectiveIndex];
-                trainingModeInstructionText.text = $"Repeat {currentRepeatCount}/{currentObjective.repeatCount}\nPress B to Retry\nPress A to Continue";
-            }
-        }
-        else
-        {
-            Debug.LogError("Training Mode Panel not assigned!");
-            StartCoroutine(StartRepeatAfterDelay(1f));
-        }
-    }
-
     public void OnStanceEntered(string enteredStance)
     {
         if (isWaitingForStanceEntry)
@@ -544,28 +515,69 @@ private void DisableLevelUI()
     }
 
     private IEnumerator RestartCurrentObjectiveAfterDelay(float delay)
+{
+    yield return new WaitForSeconds(delay);
+    feedbackImage.gameObject.SetActive(false);
+    
+    
+    ResetRepeatTracking();
+    
+    
+    if (objectiveAccuracies.ContainsKey(currentObjectiveIndex))
     {
-        yield return new WaitForSeconds(delay);
-        feedbackImage.gameObject.SetActive(false);
+        objectiveAccuracies.Remove(currentObjectiveIndex);
+    }
+    
+    
+    if (AccuracyTracker.Instance != null)
+    {
+        AccuracyTracker.Instance.ResetTracking();
+    }
+    
+    
+    if (StanceManager.Instance != null)
+    {
+        StanceManager.Instance.ClearAllStances();
+        StanceManager.Instance.totalBoxesTouched = 0;
+        StanceManager.Instance.SetGameActive(true);
         
-        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        
+        if (StanceManager.Instance.currentAttackSequence != null)
         {
+            foreach (var box in StanceManager.Instance.currentAttackSequence.sequenceBoxes)
+            {
+                if (box != null)
+                {
+                    StanceDetector detector = box.GetComponent<StanceDetector>();
+                    if (detector != null)
+                    {
+                        detector.IsCompleted = false;
+                        detector.ForceResetTriggerState();
+                    }
+                }
+            }
+        }
+    }
+    
+    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+    {
+        StartStanceEntry(objectives[currentObjectiveIndex]);
+    }
+    else
+    {
+        Debug.LogError("Restart objective failed: Index out of range: " + currentObjectiveIndex);
+        if (objectives.Count > 0)
+        {
+            currentObjectiveIndex = 0;
+            ResetRepeatTracking(); 
             StartStanceEntry(objectives[currentObjectiveIndex]);
         }
         else
         {
-            Debug.LogError("Restart objective failed: Index out of range: " + currentObjectiveIndex);
-            if (objectives.Count > 0)
-            {
-                currentObjectiveIndex = 0;
-                StartStanceEntry(objectives[currentObjectiveIndex]);
-            }
-            else
-            {
-                EndLevel();
-            }
+            EndLevel();
         }
     }
+}
 
     private IEnumerator StartNextObjectiveAfterDelay(float delay)
     {
@@ -686,107 +698,85 @@ private void DisableLevelUI()
         return PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, 1) == 1;
     }
 
-    public void EndObjective()
+    
+public void EndObjective()
+{
+    
+    if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
     {
-        
-        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
-        {
-            objectiveVideoPlayer.Stop();
-        }
-
-        int score = 0;
-        if (!trainingMode)
-        {
-            score = CalculateScore();
-        }
-
-        currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
-
-        
-        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
-        {
-            LevelObjective currentObjective = objectives[currentObjectiveIndex];
-
-            
-            currentObjectiveRepeatAccuracies.Add(currentObjectiveAccuracy);
-            currentRepeatCount++;
-
-            
-            if (currentObjective.enableRepeat && currentRepeatCount < currentObjective.repeatCount)
-            {
-                
-                if (trainingMode)
-                {
-                    StartCoroutine(StartRepeatAfterDelay(2f));
-                }
-                else
-                {
-                    totalScore += score;
-                    UpdateScoreDisplay();
-                    DisplayFeedback(score);
-                    StartCoroutine(StartRepeatAfterDelay(2f));
-                }
-                return; 
-            }
-            else
-            {
-                
-                float finalAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
-                objectiveAccuracies[currentObjectiveIndex] = finalAccuracy;
-
-                
-                ResetRepeatTracking();
-            }
-        }
-
-        
-        if (trainingMode)
-        {
-            ShowTrainingModePanel(); 
-        }
-        else
-        {
-            totalScore += score;
-            DisplayFeedback(score);
-            currentObjectiveIndex++;
-            if (currentObjectiveIndex < objectives.Count)
-            {
-                StartCoroutine(StartNextObjectiveAfterDelay(2f));
-            }
-            else
-            {
-                StartCoroutine(EndLevelAfterDelay(2f));
-            }
-        }
-
-        UpdateScoreDisplay();
+        objectiveVideoPlayer.Stop();
     }
 
-    private void ShowTrainingModeFinalPanel()
+    
+    currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
+    
+    int score = 0;
+    if (!trainingMode)
     {
-        isWaitingForTrainingInput = true;
+        score = CalculateScore();
+    }
 
-        if (trainingModePanel != null)
+    
+    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+    {
+        LevelObjective currentObjective = objectives[currentObjectiveIndex];
+
+        
+        currentObjectiveRepeatAccuracies.Add(currentObjectiveAccuracy);
+        currentRepeatCount++;
+
+        
+        if (currentObjective.enableRepeat && currentRepeatCount < currentObjective.repeatCount)
         {
-            trainingModePanel.SetActive(true);
-
-            if (accuracyText != null)
+            
+            if (trainingMode)
             {
-                float avgAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
-                accuracyText.text = $"Final Average Accuracy: {(avgAccuracy * 100):F1}%";
+                
+                StartCoroutine(StartRepeatAfterDelay(1f));
+                return;
             }
-
-            if (trainingModeInstructionText != null)
+            else
             {
-                trainingModeInstructionText.text = "Objective Complete!\nPress A to Continue";
+                totalScore += score;
+                UpdateScoreDisplay();
+                DisplayFeedback(score);
+                StartCoroutine(StartRepeatAfterDelay(2f));
+                return;
             }
         }
         else
         {
-            Debug.LogError("Training Mode Panel not assigned!");
-            ContinueToNextObjective();
+            
+            float finalAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
+            objectiveAccuracies[currentObjectiveIndex] = finalAccuracy;
+            
+            
+            ResetRepeatTracking();
         }
     }
+
+    
+    if (trainingMode)
+    {
+        ShowTrainingModePanel(); 
+    }
+    else
+    {
+        totalScore += score;
+        DisplayFeedback(score);
+        currentObjectiveIndex++;
+        if (currentObjectiveIndex < objectives.Count)
+        {
+            StartCoroutine(StartNextObjectiveAfterDelay(2f));
+        }
+        else
+        {
+            StartCoroutine(EndLevelAfterDelay(2f));
+        }
+    }
+
+    UpdateScoreDisplay();
+}
 
     
     private void ResetRepeatTracking()
@@ -823,62 +813,116 @@ private void DisableLevelUI()
 
 
 
-    private void ShowTrainingModePanel()
+private void ShowTrainingModePanel()
+{
+    isWaitingForTrainingInput = true;
+
+    if (trainingModePanel != null)
     {
-        isWaitingForTrainingInput = true;
+        trainingModePanel.SetActive(true);
 
-        if (trainingModePanel != null)
+        if (accuracyText != null)
         {
-            trainingModePanel.SetActive(true);
-
-            if (accuracyText != null)
+            
+            float finalAvgAccuracy = 0f;
+            if (objectiveAccuracies.ContainsKey(currentObjectiveIndex))
             {
-                accuracyText.text = $"Accuracy: {(currentObjectiveAccuracy * 100):F1}%";
+                finalAvgAccuracy = objectiveAccuracies[currentObjectiveIndex];
             }
-
-            if (trainingModeInstructionText != null)
-            {
-                trainingModeInstructionText.text = "Press B to Retry\nPress A to Continue";
-            }
+            
+            
+            string accuracyDetails = $"Average Accuracy: {(finalAvgAccuracy * 100):F1}%";
+            
+            accuracyText.text = accuracyDetails;
         }
-        else
+
+        if (trainingModeInstructionText != null)
         {
-            Debug.LogError("Training Mode Panel not assigned!");
-            ContinueToNextObjective();
+            trainingModeInstructionText.text = "Press B to Retry Objective\nPress A to Continue";
+        }
+    }
+    else
+    {
+        Debug.LogError("Training Mode Panel not assigned!");
+        ContinueToNextObjective();
+    }
+}
+
+
+private void RetryCurrentObjective()
+{
+    isWaitingForTrainingInput = false;
+    
+    if (trainingModePanel != null)
+    {
+        trainingModePanel.SetActive(false);
+    }
+    
+    
+    if (AccuracyTracker.Instance != null)
+    {
+        AccuracyTracker.Instance.ResetTracking(); 
+    }
+    
+    
+    if (StanceManager.Instance != null)
+    {
+        StanceManager.Instance.ClearAllStances();
+        StanceManager.Instance.totalBoxesTouched = 0; 
+        StanceManager.Instance.SetGameActive(true); 
+        
+        
+        if (StanceManager.Instance.currentAttackSequence != null)
+        {
+            
+            foreach (var box in StanceManager.Instance.currentAttackSequence.sequenceBoxes)
+            {
+                if (box != null)
+                {
+                    StanceDetector detector = box.GetComponent<StanceDetector>();
+                    if (detector != null)
+                    {
+                        detector.IsCompleted = false;
+                        detector.ForceResetTriggerState();
+                    }
+                }
+            }
         }
     }
     
-    private void RetryCurrentObjective()
+    
+    ResetRepeatTracking();
+    
+    
+    if (objectiveAccuracies.ContainsKey(currentObjectiveIndex))
     {
-        isWaitingForTrainingInput = false;
-        
-        if (trainingModePanel != null)
-        {
-            trainingModePanel.SetActive(false);
-        }
-        
-        if (StanceManager.Instance != null)
-        {
-            StanceManager.Instance.ClearAllStances();
-        }
-        
-        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
-        {
-            StartStanceEntry(objectives[currentObjectiveIndex]);
-        }
+        objectiveAccuracies.Remove(currentObjectiveIndex);
     }
+    
+    
+    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+    {
+        StartStanceEntry(objectives[currentObjectiveIndex]);
+    }
+    else
+    {
+        Debug.LogError("Retry failed: Invalid objective index");
+        EndLevel();
+    }
+}
+    
     
     private void ContinueToNextObjective()
     {
         isWaitingForTrainingInput = false;
-        
+
         if (trainingModePanel != null)
         {
             trainingModePanel.SetActive(false);
         }
-        
+
         currentObjectiveIndex++;
-        
+
         if (currentObjectiveIndex < objectives.Count)
         {
             StartStanceEntry(objectives[currentObjectiveIndex]);
@@ -919,15 +963,21 @@ private void DisableLevelUI()
         }
     }
 
-    private float CalculateCurrentObjectiveAccuracy()
+private float CalculateCurrentObjectiveAccuracy()
+{
+    if (StanceManager.Instance == null || StanceManager.Instance.currentAttackSequence == null)
     {
-        int totalBoxes = StanceManager.Instance.currentAttackSequence != null ? 
-            StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length : 0;
-        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
-
-        return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
+        Debug.LogWarning("StanceManager or currentAttackSequence is null when calculating accuracy");
+        return 0f;
     }
 
+    int totalBoxes = StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length;
+    int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
+
+    Debug.Log($"Calculating accuracy: {touchedBoxes}/{totalBoxes} = {(totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0f)}");
+    
+    return totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0f;
+}
     private void DisplayFeedback(int score)
     {
         if (trainingMode)
