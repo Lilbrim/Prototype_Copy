@@ -33,8 +33,8 @@ public class Pause : MonoBehaviour
     private const string HAND_DOMINANCE_SET_KEY = "HandDominanceAutoSet";
     [SerializeField] private bool defaultRightHand = true;
     
-    [Header("Passthrough Integration")]
-    public PassthroughManager passthroughManager; 
+    /*[Header("Passthrough Integration")]
+    public PassthroughManager passthroughManager; */
     
     [Header("Menu Following Settings")]
     public float followThreshold = 30f; 
@@ -63,14 +63,14 @@ public class Pause : MonoBehaviour
         mainPausePanel.SetActive(true);
         Time.timeScale = 1;
         
-        if (passthroughManager == null)
+        /*if (passthroughManager == null)
         {
             passthroughManager = FindObjectOfType<PassthroughManager>();
             if (passthroughManager == null)
             {
                 Debug.LogWarning("PassthroughManager not found in scene. Passthrough functionality will not be available.");
             }
-        }
+        }*/
         
         if (playerRig != null && heightSlider != null)
         {
@@ -319,7 +319,7 @@ public class Pause : MonoBehaviour
     }
 
     
-    public void TogglePassthrough()
+    /*public void TogglePassthrough()
     {
         if (passthroughManager != null)
         {
@@ -333,7 +333,7 @@ public class Pause : MonoBehaviour
         {
             passthroughManager.ResetPassthrough();
         }
-    }
+    }*/
 
     public void Menu()
     {

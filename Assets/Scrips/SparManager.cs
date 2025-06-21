@@ -10,7 +10,7 @@ public class SparManager : MonoBehaviour, ILevelManager
     private bool isGameActive = false;
 
     [Header("Round Settings")]
-    public float roundDuration = 120f; 
+    public float roundDuration = 120f;
     public int totalRounds = 3;
     private int currentRound = 1;
     private float roundTimer = 0f;
@@ -18,18 +18,54 @@ public class SparManager : MonoBehaviour, ILevelManager
     [Header("Phase Settings")]
     public float phaseTransitionDelay = 2f;
     public float defaultObjectiveTimeout = 5f;
-    public int phase2InitialValue = 300; 
-    public int phase2SequenceReduction = 5; 
-    public int phase2BlockReduction = 10; 
-    private int phase2Value; 
+    public int phase2InitialValue = 300;
+    public int phase2SequenceReduction = 5;
+    public int phase2BlockReduction = 10;
+    private int phase2Value;
     private Coroutine sparringPartnerCoroutine;
+
+    [Header("Animation Event Settings")]
+    public bool useAnimationEvents = true;
+    public float earlyPenaltyThreshold = 0.5f;
+
+    [Header("Timing Bar UI")]
+    public GameObject timingBarPanel;
+    public Image timingBarFill;
+    public Image timingBarBackground;
+    public Color barWhiteColor = Color.white;
+    public Color barRedColor = Color.red;
+    public float timingBarDuration = 3f;
+
+    [Header("Animation Event")]
+    public bool useAutomaticTiming = true;
+    [Range(0.5f, 0.9f)]
+    public float attackWindowPercentage = 0.7f;
+
+    private float objectiveStartTime = 0f;
+    private float objectiveEndTime = 0f;
+    private float objectiveDuration = 0f;
+    private float attackWindowStartTime = 0f;
+    private bool isInAttackWindow = false;
+    private bool canPlayerAct = false;
+
+    public GameObject phase1FeedbackPanel;
+    public TextMeshProUGUI phase1FeedbackText;
+    public Color blockColor = Color.green;
+    public Color missColor = Color.red;
+    public float feedbackDisplayDuration = 2f;
+
+
+    private bool objectiveWindowActive = false;
+    private bool timingBarActive = false;
+    private float timingBarTimer = 0f;
+    private bool playerActedTooEarly = false;
 
     [Header("Game Speed ")]
     [Range(0.1f, 2.0f)]
     public float gameSpeed = 1.0f;
 
     [Header("UI References")]
-    
+
     public GameObject sparManagerUIPanel;
     public TextMeshProUGUI phaseText;
     public TextMeshProUGUI timerText;
@@ -39,7 +75,7 @@ public class SparManager : MonoBehaviour, ILevelManager
     public GameObject Result;
     public TextMeshProUGUI winnerText;
     public TextMeshProUGUI finalScoreText;
-    
+
     [Header("Results Management")]
     public bool useResultsManager = true;
 
@@ -47,24 +83,28 @@ public class SparManager : MonoBehaviour, ILevelManager
     public string sparringPartnerAnimation = "Default";
     public bool useSparringPartner = false;
     [Range(0f, 10f)]
-    public float sparringPartnerDelay = 2f; 
+    public float sparringPartnerDelay = 2f;
     private GameObject sparringPartner;
     private Animator sparringPartnerAnimator;
 
-    [field: Header("Phase 1 Settings")]
     [System.Serializable]
     public class PhaseObjective
     {
         public string stanceName;
         public float timeout;
         [Range(0.1f, 3.0f)]
-        public float animationSpeed = 1f; 
+        public float animationSpeed = 1f;
+
+        [Header("Animation Event Timing")]
+        public float objectiveActivationTime = 1f;
+        public float attackHitTime = 2f;
+        public bool useAnimationEvents = true;
     }
     public List<PhaseObjective> phase1Objectives = new List<PhaseObjective>();
-    
+
     [Header("Phase 2 Settings")]
-    public List<string> phase2Stances = new List<string>(); 
-    
+    public List<string> phase2Stances = new List<string>();
+
     [Header("Opponent Block Settings")]
     [Range(0.0f, 1.0f)]
     public float baseBlockChance = 0.2f;
@@ -72,7 +112,7 @@ public class SparManager : MonoBehaviour, ILevelManager
     public float blockChanceIncrement = 0.05f;
     public float blockChanceResetTime = 15.0f;
     public GameObject blockFeedbackText;
-    
+
     private int currentPhase = 0;
     private int currentObjectiveIndex = 0;
     private float timer = 0f;
@@ -80,24 +120,24 @@ public class SparManager : MonoBehaviour, ILevelManager
     private int opponentScore = 0;
     private bool objectiveActive = false;
     private bool isGameOver = false;
-    
+
     private float currentBlockChance;
     private float blockChanceResetTimer;
     private string lastPlayerStance = "";
     private Dictionary<string, int> stanceUseCount = new Dictionary<string, int>();
-    
+
     [Header("Tutorial Settings")]
     public bool isTutorialMode = false;
-    public float tutorialAnimationPauseTime = 3f; 
-    public string tutorialInstructionText = "Watch the sparring partner's movement, then perform the same stance when the animation stops.";
-    public string tutorialPhase2Text = "Now try different attack combinations! Complete 3 different stances to finish the tutorial.";
-    public GameObject tutorialInstructionPanel; 
+    public float tutorialAnimationPauseTime = 3f;
+    public string tutorialInstructionText = "One";
+    public string tutorialPhase2Text = "Two";
+    public GameObject tutorialInstructionPanel;
     public TextMeshProUGUI tutorialInstructionTextUI;
 
     [Header("Stance Guide ")]
     public bool enableAutoDetectSequences = false;
 
-    
+
     private bool tutorialAnimationPaused = false;
     private bool tutorialInstructionShown = false;
     private int tutorialPhase2CompletedStances = 0;
@@ -120,7 +160,7 @@ public class SparManager : MonoBehaviour, ILevelManager
     {
         Time.timeScale = gameSpeed;
         ConfigureStanceGuide();
-        
+
         if (useResultsManager)
         {
             resultsManager = FindObjectOfType<SparResultsManager>();
@@ -132,13 +172,13 @@ public class SparManager : MonoBehaviour, ILevelManager
     }
 
     private void ConfigureStanceGuide()
-{
-    StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
-    if (stanceGuide != null)
     {
-        stanceGuide.autoDetectSequences = enableAutoDetectSequences;
+        StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+        if (stanceGuide != null)
+        {
+            stanceGuide.autoDetectSequences = enableAutoDetectSequences;
+        }
     }
-}
 
     public void SetSparringPartner(GameObject partner)
     {
@@ -168,42 +208,42 @@ public class SparManager : MonoBehaviour, ILevelManager
             sparManagerUIPanel.SetActive(true);
             Debug.Log("SparManager UI enabled");
         }
-        
+
         isGameActive = true;
         isGameOver = false;
         playerScore = 0;
         opponentScore = 0;
         currentRound = 1;
-        
-        
+
+
         if (isTutorialMode)
         {
             tutorialAnimationPaused = false;
             tutorialInstructionShown = false;
             tutorialPhase2CompletedStances = 0;
             tutorialCompletedStanceTypes.Clear();
-            
-            
+
+
             if (timerText != null)
             {
                 timerText.gameObject.SetActive(false);
             }
-            
+
             Debug.Log("Tutorial mode activated");
         }
         else
         {
-            
+
             if (timerText != null)
             {
                 timerText.gameObject.SetActive(true);
             }
         }
-        
+
         currentBlockChance = baseBlockChance;
         blockChanceResetTimer = blockChanceResetTime;
         stanceUseCount.Clear();
-        
+
         if (Result != null && !useResultsManager)
         {
             Result.SetActive(false);
@@ -213,10 +253,10 @@ public class SparManager : MonoBehaviour, ILevelManager
         {
             StanceManager.Instance.useSparManager = true;
         }
-        
+
         UpdateScoreDisplay();
         UpdateRoundDisplay();
-        
+
         phase2Value = phase2InitialValue;
         roundTimer = roundDuration;
         StartCoroutine(StartPhase1());
@@ -225,30 +265,30 @@ public class SparManager : MonoBehaviour, ILevelManager
     private IEnumerator StartSparringPartnerWithDelay()
     {
         Debug.Log($"Waiting {sparringPartnerDelay} seconds before sparring partner starts moving...");
-        
+
         if (sparringPartnerAnimator != null)
         {
             sparringPartnerAnimator.enabled = false;
         }
-        
+
         yield return new WaitForSeconds(sparringPartnerDelay);
-        
-        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation) && 
+
+        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation) &&
             currentPhase == 1 && isGameActive && !isGameOver)
         {
             sparringPartnerAnimator.enabled = true;
-            
-            yield return null; 
-            
+
+            yield return null;
+
             float animSpeed = 1f;
             if (currentObjectiveIndex < phase1Objectives.Count)
             {
                 animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
             }
-            
+
             sparringPartnerAnimator.speed = animSpeed;
             sparringPartnerAnimator.Play(sparringPartnerAnimation);
-            
+
             Debug.Log($"Sparring partner started moving with animation: {sparringPartnerAnimation} at speed: {animSpeed}");
         }
         else
@@ -256,14 +296,27 @@ public class SparManager : MonoBehaviour, ILevelManager
             Debug.LogWarning("Sparring partner animation not started - conditions not met");
         }
     }
-        
-   private void Update()
+
+    private void Update()
     {
         if (!isGameActive || isGameOver) return;
 
         if (Time.timeScale != gameSpeed)
         {
             Time.timeScale = gameSpeed;
+        }
+        if (timingBarActive)
+        {
+            UpdateTimingBar();
+        }
+        if (useAutomaticTiming && objectiveWindowActive && currentPhase == 1)
+        {
+            CheckAttackWindow();
+        }
+
+        if (isTutorialMode && canPlayerAct && !tutorialInstructionShown && currentPhase == 1)
+        {
+            ShowTutorialInstructionWhenReady();
         }
 
         if (!isTutorialMode)
@@ -311,27 +364,55 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
+private void UpdateTimingBar()
+{
+    if (!timingBarActive || timingBarPanel == null) return;
+    
+    if (timingBarFill != null)
+    {
+        
+        timingBarFill.fillAmount = 1f;
+        
+        if (canPlayerAct)
+        {
+            timingBarFill.color = barRedColor;
+            if (timingBarBackground != null)
+            {
+                timingBarBackground.color = barRedColor;
+            }
+        }
+        else
+        {
+            timingBarFill.color = barWhiteColor;
+            if (timingBarBackground != null)
+            {
+                timingBarBackground.color = barWhiteColor;
+            }
+        }
+    }
+}
+
 
     private void EndRound()
     {
         currentRound++;
-        Debug.Log($"Round {currentRound-1} ended.");
-        
+        Debug.Log($"Round {currentRound - 1} ended.");
+
         if (currentRound > totalRounds)
         {
             EndGame();
             return;
         }
-        
+
         roundTimer = roundDuration;
         phase2Value = phase2InitialValue;
         UpdateRoundDisplay();
-        
+
         if (currentPhase == 2)
         {
             CleanupPhase2();
         }
-        
+
         StartCoroutine(StartPhase1());
     }
 
@@ -346,12 +427,12 @@ public class SparManager : MonoBehaviour, ILevelManager
     private IEnumerator StartPhase1()
     {
         yield return new WaitForSeconds(1f);
-        
+
         if (phaseText != null)
         {
             phaseText.text = "Phase 1";
         }
-        
+
         currentPhase = 1;
         currentObjectiveIndex = 0;
 
@@ -367,23 +448,23 @@ public class SparManager : MonoBehaviour, ILevelManager
     private void PrepareSparringPartnerForPhase1()
     {
         if (sparringPartner == null) return;
-        
+
         if (sparringPartnerCoroutine != null)
         {
             StopCoroutine(sparringPartnerCoroutine);
             sparringPartnerCoroutine = null;
         }
-        
+
         if (sparringPartnerAnimator == null)
         {
             sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
         }
-        
+
         if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
             sparringPartnerAnimator.enabled = false;
             Debug.Log("Sparring partner animator disabled to prevent T-pose during delay");
-            
+
             sparringPartnerCoroutine = StartCoroutine(StartSparringPartnerWithProperSetup());
         }
         else
@@ -392,49 +473,36 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-   private IEnumerator StartSparringPartnerWithProperSetup()
+    private IEnumerator StartSparringPartnerWithProperSetup()
+{
+    Debug.Log($"Waiting {sparringPartnerDelay} seconds before enabling sparring partner animation...");
+
+    yield return new WaitForSeconds(sparringPartnerDelay);
+
+    if (currentPhase == 1 && isGameActive && !isGameOver &&
+        sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
     {
-        Debug.Log($"Waiting {sparringPartnerDelay} seconds before enabling sparring partner animation...");
-        
-        yield return new WaitForSeconds(sparringPartnerDelay);
-        
-        if (currentPhase == 1 && isGameActive && !isGameOver && 
-            sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
+        float animSpeed = 1f;
+        if (currentObjectiveIndex < phase1Objectives.Count)
         {
-            float animSpeed = 1f;
-            if (currentObjectiveIndex < phase1Objectives.Count)
-            {
-                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-            }
-            
-            sparringPartnerAnimator.enabled = true;
-            yield return null;
-            
-            sparringPartnerAnimator.speed = animSpeed;
-            sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
-            
-            Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
-            
-            
-            if (isTutorialMode && !tutorialInstructionShown)
-            {
-                yield return new WaitForSeconds(tutorialAnimationPauseTime);
-                
-                if (sparringPartnerAnimator != null)
-                {
-                    sparringPartnerAnimator.speed = 0f;
-                    tutorialAnimationPaused = true;
-                    Debug.Log("Tutorial: Animation paused for instruction");
-                    
-                    ShowTutorialInstruction();
-                }
-            }
+            animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
         }
-        else
-        {
-            Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
-        }
+
+        sparringPartnerAnimator.enabled = true;
+        yield return null;
+
+        sparringPartnerAnimator.speed = animSpeed;
+        sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
+
+        Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
+        
+        
     }
+    else
+    {
+        Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
+    }
+}
 
     private void SetupSparringPartnerForPhase1()
     {
@@ -454,8 +522,8 @@ public class SparManager : MonoBehaviour, ILevelManager
         if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
             sparringPartnerAnimator.enabled = true;
-            sparringPartnerAnimator.Rebind(); 
-            sparringPartnerAnimator.Update(0f); 
+            sparringPartnerAnimator.Rebind();
+            sparringPartnerAnimator.Update(0f);
 
             Debug.Log($"Sparring partner animator reset and ready for Phase 1");
 
@@ -470,10 +538,10 @@ public class SparManager : MonoBehaviour, ILevelManager
     private IEnumerator StartSparringPartnerAnimation()
     {
         Debug.Log($"Starting sparring partner animation after {sparringPartnerDelay} seconds delay");
-        
+
         yield return new WaitForSeconds(sparringPartnerDelay);
-        
-        if (currentPhase == 1 && isGameActive && !isGameOver && 
+
+        if (currentPhase == 1 && isGameActive && !isGameOver &&
             sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
             float animSpeed = 1f;
@@ -481,10 +549,10 @@ public class SparManager : MonoBehaviour, ILevelManager
             {
                 animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
             }
-            
+
             sparringPartnerAnimator.speed = animSpeed;
             sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
-            
+
             Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
         }
         else
@@ -492,7 +560,7 @@ public class SparManager : MonoBehaviour, ILevelManager
             Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
         }
     }
-    
+
     private void StopSparringPartnerAnimation()
     {
         if (sparringPartnerCoroutine != null)
@@ -500,7 +568,7 @@ public class SparManager : MonoBehaviour, ILevelManager
             StopCoroutine(sparringPartnerCoroutine);
             sparringPartnerCoroutine = null;
         }
-        
+
         if (sparringPartnerAnimator != null)
         {
             sparringPartnerAnimator.enabled = false;
@@ -508,24 +576,28 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-private void StartNextObjective()
+    private void StartNextObjective()
 {
     if (currentObjectiveIndex < phase1Objectives.Count)
     {
         ClearCurrentObjectiveBoxes();
 
         objectiveActive = true;
+        canPlayerAct = false; 
+        playerActedTooEarly = false;
 
-        float objectiveTimeout = phase1Objectives[currentObjectiveIndex].timeout > 0 ?
-                                phase1Objectives[currentObjectiveIndex].timeout :
-                                defaultObjectiveTimeout;
-
-        timer = objectiveTimeout;
+        
+        SetAutoDetectSequences(false);
 
         string requiredStance = phase1Objectives[currentObjectiveIndex].stanceName;
         float animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
 
-        Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance} with timeout: {objectiveTimeout}s");
+        Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance} - Waiting for timing window");
+
+        if (timingBarPanel != null)
+        {
+            StartTimingBar();
+        }
 
         if (useSparringPartner && sparringPartnerAnimator != null && sparringPartnerAnimator.enabled)
         {
@@ -535,7 +607,6 @@ private void StartNextObjective()
 
         if (isTutorialMode)
         {
-            
             StartTutorialSequenceDirectly(requiredStance);
             Debug.Log($"Tutorial mode: Started sequence directly for stance {requiredStance}");
         }
@@ -550,29 +621,29 @@ private void StartNextObjective()
     }
 }
 
-private void StartTutorialSequenceDirectly(string stanceName)
-{
-    if (StanceManager.Instance == null) return;
-
-    
-    StanceManager.Instance.EnterStance(stanceName, false);
-    
-    
-    foreach (var style in StanceManager.Instance.arnisStyles)
+    private void StartTutorialSequenceDirectly(string stanceName)
     {
-        if (style.styleName == stanceName && style.sequences.Count > 0)
+        if (StanceManager.Instance == null) return;
+
+
+        StanceManager.Instance.EnterStance(stanceName, false);
+
+
+        foreach (var style in StanceManager.Instance.arnisStyles)
         {
-            
-            var firstSequence = style.sequences[0];
-            
-            
-            StanceManager.Instance.StartAttackSequence(firstSequence);
-            
-            Debug.Log($"Tutorial: Started sequence {firstSequence.sequenceName} directly for stance {stanceName}");
-            break;
+            if (style.styleName == stanceName && style.sequences.Count > 0)
+            {
+
+                var firstSequence = style.sequences[0];
+
+
+                StanceManager.Instance.StartAttackSequence(firstSequence);
+
+                Debug.Log($"Tutorial: Started sequence {firstSequence.sequenceName} directly for stance {stanceName}");
+                break;
+            }
         }
     }
-}
 
 
     private void ClearCurrentObjectiveBoxes()
@@ -587,35 +658,62 @@ private void StartTutorialSequenceDirectly(string stanceName)
     private void NextObjective()
     {
         objectiveActive = false;
+        objectiveWindowActive = false;
+        StopTimingBar();
         
-        if (timer <= 0)
+        
+        if (!useAnimationEvents || !phase1Objectives[currentObjectiveIndex].useAnimationEvents)
         {
-            opponentScore++;
-            Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
-            UpdateScoreDisplay();
-
+            if (timer <= 0)
+            {
+                opponentScore++;
+                Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+                UpdateScoreDisplay();
+            }
         }
         
         currentObjectiveIndex++;
         StartNextObjective();
     }
 
+
+public void NotifyPhase1Completion(string stanceName, string sequenceName)
+{
+    if (!isGameActive || isGameOver || currentPhase != 1 || !objectiveActive) return;
     
-    public void NotifyPhase1Completion(string stanceName, string sequenceName)
+    string currentObjective = phase1Objectives[currentObjectiveIndex].stanceName;
+    
+    if (stanceName == currentObjective)
     {
-        if (!isGameActive || isGameOver || currentPhase != 1 || (!objectiveActive && !isTutorialMode)) return;
-        
-        string currentObjective = phase1Objectives[currentObjectiveIndex].stanceName;
-        
-        if (stanceName == currentObjective)
+        if (!canPlayerAct)
         {
-            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
-            objectiveActive = false;
             
+            playerActedTooEarly = true;
+            opponentScore++;
+            Debug.Log($"Player acted too early for objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+            UpdateScoreDisplay();
+            
+            
+            ShowPhase1Feedback("MISS", missColor);
+            
+            return;
+        }
+        else
+        {
+            
+            playerScore++;
+            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
+            UpdateScoreDisplay();
+            
+            
+            ShowPhase1Feedback("BLOCK", blockColor);
+            
+            objectiveActive = false;
+            canPlayerAct = false;
+            StopTimingBar();
             
             if (isTutorialMode)
             {
-                
                 if (tutorialInstructionPanel != null)
                 {
                     tutorialInstructionPanel.SetActive(false);
@@ -623,104 +721,103 @@ private void StartTutorialSequenceDirectly(string stanceName)
                 
                 if (tutorialAnimationPaused && sparringPartnerAnimator != null)
                 {
-                    sparringPartnerAnimator.speed = 1f; 
+                    sparringPartnerAnimator.speed = 1f;
                     tutorialAnimationPaused = false;
                     Debug.Log("Tutorial: Animation resumed");
-                    
                     
                     StartCoroutine(TutorialTransitionToPhase2());
                     return;
                 }
             }
-            
-            currentObjectiveIndex++;
-            StartNextObjective();
         }
     }
-    
+}
+
     private IEnumerator TutorialTransitionToPhase2()
     {
-        yield return new WaitForSeconds(2f); 
-        
+        yield return new WaitForSeconds(2f);
+
         Debug.Log("Tutorial: Transitioning to Phase 2");
         StartCoroutine(StartPhase2());
     }
 
     private IEnumerator StartPhase2()
-    {
-        Debug.Log("Transitioning to Phase 2");
-        
-        if (useSparringPartner)
-        {
-            StopSparringPartnerAnimation();
-        }
-        
-        if (StanceManager.Instance != null)
-        {
-            StanceManager.Instance.ClearAllStances();
-        }
-        
-        StanceManager.Instance.EnterStance("Default");
-        objectiveActive = false;
-        
-        yield return new WaitForSeconds(phaseTransitionDelay);
-        
-        if (phaseText != null)
-        {
-            phaseText.text = "Phase 2";
-        }
-        
-        currentPhase = 2;
+{
+    Debug.Log("Transitioning to Phase 2");
 
-        ResetBlockChance();
-        stanceUseCount.Clear();
-        blockChanceResetTimer = blockChanceResetTime;
-        
-        ActivatePhase2Stances();
-        
-        
-        if (isTutorialMode)
-        {
-            yield return new WaitForSeconds(0.5f);
-            ShowTutorialPhase2Instruction();
-        }
+    if (useSparringPartner)
+    {
+        StopSparringPartnerAnimation();
     }
+
+    if (StanceManager.Instance != null)
+    {
+        StanceManager.Instance.ClearAllStances();
+    }
+
+    StanceManager.Instance.EnterStance("Default");
+    objectiveActive = false;
+
+    yield return new WaitForSeconds(phaseTransitionDelay);
+
+    if (phaseText != null)
+    {
+        phaseText.text = "Phase 2";
+    }
+
+    currentPhase = 2;
+    
+    
+    SetAutoDetectSequences(true);
+
+    ResetBlockChance();
+    stanceUseCount.Clear();
+    blockChanceResetTimer = blockChanceResetTime;
+
+    ActivatePhase2Stances();
+
+    if (isTutorialMode)
+    {
+        yield return new WaitForSeconds(0.5f);
+        ShowTutorialPhase2Instruction();
+    }
+}
 
     private void ActivatePhase2Stances()
     {
         if (StanceManager.Instance != null)
         {
             Debug.Log("Activating all Phase 2 stance options");
-            
+
             StanceManager.Instance.ActivatePhase2Stances(phase2Stances);
-            
+
             StanceManager.Instance.OnStanceChanged += HandlePhase2StanceChange;
         }
     }
-    
+
     private void CleanupPhase2()
     {
         if (StanceManager.Instance != null)
         {
             Debug.Log("Cleaning up Phase 2 stances");
-            
+
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
-            
+
             StanceManager.Instance.ClearAllStances();
-            
+
             StanceManager.Instance.EnterStance("Default");
         }
     }
-    
+
     private void HandlePhase2StanceChange(string newStance)
     {
         if (currentPhase != 2 || !isGameActive || isGameOver) return;
-        
+
         if (newStance != "Default")
         {
             Debug.Log($"Player entered {newStance} stance in Phase 2");
             lastPlayerStance = newStance;
-            
+
             if (!stanceUseCount.ContainsKey(newStance))
             {
                 stanceUseCount[newStance] = 0;
@@ -740,16 +837,16 @@ private void StartTutorialSequenceDirectly(string stanceName)
 
         if (currentPhase == 2)
         {
-            
+
             if (isTutorialMode)
             {
                 if (!tutorialCompletedStanceTypes.Contains(stanceName))
                 {
                     tutorialCompletedStanceTypes.Add(stanceName);
                     tutorialPhase2CompletedStances++;
-                    
+
                     Debug.Log($"Tutorial: Completed stance {stanceName}. Progress: {tutorialPhase2CompletedStances}/3");
-                    
+
                     if (tutorialPhase2CompletedStances >= 3)
                     {
                         Debug.Log("Tutorial completed! Ending game.");
@@ -758,14 +855,14 @@ private void StartTutorialSequenceDirectly(string stanceName)
                     }
                 }
             }
-            
+
             bool blocked = CheckIfOpponentBlocks(stanceName);
-            
+
             if (blocked)
             {
                 ShowBlockFeedback();
                 Debug.Log($"Opponent blocked {stanceName}.{sequenceName} in Phase 2!");
-                
+
                 if (!isTutorialMode)
                 {
                     phase2Value -= phase2BlockReduction;
@@ -777,50 +874,50 @@ private void StartTutorialSequenceDirectly(string stanceName)
                 playerScore++;
                 Debug.Log($"Player completed {stanceName}.{sequenceName} in Phase 2! Score: {playerScore}");
                 UpdateScoreDisplay();
-                
+
                 if (!isTutorialMode)
                 {
                     phase2Value -= phase2SequenceReduction;
                     phase2Value = Mathf.Max(0, phase2Value);
                 }
             }
-            
+
             IncreaseBlockChance(stanceName);
         }
     }
-    
+
     private bool CheckIfOpponentBlocks(string stanceName)
     {
         float finalBlockChance = currentBlockChance;
-        
+
         if (stanceUseCount.ContainsKey(stanceName))
         {
             int timesUsed = stanceUseCount[stanceName];
             finalBlockChance += blockChanceIncrement * (timesUsed - 1);
         }
-        
+
         finalBlockChance = Mathf.Min(finalBlockChance, 0.8f);
-        
+
         Debug.Log($"Block chance for {stanceName}: {finalBlockChance:P}");
-        
+
         return Random.value < finalBlockChance;
     }
-    
+
     private void IncreaseBlockChance(string stanceName)
     {
         currentBlockChance += blockChanceIncrement * 0.5f;
-        
+
         blockChanceResetTimer = blockChanceResetTime;
-        
+
         Debug.Log($"Base block chance increased to: {currentBlockChance:P}");
     }
-    
+
     private void ResetBlockChance()
     {
         currentBlockChance = baseBlockChance;
         Debug.Log("Block chance reset to base value");
     }
-    
+
     private void ShowBlockFeedback()
     {
         if (blockFeedbackText != null)
@@ -828,7 +925,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
             StartCoroutine(ShowBlockFeedbackCoroutine());
         }
     }
-    
+
     private IEnumerator ShowBlockFeedbackCoroutine()
     {
         blockFeedbackText.SetActive(true);
@@ -842,12 +939,22 @@ private void StartTutorialSequenceDirectly(string stanceName)
         {
             playerScoreText.text = $"Player: {playerScore}";
         }
-        
+
         if (opponentScoreText != null)
         {
             opponentScoreText.text = $"Opponent: {opponentScore}";
         }
     }
+    private void SetAutoDetectSequences(bool enabled)
+    {
+        StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+        if (stanceGuide != null)
+        {
+            stanceGuide.autoDetectSequences = enabled;
+            Debug.Log($"Auto-detect sequences set to: {enabled}");
+        }
+    }
+
 
     private void UpdateTimerDisplay()
     {
@@ -862,7 +969,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
     public void SetGameActive(bool active)
     {
         isGameActive = active;
-        
+
         if (!active)
         {
             Time.timeScale = 0f;
@@ -885,33 +992,44 @@ private void StartTutorialSequenceDirectly(string stanceName)
     private void EndGame()
     {
         isGameOver = true;
-        
+
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
         }
-        
+
         StanceManager.Instance.EnterStance("Default");
-        
+
         if (useSparringPartner && sparringPartner != null)
         {
             sparringPartner.SetActive(false);
         }
-        
+
         DisableAllBoxes();
         
+        if (phase1FeedbackPanel != null)
+        {
+            phase1FeedbackPanel.SetActive(false);
+        }
+
         if (sparManagerUIPanel != null)
         {
             sparManagerUIPanel.SetActive(false);
             Debug.Log("SparManager UI disabled");
         }
-        
+
+        if (sparManagerUIPanel != null)
+        {
+            sparManagerUIPanel.SetActive(false);
+            Debug.Log("SparManager UI disabled");
+        }
+
         if (useResultsManager && resultsManager != null)
         {
             resultsManager.ShowSparResults(playerScore, opponentScore, totalRounds);
         }
         else if (Result != null)
-        {        
+        {
             if (finalScoreText != null)
             {
                 if (isTutorialMode)
@@ -923,27 +1041,39 @@ private void StartTutorialSequenceDirectly(string stanceName)
                     finalScoreText.text = $"Player: {playerScore} - Opponent: {opponentScore}";
                 }
             }
-            
+
             if (winnerText != null && isTutorialMode)
             {
                 winnerText.text = "Tutorial Complete";
             }
-            
+
             SaveSparScore scoreSaver = GetComponent<SaveSparScore>();
             if (scoreSaver != null && !isTutorialMode)
             {
                 scoreSaver.OnSparCompleted(playerScore, opponentScore);
             }
-            
+
             Result.SetActive(true);
         }
     }
 
-        private void DisableAllBoxes()
+    private void ShowTutorialInstructionWhenReady()
+    {
+        if (sparringPartnerAnimator != null)
+        {
+            sparringPartnerAnimator.speed = 0f;
+            tutorialAnimationPaused = true;
+            Debug.Log("Tutorial: Animation paused when player can act");
+        }
+        
+        ShowTutorialInstruction();
+    }
+
+    private void DisableAllBoxes()
     {
         StanceManager sm = StanceManager.Instance;
         if (sm == null) return;
-        
+
         if (sm.defaultBoxes != null)
         {
             foreach (var box in sm.defaultBoxes)
@@ -952,7 +1082,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
                     box.SetActive(false);
             }
         }
-        
+
         foreach (var style in sm.arnisStyles)
         {
             if (style.stanceBoxes != null)
@@ -963,7 +1093,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
                         box.SetActive(false);
                 }
             }
-            
+
             if (style.sequences != null)
             {
                 foreach (var sequence in style.sequences)
@@ -973,8 +1103,8 @@ private void StartTutorialSequenceDirectly(string stanceName)
             }
         }
 
-        
-        
+
+
         if (sm.currentAttackSequence != null)
         {
             foreach (var box in sm.currentAttackSequence.sequenceBoxes)
@@ -982,7 +1112,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
                 if (box != null)
                 {
                     box.SetActive(false);
-                    
+
                     StanceDetector detector = box.GetComponent<StanceDetector>();
                     if (detector != null)
                     {
@@ -991,10 +1121,10 @@ private void StartTutorialSequenceDirectly(string stanceName)
                     }
                 }
             }
-            
+
             if (sm.currentAttackSequence.endBoxLeft != null)
                 sm.currentAttackSequence.endBoxLeft.SetActive(false);
-                
+
             if (sm.currentAttackSequence.endBoxRight != null)
                 sm.currentAttackSequence.endBoxRight.SetActive(false);
         }
@@ -1004,13 +1134,13 @@ private void StartTutorialSequenceDirectly(string stanceName)
     {
         if (sequence == null)
             return;
-            
+
         if (sequence.startBoxLeft != null)
             sequence.startBoxLeft.SetActive(false);
-            
+
         if (sequence.startBoxRight != null)
             sequence.startBoxRight.SetActive(false);
-            
+
         if (sequence.sequenceBoxes != null)
         {
             foreach (var box in sequence.sequenceBoxes)
@@ -1019,10 +1149,10 @@ private void StartTutorialSequenceDirectly(string stanceName)
                     box.SetActive(false);
             }
         }
-        
+
         if (sequence.endBoxLeft != null)
             sequence.endBoxLeft.SetActive(false);
-            
+
         if (sequence.endBoxRight != null)
             sequence.endBoxRight.SetActive(false);
     }
@@ -1038,20 +1168,20 @@ private void StartTutorialSequenceDirectly(string stanceName)
             OnSequenceCompleted(stanceName, sequenceName);
         }
     }
-    
+
     public void Restart()
     {
         if (StanceManager.Instance != null)
         {
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
         }
-        
+
         if (sparManagerUIPanel != null)
         {
             sparManagerUIPanel.SetActive(false);
             Debug.Log("SparManager UI disabled for restart");
         }
-        
+
         IntroLevel introLevel = FindObjectOfType<IntroLevel>();
         if (introLevel != null)
         {
@@ -1061,12 +1191,12 @@ private void StartTutorialSequenceDirectly(string stanceName)
             opponentScore = 0;
             currentRound = 1;
             currentPhase = 0;
-            
+
             UpdateScoreDisplay();
             UpdateRoundDisplay();
-            
+
             gameObject.SetActive(false);
-            
+
             introLevel.ActivateIntro();
         }
     }
@@ -1074,10 +1204,10 @@ private void StartTutorialSequenceDirectly(string stanceName)
     private IEnumerator StartTutorialSparringPartnerAnimation()
     {
         Debug.Log($"Starting tutorial sparring partner animation with pause at {tutorialAnimationPauseTime} seconds");
-        
+
         yield return new WaitForSeconds(sparringPartnerDelay);
-        
-        if (currentPhase == 1 && isGameActive && !isGameOver && 
+
+        if (currentPhase == 1 && isGameActive && !isGameOver &&
             sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
             float animSpeed = 1f;
@@ -1085,26 +1215,26 @@ private void StartTutorialSequenceDirectly(string stanceName)
             {
                 animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
             }
-            
+
             sparringPartnerAnimator.enabled = true;
             yield return null;
-            
+
             sparringPartnerAnimator.speed = animSpeed;
             sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
-            
+
             Debug.Log($"Tutorial: Sparring partner animation started, will pause at {tutorialAnimationPauseTime}s");
-            
-            
+
+
             yield return new WaitForSeconds(tutorialAnimationPauseTime);
-            
-            
+
+
             if (sparringPartnerAnimator != null)
             {
                 sparringPartnerAnimator.speed = 0f;
                 tutorialAnimationPaused = true;
                 Debug.Log("Tutorial: Animation paused");
-                
-                
+
+
                 ShowTutorialInstruction();
             }
         }
@@ -1117,7 +1247,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
             tutorialInstructionPanel.SetActive(true);
             tutorialInstructionTextUI.text = tutorialInstructionText;
             tutorialInstructionShown = true;
-            
+
             Debug.Log("Tutorial instruction shown");
         }
     }
@@ -1128,10 +1258,10 @@ private void StartTutorialSequenceDirectly(string stanceName)
         {
             tutorialInstructionPanel.SetActive(true);
             tutorialInstructionTextUI.text = tutorialPhase2Text;
-            
+
             Debug.Log("Tutorial Phase 2 instruction shown");
-            
-            
+
+
             StartCoroutine(HideTutorialInstructionAfterDelay(3f));
         }
     }
@@ -1139,7 +1269,7 @@ private void StartTutorialSequenceDirectly(string stanceName)
     private IEnumerator HideTutorialInstructionAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        
+
         if (tutorialInstructionPanel != null)
         {
             tutorialInstructionPanel.SetActive(false);
@@ -1152,4 +1282,126 @@ private void StartTutorialSequenceDirectly(string stanceName)
             StanceManager.Instance.OnStanceChanged -= HandlePhase2StanceChange;
         }
     }
+    public void OnAnimationEventObjectiveStart(int objectiveIndex)
+    {
+        if (!isGameActive || isGameOver || currentPhase != 1) return;
+        
+        if (objectiveIndex != currentObjectiveIndex) return;
+        
+        canPlayerAct = true;
+        
+        SetAutoDetectSequences(true);
+        
+        Debug.Log($"Animation Event: Player can now act for objective {objectiveIndex + 1}");
+        
+        if (isTutorialMode && !tutorialInstructionShown)
+        {
+            ShowTutorialInstructionWhenReady();
+        }
+    }
+
+
+public void OnAnimationEventObjectiveEnd(int objectiveIndex)
+{
+    if (!isGameActive || isGameOver || currentPhase != 1) return;
+    
+    if (objectiveIndex != currentObjectiveIndex) return;
+    
+    canPlayerAct = false;
+    
+    
+    SetAutoDetectSequences(false);
+    
+    if (objectiveActive)
+    {
+        opponentScore++;
+        Debug.Log($"Player was too late for objective {objectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+        UpdateScoreDisplay();
+        
+        
+        ShowPhase1Feedback("MISS", missColor);
+    }
+    
+    objectiveActive = false;
+    StopTimingBar();
+    
+    Debug.Log($"Animation Event: Timing window ended for objective {objectiveIndex + 1}");
+    
+    StartCoroutine(DelayedNextObjective());
+}
+
+
+private void ShowPhase1Feedback(string feedbackText, Color textColor)
+{
+    if (phase1FeedbackPanel != null && phase1FeedbackText != null)
+    {
+        StartCoroutine(ShowPhase1FeedbackCoroutine(feedbackText, textColor));
+    }
+}
+
+
+private IEnumerator ShowPhase1FeedbackCoroutine(string feedbackText, Color textColor)
+{
+    phase1FeedbackPanel.SetActive(true);
+    phase1FeedbackText.text = feedbackText;
+    phase1FeedbackText.color = textColor;
+    
+    Debug.Log($"Phase 1 Feedback: {feedbackText}");
+    
+    yield return new WaitForSeconds(feedbackDisplayDuration);
+    
+    phase1FeedbackPanel.SetActive(false);
+}
+
+    private IEnumerator DelayedNextObjective()
+    {
+        yield return new WaitForSeconds(0.5f);
+        NextObjective();
+    }
+
+    private void StartTimingBar()
+{
+    if (timingBarPanel != null)
+    {
+        timingBarPanel.SetActive(true);
+        timingBarActive = true;
+        
+        if (timingBarFill != null)
+        {
+            timingBarFill.fillAmount = 1f;
+            timingBarFill.color = barWhiteColor;
+        }
+        
+        if (timingBarBackground != null)
+        {
+            timingBarBackground.color = barWhiteColor;
+        }
+        
+        Debug.Log("Timing bar started - white (waiting for timing window)");
+    }
+}
+    private void CheckAttackWindow()
+    {
+        if (!objectiveWindowActive || currentPhase != 1) return;
+        
+        float currentTime = Time.time;
+        
+        if (!isInAttackWindow && currentTime >= attackWindowStartTime)
+        {
+            isInAttackWindow = true;
+            Debug.Log("Entered attack window - player can now act without penalty");
+        }
+    }
+
+
+    private void StopTimingBar()
+    {
+        if (timingBarPanel != null)
+        {
+            timingBarPanel.SetActive(false);
+            timingBarActive = false;
+            Debug.Log("Timing bar stopped");
+        }
+    }
+
 }

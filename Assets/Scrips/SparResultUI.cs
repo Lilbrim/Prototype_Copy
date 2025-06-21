@@ -54,26 +54,31 @@ public class SparResultsManager : MonoBehaviour
     public void InitializeForLevel(string levelId)
     {
         currentLevelId = levelId;
-        Debug.Log($" initialized for level: {levelId}");
+        Debug.Log($"SparResultsManager initialized for level: {levelId}");
     }
 
     public void ShowSparResults(int playerScore, int opponentScore, int totalRounds)
     {
         resultsPanel.SetActive(true);
         
+        bool playerWon = false;
+        
         if (winnerText != null)
         {
             if (playerScore > opponentScore)
             {
                 winnerText.text = "Win";
+                playerWon = true;
             }
             else if (opponentScore > playerScore)
             {
                 winnerText.text = "Lose";
+                playerWon = false;
             }
             else
             {
                 winnerText.text = "Tie";
+                playerWon = false; 
             }
         }
 
@@ -82,20 +87,27 @@ public class SparResultsManager : MonoBehaviour
             finalScoreText.text = $"Final Score:\n Player {playerScore} - {opponentScore} Opponent";
         }
         
+        
         if (!string.IsNullOrEmpty(currentLevelId))
         {
             SaveSparScore scoreSaver = FindObjectOfType<SaveSparScore>();
             if (scoreSaver != null)
             {
-                scoreSaver.OnSparCompleted(playerScore, opponentScore);
+                
+                int passScore = playerWon ? 1 : 0;
+                scoreSaver.OnSparCompleted(passScore, 0); 
             }
             else if (levelSelector != null)
             {
-                levelSelector.SaveLevelScore(currentLevelId, playerScore);
+                
+                int levelPassScore = playerWon ? 1 : 0;
+                levelSelector.SaveLevelScore(currentLevelId, levelPassScore);
+                
+                Debug.Log($"Spar level {currentLevelId} saved with result: {(playerWon ? "WIN (score: 1)" : "LOSS (score: 0)")}");
             }
             else
             {
-                Debug.LogWarning("Cannot Save Score");
+                Debug.LogWarning("Cannot Save Spar Score - No SaveSparScore or LevelSelector found");
             }
         }
     }
@@ -144,17 +156,17 @@ public class SparResultsManager : MonoBehaviour
         
         if (introLevel != null)
         {
-            // Make sure IntroLevel is properly reset and will show intro animation
+            
             introLevel.gameObject.SetActive(true);
             
-            // Reset any intro completion flags
+            
             introLevel.enabled = true;
             
             introLevel.ActivateIntro();
         }
         else if (sparManager != null)
         {
-            // Fallback: restart SparManager directly
+            
             sparManager.gameObject.SetActive(true);
             sparManager.Restart();
         }
@@ -163,6 +175,7 @@ public class SparResultsManager : MonoBehaviour
             Debug.LogError("No IntroLevel or SparManager found for restart!");
         }
     }
+    
     public void ReturnToLevelSelector()
     {
         HideResults();

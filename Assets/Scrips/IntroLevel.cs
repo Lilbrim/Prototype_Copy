@@ -316,7 +316,7 @@ public class IntroLevel : MonoBehaviour
 
             if (stanceManager != null)
             {
-                mirrorSparringPartner = stanceManager.isRightHandDominant;
+                mirrorSparringPartner = !stanceManager.isRightHandDominant;
             }
 
             if (mirrorSparringPartner)

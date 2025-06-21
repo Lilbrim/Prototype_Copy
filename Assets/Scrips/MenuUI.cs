@@ -81,11 +81,11 @@ public class UIManager : MonoBehaviour
     
     private void StartNewGame()
     {
-        // Clear save data first
+        
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
         
-        // Play cutscene then load scene
+        
         if (GameProgressManager.Instance != null)
         {
             GameProgressManager.Instance.StartNewGameWithCutscene(() => {

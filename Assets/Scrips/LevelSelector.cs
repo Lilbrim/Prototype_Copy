@@ -136,9 +136,10 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+
     private void LoadSavedBackground()
     {
-        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.House);
+        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.Gym);
         currentBackground = (LevelBackground)savedBackground;
         SetBackground(currentBackground);
     }
@@ -153,27 +154,24 @@ public class LevelSelector : MonoBehaviour
     [ContextMenu("Set House Background")]
     public void SetHouseBackground()
     {
-        if (isInStoryMode && currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
-        {
-            ChangeBackground(LevelBackground.Tournament);
-        }
-        else
-        {
-            ChangeBackground(LevelBackground.House);
-        }
+        isInStoryMode = true;
+        ChangeBackground(LevelBackground.House);
     }
-    
+
     [ContextMenu("Set Gym Background")]
     public void SetGymBackground()
     {
+        isInStoryMode = false;
         ChangeBackground(LevelBackground.Gym);
     }
-    
+
     [ContextMenu("Set Tournament Background")]
     public void SetTournamentBackground()
     {
+        isInStoryMode = false;
         ChangeBackground(LevelBackground.Tournament);
     }
+
     
   private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
     {
@@ -239,106 +237,68 @@ public class LevelSelector : MonoBehaviour
         }
     }
     
-    private void SetBackground(LevelBackground background)
+private void SetBackground(LevelBackground background)
+{
+    
+    if (houseBackground != null) houseBackground.SetActive(false);
+    if (gymBackground != null) gymBackground.SetActive(false);
+    if (tournamentBackground != null) tournamentBackground.SetActive(false);
+    if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
+    if (storyUIPanel != null) storyUIPanel.SetActive(false);
+    
+    switch (background)
     {
-        
-        if (houseBackground != null) houseBackground.SetActive(false);
-        if (gymBackground != null) gymBackground.SetActive(false);
-        if (tournamentBackground != null) tournamentBackground.SetActive(false);
-        
-        
-        if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
-        if (storyUIPanel != null) storyUIPanel.SetActive(false);
-        
-        switch (background)
-        {
-            case LevelBackground.House:
-                if (houseBackground != null) 
-                {
-                    houseBackground.SetActive(true);
-                    Debug.Log("Switched to House background");
-                }
-                
-                
-                isInStoryMode = true;
-                if (storyUIPanel != null)
-                {
-                    storyUIPanel.SetActive(true);
-                    UpdateStoryUI();
-                }
-                break;
-                
-            case LevelBackground.Gym:
-                if (gymBackground != null) 
-                {
-                    gymBackground.SetActive(true);
-                    Debug.Log("Switched to Gym background");
-                }
-                
-                
-                if (isInStoryMode && currentStoryLevelIndex == tutorialLevelIndex)
-                {
-                    
-                    if (storyUIPanel != null)
-                    {
-                        storyUIPanel.SetActive(true);
-                        UpdateStoryUI();
-                    }
-                    Debug.Log("Tutorial level: Story mode in Gym background");
-                }
-                else
-                {
-                    
-                    isInStoryMode = false;
-                    if (levelSelectionPanel != null)
-                    {
-                        levelSelectionPanel.SetActive(true);
-                        ShowpracLevelsTab();
-                    }
-                }
-                break;
-                
-            case LevelBackground.Tournament:
-                if (tournamentBackground != null) 
-                {
-                    tournamentBackground.SetActive(true);
-                    Debug.Log("Switched to Tournament background");
-                }
-                
-                if (isInStoryMode)
-                {
-                    if (storyUIPanel != null)
-                    {
-                        storyUIPanel.SetActive(true);
-                        UpdateStoryUI();
-                    }
-                }
-                else
-                {
-                    if (levelSelectionPanel != null)
-                    {
-                        levelSelectionPanel.SetActive(true);
-                        ShowTournamentLevelsTab();
-                    }
-                }
-                break;
-        }
+        case LevelBackground.House:
+            if (houseBackground != null) 
+            {
+                houseBackground.SetActive(true);
+                Debug.Log("Switched to House background");
+            }
+            
+            if (storyUIPanel != null)
+            {
+                storyUIPanel.SetActive(true);
+                UpdateStoryUI();
+            }
+            break;
+            
+        case LevelBackground.Gym:
+            if (gymBackground != null) 
+            {
+                gymBackground.SetActive(true);
+                Debug.Log("Switched to Gym background");
+            }
+            
+            if (levelSelectionPanel != null)
+            {
+                levelSelectionPanel.SetActive(true);
+                ShowpracLevelsTab();
+            }
+            break;
+            
+        case LevelBackground.Tournament:
+            if (tournamentBackground != null) 
+            {
+                tournamentBackground.SetActive(true);
+                Debug.Log("Switched to Tournament background");
+            }
+            
+            if (levelSelectionPanel != null)
+            {
+                levelSelectionPanel.SetActive(true);
+                ShowTournamentLevelsTab();
+            }
+            break;
     }
+}
+
     
     public void StartStoryModeWithTutorialInGym()
     {
         isInStoryMode = true;
         InitializeStoryModeOrder();
         
-        if (currentStoryLevelIndex == tutorialLevelIndex)
-        {
-            ChangeBackground(LevelBackground.Gym);
-        }
-        else
-        {
-            ChangeBackground(LevelBackground.House);
-        }
-        
+        ChangeBackground(LevelBackground.House);
     }
 
     
@@ -483,6 +443,8 @@ public class LevelSelector : MonoBehaviour
     {
         isViewingSparLevels = false;
         isViewingTournamentLevels = false;
+        ChangeBackground(LevelBackground.Gym);
+
 
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(true);
@@ -512,6 +474,7 @@ public class LevelSelector : MonoBehaviour
     {
         isViewingSparLevels = true;
         isViewingTournamentLevels = false;
+        ChangeBackground(LevelBackground.Gym);
         
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(false);
@@ -541,7 +504,7 @@ public class LevelSelector : MonoBehaviour
     {
         isViewingSparLevels = false;
         isViewingTournamentLevels = true;
-        
+        ChangeBackground(LevelBackground.Tournament);
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(false);
         
@@ -1103,22 +1066,6 @@ public class LevelSelector : MonoBehaviour
         if (isInStoryMode)
         {
             InitializeStoryModeOrder();
-            
-            
-            if (currentStoryLevelIndex > tutorialLevelIndex && currentBackground == LevelBackground.Gym)
-            {
-                ChangeBackground(LevelBackground.House);
-                Debug.Log("Tutorial completed, switching to House background");
-            }
-            
-            else if (currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
-            {
-                if (currentBackground != LevelBackground.Tournament)
-                {
-                    ChangeBackground(LevelBackground.Tournament);
-                }
-            }
-            
             UpdateStoryUI();
             
             if (storyUIPanel != null)
@@ -1126,9 +1073,9 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
-    
-    public int GetSavedScore(string levelId)
-    {
-        return PlayerPrefs.GetInt(SCORE_SAVE_PREFIX + levelId, 0);
-    }
+        
+        public int GetSavedScore(string levelId)
+        {
+            return PlayerPrefs.GetInt(SCORE_SAVE_PREFIX + levelId, 0);
+        }
 }
