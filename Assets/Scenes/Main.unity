@@ -403,6 +403,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
   - {fileID: 1043678}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -498,6 +502,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 3926425}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -1176,7 +1184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &28625824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1354,8 +1362,8 @@ MonoBehaviour:
   timingBarDuration: 3
   useAutomaticTiming: 1
   attackWindowPercentage: 0.7
-  phase1FeedbackPanel: {fileID: 0}
-  phase1FeedbackText: {fileID: 0}
+  phase1FeedbackPanel: {fileID: 1282686643}
+  phase1FeedbackText: {fileID: 1887664259}
   blockColor: {r: 0, g: 1, b: 0, a: 1}
   missColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   feedbackDisplayDuration: 2
@@ -1371,24 +1379,27 @@ MonoBehaviour:
   finalScoreText: {fileID: 28625824}
   useResultsManager: 1
   sparringPartnerAnimation: 12BasicStrikes
-  useSparringPartner: 1
-  sparringPartnerDelay: 0.1
+  useSparringPartner: 0
+  sparringPartnerDelay: 1
+  sparringPartnerAnimationSpeed: 0.1
   phase1Objectives:
   - stanceName: Left_Temple_Block(Spar)
     timeout: 10
-    animationSpeed: 0.1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   phase2Stances:
-  - Blocking
-  - Test
+  - Left_Temple(Strike)
+  - Right_Temple(Strike)
+  - Left_Knee(Strike)
+  - Right_Knee_StrikeSpar)
+  - Top_Head(Strike)
   baseBlockChance: 0
   blockChanceIncrement: 0
   blockChanceResetTime: 1000
   blockFeedbackText: {fileID: 0}
   isTutorialMode: 1
-  tutorialAnimationPauseTime: 1
+  tutorialAnimationPauseTime: 3
   tutorialInstructionText: Use what you have learned and block the attacks. If you
     fail to do so the Opponent will get a point. To time it wait for the bar to turn
     red before blocking
@@ -1929,6 +1940,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 61930836}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -2761,6 +2776,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 98621634}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -3373,7 +3392,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140872947}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3431,6 +3450,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
   - {fileID: 140872947}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -4332,6 +4355,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 80592287305125515, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 105159470759806586, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4369,6 +4396,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 175953805374225409, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 175971975169547314, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -4535,6 +4566,10 @@ PrefabInstance:
     - target: {fileID: 345549410122616640, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_TagString
       value: Right Baton
+      objectReference: {fileID: 0}
+    - target: {fileID: 350615220096073744, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 372938403054902417, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
@@ -4849,6 +4884,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 596757650906860511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 596757650906860511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -4976,6 +5015,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 727967451086647210, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 758181176780378015, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5007,7 +5050,7 @@ PrefabInstance:
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 786114327219015700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5315,7 +5358,7 @@ PrefabInstance:
     - target: {fileID: 921198226821792921, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 921198226821792921, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5524,6 +5567,34 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Left Baton
       objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0076385923
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.016102685
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6985825
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7153076
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 92.353
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -124.821
+      objectReference: {fileID: 0}
+    - target: {fileID: 977172940621153237, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 54.492996
+      objectReference: {fileID: 0}
     - target: {fileID: 982151993220263916, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -5596,6 +5667,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 588139643}
+    - target: {fileID: 986833036878879729, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -5623,7 +5698,7 @@ PrefabInstance:
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 988102335230527865, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -5744,6 +5819,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.44723564
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.8340174
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.12124514
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.2994912
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -234.948
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -42.92102
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042001150626006912, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -6.5629883
+      objectReference: {fileID: 0}
     - target: {fileID: 1045101670571601690, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5828,6 +5931,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 1101317243368267142, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1109458412543150271, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6017,6 +6124,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1136871942279863121, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -6192,6 +6303,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391277
       objectReference: {fileID: 0}
+    - target: {fileID: 1260560188492286398, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -6235,6 +6350,10 @@ PrefabInstance:
     - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1267833716644209381, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -6307,6 +6426,10 @@ PrefabInstance:
     - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1269107091817603505, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -6404,6 +6527,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 1384698190263786318, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1395451763490587592, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6584,6 +6711,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.71530765
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6985824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.016102616
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.007638541
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 92.353
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -124.821
+      objectReference: {fileID: 0}
+    - target: {fileID: 1536440658139090023, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 234.493
+      objectReference: {fileID: 0}
     - target: {fileID: 1566091600097849430, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6743,6 +6898,10 @@ PrefabInstance:
     - target: {fileID: 1620380228051524493, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6391277
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629412815629181834, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1632705361608034679, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -6919,6 +7078,10 @@ PrefabInstance:
     - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1654145836253760164, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -7092,6 +7255,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1679300106779738246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1686133734394855749, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7145,6 +7312,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 1692952810845305277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692952810845305277, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -7180,9 +7351,45 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1708671670098950789, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1716402217214544511, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0030000024
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.23116061
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.84176576
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.014369092
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.4876359
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -22.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 116.773
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716473711382579589, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -164.377
       objectReference: {fileID: 0}
     - target: {fileID: 1739891747274294239, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -7268,6 +7475,38 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11899999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.5800642
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.022055207
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8135626
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.033986308
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -175.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -430.985
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808056088370532212, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180.204
+      objectReference: {fileID: 0}
     - target: {fileID: 1809403484898370352, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7285,6 +7524,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1856460023830378359, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856618154830531290, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864654323071691486, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -7373,6 +7620,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 1959102981688043669, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959102981688043669, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -7400,6 +7651,14 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1707476718}
+    - target: {fileID: 1961907609287586796, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1981313311814181404, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1986805798239801769, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7435,7 +7694,7 @@ PrefabInstance:
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1265067143}
+      objectReference: {fileID: 7812179099152180021}
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -7451,6 +7710,10 @@ PrefabInstance:
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1999805853099669309, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -7533,6 +7796,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2028487232705972929, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028487232705972929, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -7560,7 +7827,43 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1546187622}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11899999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5800636
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.022055231
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.81356305
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.033986285
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -175.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -790.985
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030424426741064425, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180.204
+      objectReference: {fileID: 0}
     - target: {fileID: 2065433874948519322, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065609100792373869, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -7575,6 +7878,10 @@ PrefabInstance:
     - target: {fileID: 2099781279819835410, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7859992
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125073597894823131, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2130206261296981408, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
@@ -7600,6 +7907,34 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391276
       objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.49503797
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.36830473
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5561484
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.5567658
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -100.283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -591.91797
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146029929180581120, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 127.522995
+      objectReference: {fileID: 0}
     - target: {fileID: 2148149379316736255, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -7611,6 +7946,10 @@ PrefabInstance:
     - target: {fileID: 2149574558287299188, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_TagString
       value: Right Baton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168353089237673497, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2175094192775503818, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
@@ -7733,6 +8072,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181477417081715683, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -7762,6 +8105,10 @@ PrefabInstance:
       objectReference: {fileID: 1707476719}
     - target: {fileID: 2181557943812014187, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352186878815101595, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2365738752858887127, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -7929,6 +8276,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2555600518156868663, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2555600518156868663, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -8076,7 +8427,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2680454839085154096, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2695535666967067412, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2764267858295863094, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -8228,6 +8587,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.62743646
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.75752527
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.06850469
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.16669165
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -256.764
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -1033.318
+      objectReference: {fileID: 0}
+    - target: {fileID: 2827305137557104548, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 387.406
+      objectReference: {fileID: 0}
     - target: {fileID: 2834021455781923159, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8279,6 +8666,10 @@ PrefabInstance:
     - target: {fileID: 2839822399224523260, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839822399224523260, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2839822399224523260, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -8429,6 +8820,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2880551098720586450, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2880551098720586450, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -8505,6 +8900,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2904284402204913699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2904284402204913699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -8575,6 +8974,10 @@ PrefabInstance:
     - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2906809829644981208, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -8649,6 +9052,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924239830175101372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -8688,6 +9095,34 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391277
       objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4232846
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.48580542
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.45515442
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.61453867
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -103.907
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -478.222
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953562621766823235, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 378.94202
+      objectReference: {fileID: 0}
     - target: {fileID: 2956275857574302150, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8703,6 +9138,38 @@ PrefabInstance:
     - target: {fileID: 2994200186780271069, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.22899999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0078049605
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.014992773
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7109383
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.70305127
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 91.95502
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -70.625
+      objectReference: {fileID: 0}
+    - target: {fileID: 3007185244337896070, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 108.792
       objectReference: {fileID: 0}
     - target: {fileID: 3044609097507478012, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
@@ -8728,6 +9195,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3114627929883482138, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3125428427223899672, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8735,6 +9206,42 @@ PrefabInstance:
     - target: {fileID: 3125428427223899672, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_TagString
       value: Right Baton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.24600004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.059999976
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.28733
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.14777297
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7902671
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.52065593
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 65.208
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 134.272
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130267171832652205, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 350.994
       objectReference: {fileID: 0}
     - target: {fileID: 3156798655468965676, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
@@ -8823,6 +9330,34 @@ PrefabInstance:
     - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6391277
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.44272932
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.4297693
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4787178
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6245946
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -101.888
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -506.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174408592204882901, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 43.414
       objectReference: {fileID: 0}
     - target: {fileID: 3186666472670816695, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -9028,6 +9563,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3252376566464831970, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3255236852656730030, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -9145,6 +9684,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 3272289129263785082, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3272289129263785082, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -9175,6 +9718,26 @@ PrefabInstance:
     - target: {fileID: 3274125148310497750, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295030529248315349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.146
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295030529248315349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.176
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295030529248315349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.49555144
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295030529248315349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8685786
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295030529248315349, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 120.588
       objectReference: {fileID: 0}
     - target: {fileID: 3298697289032081386, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
@@ -9223,6 +9786,10 @@ PrefabInstance:
     - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318185280736629700, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -9324,6 +9891,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 3391395160497719990, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -9367,6 +9938,10 @@ PrefabInstance:
     - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3399126422399147014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -9447,6 +10022,10 @@ PrefabInstance:
     - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3445754445347036543, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -9613,6 +10192,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 3582522446882921701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582522446882921701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -9643,6 +10226,10 @@ PrefabInstance:
     - target: {fileID: 3601340598288634789, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3602410752534263092, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3604196960111056445, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
@@ -9695,6 +10282,10 @@ PrefabInstance:
     - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3617333987118025538, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -9905,6 +10496,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3654648684953522671, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -9932,6 +10527,42 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1707476713}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.22399999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.6809466
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.056530416
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.72808784
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.05481077
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -189.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -446.13202
+      objectReference: {fileID: 0}
+    - target: {fileID: 3681717896045372972, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180.445
+      objectReference: {fileID: 0}
+    - target: {fileID: 3689273514583352012, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3690194719103300321, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -10292,6 +10923,34 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.21455078
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.3520928
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5354866
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7370569
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -70.128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -661.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925368685312375133, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 169.695
+      objectReference: {fileID: 0}
     - target: {fileID: 3974781149957685407, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560005
@@ -10347,6 +11006,10 @@ PrefabInstance:
     - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4004563107497314838, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -10407,7 +11070,7 @@ PrefabInstance:
     - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4014936190216339847, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -10519,7 +11182,7 @@ PrefabInstance:
     - target: {fileID: 4144671920637624158, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4144671920637624158, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -10609,6 +11272,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148614079900025009, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -10636,6 +11303,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1546187614}
+    - target: {fileID: 4161552251887258065, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -10679,6 +11350,10 @@ PrefabInstance:
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4176849667418514805, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -10980,6 +11655,38 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391277
       objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.25266793
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7422523
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.09662763
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6130935
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -150.424
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -997.967
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355574752959280337, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 348.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417162045989701919, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4425771031798548198, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -11217,6 +11924,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 4503647523628972643, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503647523628972643, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -11271,7 +11982,7 @@ PrefabInstance:
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4512308989677232814, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11468,6 +12179,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4546309390591538684, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4563092125877439610, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -11600,6 +12315,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4661060343176647513, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4663172531305919795, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11651,7 +12370,7 @@ PrefabInstance:
     - target: {fileID: 4811223522324103463, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 4811223522324103463, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -11696,6 +12415,34 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1635593066}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.63838065
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6557257
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.33571273
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.22313893
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -260.761
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -57.884003
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817081258457291149, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -104.59799
+      objectReference: {fileID: 0}
     - target: {fileID: 4826316513506439701, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11745,6 +12492,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4857107603682599482, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -11783,6 +12534,34 @@ PrefabInstance:
     - target: {fileID: 4875659429029480246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.013446855
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.012268164
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.73862034
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6738759
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -84.353
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 201.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 4930245963923117504, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -21.614
       objectReference: {fileID: 0}
     - target: {fileID: 4952654752086398032, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
@@ -11932,6 +12711,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1265067143}
+    - target: {fileID: 5026339665674832449, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5032729223316072044, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -11987,6 +12770,10 @@ PrefabInstance:
     - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5145424762486630644, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -12083,6 +12870,10 @@ PrefabInstance:
     - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5271721902458947236, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -12239,6 +13030,10 @@ PrefabInstance:
     - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5359285473161379646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -12409,6 +13204,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 5714315241962041802, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5714315241962041802, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -12463,7 +13262,7 @@ PrefabInstance:
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 5717734869383943489, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -12528,6 +13327,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Right Baton
       objectReference: {fileID: 0}
+    - target: {fileID: 5823493867108530018, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5861224836984933517, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -12546,6 +13349,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5873093474716639627, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5875806450876780529, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5892614848034102661, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -13112,12 +13919,20 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 6220012793916797148, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6233291518748869757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6261186115850949587, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272616106794822882, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6283919315335630259, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -13155,6 +13970,34 @@ PrefabInstance:
     - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6391277
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.15362345
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7688819
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.015776576
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6204608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -165.178
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -1000.903
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337645544497124440, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 350.09
       objectReference: {fileID: 0}
     - target: {fileID: 6360277406348409861, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -13404,6 +14247,42 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391277
       objectReference: {fileID: 0}
+    - target: {fileID: 6574724130309965787, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0030000005
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.23105852
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.89821374
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.015926383
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.3735914
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -25.276
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 132.773
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580094366653357957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -170.835
+      objectReference: {fileID: 0}
     - target: {fileID: 6589775695979665996, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -13431,6 +14310,34 @@ PrefabInstance:
     - target: {fileID: 6640725467196081745, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6391276
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.2637077
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.020618279
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6406848
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7208025
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -249.146
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -959.963
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640789656369063742, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 276.445
       objectReference: {fileID: 0}
     - target: {fileID: 6671765009394759619, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
@@ -13515,6 +14422,10 @@ PrefabInstance:
     - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6721048644728337577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -13710,6 +14621,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6795132841373902372, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796945434541339646, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6806024071969342218, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -13912,6 +14827,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6967054811338947738, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6967938733667092535, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6970021741764700640, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.16560003
@@ -14003,6 +14926,10 @@ PrefabInstance:
     - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7070119748432481270, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -14103,7 +15030,7 @@ PrefabInstance:
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 7237226458101948611, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -14376,6 +15303,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7293214357072752571, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7311540243138476784, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -14423,6 +15354,10 @@ PrefabInstance:
     - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7314415655423740144, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -14526,6 +15461,10 @@ PrefabInstance:
       objectReference: {fileID: 156409098}
     - target: {fileID: 7356822781218803345, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364332463231104358, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7415181433049232749, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -14692,6 +15631,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 7544534236431677632, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -14719,7 +15662,7 @@ PrefabInstance:
     - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 7551095901494963957, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -14766,6 +15709,10 @@ PrefabInstance:
       objectReference: {fileID: 542703013}
     - target: {fileID: 7562074725671006709, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586786969520452441, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7591400590754353639, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -14905,6 +15852,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 7673720258694635598, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673720258694635598, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -14934,6 +15885,10 @@ PrefabInstance:
       objectReference: {fileID: 181232306}
     - target: {fileID: 7678672589781377000, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695829781225411587, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7745899629684825964, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -15028,6 +15983,34 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.10129016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.08424586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.73390263
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.6663557
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -84.353
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -158.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918405250016836014, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -6.614
+      objectReference: {fileID: 0}
     - target: {fileID: 7926063183269143895, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15095,6 +16078,10 @@ PrefabInstance:
     - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7995339548250758689, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -15168,6 +16155,34 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6391277
       objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.20255788
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.63595796
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.34796906
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.65836567
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -134.29001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -805.808
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070960766050865885, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 345.412
+      objectReference: {fileID: 0}
     - target: {fileID: 8089382549962809292, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15221,6 +16236,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 8134392797298090941, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134392797298090941, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -15248,6 +16267,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1707476722}
+    - target: {fileID: 8155802610595364733, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8159253637992803999, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -15377,6 +16400,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 8168580016981512311, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8168580016981512311, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -15411,6 +16438,10 @@ PrefabInstance:
     - target: {fileID: 8171798866670061699, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_TagString
       value: Right Baton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188518372302481636, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -15455,6 +16486,10 @@ PrefabInstance:
     - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8191960479967724246, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -15535,6 +16570,10 @@ PrefabInstance:
     - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8235961538269824329, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -15632,6 +16671,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 8243403288195327696, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8249093667792025690, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -15671,7 +16714,7 @@ PrefabInstance:
     - target: {fileID: 8277090300750015455, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8277090300750015455, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -15872,12 +16915,20 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 816632837}
+    - target: {fileID: 8349057992523404049, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8349267062349427022, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8352565905241774947, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8355520495720262777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -15923,6 +16974,10 @@ PrefabInstance:
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8355552775016748570, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -16237,6 +17292,10 @@ PrefabInstance:
       value: 0.7058824
       objectReference: {fileID: 0}
     - target: {fileID: 8496691162360965591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8496691162360965591, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
       value: 0.7058824
       objectReference: {fileID: 0}
@@ -16359,7 +17418,7 @@ PrefabInstance:
     - target: {fileID: 8505727788253265366, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8505727788253265366, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -16415,6 +17474,34 @@ PrefabInstance:
     - target: {fileID: 8526713367281917351, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.6391277
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000018641998
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7295287
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.6839503
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -86.306
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534898703775302883, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8538267279251853227, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
@@ -16548,6 +17635,34 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 412442451}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000000013969839
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000018180057
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7295287
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.6839503
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -86.306
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 8581471155026179777, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8581948556953047967, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -16624,6 +17739,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 454976765}
+    - target: {fileID: 8583347018377271577, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8586832349233679183, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -16708,6 +17827,38 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.22400002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7701547
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.048892614
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.63297856
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.06172049
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -188.827
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -821.31604
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678108905785987872, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 178.076
+      objectReference: {fileID: 0}
     - target: {fileID: 8686994932803258904, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -16759,6 +17910,10 @@ PrefabInstance:
     - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8695457985724230757, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -16831,6 +17986,10 @@ PrefabInstance:
     - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8697659093007825459, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -16951,7 +18110,7 @@ PrefabInstance:
     - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8714889771704985891, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -16996,6 +18155,34 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 936235199}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.21455094
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.3520927
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.53548694
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7370566
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -70.128
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -661.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731268219200581567, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 169.695
+      objectReference: {fileID: 0}
     - target: {fileID: 8749790961829641183, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -17055,6 +18242,10 @@ PrefabInstance:
     - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8764060822999497117, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -17251,7 +18442,7 @@ PrefabInstance:
     - target: {fileID: 8894303797342069104, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8894303797342069104, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -17298,6 +18489,10 @@ PrefabInstance:
       objectReference: {fileID: 531073694}
     - target: {fileID: 8896046087314898976, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8910789319262341875, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8912253238140273058, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -17351,6 +18546,10 @@ PrefabInstance:
     - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: successColor.a
       value: 0.7058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: disappearOnTouch
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8925861346567571373, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftBatonColor.a
@@ -17407,7 +18606,7 @@ PrefabInstance:
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 1368050364196381540}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 8959073274272911552, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -17491,7 +18690,7 @@ PrefabInstance:
     - target: {fileID: 9023304126179596356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: visualPrefab
       value: 
-      objectReference: {fileID: 7812179099152180021}
+      objectReference: {fileID: 1265067143}
     - target: {fileID: 9023304126179596356, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: rightBatonTip
       value: 
@@ -17688,6 +18887,34 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 1646693707}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.018565794
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0029481088
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9968587
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.076937616
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 8.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -182.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136532387686179192, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.175
+      objectReference: {fileID: 0}
     - target: {fileID: 9151441208779191191, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -17714,6 +18941,9 @@ PrefabInstance:
     - {fileID: 7968300791675467020, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
     - {fileID: 4280458214813506298, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5967493439669747490, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      insertIndex: 15
+      addedObject: {fileID: 1746741224}
     - targetCorrespondingSourceObject: {fileID: 7595766871493146258, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1855809284}
@@ -18090,9 +19320,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 782891652}
-        m_TargetAssemblyTypeName: ResultsManager, Assembly-CSharp
-        m_MethodName: ReturnToLevelSelector
+      - m_Target: {fileID: 1317660936}
+        m_TargetAssemblyTypeName: Goback, Assembly-CSharp
+        m_MethodName: RestartCurrentScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19325,6 +20555,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 233133562}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -19564,6 +20798,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 246055935}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -19710,6 +20948,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 249859338}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -19855,6 +21097,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 251325358}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -22048,7 +23294,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339819317}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -22106,6 +23352,10 @@ MonoBehaviour:
   stanceName: Right_Pectoral(Strike)
   stanceBoxes:
   - {fileID: 339819317}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -22811,6 +24061,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -22907,6 +24161,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 385422396}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -23115,6 +24373,11 @@ Transform:
   - {fileID: 225204042}
   m_Father: {fileID: 1307241890}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &401440084 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5967493439669747490, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+  m_PrefabInstance: {fileID: 181232301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &403097313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6099794052332118801, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -23316,6 +24579,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -23416,6 +24683,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -23705,7 +24976,6 @@ Transform:
   - {fileID: 1601504892}
   - {fileID: 2076757378}
   - {fileID: 1519131736}
-  - {fileID: 782891653}
   - {fileID: 1153365342}
   - {fileID: 1726460727}
   - {fileID: 1568603166}
@@ -24258,6 +25528,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 502202392}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -24403,6 +25677,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 505905084}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -24628,6 +25906,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 535214435}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -25067,6 +26349,155 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &568738662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 568738663}
+  - component: {fileID: 568738667}
+  - component: {fileID: 568738666}
+  - component: {fileID: 568738665}
+  - component: {fileID: 568738664}
+  m_Layer: 0
+  m_Name: CheckBox (40)
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &568738663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568738662}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.02206705, y: 0.87418544, z: -0.21516961, w: -0.43475857}
+  m_LocalPosition: {x: -0.676, y: 0.728, z: -0.028}
+  m_LocalScale: {x: 0.16560003, y: 0.16560005, z: 0.6391277}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1746741224}
+  m_LocalEulerAnglesHint: {x: 23.29, y: -485.193, z: 9.305}
+--- !u!65 &568738664
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568738662}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &568738665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568738662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Right_Knee_StrikeSpar)
+  stanceBoxes:
+  - {fileID: 568738662}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 35
+  positionThreshold: 1
+  visualPrefab: {fileID: 1265067143}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &568738666
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568738662}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 256b5a98e1e0288488bb2b50038797c1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &568738667
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568738662}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &568747108
 GameObject:
   m_ObjectHideFlags: 0
@@ -25508,7 +26939,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press A to continue
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 665aff0710559b9438e7fd81c370b5fc, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 3936003031360135365, guid: 665aff0710559b9438e7fd81c370b5fc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -25516,7 +26947,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284016639
-  m_fontColor: {r: 1, g: 0.9058646, b: 0.3443396, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25533,8 +26964,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8.47
-  m_fontSizeBase: 8.47
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -25572,7 +27003,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &601883585
@@ -25917,6 +27348,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
   - {fileID: 615119416}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -26973,6 +28408,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 681182666}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -27118,6 +28557,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 690901223}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -27895,6 +29338,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 715669363}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -27983,7 +29430,7 @@ GameObject:
   - component: {fileID: 716797618}
   - component: {fileID: 716797624}
   m_Layer: 0
-  m_Name: LevelSelector
+  m_Name: LevelSelector(Practicemode)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29450,11 +30897,11 @@ Transform:
   m_GameObject: {fileID: 782891651}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.30370054, y: 1.3797786, z: 1.3008771}
+  m_LocalPosition: {x: -0.020419389, y: 2.5377786, z: 1.4845214}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 436459678}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &782891654
 MonoBehaviour:
@@ -29807,6 +31254,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 795296956}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -30115,6 +31566,17 @@ MonoBehaviour:
     requiredAccuracy: 0.5
     requiredLevelIds:
     - 
+  - levelName: 12 Basic Blocks
+    introLevel: {fileID: 282579936}
+    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
+    levelDescription: Blocks
+    levelId: 2
+    isSparLevel: 0
+    isTournamentLevel: 0
+    requiredScore: 0
+    requiredAccuracy: 0.5
+    requiredLevelIds:
+    - 
   availableSparLevels:
   - levelName: Tutorial
     introLevel: {fileID: 1870491782}
@@ -30164,7 +31626,7 @@ MonoBehaviour:
   houseBackground: {fileID: 1999900849}
   gymBackground: {fileID: 1307241889}
   tournamentBackground: {fileID: 736223636}
-  backgroundTransitionDuration: 1
+  backgroundTransitionDuration: 2
   tutorialLevelIndex: 0
   levelSelectionPanel: {fileID: 716797616}
   levelButtonPrefab: {fileID: 5046679306294668040, guid: 64f7b36ff43f6a743b90dd7d3fb8567f, type: 3}
@@ -30190,6 +31652,7 @@ MonoBehaviour:
   storyProgressText: {fileID: 1632846037}
   storyLevelPreviewImage: {fileID: 869637652}
   storyLevelDescriptionText: {fileID: 1909662708}
+  isInStoryMode: 0
 --- !u!4 &833419205
 Transform:
   m_ObjectHideFlags: 0
@@ -30750,6 +32213,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 858872480}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -33608,7 +35075,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977026541}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -33666,6 +35133,10 @@ MonoBehaviour:
   stanceName: Right_Pectoral(Strike)
   stanceBoxes:
   - {fileID: 977026541}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -33762,6 +35233,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 982672951}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -33962,6 +35437,10 @@ MonoBehaviour:
   stanceName: Right_Pectoral(Strike)
   stanceBoxes:
   - {fileID: 990306205}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -34454,70 +35933,60 @@ MonoBehaviour:
   sparringPartnerAnimation: 12BasicStrikes
   useSparringPartner: 1
   sparringPartnerDelay: 1
+  sparringPartnerAnimationSpeed: 0.5
   phase1Objectives:
   - stanceName: Left_Temple_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Temple_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Shoulder_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Shoulder_(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Abdomen_(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Pectoral(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Pectoral(Block)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Knee(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Knee(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Eye(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Head(Block)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
@@ -34525,7 +35994,7 @@ MonoBehaviour:
   - Left_Temple(Strike)
   - Right_Temple(Strike)
   - Left_Knee(Strike)
-  - Right_Knee(Strike)
+  - Right_Knee_StrikeSpar)
   - Top_Head(Strike)
   baseBlockChance: 0
   blockChanceIncrement: 0
@@ -34927,6 +36396,10 @@ MonoBehaviour:
   stanceName: Left_Eye(Strike)
   stanceBoxes:
   - {fileID: 1085274952}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -34934,7 +36407,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -35085,6 +36558,155 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1093619213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1093619214}
+  - component: {fileID: 1093619218}
+  - component: {fileID: 1093619217}
+  - component: {fileID: 1093619216}
+  - component: {fileID: 1093619215}
+  m_Layer: 0
+  m_Name: CheckBox (38)
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1093619214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093619213}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5027541, y: 0.27216527, z: 0.47688186, w: -0.6676437}
+  m_LocalPosition: {x: 0.042, y: 1.597, z: -0.115}
+  m_LocalScale: {x: 0.16560003, y: 0.16560005, z: 0.6391277}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1746741224}
+  m_LocalEulerAnglesHint: {x: -68.576, y: -341.469, z: -83.769}
+--- !u!65 &1093619215
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093619213}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1093619216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093619213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Right_Knee_StrikeSpar)
+  stanceBoxes:
+  - {fileID: 1093619213}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 35
+  positionThreshold: 1
+  visualPrefab: {fileID: 1265067143}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1093619217
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093619213}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 256b5a98e1e0288488bb2b50038797c1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1093619218
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093619213}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1100009517
 GameObject:
   m_ObjectHideFlags: 0
@@ -35378,6 +37000,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1115330968}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -35628,7 +37254,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123511187}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -35686,6 +37312,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
   - {fileID: 1123511187}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -35693,7 +37323,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 7812179099152180021}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -35801,54 +37431,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!1 &1132546031
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1132546033}
-  - component: {fileID: 1132546032}
-  m_Layer: 0
-  m_Name: SceneTransitionManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1132546032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132546031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3ec9c1eb239534fa3f5b4289bf67e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeDuration: 2
-  fadeCanvasGroup: {fileID: 0}
-  dontDestroyOnLoad: 1
-  vrCamera: {fileID: 835566010}
---- !u!4 &1132546033
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1132546031}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5007136, y: 1.4753004, z: -0.0119999945}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1133502600
 GameObject:
   m_ObjectHideFlags: 0
@@ -36188,6 +37770,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 1134750058}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -36333,6 +37919,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 1142617150}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -38170,6 +39760,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1262819068}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -38363,6 +39957,155 @@ Transform:
   - {fileID: 1496616309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1273561645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1273561646}
+  - component: {fileID: 1273561650}
+  - component: {fileID: 1273561649}
+  - component: {fileID: 1273561648}
+  - component: {fileID: 1273561647}
+  m_Layer: 0
+  m_Name: CheckBox (39)
+  m_TagString: Left Baton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1273561646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273561645}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.019384023, y: 0.96821713, z: 0.24881646, w: -0.016440315}
+  m_LocalPosition: {x: -0.244, y: 1.119, z: -0.386}
+  m_LocalScale: {x: 0.16560003, y: 0.16560005, z: 0.6391277}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1746741224}
+  m_LocalEulerAnglesHint: {x: -28.762, y: -537.28796, z: -2.989}
+--- !u!65 &1273561647
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273561645}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1273561648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273561645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5891245147b0fb4faa4a2177c3f97d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceName: Right_Knee_StrikeSpar)
+  stanceBoxes:
+  - {fileID: 1273561645}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
+  leftBatonTip: {fileID: 407319560}
+  rightBatonTip: {fileID: 577159870}
+  leftHand: {fileID: 149736414}
+  rightHand: {fileID: 664047078}
+  isOneHanded: 1
+  angleThreshold: 35
+  positionThreshold: 1
+  visualPrefab: {fileID: 1265067143}
+  visualRotationOffset: {x: 0, y: 90, z: -180}
+  enableVisualMirroring: 1
+  mirrorAxis: 2
+  invertMirrorAxis: 0
+  disappearOnTouch: 1
+  disappearDelay: 0
+  useDisappearAnimation: 0
+  disappearAnimationDuration: 0.5
+  leftBatonColor: {r: 1, g: 0.647, b: 0, a: 0.7058824}
+  rightBatonColor: {r: 0, g: 0.812, b: 1, a: 0.7058824}
+  leftBatonDarkColor: {r: 0.6, g: 0.3, b: 0, a: 0.7058824}
+  rightBatonDarkColor: {r: 0, g: 0.3, b: 0.5, a: 0.7058824}
+  successColor: {r: 0, g: 1, b: 0, a: 0.7058824}
+  failureColor: {r: 1, g: 0, b: 0, a: 0.7058824}
+  isPartOfSequence: 0
+  sequencePosition: 0
+--- !u!23 &1273561649
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273561645}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 256b5a98e1e0288488bb2b50038797c1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1273561650
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273561645}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1276659251
 GameObject:
   m_ObjectHideFlags: 0
@@ -38729,7 +40472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -39119,7 +40862,6 @@ GameObject:
   - component: {fileID: 1317660926}
   - component: {fileID: 1317660927}
   - component: {fileID: 1317660936}
-  - component: {fileID: 1317660937}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -39323,25 +41065,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restartButton: {fileID: 1878048247}
---- !u!114 &1317660937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317660924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae3ec1369ba7f6942b4f26fd57954f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vrCamera: {fileID: 835566010}
-  sceneEnvironmentObjects:
-  - {fileID: 399508510}
-  - {fileID: 12470555}
-  sceneSkybox: {fileID: 0}
-  defaultPassthrough: 1
-  passthroughToggle: {fileID: 0}
 --- !u!1 &1317934831
 GameObject:
   m_ObjectHideFlags: 0
@@ -39443,7 +41166,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325449177}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -39501,6 +41224,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Strike)
   stanceBoxes:
   - {fileID: 1325449177}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -39673,6 +41400,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1327171741}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -39912,6 +41643,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1333966120}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -40345,6 +42080,10 @@ MonoBehaviour:
   stanceName: Blocking
   stanceBoxes:
   - {fileID: 1356041558}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 0}
@@ -40496,6 +42235,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1363793994}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -40735,6 +42478,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 18.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1375139959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1375139961}
+  - component: {fileID: 1375139960}
+  m_Layer: 0
+  m_Name: SceneTransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1375139960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375139959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3ec9c1eb239534fa3f5b4289bf67e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 2
+  fadeCanvasGroup: {fileID: 0}
+  dontDestroyOnLoad: 0
+  vrCamera: {fileID: 835566010}
+--- !u!4 &1375139961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375139959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5007136, y: 1.4753004, z: -0.0119999945}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1376165186
 GameObject:
   m_ObjectHideFlags: 0
@@ -40992,6 +42783,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1405908435}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -41187,6 +42982,10 @@ MonoBehaviour:
   stanceName: Left_Eye(Strike)
   stanceBoxes:
   - {fileID: 1429520567}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -41194,7 +42993,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -41963,6 +43762,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -42005,7 +43808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1519131736
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42243,6 +44046,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1523094819}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -42398,6 +44205,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1533832127}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -43584,6 +45395,10 @@ MonoBehaviour:
   stanceName: Hold
   stanceBoxes:
   - {fileID: 1555633102}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -44063,8 +45878,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568603165}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.19312286}
-  m_LocalScale: {x: 0.0154014295, y: 0.013121585, z: 0.15545377}
+  m_LocalPosition: {x: 0, y: 0, z: -0.194}
+  m_LocalScale: {x: 0.0083226245, y: 0.007090642, z: 0.08400411}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 56887328}
@@ -44077,7 +45892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.9077005, y: 0.596}
+  m_AnchoredPosition: {x: -1.083, y: 0.46483}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1568603167
@@ -44405,6 +46220,10 @@ MonoBehaviour:
   stanceName: Right_Pectoral(Strike)
   stanceBoxes:
   - {fileID: 1587752998}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -44519,7 +46338,7 @@ GameObject:
   - component: {fileID: 1601504894}
   - component: {fileID: 1601504893}
   m_Layer: 0
-  m_Name: LevelSelector (1)
+  m_Name: LevelSelector(Storymode)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45656,7 +47475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810ea12d67c617547a1238264763c08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceIntroComplete: 1
+  forceIntroComplete: 0
   resetIntroOnStart: 0
   instructionScreens: {fileID: 1680629964}
   stanceInstructionText: {fileID: 1042897182}
@@ -46653,8 +48472,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726460726}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.19312286}
-  m_LocalScale: {x: 0.0154014295, y: 0.013121585, z: 0.15545377}
+  m_LocalPosition: {x: 0, y: 0, z: -0.194}
+  m_LocalScale: {x: 0.0083226245, y: 0.007090642, z: 0.08400411}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 133901481}
@@ -46666,7 +48485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.9077005, y: 0.596}
+  m_AnchoredPosition: {x: -1.083, y: 0.46483}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1726460728
@@ -47087,6 +48906,40 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1746741223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1746741224}
+  m_Layer: 0
+  m_Name: Stance_15 (Strike) (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1746741224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746741223}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.035}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1093619214}
+  - {fileID: 1273561646}
+  - {fileID: 568738663}
+  m_Father: {fileID: 401440084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1749847798
 GameObject:
   m_ObjectHideFlags: 0
@@ -47168,6 +49021,19 @@ MonoBehaviour:
       sequenceBoxes:
       - {fileID: 1922930928}
       endBoxLeft: {fileID: 454976765}
+      endBoxRight: {fileID: 0}
+      timeLimit: 1000
+      currentIndex: 0
+  - styleName: Right_Temple_Block(Spar)
+    stanceBoxes:
+    - {fileID: 1546187623}
+    - {fileID: 1546187622}
+    sequences:
+    - sequenceName: Right_Temple_Block(Spar)
+      startBoxLeft: {fileID: 1546187623}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes: []
+      endBoxLeft: {fileID: 1546187622}
       endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
@@ -47350,6 +49216,21 @@ MonoBehaviour:
       - {fileID: 1318358092}
       - {fileID: 692517140}
       endBoxLeft: {fileID: 639313329}
+      endBoxRight: {fileID: 0}
+      timeLimit: 0
+      currentIndex: 0
+  - styleName: Right_Knee_StrikeSpar)
+    stanceBoxes:
+    - {fileID: 1093619213}
+    - {fileID: 1273561645}
+    - {fileID: 568738662}
+    sequences:
+    - sequenceName: Right_Knee_StrikeSpar)
+      startBoxLeft: {fileID: 1093619213}
+      startBoxRight: {fileID: 0}
+      sequenceBoxes:
+      - {fileID: 1273561645}
+      endBoxLeft: {fileID: 568738662}
       endBoxRight: {fileID: 0}
       timeLimit: 0
       currentIndex: 0
@@ -47671,12 +49552,12 @@ MonoBehaviour:
     - {fileID: 181232304}
     sequences:
     - sequenceName: Left_Temple_Block
-      startBoxLeft: {fileID: 0}
-      startBoxRight: {fileID: 181232306}
+      startBoxLeft: {fileID: 181232306}
+      startBoxRight: {fileID: 0}
       sequenceBoxes:
       - {fileID: 181232305}
-      endBoxLeft: {fileID: 0}
-      endBoxRight: {fileID: 181232304}
+      endBoxLeft: {fileID: 181232304}
+      endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
   - styleName: Right_Temple_Block_Ready
@@ -47689,19 +49570,6 @@ MonoBehaviour:
       startBoxRight: {fileID: 0}
       sequenceBoxes: []
       endBoxLeft: {fileID: 181232302}
-      endBoxRight: {fileID: 0}
-      timeLimit: 1000
-      currentIndex: 0
-  - styleName: Right_Temple_Block(Spar)
-    stanceBoxes:
-    - {fileID: 1546187623}
-    - {fileID: 1546187622}
-    sequences:
-    - sequenceName: Right_Temple_Block(Spar)
-      startBoxLeft: {fileID: 1546187623}
-      startBoxRight: {fileID: 0}
-      sequenceBoxes: []
-      endBoxLeft: {fileID: 1546187622}
       endBoxRight: {fileID: 0}
       timeLimit: 1000
       currentIndex: 0
@@ -48530,6 +50398,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 1765503784}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -49458,7 +51330,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1796048406}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1317660936}
+        m_TargetAssemblyTypeName: Goback, Assembly-CSharp
+        m_MethodName: RestartCurrentScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1796048406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49712,6 +51596,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1810464129}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -50338,6 +52226,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 1841006112}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -50483,6 +52375,10 @@ MonoBehaviour:
   stanceName: Hold
   stanceBoxes:
   - {fileID: 1852088525}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -50683,6 +52579,10 @@ MonoBehaviour:
   stanceName: Right_Shoulder(Ready)
   stanceBoxes:
   - {fileID: 1855809283}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -50690,7 +52590,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 7812179099152180021}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -51430,7 +53330,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878846980}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -51488,6 +53388,10 @@ MonoBehaviour:
   stanceName: Left_Temple(Strike)
   stanceBoxes:
   - {fileID: 1878846980}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -51684,7 +53588,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -52342,7 +54246,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923035836}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -52400,6 +54304,10 @@ MonoBehaviour:
   stanceName: Left_Temple(Strike)
   stanceBoxes:
   - {fileID: 1923035836}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -52407,7 +54315,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 1368050364196381540}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -52496,6 +54404,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1926095108}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -53201,7 +55113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -22.6}
+  m_AnchoredPosition: {x: -0, y: -47}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1952505400
@@ -53372,6 +55284,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1964416909}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -53594,6 +55510,10 @@ MonoBehaviour:
   stanceName: Test
   stanceBoxes:
   - {fileID: 1967965875}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -54102,6 +56022,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 412442451}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -54862,14 +56786,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: BasicStrike
+  levelName: Tutorial
   objectives:
   - instruction: 
     rightHandInstruction: 
     instructionImage: {fileID: 21300000, guid: bb51c13ec4b14c14f86fae50e6f6af54, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
     requiredStance: Left_Temple(Strike)
-    timeLimit: 100
+    timeLimit: 30
     enableRepeat: 1
     repeatCount: 3
   objectiveText: {fileID: 563866865}
@@ -54897,7 +56821,7 @@ MonoBehaviour:
   enableAutoDetectSequences: 0
   stanceGuideToggleButton: {fileID: 1721155816}
   stanceGuideButtonText: {fileID: 323349894}
-  enableObjectiveTimeout: 0
+  enableObjectiveTimeout: 1
   timeBarFill: {fileID: 206967730}
   timeBarBackground: {fileID: 1692031045}
   timeRemainingText: {fileID: 261081926}
@@ -55513,6 +57437,10 @@ MonoBehaviour:
   stanceName: Right_Pectoral(Strike)
   stanceBoxes:
   - {fileID: 2056721846}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -55520,7 +57448,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 35
   positionThreshold: 1
-  visualPrefab: {fileID: 7812179099152180021}
+  visualPrefab: {fileID: 1265067143}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
@@ -55608,6 +57536,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 2058213848}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -55887,6 +57819,10 @@ MonoBehaviour:
   stanceName: BasicStrike
   stanceBoxes:
   - {fileID: 2062755050}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -56556,6 +58492,10 @@ MonoBehaviour:
   stanceName: Redonda
   stanceBoxes:
   - {fileID: 2087214849}
+  showDetectionGizmos: 1
+  showOnlyWhenSelected: 0
+  gizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  gizmosArrowLength: 0.3
   leftBatonTip: {fileID: 407319560}
   rightBatonTip: {fileID: 577159870}
   leftHand: {fileID: 149736414}
@@ -57224,70 +59164,60 @@ MonoBehaviour:
   sparringPartnerAnimation: 12BasicStrikes
   useSparringPartner: 1
   sparringPartnerDelay: 1
+  sparringPartnerAnimationSpeed: 0.3
   phase1Objectives:
   - stanceName: Left_Temple_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Temple_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Shoulder_Block(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Shoulder_(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Abdomen_(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Pectoral(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Pectoral(Block)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Knee(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Left_Knee(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Right_Eye(Spar)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
   - stanceName: Head(Block)
     timeout: 10
-    animationSpeed: 1
     objectiveActivationTime: 1
     attackHitTime: 2
     useAnimationEvents: 1
@@ -57295,8 +59225,8 @@ MonoBehaviour:
   - Left_Temple(Strike)
   - Right_Temple(Strike)
   - Left_Knee(Strike)
-  - Right_Knee(Strike)
-  - Top_Head(Ready)
+  - Right_Knee_StrikeSpar)
+  - Top_Head(Strike)
   baseBlockChance: 0
   blockChanceIncrement: 0
   blockChanceResetTime: 1000
@@ -62161,13 +64091,14 @@ SceneRoots:
   - {fileID: 712300170}
   - {fileID: 1317660925}
   - {fileID: 1656208276}
+  - {fileID: 1749916802}
   - {fileID: 1680629966}
   - {fileID: 833419205}
+  - {fileID: 782891653}
   - {fileID: 436459678}
   - {fileID: 748189996}
   - {fileID: 1042007935}
   - {fileID: 650454195}
-  - {fileID: 1749916802}
   - {fileID: 181232301}
   - {fileID: 800851283}
   - {fileID: 1266304042}
@@ -62178,11 +64109,11 @@ SceneRoots:
   - {fileID: 568747109}
   - {fileID: 1246974198}
   - {fileID: 1366419756}
-  - {fileID: 1132546033}
   - {fileID: 1276659254}
   - {fileID: 261081928}
   - {fileID: 12470556}
   - {fileID: 1718001609}
+  - {fileID: 1375139961}
   - {fileID: 2054922967}
   - {fileID: 427128349}
   - {fileID: 1458871937}

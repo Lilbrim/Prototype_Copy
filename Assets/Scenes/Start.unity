@@ -5777,11 +5777,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7550daf8dddb998458426ab94aae48da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isNewGameScene: 1
   newGameCutscene: {fileID: 32900000, guid: c13d46eb18a6cad43bf08b49839f1c69, type: 3}
   cutsceneManager: {fileID: 1412403381}
-  delayBeforeCutscene: 1
-  loadNextSceneAfterCutscene: 1
   nextSceneName: Tutorial
 --- !u!114 &1412403381
 MonoBehaviour:
@@ -6756,7 +6753,7 @@ MonoBehaviour:
   load: {fileID: 962323526}
   confirmationPanel: {fileID: 655218756}
   confirmationText: {fileID: 1243546765}
-  newGameSceneName: Tutorial
+  newGameSceneName: Main
   loadGameSceneName: Main
 --- !u!4 &1539792924
 Transform:
@@ -7586,7 +7583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeDuration: 2
   fadeCanvasGroup: {fileID: 0}
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   vrCamera: {fileID: 1417446323}
 --- !u!4 &1859905292
 Transform:

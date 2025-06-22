@@ -12,40 +12,31 @@ public class Goback : MonoBehaviour
         {
             restartButton = GetComponent<Button>();
         }
+        
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(RestartCurrentScene);
+        }
     }
     
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("R key pressed - restarting scene");
+            RestartCurrentScene();
+        }
+    }
     
     public void RestartCurrentScene()
     {
-        if (SceneTransitionManager.Instance != null)
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            
-            Debug.Log($"Restarting scene: {currentSceneName}");
-            
-            SceneTransitionManager.Instance.LoadSceneWithTransition(currentSceneName);
-        }
-        else
-        {
-            
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        Debug.Log("Restarting current scene...");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void RestartCurrentSceneByIndex()
     {
-        if (SceneTransitionManager.Instance != null)
-        {
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            
-            Debug.Log($"Restarting scene by index: {currentSceneIndex}");
-            
-            SceneTransitionManager.Instance.LoadSceneWithTransition(currentSceneIndex);
-        }
-        else
-        {
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        Debug.Log("Restarting current scene by index...");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

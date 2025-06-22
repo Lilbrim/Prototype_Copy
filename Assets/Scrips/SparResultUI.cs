@@ -182,14 +182,30 @@ public class SparResultsManager : MonoBehaviour
         
         if (levelSelector != null)
         {
-            levelSelector.levelSelectionPanel.SetActive(true);
+            
+            if (levelSelector.isInStoryMode)
+            {
+                levelSelector.storyUIPanel.SetActive(true);
+            }
+            else
+            {
+                levelSelector.levelSelectionPanel.SetActive(true);
+            }
         }
         else
         {
             levelSelector = FindObjectOfType<LevelSelector>();
             if (levelSelector != null)
             {
-                levelSelector.levelSelectionPanel.SetActive(true);
+                
+                if (levelSelector.isInStoryMode)
+                {
+                    levelSelector.storyUIPanel.SetActive(true);
+                }
+                else
+                {
+                    levelSelector.levelSelectionPanel.SetActive(true);
+                }
             }
             else
             {
@@ -197,7 +213,7 @@ public class SparResultsManager : MonoBehaviour
             }
         }
     }
-    
+        
     public void ExitToMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");

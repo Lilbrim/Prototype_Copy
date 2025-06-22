@@ -107,29 +107,45 @@ public class ResultsManager : MonoBehaviour
         CleanupDummyPartners();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
     }
-    public void ReturnToLevelSelector()
-    {
-        HideResults();
-        
-        CleanupDummyPartners();
+public void ReturnToLevelSelector()
+{
+    HideResults();
+    
+    CleanupDummyPartners();
 
-        if (levelSelector != null)
+    if (levelSelector != null)
+    {
+        
+        if (levelSelector.isInStoryMode)
         {
-            levelSelector.levelSelectionPanel.SetActive(true);
+            levelSelector.storyUIPanel.SetActive(true);
         }
         else
         {
-            levelSelector = FindObjectOfType<LevelSelector>();
-            if (levelSelector != null)
+            levelSelector.levelSelectionPanel.SetActive(true);
+        }
+    }
+    else
+    {
+        levelSelector = FindObjectOfType<LevelSelector>();
+        if (levelSelector != null)
+        {
+            
+            if (levelSelector.isInStoryMode)
             {
-                levelSelector.levelSelectionPanel.SetActive(true);
+                levelSelector.storyUIPanel.SetActive(true);
             }
             else
             {
-                ExitToMenu();
+                levelSelector.levelSelectionPanel.SetActive(true);
             }
         }
+        else
+        {
+            ExitToMenu();
+        }
     }
+}
     private void CleanupDummyPartners()
     {
         GameObject[] dummyPartners = GameObject.FindGameObjectsWithTag("DummyPartner");

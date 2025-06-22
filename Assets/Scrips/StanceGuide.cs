@@ -234,12 +234,22 @@ public class StanceGuide : MonoBehaviour
         }
     }
 
-    private bool IsSequenceValid(AttackSequence sequence)
+private bool IsSequenceValid(AttackSequence sequence)
 {
-    return sequence != null && 
-           sequence.sequenceBoxes != null && 
-           sequence.sequenceBoxes.Length > 0;
+    if (sequence == null) return false;
+    
+    
+    bool hasStartOrEndBoxes = sequence.startBoxLeft != null || 
+                             sequence.startBoxRight != null || 
+                             sequence.endBoxLeft != null || 
+                             sequence.endBoxRight != null;
+    
+    bool hasSequenceBoxes = sequence.sequenceBoxes != null && 
+                           sequence.sequenceBoxes.Length > 0;
+    
+    return hasStartOrEndBoxes || hasSequenceBoxes;
 }
+
 
     void CheckForSequenceChanges()
 {
@@ -362,23 +372,80 @@ public class StanceGuide : MonoBehaviour
             config.batonInstance.SetActive(true);
         }
     }
-
-    void GeneratePathsFromCurrentSequence()
+    public void ResetSequenceDetection()
     {
-        if (currentSequence == null || currentSequence.sequenceBoxes == null || currentSequence.sequenceBoxes.Length == 0)
+        
+        currentSequence = null;
+        wasSequenceActive = false;
+        
+        
+        StopAllBatons();
+        
+        
+        if (StanceManager.Instance != null)
         {
-            Debug.Log("No current sequence or sequence boxes");
-            return;
+            AttackSequence newSequence = StanceManager.Instance.currentAttackSequence;
+            bool isSequenceActive = IsSequenceValid(newSequence);
+            
+            if (isSequenceActive)
+            {
+                currentSequence = newSequence;
+                GeneratePathsFromCurrentSequence();
+                
+                if (hideBatonsWhenNoSequence)
+                {
+                    ShowAllBatons();
+                }
+                
+                if (startOnSequenceBegin)
+                {
+                    StartAllBatons();
+                }
+            }
+            else
+            {
+                if (hideBatonsWhenNoSequence)
+                {
+                    HideAllBatons();
+                }
+            }
+            
+            wasSequenceActive = isSequenceActive;
         }
+        
+        Debug.Log("Sequence detection has been reset and re-evaluated");
+    }
 
+void GeneratePathsFromCurrentSequence()
+{
+    if (currentSequence == null)
+    {
+        Debug.Log("No current sequence");
+        return;
+    }
 
-        Debug.Log($"=== SEQUENCE ANALYSIS ===");
-        Debug.Log($"Start Box Left: {(currentSequence.startBoxLeft != null ? currentSequence.startBoxLeft.name : "NULL")}");
-        Debug.Log($"Start Box Right: {(currentSequence.startBoxRight != null ? currentSequence.startBoxRight.name : "NULL")}");
-        Debug.Log($"End Box Left: {(currentSequence.endBoxLeft != null ? currentSequence.endBoxLeft.name : "NULL")}");
-        Debug.Log($"End Box Right: {(currentSequence.endBoxRight != null ? currentSequence.endBoxRight.name : "NULL")}");
-        Debug.Log($"Sequence Boxes Count: {currentSequence.sequenceBoxes.Length}");
+    
+    bool hasAnyBoxes = (currentSequence.startBoxLeft != null || 
+                       currentSequence.startBoxRight != null ||
+                       currentSequence.endBoxLeft != null || 
+                       currentSequence.endBoxRight != null ||
+                       (currentSequence.sequenceBoxes != null && currentSequence.sequenceBoxes.Length > 0));
 
+    if (!hasAnyBoxes)
+    {
+        Debug.Log("No boxes available in sequence");
+        return;
+    }
+
+    Debug.Log($"=== SEQUENCE ANALYSIS ===");
+    Debug.Log($"Start Box Left: {(currentSequence.startBoxLeft != null ? currentSequence.startBoxLeft.name : "NULL")}");
+    Debug.Log($"Start Box Right: {(currentSequence.startBoxRight != null ? currentSequence.startBoxRight.name : "NULL")}");
+    Debug.Log($"End Box Left: {(currentSequence.endBoxLeft != null ? currentSequence.endBoxLeft.name : "NULL")}");
+    Debug.Log($"End Box Right: {(currentSequence.endBoxRight != null ? currentSequence.endBoxRight.name : "NULL")}");
+    Debug.Log($"Sequence Boxes Count: {(currentSequence.sequenceBoxes != null ? currentSequence.sequenceBoxes.Length : 0)}");
+
+    if (currentSequence.sequenceBoxes != null)
+    {
         for (int i = 0; i < currentSequence.sequenceBoxes.Length; i++)
         {
             var box = currentSequence.sequenceBoxes[i];
@@ -391,27 +458,29 @@ public class StanceGuide : MonoBehaviour
                 Debug.Log($"  Box {i}: NULL");
             }
         }
+    }
 
+    bool isOneHanded = IsOneHandedSequence(currentSequence, out bool isLeftHandOnly, out bool isRightHandOnly);
+    Debug.Log($"One-handed: {isOneHanded}, LeftOnly: {isLeftHandOnly}, RightOnly: {isRightHandOnly}");
 
-        bool isOneHanded = IsOneHandedSequence(currentSequence, out bool isLeftHandOnly, out bool isRightHandOnly);
-        Debug.Log($"One-handed: {isOneHanded}, LeftOnly: {isLeftHandOnly}, RightOnly: {isRightHandOnly}");
+    List<Transform> leftHandPath = new List<Transform>();
+    List<Transform> rightHandPath = new List<Transform>();
 
-        List<Transform> leftHandPath = new List<Transform>();
-        List<Transform> rightHandPath = new List<Transform>();
+    
+    if (currentSequence.startBoxLeft != null)
+    {
+        leftHandPath.Add(currentSequence.startBoxLeft.transform);
+        Debug.Log($"Added LEFT start box: {currentSequence.startBoxLeft.name}");
+    }
+    if (currentSequence.startBoxRight != null)
+    {
+        rightHandPath.Add(currentSequence.startBoxRight.transform);
+        Debug.Log($"Added RIGHT start box: {currentSequence.startBoxRight.name}");
+    }
 
-
-        if (currentSequence.startBoxLeft != null)
-        {
-            leftHandPath.Add(currentSequence.startBoxLeft.transform);
-            Debug.Log($"Added LEFT start box: {currentSequence.startBoxLeft.name}");
-        }
-        if (currentSequence.startBoxRight != null)
-        {
-            rightHandPath.Add(currentSequence.startBoxRight.transform);
-            Debug.Log($"Added RIGHT start box: {currentSequence.startBoxRight.name}");
-        }
-
-
+    
+    if (currentSequence.sequenceBoxes != null && currentSequence.sequenceBoxes.Length > 0)
+    {
         foreach (var box in currentSequence.sequenceBoxes)
         {
             if (box != null)
@@ -453,7 +522,6 @@ public class StanceGuide : MonoBehaviour
                     }
                     else
                     {
-
                         leftHandPath.Add(box.transform);
                         rightHandPath.Add(box.transform);
                         Debug.Log($"Added to BOTH paths (two-handed): {box.name}");
@@ -461,68 +529,71 @@ public class StanceGuide : MonoBehaviour
                 }
             }
         }
-
-
-        if (currentSequence.endBoxLeft != null)
-        {
-            leftHandPath.Add(currentSequence.endBoxLeft.transform);
-            Debug.Log($"Added LEFT end box: {currentSequence.endBoxLeft.name}");
-        }
-        if (currentSequence.endBoxRight != null)
-        {
-            rightHandPath.Add(currentSequence.endBoxRight.transform);
-            Debug.Log($"Added RIGHT end box: {currentSequence.endBoxRight.name}");
-        }
-
-        Debug.Log($"=== FINAL PATH COUNTS ===");
-        Debug.Log($"Left Hand Path: {leftHandPath.Count} waypoints");
-        for (int i = 0; i < leftHandPath.Count; i++)
-        {
-            Debug.Log($"  Left {i}: {leftHandPath[i].name}");
-        }
-        Debug.Log($"Right Hand Path: {rightHandPath.Count} waypoints");
-        for (int i = 0; i < rightHandPath.Count; i++)
-        {
-            Debug.Log($"  Right {i}: {rightHandPath[i].name}");
-        }
-
-
-        if (leftHandPath.Count > 0)
-        {
-            GeneratePathForBaton(0, leftHandPath.ToArray());
-        }
-        else
-        {
-
-            leftHandBaton.batonPath = new BatonKeyframe[0];
-            leftHandBaton.totalPathDistance = 0f;
-            Debug.Log("Cleared left hand baton path");
-        }
-
-        if (rightHandPath.Count > 0)
-        {
-            GeneratePathForBaton(1, rightHandPath.ToArray());
-        }
-        else
-        {
-
-            rightHandBaton.batonPath = new BatonKeyframe[0];
-            rightHandBaton.totalPathDistance = 0f;
-            Debug.Log("Cleared right hand baton path");
-        }
-
-
-        if (synchronizeBatons && leftHandPath.Count > 0 && rightHandPath.Count > 0)
-        {
-            CalculateSynchronizedSpeeds();
-        }
-
-        Debug.Log($"Generated paths - Left: {leftHandPath.Count} waypoints, Right: {rightHandPath.Count} waypoints");
-        if (isOneHanded)
-        {
-            Debug.Log($"One-handed sequence detected: {(isLeftHandOnly ? "Left Hand Only" : "Right Hand Only")}");
-        }
     }
+    else
+    {
+        Debug.Log("No sequence boxes to process - using only start/end boxes");
+    }
+
+    
+    if (currentSequence.endBoxLeft != null)
+    {
+        leftHandPath.Add(currentSequence.endBoxLeft.transform);
+        Debug.Log($"Added LEFT end box: {currentSequence.endBoxLeft.name}");
+    }
+    if (currentSequence.endBoxRight != null)
+    {
+        rightHandPath.Add(currentSequence.endBoxRight.transform);
+        Debug.Log($"Added RIGHT end box: {currentSequence.endBoxRight.name}");
+    }
+
+    Debug.Log($"=== FINAL PATH COUNTS ===");
+    Debug.Log($"Left Hand Path: {leftHandPath.Count} waypoints");
+    for (int i = 0; i < leftHandPath.Count; i++)
+    {
+        Debug.Log($"  Left {i}: {leftHandPath[i].name}");
+    }
+    Debug.Log($"Right Hand Path: {rightHandPath.Count} waypoints");
+    for (int i = 0; i < rightHandPath.Count; i++)
+    {
+        Debug.Log($"  Right {i}: {rightHandPath[i].name}");
+    }
+
+    
+    if (leftHandPath.Count > 0)
+    {
+        GeneratePathForBaton(0, leftHandPath.ToArray());
+    }
+    else
+    {
+        leftHandBaton.batonPath = new BatonKeyframe[0];
+        leftHandBaton.totalPathDistance = 0f;
+        Debug.Log("Cleared left hand baton path");
+    }
+
+    if (rightHandPath.Count > 0)
+    {
+        GeneratePathForBaton(1, rightHandPath.ToArray());
+    }
+    else
+    {
+        rightHandBaton.batonPath = new BatonKeyframe[0];
+        rightHandBaton.totalPathDistance = 0f;
+        Debug.Log("Cleared right hand baton path");
+    }
+
+    
+    if (synchronizeBatons && leftHandPath.Count > 0 && rightHandPath.Count > 0)
+    {
+        CalculateSynchronizedSpeeds();
+    }
+
+    Debug.Log($"Generated paths - Left: {leftHandPath.Count} waypoints, Right: {rightHandPath.Count} waypoints");
+    if (isOneHanded)
+    {
+        Debug.Log($"One-handed sequence detected: {(isLeftHandOnly ? "Left Hand Only" : "Right Hand Only")}");
+    }
+}
 
     
     [Header("Curve Settings")]
@@ -715,6 +786,7 @@ public class StanceGuide : MonoBehaviour
         return;
     }
 
+    
     if (!config.isPlaying || config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
     {
         if (config.batonInstance != null)
@@ -766,6 +838,7 @@ public class StanceGuide : MonoBehaviour
     config.currentDistance += speedToUse * Time.deltaTime;
     UpdateBatonPosition(batonIndex);
 }
+
 
 
     void CalculatePathDistances(int batonIndex)
@@ -976,9 +1049,10 @@ void InitializeTrail(int batonIndex)
 
     var config = batonConfigs[batonIndex];
 
+    
     if (config.batonPath == null || config.batonPath.Length < 2 || config.totalPathDistance <= 0f)
     {
-        Debug.Log($"Cannot start {config.batonName} - no valid path available");
+        Debug.Log($"Cannot start {config.batonName} - no valid path available (need at least 2 points)");
         return;
     }
 
@@ -1009,6 +1083,7 @@ void InitializeTrail(int batonIndex)
 
     Debug.Log($"Started {config.batonName} with {config.batonPath.Length} waypoints");
 }
+
 
     public void StopBaton(int batonIndex)
     {
@@ -1069,25 +1144,25 @@ void InitializeTrail(int batonIndex)
         }
     }
 
-    public void StartAllBatons()
+public void StartAllBatons()
+{
+    
+    bool leftHasPath = leftHandBaton.batonPath != null && leftHandBaton.batonPath.Length >= 2 && leftHandBaton.totalPathDistance > 0f;
+    bool rightHasPath = rightHandBaton.batonPath != null && rightHandBaton.batonPath.Length >= 2 && rightHandBaton.totalPathDistance > 0f;
+
+    if (synchronizeBatons && leftHasPath && rightHasPath)
     {
+        CalculateSynchronizedSpeeds();
+    }
 
-        bool leftHasPath = leftHandBaton.batonPath != null && leftHandBaton.batonPath.Length >= 2 && leftHandBaton.totalPathDistance > 0f;
-        bool rightHasPath = rightHandBaton.batonPath != null && rightHandBaton.batonPath.Length >= 2 && rightHandBaton.totalPathDistance > 0f;
-
-        if (synchronizeBatons && leftHasPath && rightHasPath)
+    for (int i = 0; i < batonConfigs.Length; i++)
+    {
+        if (batonConfigs[i].autoPlay)
         {
-            CalculateSynchronizedSpeeds();
-        }
-
-        for (int i = 0; i < batonConfigs.Length; i++)
-        {
-            if (batonConfigs[i].autoPlay)
-            {
-                StartBaton(i);
-            }
+            StartBaton(i);
         }
     }
+}
 
     public void StopAllBatons()
     {

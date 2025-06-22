@@ -84,6 +84,8 @@ public class SparManager : MonoBehaviour, ILevelManager
     public bool useSparringPartner = false;
     [Range(0f, 10f)]
     public float sparringPartnerDelay = 2f;
+    [Range(0.1f, 3.0f)]
+    public float sparringPartnerAnimationSpeed = 1f;
     private GameObject sparringPartner;
     private Animator sparringPartnerAnimator;
 
@@ -93,7 +95,6 @@ public class SparManager : MonoBehaviour, ILevelManager
         public string stanceName;
         public float timeout;
         [Range(0.1f, 3.0f)]
-        public float animationSpeed = 1f;
 
         [Header("Animation Event Timing")]
         public float objectiveActivationTime = 1f;
@@ -262,40 +263,6 @@ public class SparManager : MonoBehaviour, ILevelManager
         StartCoroutine(StartPhase1());
     }
 
-    private IEnumerator StartSparringPartnerWithDelay()
-    {
-        Debug.Log($"Waiting {sparringPartnerDelay} seconds before sparring partner starts moving...");
-
-        if (sparringPartnerAnimator != null)
-        {
-            sparringPartnerAnimator.enabled = false;
-        }
-
-        yield return new WaitForSeconds(sparringPartnerDelay);
-
-        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation) &&
-            currentPhase == 1 && isGameActive && !isGameOver)
-        {
-            sparringPartnerAnimator.enabled = true;
-
-            yield return null;
-
-            float animSpeed = 1f;
-            if (currentObjectiveIndex < phase1Objectives.Count)
-            {
-                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-            }
-
-            sparringPartnerAnimator.speed = animSpeed;
-            sparringPartnerAnimator.Play(sparringPartnerAnimation);
-
-            Debug.Log($"Sparring partner started moving with animation: {sparringPartnerAnimation} at speed: {animSpeed}");
-        }
-        else
-        {
-            Debug.LogWarning("Sparring partner animation not started - conditions not met");
-        }
-    }
 
     private void Update()
     {
@@ -364,33 +331,33 @@ public class SparManager : MonoBehaviour, ILevelManager
         }
     }
 
-private void UpdateTimingBar()
-{
-    if (!timingBarActive || timingBarPanel == null) return;
-    
-    if (timingBarFill != null)
+    private void UpdateTimingBar()
     {
-        
-        timingBarFill.fillAmount = 1f;
-        
-        if (canPlayerAct)
+        if (!timingBarActive || timingBarPanel == null) return;
+
+        if (timingBarFill != null)
         {
-            timingBarFill.color = barRedColor;
-            if (timingBarBackground != null)
+
+            timingBarFill.fillAmount = 1f;
+
+            if (canPlayerAct)
             {
-                timingBarBackground.color = barRedColor;
+                timingBarFill.color = barRedColor;
+                if (timingBarBackground != null)
+                {
+                    timingBarBackground.color = barRedColor;
+                }
             }
-        }
-        else
-        {
-            timingBarFill.color = barWhiteColor;
-            if (timingBarBackground != null)
+            else
             {
-                timingBarBackground.color = barWhiteColor;
+                timingBarFill.color = barWhiteColor;
+                if (timingBarBackground != null)
+                {
+                    timingBarBackground.color = barWhiteColor;
+                }
             }
         }
     }
-}
 
 
     private void EndRound()
@@ -465,6 +432,7 @@ private void UpdateTimingBar()
             sparringPartnerAnimator.enabled = false;
             Debug.Log("Sparring partner animator disabled to prevent T-pose during delay");
 
+
             sparringPartnerCoroutine = StartCoroutine(StartSparringPartnerWithProperSetup());
         }
         else
@@ -473,93 +441,46 @@ private void UpdateTimingBar()
         }
     }
 
+
     private IEnumerator StartSparringPartnerWithProperSetup()
-{
-    Debug.Log($"Waiting {sparringPartnerDelay} seconds before enabling sparring partner animation...");
-
-    yield return new WaitForSeconds(sparringPartnerDelay);
-
-    if (currentPhase == 1 && isGameActive && !isGameOver &&
-        sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
     {
-        float animSpeed = 1f;
-        if (currentObjectiveIndex < phase1Objectives.Count)
-        {
-            animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-        }
-
-        sparringPartnerAnimator.enabled = true;
-        yield return null;
-
-        sparringPartnerAnimator.speed = animSpeed;
-        sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
-
-        Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
-        
-        
-    }
-    else
-    {
-        Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
-    }
-}
-
-    private void SetupSparringPartnerForPhase1()
-    {
-        if (sparringPartner == null) return;
-
-        if (sparringPartnerCoroutine != null)
-        {
-            StopCoroutine(sparringPartnerCoroutine);
-            sparringPartnerCoroutine = null;
-        }
-
-        if (sparringPartnerAnimator == null)
-        {
-            sparringPartnerAnimator = sparringPartner.GetComponent<Animator>();
-        }
-
-        if (sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
-        {
-            sparringPartnerAnimator.enabled = true;
-            sparringPartnerAnimator.Rebind();
-            sparringPartnerAnimator.Update(0f);
-
-            Debug.Log($"Sparring partner animator reset and ready for Phase 1");
-
-            sparringPartnerCoroutine = StartCoroutine(StartSparringPartnerAnimation());
-        }
-        else
-        {
-            Debug.LogWarning("Sparring partner animator or animation name is missing");
-        }
-    }
-
-    private IEnumerator StartSparringPartnerAnimation()
-    {
-        Debug.Log($"Starting sparring partner animation after {sparringPartnerDelay} seconds delay");
+        Debug.Log($"Waiting {sparringPartnerDelay} seconds before enabling sparring partner animation...");
 
         yield return new WaitForSeconds(sparringPartnerDelay);
 
         if (currentPhase == 1 && isGameActive && !isGameOver &&
             sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
         {
-            float animSpeed = 1f;
-            if (currentObjectiveIndex < phase1Objectives.Count)
-            {
-                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-            }
+            sparringPartnerAnimator.enabled = true;
+            yield return null;
 
-            sparringPartnerAnimator.speed = animSpeed;
+            sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
             sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
 
-            Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {animSpeed}");
+            Debug.Log($"Sparring partner animation '{sparringPartnerAnimation}' started with speed {sparringPartnerAnimationSpeed}");
+
+
+            if (isTutorialMode)
+            {
+                Debug.Log($"Tutorial mode: Will pause animation at {tutorialAnimationPauseTime} seconds");
+                yield return new WaitForSeconds(tutorialAnimationPauseTime);
+
+                if (sparringPartnerAnimator != null)
+                {
+                    sparringPartnerAnimator.speed = 0f;
+                    tutorialAnimationPaused = true;
+                    Debug.Log("Tutorial: Animation paused for instruction");
+
+                    ShowTutorialInstruction();
+                }
+            }
         }
         else
         {
             Debug.LogWarning($"Cannot start sparring partner animation - Phase: {currentPhase}, Active: {isGameActive}, GameOver: {isGameOver}");
         }
     }
+
 
     private void StopSparringPartnerAnimation()
     {
@@ -576,23 +497,27 @@ private void UpdateTimingBar()
         }
     }
 
-    private void StartNextObjective()
+
+  private void StartNextObjective()
 {
     if (currentObjectiveIndex < phase1Objectives.Count)
     {
         ClearCurrentObjectiveBoxes();
 
         objectiveActive = true;
-        canPlayerAct = false; 
+        canPlayerAct = false;
         playerActedTooEarly = false;
 
-        
-        SetAutoDetectSequences(false);
-
         string requiredStance = phase1Objectives[currentObjectiveIndex].stanceName;
-        float animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
+        float objectiveTimeout = phase1Objectives[currentObjectiveIndex].timeout;
 
-        Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance} - Waiting for timing window");
+        Debug.Log($"Starting objective {currentObjectiveIndex + 1}: {requiredStance}");
+
+        if (!isTutorialMode)
+        {
+            timer = objectiveTimeout > 0 ? objectiveTimeout : defaultObjectiveTimeout;
+            Debug.Log($"Objective timer set to: {timer} seconds");
+        }
 
         if (timingBarPanel != null)
         {
@@ -601,19 +526,12 @@ private void UpdateTimingBar()
 
         if (useSparringPartner && sparringPartnerAnimator != null && sparringPartnerAnimator.enabled)
         {
-            sparringPartnerAnimator.speed = animSpeed;
-            Debug.Log($"Updated sparring partner animation speed to: {animSpeed}");
+            sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
+            Debug.Log($"Updated sparring partner animation speed to: {sparringPartnerAnimationSpeed}");
         }
 
-        if (isTutorialMode)
-        {
-            StartTutorialSequenceDirectly(requiredStance);
-            Debug.Log($"Tutorial mode: Started sequence directly for stance {requiredStance}");
-        }
-        else
-        {
-            StanceManager.Instance.EnterStance(requiredStance);
-        }
+        
+        StartCoroutine(StartSequenceAfterDelay(requiredStance, 0.1f));
     }
     else
     {
@@ -621,6 +539,49 @@ private void UpdateTimingBar()
     }
 }
 
+private IEnumerator StartSequenceAfterDelay(string stanceName, float delay)
+{
+    yield return new WaitForSeconds(delay);
+    
+    
+    SetAutoDetectSequences(false);
+    
+    StartSequenceForObjective(stanceName);
+}
+
+
+
+private IEnumerator ForceStanceGuideUpdate()
+{
+    yield return new WaitForEndOfFrame();
+    
+    
+    StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+    if (stanceGuide != null)
+    {
+        stanceGuide.ResetSequenceDetection();
+        Debug.Log("Forced StanceGuide to reset sequence detection");
+    }
+}
+    private void StartSequenceForObjective(string stanceName)
+    {
+        if (StanceManager.Instance == null) return;
+
+
+        StanceManager.Instance.EnterStance(stanceName, false);
+
+
+        foreach (var style in StanceManager.Instance.arnisStyles)
+        {
+            if (style.styleName == stanceName && style.sequences.Count > 0)
+            {
+                var firstSequence = style.sequences[0];
+                StanceManager.Instance.StartAttackSequence(firstSequence);
+                Debug.Log($"Started sequence {firstSequence.sequenceName} for stance {stanceName}");
+                break;
+            }
+        }
+    }
     private void StartTutorialSequenceDirectly(string stanceName)
     {
         if (StanceManager.Instance == null) return;
@@ -646,38 +607,50 @@ private void UpdateTimingBar()
     }
 
 
-    private void ClearCurrentObjectiveBoxes()
+
+private void ClearCurrentObjectiveBoxes()
+{
+    if (StanceManager.Instance == null) return;
+
+    
+    SetAutoDetectSequences(false);
+    
+    StanceManager.Instance.ClearAllStances();
+
+    ResetStanceGuide();
+
+    Debug.Log($"Cleared boxes and disabled StanceGuide for objective transition");
+}
+private void NextObjective()
+{
+    objectiveActive = false;
+    objectiveWindowActive = false;
+    StopTimingBar();
+    
+    
+    SetAutoDetectSequences(false);
+    
+    
+    ResetStanceGuide();
+    
+    
+    if (!useAnimationEvents || !phase1Objectives[currentObjectiveIndex].useAnimationEvents)
     {
-        if (StanceManager.Instance == null) return;
-
-        StanceManager.Instance.ClearAllStances();
-
-        Debug.Log($"Cleared boxes for objective transition");
-    }
-
-    private void NextObjective()
-    {
-        objectiveActive = false;
-        objectiveWindowActive = false;
-        StopTimingBar();
-        
-        
-        if (!useAnimationEvents || !phase1Objectives[currentObjectiveIndex].useAnimationEvents)
+        if (timer <= 0)
         {
-            if (timer <= 0)
-            {
-                opponentScore++;
-                Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
-                UpdateScoreDisplay();
-            }
+            opponentScore++;
+            Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+            UpdateScoreDisplay();
         }
-        
-        currentObjectiveIndex++;
-        StartNextObjective();
     }
+    
+    currentObjectiveIndex++;
+    StartNextObjective();
+}
 
 
-public void NotifyPhase1Completion(string stanceName, string sequenceName)
+
+    public void NotifyPhase1Completion(string stanceName, string sequenceName)
 {
     if (!isGameActive || isGameOver || currentPhase != 1 || !objectiveActive) return;
     
@@ -687,30 +660,29 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
     {
         if (!canPlayerAct)
         {
-            
             playerActedTooEarly = true;
             opponentScore++;
             Debug.Log($"Player acted too early for objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
             UpdateScoreDisplay();
             
-            
             ShowPhase1Feedback("MISS", missColor);
-            
             return;
         }
         else
         {
-            
             playerScore++;
             Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
             UpdateScoreDisplay();
-            
             
             ShowPhase1Feedback("BLOCK", blockColor);
             
             objectiveActive = false;
             canPlayerAct = false;
             StopTimingBar();
+            
+            
+            SetAutoDetectSequences(false);
+            ResetStanceGuide();
             
             if (isTutorialMode)
             {
@@ -721,7 +693,7 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
                 
                 if (tutorialAnimationPaused && sparringPartnerAnimator != null)
                 {
-                    sparringPartnerAnimator.speed = 1f;
+                    sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
                     tutorialAnimationPaused = false;
                     Debug.Log("Tutorial: Animation resumed");
                     
@@ -729,6 +701,9 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
                     return;
                 }
             }
+            
+            
+            StartCoroutine(DelayedNextObjective());
         }
     }
 }
@@ -742,46 +717,46 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
     }
 
     private IEnumerator StartPhase2()
-{
-    Debug.Log("Transitioning to Phase 2");
-
-    if (useSparringPartner)
     {
-        StopSparringPartnerAnimation();
+        Debug.Log("Transitioning to Phase 2");
+
+        if (useSparringPartner)
+        {
+            StopSparringPartnerAnimation();
+        }
+
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.ClearAllStances();
+        }
+
+        StanceManager.Instance.EnterStance("Default");
+        objectiveActive = false;
+
+        yield return new WaitForSeconds(phaseTransitionDelay);
+
+        if (phaseText != null)
+        {
+            phaseText.text = "Phase 2";
+        }
+
+        currentPhase = 2;
+
+
+        SetAutoDetectSequences(true);
+
+        ResetBlockChance();
+        stanceUseCount.Clear();
+        blockChanceResetTimer = blockChanceResetTime;
+
+        ActivatePhase2Stances();
+
+        if (isTutorialMode)
+        {
+            yield return new WaitForSeconds(0.5f);
+            ShowTutorialPhase2Instruction();
+        }
     }
-
-    if (StanceManager.Instance != null)
-    {
-        StanceManager.Instance.ClearAllStances();
-    }
-
-    StanceManager.Instance.EnterStance("Default");
-    objectiveActive = false;
-
-    yield return new WaitForSeconds(phaseTransitionDelay);
-
-    if (phaseText != null)
-    {
-        phaseText.text = "Phase 2";
-    }
-
-    currentPhase = 2;
-    
-    
-    SetAutoDetectSequences(true);
-
-    ResetBlockChance();
-    stanceUseCount.Clear();
-    blockChanceResetTimer = blockChanceResetTime;
-
-    ActivatePhase2Stances();
-
-    if (isTutorialMode)
-    {
-        yield return new WaitForSeconds(0.5f);
-        ShowTutorialPhase2Instruction();
-    }
-}
 
     private void ActivatePhase2Stances()
     {
@@ -838,22 +813,18 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
         if (currentPhase == 2)
         {
 
+            if (isTutorialMode && tutorialInstructionPanel != null && tutorialInstructionPanel.activeInHierarchy)
+            {
+                tutorialInstructionPanel.SetActive(false);
+                Debug.Log("Tutorial Phase 2 instruction hidden after first objective completion");
+            }
+
             if (isTutorialMode)
             {
-                if (!tutorialCompletedStanceTypes.Contains(stanceName))
-                {
-                    tutorialCompletedStanceTypes.Add(stanceName);
-                    tutorialPhase2CompletedStances++;
 
-                    Debug.Log($"Tutorial: Completed stance {stanceName}. Progress: {tutorialPhase2CompletedStances}/3");
-
-                    if (tutorialPhase2CompletedStances >= 3)
-                    {
-                        Debug.Log("Tutorial completed! Ending game.");
-                        EndGame();
-                        return;
-                    }
-                }
+                Debug.Log("Tutorial completed after 1 sequence! Ending game.");
+                EndGame();
+                return;
             }
 
             bool blocked = CheckIfOpponentBlocks(stanceName);
@@ -883,8 +854,24 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
             }
 
             IncreaseBlockChance(stanceName);
+
+
+            if (StanceManager.Instance != null)
+            {
+                StanceManager.Instance.EnterStance("Default");
+                StartCoroutine(ReactivatePhase2StancesAfterDelay());
+            }
         }
     }
+private IEnumerator ReactivatePhase2StancesAfterDelay()
+{
+    yield return new WaitForSeconds(0.1f); 
+    if (currentPhase == 2 && StanceManager.Instance != null)
+    {
+        StanceManager.Instance.ActivatePhase2Stances(phase2Stances);
+        Debug.Log("Phase 2 stances reactivated after sequence completion");
+    }
+}
 
     private bool CheckIfOpponentBlocks(string stanceName)
     {
@@ -1006,7 +993,7 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
         }
 
         DisableAllBoxes();
-        
+
         if (phase1FeedbackPanel != null)
         {
             phase1FeedbackPanel.SetActive(false);
@@ -1057,17 +1044,21 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
         }
     }
 
-    private void ShowTutorialInstructionWhenReady()
+private void ShowTutorialInstructionWhenReady()
+{
+    if (sparringPartnerAnimator != null)
     {
-        if (sparringPartnerAnimator != null)
-        {
-            sparringPartnerAnimator.speed = 0f;
-            tutorialAnimationPaused = true;
-            Debug.Log("Tutorial: Animation paused when player can act");
-        }
-        
-        ShowTutorialInstruction();
+        sparringPartnerAnimator.speed = 0f;
+        tutorialAnimationPaused = true;
+        Debug.Log("Tutorial: Animation paused when player can act");
     }
+
+    
+    SetAutoDetectSequences(true);
+    StartCoroutine(ForceStanceGuideUpdateWhenActive());
+
+    ShowTutorialInstruction();
+}
 
     private void DisableAllBoxes()
     {
@@ -1201,45 +1192,6 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
         }
     }
 
-    private IEnumerator StartTutorialSparringPartnerAnimation()
-    {
-        Debug.Log($"Starting tutorial sparring partner animation with pause at {tutorialAnimationPauseTime} seconds");
-
-        yield return new WaitForSeconds(sparringPartnerDelay);
-
-        if (currentPhase == 1 && isGameActive && !isGameOver &&
-            sparringPartnerAnimator != null && !string.IsNullOrEmpty(sparringPartnerAnimation))
-        {
-            float animSpeed = 1f;
-            if (currentObjectiveIndex < phase1Objectives.Count)
-            {
-                animSpeed = phase1Objectives[currentObjectiveIndex].animationSpeed;
-            }
-
-            sparringPartnerAnimator.enabled = true;
-            yield return null;
-
-            sparringPartnerAnimator.speed = animSpeed;
-            sparringPartnerAnimator.Play(sparringPartnerAnimation, 0, 0f);
-
-            Debug.Log($"Tutorial: Sparring partner animation started, will pause at {tutorialAnimationPauseTime}s");
-
-
-            yield return new WaitForSeconds(tutorialAnimationPauseTime);
-
-
-            if (sparringPartnerAnimator != null)
-            {
-                sparringPartnerAnimator.speed = 0f;
-                tutorialAnimationPaused = true;
-                Debug.Log("Tutorial: Animation paused");
-
-
-                ShowTutorialInstruction();
-            }
-        }
-    }
-
     private void ShowTutorialInstruction()
     {
         if (tutorialInstructionPanel != null && tutorialInstructionTextUI != null)
@@ -1262,7 +1214,7 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
             Debug.Log("Tutorial Phase 2 instruction shown");
 
 
-            StartCoroutine(HideTutorialInstructionAfterDelay(3f));
+
         }
     }
 
@@ -1285,23 +1237,38 @@ public void NotifyPhase1Completion(string stanceName, string sequenceName)
     public void OnAnimationEventObjectiveStart(int objectiveIndex)
     {
         if (!isGameActive || isGameOver || currentPhase != 1) return;
-        
+
         if (objectiveIndex != currentObjectiveIndex) return;
-        
+
         canPlayerAct = true;
+
         
         SetAutoDetectSequences(true);
+
         
-        Debug.Log($"Animation Event: Player can now act for objective {objectiveIndex + 1}");
-        
+        StartCoroutine(ForceStanceGuideUpdateWhenActive());
+
+        Debug.Log($"Animation Event: Player can now act for objective {objectiveIndex + 1} - StanceGuide activated");
+
         if (isTutorialMode && !tutorialInstructionShown)
         {
             ShowTutorialInstructionWhenReady();
         }
     }
+private IEnumerator ForceStanceGuideUpdateWhenActive()
+{
+    yield return new WaitForEndOfFrame();
+    
+    StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+    if (stanceGuide != null)
+    {
+        stanceGuide.ResetSequenceDetection();
+        Debug.Log("StanceGuide activated and reset for player action window");
+    }
+}
 
 
-public void OnAnimationEventObjectiveEnd(int objectiveIndex)
+    public void OnAnimationEventObjectiveEnd(int objectiveIndex)
 {
     if (!isGameActive || isGameOver || currentPhase != 1) return;
     
@@ -1311,13 +1278,13 @@ public void OnAnimationEventObjectiveEnd(int objectiveIndex)
     
     
     SetAutoDetectSequences(false);
+    ResetStanceGuide();
     
     if (objectiveActive)
     {
         opponentScore++;
         Debug.Log($"Player was too late for objective {objectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
         UpdateScoreDisplay();
-        
         
         ShowPhase1Feedback("MISS", missColor);
     }
@@ -1331,27 +1298,27 @@ public void OnAnimationEventObjectiveEnd(int objectiveIndex)
 }
 
 
-private void ShowPhase1Feedback(string feedbackText, Color textColor)
-{
-    if (phase1FeedbackPanel != null && phase1FeedbackText != null)
+    private void ShowPhase1Feedback(string feedbackText, Color textColor)
     {
-        StartCoroutine(ShowPhase1FeedbackCoroutine(feedbackText, textColor));
+        if (phase1FeedbackPanel != null && phase1FeedbackText != null)
+        {
+            StartCoroutine(ShowPhase1FeedbackCoroutine(feedbackText, textColor));
+        }
     }
-}
 
 
-private IEnumerator ShowPhase1FeedbackCoroutine(string feedbackText, Color textColor)
-{
-    phase1FeedbackPanel.SetActive(true);
-    phase1FeedbackText.text = feedbackText;
-    phase1FeedbackText.color = textColor;
-    
-    Debug.Log($"Phase 1 Feedback: {feedbackText}");
-    
-    yield return new WaitForSeconds(feedbackDisplayDuration);
-    
-    phase1FeedbackPanel.SetActive(false);
-}
+    private IEnumerator ShowPhase1FeedbackCoroutine(string feedbackText, Color textColor)
+    {
+        phase1FeedbackPanel.SetActive(true);
+        phase1FeedbackText.text = feedbackText;
+        phase1FeedbackText.color = textColor;
+
+        Debug.Log($"Phase 1 Feedback: {feedbackText}");
+
+        yield return new WaitForSeconds(feedbackDisplayDuration);
+
+        phase1FeedbackPanel.SetActive(false);
+    }
 
     private IEnumerator DelayedNextObjective()
     {
@@ -1360,32 +1327,32 @@ private IEnumerator ShowPhase1FeedbackCoroutine(string feedbackText, Color textC
     }
 
     private void StartTimingBar()
-{
-    if (timingBarPanel != null)
     {
-        timingBarPanel.SetActive(true);
-        timingBarActive = true;
-        
-        if (timingBarFill != null)
+        if (timingBarPanel != null)
         {
-            timingBarFill.fillAmount = 1f;
-            timingBarFill.color = barWhiteColor;
+            timingBarPanel.SetActive(true);
+            timingBarActive = true;
+
+            if (timingBarFill != null)
+            {
+                timingBarFill.fillAmount = 1f;
+                timingBarFill.color = barWhiteColor;
+            }
+
+            if (timingBarBackground != null)
+            {
+                timingBarBackground.color = barWhiteColor;
+            }
+
+            Debug.Log("Timing bar started - white (waiting for timing window)");
         }
-        
-        if (timingBarBackground != null)
-        {
-            timingBarBackground.color = barWhiteColor;
-        }
-        
-        Debug.Log("Timing bar started - white (waiting for timing window)");
     }
-}
     private void CheckAttackWindow()
     {
         if (!objectiveWindowActive || currentPhase != 1) return;
-        
+
         float currentTime = Time.time;
-        
+
         if (!isInAttackWindow && currentTime >= attackWindowStartTime)
         {
             isInAttackWindow = true;
@@ -1401,6 +1368,17 @@ private IEnumerator ShowPhase1FeedbackCoroutine(string feedbackText, Color textC
             timingBarPanel.SetActive(false);
             timingBarActive = false;
             Debug.Log("Timing bar stopped");
+        }
+    }
+        private void ResetStanceGuide()
+    {
+        StanceGuide stanceGuide = FindObjectOfType<StanceGuide>();
+        if (stanceGuide != null)
+        {
+            
+            stanceGuide.ResetSequenceDetection(); 
+            stanceGuide.autoDetectSequences = false;
+            Debug.Log("StanceGuide reset and disabled");
         }
     }
 

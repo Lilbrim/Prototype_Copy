@@ -82,6 +82,8 @@ public class LevelSelector : MonoBehaviour
     private List<Button> levelButtons = new List<Button>();
     private List<Button> sparLevelButtons = new List<Button>();
     private List<Button> tournamentLevelButtons = new List<Button>();
+    private bool hasInitializedFade = false;
+
 
     public Button houseBackgroundButton;
     public Button gymBackgroundButton;
@@ -96,21 +98,27 @@ public class LevelSelector : MonoBehaviour
 
     private int currentStoryLevelIndex = 0;
     private List<LevelData> allLevelsInOrder = new List<LevelData>();
-    private bool isInStoryMode = false;
+    public bool isInStoryMode = false;
 
     
     private bool isTransitioningBackground = false;
 
     private void Start()
     {
-        ShowpracLevelsTab();
-
+        
+        InitializeScreenFaded();
+        
+        LoadSavedBackground(); 
+            
+        if (currentBackground != LevelBackground.House)
+        {
+            ShowpracLevelsTab();
+        }
+        
         GenerateLevelButtons();
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
         InitializeStoryModeOrder();
-
-        LoadSavedBackground();
 
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
@@ -123,9 +131,38 @@ public class LevelSelector : MonoBehaviour
             
         if (houseBackgroundButton != null)
             houseBackgroundButton.onClick.AddListener(SetHouseBackground);
-    
+
         if (gymBackgroundButton != null)
             gymBackgroundButton.onClick.AddListener(SetGymBackground);
+            
+        
+        StartCoroutine(InitialFadeIn());
+    }
+
+    private void InitializeScreenFaded()
+    {
+        SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
+        if (transitionManager != null && transitionManager.fadeCanvasGroup != null)
+        {
+            transitionManager.fadeCanvasGroup.alpha = 1f;
+            transitionManager.fadeCanvasGroup.blocksRaycasts = true;
+            hasInitializedFade = true;
+        }
+    }
+
+    private IEnumerator InitialFadeIn()
+    {
+        if (!hasInitializedFade)
+            yield break;
+            
+        // Wait a brief moment for everything to be ready
+        yield return new WaitForSeconds(0.1f);
+        
+        SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
+        if (transitionManager != null)
+        {
+            yield return StartCoroutine(FadeFromBlack(transitionManager));
+        }
     }
 
     public void ChangeBackground(LevelBackground newBackground)
@@ -139,13 +176,15 @@ public class LevelSelector : MonoBehaviour
 
     private void LoadSavedBackground()
     {
-        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.Gym);
+        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.House);
+        Debug.Log($"Loading background: {(LevelBackground)savedBackground}");
         currentBackground = (LevelBackground)savedBackground;
         SetBackground(currentBackground);
     }
 
     private void SaveCurrentBackground()
     {
+        Debug.Log($"Saving background: {currentBackground}");
         PlayerPrefs.SetInt(BACKGROUND_SAVE_KEY, (int)currentBackground);
         PlayerPrefs.Save();
     }
@@ -1067,9 +1106,6 @@ private void SetBackground(LevelBackground background)
         {
             InitializeStoryModeOrder();
             UpdateStoryUI();
-            
-            if (storyUIPanel != null)
-                storyUIPanel.SetActive(true);
         }
     }
 
