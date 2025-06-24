@@ -715,36 +715,43 @@ private void InitializeTransparency()
         }
     }
 
-public void OnToggleVideoButtonPressed()
-{
-    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+    public void OnToggleVideoButtonPressed()
     {
-        LevelObjective currentObjective = objectives[currentObjectiveIndex];
-        
-        if (currentObjective.instructionVideo != null && objectiveVideoPlayer != null)
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
         {
-            if (isVideoVisible)
+            LevelObjective currentObjective = objectives[currentObjectiveIndex];
+            
+            if (currentObjective.instructionVideo != null && objectiveVideoPlayer != null)
             {
-                
-                objectiveVideoRawImage.gameObject.SetActive(false);
-                if (objectiveVideoPlayer.isPlaying)
+                if (isVideoVisible)
                 {
-                    objectiveVideoPlayer.Stop();
+                    
+                    objectiveVideoRawImage.gameObject.SetActive(false);
+                    if (objectiveVideoPlayer.isPlaying)
+                    {
+                        objectiveVideoPlayer.Stop();
+                    }
+                    isVideoVisible = false;
+                    isVideoMode = false;
+                    
+                    
+                    SetObjectTransparency(false);
                 }
-                isVideoVisible = false;
-                isVideoMode = false;
-                
-                
-                SetObjectTransparency(false);
-            }
-            else if (!isImageVisible) 
-            {
-                
-                SwitchToVideoMode(currentObjective);
+                else
+                {
+                    
+                    if (isImageVisible)
+                    {
+                        objectiveImage.gameObject.SetActive(false);
+                        isImageVisible = false;
+                    }
+                    
+                    
+                    SwitchToVideoMode(currentObjective);
+                }
             }
         }
     }
-}
 
 
     public void OnToggleImageButtonPressed()
@@ -757,142 +764,155 @@ public void OnToggleVideoButtonPressed()
             {
                 if (isImageVisible && !isVideoMode)
                 {
-
+                    
                     objectiveImage.gameObject.SetActive(false);
                     isImageVisible = false;
 
-
+                    
                     SetObjectTransparency(false);
                 }
-                else if (!isVideoVisible)
+                else
                 {
-
+                    
+                    if (isVideoVisible)
+                    {
+                        objectiveVideoRawImage.gameObject.SetActive(false);
+                        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+                        {
+                            objectiveVideoPlayer.Stop();
+                        }
+                        isVideoVisible = false;
+                        isVideoMode = false;
+                    }
+                    
+                    
                     SwitchToImageMode(currentObjective);
                 }
             }
         }
     }
-private void SetObjectTransparency(bool makeTransparent)
-{
-    GameObject dummyClone = FindDummyPartner();
-    if (dummyClone == null) 
-    {
-        Debug.LogWarning("Dummy clone not found! Cannot set transparency.");
-        return;
-    }
     
-    if (makeTransparent && !Dummy)
+    private void SetObjectTransparency(bool makeTransparent)
     {
-        
-        Renderer renderer = dummyClone.GetComponent<Renderer>();
-        if (renderer != null && renderer.material != null)
+        GameObject dummyClone = FindDummyPartner();
+        if (dummyClone == null)
         {
-            Color color = renderer.material.color;
-            if (originalAlpha == 1f) 
+            Debug.LogWarning("Dummy clone not found! Cannot set transparency.");
+            return;
+        }
+
+        if (makeTransparent && !Dummy)
+        {
+
+            Renderer renderer = dummyClone.GetComponent<Renderer>();
+            if (renderer != null && renderer.material != null)
             {
-                originalAlpha = color.a;
+                Color color = renderer.material.color;
+                if (originalAlpha == 1f)
+                {
+                    originalAlpha = color.a;
+                }
+                color.a = 0.01f;
+                renderer.material.color = color;
+                Dummy = true;
+                Debug.Log("Set Renderer transparency on dummy clone");
             }
-            color.a = 0.3f; 
-            renderer.material.color = color;
-            Dummy = true;
-            Debug.Log("Set Renderer transparency on dummy clone");
         }
-    }
-    else if (!makeTransparent && Dummy)
-    {
-        
-        Renderer renderer = dummyClone.GetComponent<Renderer>();
-        if (renderer != null && renderer.material != null)
+        else if (!makeTransparent && Dummy)
         {
-            Color color = renderer.material.color;
-            color.a = originalAlpha;
-            renderer.material.color = color;
-            Dummy = false;
-            Debug.Log("Restored Renderer transparency on dummy clone");
+
+            Renderer renderer = dummyClone.GetComponent<Renderer>();
+            if (renderer != null && renderer.material != null)
+            {
+                Color color = renderer.material.color;
+                color.a = originalAlpha;
+                renderer.material.color = color;
+                Dummy = false;
+                Debug.Log("Restored Renderer transparency on dummy clone");
+            }
         }
     }
-}
-private GameObject FindDummyPartner()
-{
-    
-    GameObject clone = GameObject.FindGameObjectWithTag("DummyPartner");
-    
-    if (clone == null)
+    private GameObject FindDummyPartner()
     {
         
-        clone = GameObject.Find("DummyPrefab(Clone)");
+        GameObject clone = GameObject.FindGameObjectWithTag("DummyPartner");
         
         if (clone == null)
         {
             
-            GameObject[] allObjects = FindObjectsOfType<GameObject>();
-            foreach (GameObject obj in allObjects)
+            clone = GameObject.Find("DummyPrefab(Clone)");
+            
+            if (clone == null)
             {
-                if (obj.name.Contains("DummyPrefab") || obj.name.Contains("Dummy"))
+                
+                GameObject[] allObjects = FindObjectsOfType<GameObject>();
+                foreach (GameObject obj in allObjects)
                 {
-                    
-                    if (obj.scene.IsValid()) 
+                    if (obj.name.Contains("DummyPrefab") || obj.name.Contains("Dummy"))
                     {
-                        clone = obj;
-                        break;
+                        
+                        if (obj.scene.IsValid()) 
+                        {
+                            clone = obj;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
-    
-    if (clone == null)
-    {
-        Debug.LogWarning("Dummy clone not found! Make sure to tag your DummyPrefab with 'DummyPartner' tag.");
-    }
-    
-    return clone;
-}
-
-
-private void SwitchToImageMode(LevelObjective objective)
-{
-    if (objective.instructionImage != null)
-    {
         
-        objectiveVideoRawImage.gameObject.SetActive(false);
-        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+        if (clone == null)
         {
-            objectiveVideoPlayer.Stop();
+            Debug.LogWarning("Dummy clone not found! Make sure to tag your DummyPrefab with 'DummyPartner' tag.");
         }
-        isVideoVisible = false;
         
-        
-        objectiveImage.gameObject.SetActive(true);
-        objectiveImage.sprite = objective.instructionImage;
-        isImageVisible = true;
-        isVideoMode = false;
-        
-        
-        SetObjectTransparency(true);
+        return clone;
     }
-}
 
 
-private void SwitchToVideoMode(LevelObjective objective)
-{
-    if (objective.instructionVideo != null && objectiveVideoPlayer != null)
+    private void SwitchToImageMode(LevelObjective objective)
     {
-        
-        objectiveImage.gameObject.SetActive(false);
-        isImageVisible = false;
-        
-        
-        objectiveVideoRawImage.gameObject.SetActive(true);
-        objectiveVideoPlayer.clip = objective.instructionVideo;
-        objectiveVideoPlayer.Play();
-        isVideoVisible = true;
-        isVideoMode = true;
-        
-        
-        SetObjectTransparency(true);
+        if (objective.instructionImage != null)
+        {
+            
+            objectiveVideoRawImage.gameObject.SetActive(false);
+            if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+            {
+                objectiveVideoPlayer.Stop();
+            }
+            isVideoVisible = false;
+            
+            
+            objectiveImage.gameObject.SetActive(true);
+            objectiveImage.sprite = objective.instructionImage;
+            isImageVisible = true;
+            isVideoMode = false;
+            
+            
+            SetObjectTransparency(true);
+        }
     }
-}
+
+
+    private void SwitchToVideoMode(LevelObjective objective)
+    {
+        if (objective.instructionVideo != null && objectiveVideoPlayer != null)
+        {
+            
+            objectiveImage.gameObject.SetActive(false);
+            isImageVisible = false;
+            
+            
+            objectiveVideoRawImage.gameObject.SetActive(true);
+            objectiveVideoPlayer.clip = objective.instructionVideo;
+            objectiveVideoPlayer.Play();
+            isVideoVisible = true;
+            isVideoMode = true;
+            
+            
+            SetObjectTransparency(true);
+        }
+    }
 
     private bool GetRightHandDominance()
     {
@@ -908,75 +928,75 @@ private void SwitchToVideoMode(LevelObjective objective)
 
 
     public void EndObjective()
-{
-    
-    StopObjectiveTimer();
-    
-    if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
     {
-        objectiveVideoPlayer.Stop();
-    }
-
-    currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
-    
-    int score = 0;
-    if (!trainingMode)
-    {
-        score = CalculateScore();
-    }
-
-    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
-    {
-        LevelObjective currentObjective = objectives[currentObjectiveIndex];
-
-        currentObjectiveRepeatAccuracies.Add(currentObjectiveAccuracy);
-        currentRepeatCount++;
-
-        if (currentObjective.enableRepeat && currentRepeatCount < currentObjective.repeatCount)
+        
+        StopObjectiveTimer();
+        
+        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
         {
-            if (trainingMode)
+            objectiveVideoPlayer.Stop();
+        }
+
+        currentObjectiveAccuracy = CalculateCurrentObjectiveAccuracy();
+        
+        int score = 0;
+        if (!trainingMode)
+        {
+            score = CalculateScore();
+        }
+
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            LevelObjective currentObjective = objectives[currentObjectiveIndex];
+
+            currentObjectiveRepeatAccuracies.Add(currentObjectiveAccuracy);
+            currentRepeatCount++;
+
+            if (currentObjective.enableRepeat && currentRepeatCount < currentObjective.repeatCount)
             {
-                StartCoroutine(StartRepeatAfterDelay(1f));
-                return;
+                if (trainingMode)
+                {
+                    StartCoroutine(StartRepeatAfterDelay(1f));
+                    return;
+                }
+                else
+                {
+                    totalScore += score;
+                    UpdateScoreDisplay();
+                    DisplayFeedback(score);
+                    StartCoroutine(StartRepeatAfterDelay(2f));
+                    return;
+                }
             }
             else
             {
-                totalScore += score;
-                UpdateScoreDisplay();
-                DisplayFeedback(score);
-                StartCoroutine(StartRepeatAfterDelay(2f));
-                return;
+                float finalAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
+                objectiveAccuracies[currentObjectiveIndex] = finalAccuracy;
+                ResetRepeatTracking();
             }
         }
-        else
-        {
-            float finalAccuracy = CalculateAverageAccuracy(currentObjectiveRepeatAccuracies);
-            objectiveAccuracies[currentObjectiveIndex] = finalAccuracy;
-            ResetRepeatTracking();
-        }
-    }
 
-    if (trainingMode)
-    {
-        ShowTrainingModePanel(); 
-    }
-    else
-    {
-        totalScore += score;
-        DisplayFeedback(score);
-        currentObjectiveIndex++;
-        if (currentObjectiveIndex < objectives.Count)
+        if (trainingMode)
         {
-            StartCoroutine(StartNextObjectiveAfterDelay(2f));
+            ShowTrainingModePanel(); 
         }
         else
         {
-            StartCoroutine(EndLevelAfterDelay(2f));
+            totalScore += score;
+            DisplayFeedback(score);
+            currentObjectiveIndex++;
+            if (currentObjectiveIndex < objectives.Count)
+            {
+                StartCoroutine(StartNextObjectiveAfterDelay(2f));
+            }
+            else
+            {
+                StartCoroutine(EndLevelAfterDelay(2f));
+            }
         }
-    }
 
-    UpdateScoreDisplay();
-}
+        UpdateScoreDisplay();
+    }
 
 
 
