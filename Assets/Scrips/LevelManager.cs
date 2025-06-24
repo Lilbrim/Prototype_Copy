@@ -33,9 +33,16 @@ public class LevelManager : MonoBehaviour, ILevelManager
     public Image stanceEntryImage;
     public VideoPlayer videoPlayer;
     public Button toggleVideoButton;
+    public GameObject DummyPrefab; 
+    private float originalAlpha = 1f; 
+    private bool Dummy = false;
+
     [Header("Video Toggle")]
     private bool isVideoMode = false;
     public RawImage objectiveVideoRawImage;
+    public Button toggleImageButton; 
+    private bool isImageVisible = true; 
+    private bool isVideoVisible = false; 
 
 
 
@@ -125,23 +132,53 @@ public class LevelManager : MonoBehaviour, ILevelManager
         }
     }
 
-    private void Start()
+private void Start()
+{
+    inputActions.Enable();
+    ConfigureStanceGuide();
+
+    if (toggleVideoButton != null)
     {
-        inputActions.Enable();
-        ConfigureStanceGuide();
+        toggleVideoButton.onClick.AddListener(OnToggleVideoButtonPressed);
+    }
+    
+    if (toggleImageButton != null)
+    {
+        toggleImageButton.onClick.AddListener(OnToggleImageButtonPressed);
+    }
 
-        if (toggleVideoButton != null)
+    if (stanceGuideToggleButton != null)
+    {
+        stanceGuideToggleButton.onClick.AddListener(OnStanceGuideTogglePressed);
+        UpdateStanceGuideButtonText();
+    }
+    
+    
+    InitializeTransparency();
+}
+
+
+private void InitializeTransparency()
+{
+    GameObject dummyClone = FindDummyPartner();
+    if (dummyClone != null)
+    {
+        Renderer renderer = dummyClone.GetComponent<Renderer>();
+        if (renderer != null && renderer.material != null)
         {
-            toggleVideoButton.onClick.AddListener(OnToggleVideoButtonPressed);
+            originalAlpha = renderer.material.color.a;
         }
-
-
-        if (stanceGuideToggleButton != null)
+        else
         {
-            stanceGuideToggleButton.onClick.AddListener(OnStanceGuideTogglePressed);
-            UpdateStanceGuideButtonText();
+            CanvasGroup canvasGroup = dummyClone.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                originalAlpha = canvasGroup.alpha;
+            }
         }
     }
+}
+
 
     private void ConfigureStanceGuide()
     {
@@ -436,27 +473,15 @@ public class LevelManager : MonoBehaviour, ILevelManager
     
     UpdateRepeatCountDisplay();
     stanceEntryImage.gameObject.SetActive(false);
+    
+    
     isVideoMode = false;
+    isImageVisible = false;
+    isVideoVisible = false;
 
-    if (objective.instructionImage != null)
-    {
-        objectiveVideoRawImage.gameObject.SetActive(false);
-        objectiveImage.gameObject.SetActive(true);
-        objectiveImage.sprite = objective.instructionImage;
-    }
-    else if (objective.instructionVideo != null && objectiveVideoPlayer != null)
-    {
+    
+    objectiveVideoRawImage.gameObject.SetActive(false);
         objectiveImage.gameObject.SetActive(false);
-        objectiveVideoRawImage.gameObject.SetActive(true);
-        objectiveVideoPlayer.clip = objective.instructionVideo;
-        objectiveVideoPlayer.Play();
-        isVideoMode = true;
-    }
-    else
-    {
-        objectiveVideoRawImage.gameObject.SetActive(false);
-        objectiveImage.gameObject.SetActive(false);
-    }
 
     if (objectiveVideoPlayer != null && !isVideoMode)
     {
@@ -690,17 +715,184 @@ public class LevelManager : MonoBehaviour, ILevelManager
         }
     }
 
-    public void OnToggleVideoButtonPressed()
+public void OnToggleVideoButtonPressed()
+{
+    if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+    {
+        LevelObjective currentObjective = objectives[currentObjectiveIndex];
+        
+        if (currentObjective.instructionVideo != null && objectiveVideoPlayer != null)
+        {
+            if (isVideoVisible)
+            {
+                
+                objectiveVideoRawImage.gameObject.SetActive(false);
+                if (objectiveVideoPlayer.isPlaying)
+                {
+                    objectiveVideoPlayer.Stop();
+                }
+                isVideoVisible = false;
+                isVideoMode = false;
+                
+                
+                SetObjectTransparency(false);
+            }
+            else if (!isImageVisible) 
+            {
+                
+                SwitchToVideoMode(currentObjective);
+            }
+        }
+    }
+}
+
+
+    public void OnToggleImageButtonPressed()
     {
         if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
         {
             LevelObjective currentObjective = objectives[currentObjectiveIndex];
-            if (currentObjective.instructionVideo != null && currentObjective.instructionImage != null)
+
+            if (currentObjective.instructionImage != null)
             {
-                ToggleVideoImageDisplay(currentObjective);
+                if (isImageVisible && !isVideoMode)
+                {
+
+                    objectiveImage.gameObject.SetActive(false);
+                    isImageVisible = false;
+
+
+                    SetObjectTransparency(false);
+                }
+                else if (!isVideoVisible)
+                {
+
+                    SwitchToImageMode(currentObjective);
+                }
             }
         }
     }
+private void SetObjectTransparency(bool makeTransparent)
+{
+    GameObject dummyClone = FindDummyPartner();
+    if (dummyClone == null) 
+    {
+        Debug.LogWarning("Dummy clone not found! Cannot set transparency.");
+        return;
+    }
+    
+    if (makeTransparent && !Dummy)
+    {
+        
+        Renderer renderer = dummyClone.GetComponent<Renderer>();
+        if (renderer != null && renderer.material != null)
+        {
+            Color color = renderer.material.color;
+            if (originalAlpha == 1f) 
+            {
+                originalAlpha = color.a;
+            }
+            color.a = 0.3f; 
+            renderer.material.color = color;
+            Dummy = true;
+            Debug.Log("Set Renderer transparency on dummy clone");
+        }
+    }
+    else if (!makeTransparent && Dummy)
+    {
+        
+        Renderer renderer = dummyClone.GetComponent<Renderer>();
+        if (renderer != null && renderer.material != null)
+        {
+            Color color = renderer.material.color;
+            color.a = originalAlpha;
+            renderer.material.color = color;
+            Dummy = false;
+            Debug.Log("Restored Renderer transparency on dummy clone");
+        }
+    }
+}
+private GameObject FindDummyPartner()
+{
+    
+    GameObject clone = GameObject.FindGameObjectWithTag("DummyPartner");
+    
+    if (clone == null)
+    {
+        
+        clone = GameObject.Find("DummyPrefab(Clone)");
+        
+        if (clone == null)
+        {
+            
+            GameObject[] allObjects = FindObjectsOfType<GameObject>();
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj.name.Contains("DummyPrefab") || obj.name.Contains("Dummy"))
+                {
+                    
+                    if (obj.scene.IsValid()) 
+                    {
+                        clone = obj;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    if (clone == null)
+    {
+        Debug.LogWarning("Dummy clone not found! Make sure to tag your DummyPrefab with 'DummyPartner' tag.");
+    }
+    
+    return clone;
+}
+
+
+private void SwitchToImageMode(LevelObjective objective)
+{
+    if (objective.instructionImage != null)
+    {
+        
+        objectiveVideoRawImage.gameObject.SetActive(false);
+        if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
+        {
+            objectiveVideoPlayer.Stop();
+        }
+        isVideoVisible = false;
+        
+        
+        objectiveImage.gameObject.SetActive(true);
+        objectiveImage.sprite = objective.instructionImage;
+        isImageVisible = true;
+        isVideoMode = false;
+        
+        
+        SetObjectTransparency(true);
+    }
+}
+
+
+private void SwitchToVideoMode(LevelObjective objective)
+{
+    if (objective.instructionVideo != null && objectiveVideoPlayer != null)
+    {
+        
+        objectiveImage.gameObject.SetActive(false);
+        isImageVisible = false;
+        
+        
+        objectiveVideoRawImage.gameObject.SetActive(true);
+        objectiveVideoPlayer.clip = objective.instructionVideo;
+        objectiveVideoPlayer.Play();
+        isVideoVisible = true;
+        isVideoMode = true;
+        
+        
+        SetObjectTransparency(true);
+    }
+}
 
     private bool GetRightHandDominance()
     {
@@ -942,35 +1134,31 @@ public class LevelManager : MonoBehaviour, ILevelManager
         }
     }
 
-    private int CalculateScore()
+   private int CalculateScore()
+{
+    int totalBoxes = StanceManager.Instance.currentAttackSequence != null ?
+        StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length + 1 : 0;
+    int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
+
+    float percentage = totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
+
+    if (percentage == 0)
     {
-        int totalBoxes = StanceManager.Instance.currentAttackSequence != null ?
-            StanceManager.Instance.currentAttackSequence.sequenceBoxes.Length + 1 : 0;
-        int touchedBoxes = StanceManager.Instance.totalBoxesTouched;
-
-        float percentage = totalBoxes > 0 ? (float)touchedBoxes / totalBoxes : 0;
-
-        if (percentage == 0)
-        {
-            return 0;
-        }
-        else if (percentage <= 0.5f)
-        {
-            return 1;
-        }
-        else if (percentage <= 0.8f)
-        {
-            return 2;
-        }
-        else if (percentage < 1f)
-        {
-            return 3;
-        }
-        else
-        {
-            return 4;
-        }
+        return 0; 
     }
+    else if (percentage < 0.5f)
+    {
+        return 1; 
+    }
+    else if (percentage < 1f)
+    {
+        return 2; 
+    }
+    else
+    {
+        return 3; 
+    }
+}
 
 
     private float CalculateCurrentObjectiveAccuracy()
@@ -990,51 +1178,46 @@ public class LevelManager : MonoBehaviour, ILevelManager
     }
 
     private void DisplayFeedback(int score)
+{
+    if (trainingMode)
     {
-        if (trainingMode)
-        {
-            float accuracy = currentObjectiveAccuracy;
+        float accuracy = currentObjectiveAccuracy;
 
-            if (accuracy == 0)
-                feedbackImage.sprite = missedSprite;
-            else if (accuracy <= 0.5f)
-                feedbackImage.sprite = poorSprite;
-            else if (accuracy <= 0.8f)
-                feedbackImage.sprite = goodSprite;
-            else if (accuracy < 1f)
-                feedbackImage.sprite = excellentSprite;
-            else
-                feedbackImage.sprite = perfectSprite;
-        }
+        if (accuracy == 0)
+            feedbackImage.sprite = missedSprite;        
+        else if (accuracy < 0.5f)
+            feedbackImage.sprite = poorSprite;          
+        else if (accuracy < 1f)
+            feedbackImage.sprite = goodSprite;          
         else
+            feedbackImage.sprite = perfectSprite;       
+    }
+    else
+    {
+        switch (score)
         {
-            switch (score)
-            {
-                case 0:
-                    feedbackImage.sprite = missedSprite;
-                    break;
-                case 1:
-                    feedbackImage.sprite = poorSprite;
-                    break;
-                case 2:
-                    feedbackImage.sprite = goodSprite;
-                    break;
-                case 3:
-                    feedbackImage.sprite = excellentSprite;
-                    break;
-                case 4:
-                    feedbackImage.sprite = perfectSprite;
-                    break;
-            }
-        }
-
-        feedbackImage.gameObject.SetActive(true);
-
-        if (!trainingMode)
-        {
-            StartCoroutine(HideFeedbackAfterDelay(2f));
+            case 0:
+                feedbackImage.sprite = missedSprite;    
+                break;
+            case 1:
+                feedbackImage.sprite = poorSprite;      
+                break;
+            case 2:
+                feedbackImage.sprite = goodSprite;      
+                break;
+            case 3:
+                feedbackImage.sprite = perfectSprite;   
+                break;
         }
     }
+
+    feedbackImage.gameObject.SetActive(true);
+
+    if (!trainingMode)
+    {
+        StartCoroutine(HideFeedbackAfterDelay(2f));
+    }
+}
 
     private IEnumerator HideFeedbackAfterDelay(float delay)
     {

@@ -467,8 +467,6 @@ public void SetRightHandDominant(bool rightHandDominant)
                 SetupSpecialBox(sequence.startBoxRight, "Right Baton", false, 0);
                 SetupSpecialBox(sequence.endBoxLeft, "Left Baton", false, 1);
                 SetupSpecialBox(sequence.endBoxRight, "Right Baton", false, 1);
-
-                UpdateSequenceColorsForSequence(sequence);
             }
         }
     }
@@ -878,8 +876,6 @@ public void SetRightHandDominant(bool rightHandDominant)
         if (sequence.endBoxLeft != null) sequence.endBoxLeft.SetActive(true);
         if (sequence.endBoxRight != null) sequence.endBoxRight.SetActive(true);
 
-        UpdateSequenceColors();
-
         Debug.Log($"Started attack sequence: {sequence.sequenceName} with {sequence.sequenceBoxes.Length} boxes");
     }
 
@@ -1124,29 +1120,6 @@ private void ResetSequence()
         }
     }
 
-    private void UpdateSequenceColorsForSequence(AttackSequence sequence)
-    {
-        if (sequence == null) return;
-
-        int totalBoxes = sequence.sequenceBoxes.Length;
-
-        for (int i = 0; i < totalBoxes; i++)
-        {
-            StanceDetector detector = sequence.sequenceBoxes[i].GetComponent<StanceDetector>();
-            if (detector != null)
-            {
-                detector.UpdateColorForSequence(totalBoxes);
-            }
-        }
-    }
-
-    public void UpdateSequenceColors()
-    {
-        if (currentAttackSequence != null)
-        {
-            UpdateSequenceColorsForSequence(currentAttackSequence);
-        }
-    }
     private void TestActivateFirstSequence()
     {
 

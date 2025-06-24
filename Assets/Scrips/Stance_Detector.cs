@@ -51,10 +51,16 @@ public class StanceDetector : MonoBehaviour
     [Header("Color Settings")]
     [SerializeField] private Color leftBatonColor = new Color(1.0f, 0.647f, 0.0f);
     [SerializeField] private Color rightBatonColor = new Color(0.0f, 0.812f, 1.0f);
-    [SerializeField] private Color leftBatonDarkColor = new Color(0.6f, 0.3f, 0.0f);
-    [SerializeField] private Color rightBatonDarkColor = new Color(0.0f, 0.3f, 0.5f);
     [SerializeField] private Color successColor = Color.green;
     [SerializeField] private Color failureColor = Color.red;
+
+    [Header("Emission Settings")]
+    [SerializeField] private bool useEmission = true;
+    [SerializeField] private float emissionIntensity = 1.0f;
+    [SerializeField] private Color leftBatonEmissionColor = new Color(1.0f, 0.647f, 0.0f);
+    [SerializeField] private Color rightBatonEmissionColor = new Color(0.0f, 0.812f, 1.0f);
+    [SerializeField] private Color successEmissionColor = Color.green;
+    [SerializeField] private Color failureEmissionColor = Color.red;
 
     [HideInInspector] public bool isPartOfSequence = false;
     [HideInInspector] public int sequencePosition = 0;
@@ -76,6 +82,7 @@ public class StanceDetector : MonoBehaviour
     private Renderer originalRenderer;
     private Material originalMaterial;
     private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+    private static readonly int EmissionColorProperty = Shader.PropertyToID("_EmissionColor");
 
     private bool wasActiveLastFrame = false;
     private Coroutine disappearCoroutine = null;
@@ -260,7 +267,7 @@ public class StanceDetector : MonoBehaviour
 
                 if (originalMaterial != null)
                 {
-                    visualRenderer.material = originalMaterial;
+
                 }
             }
 
@@ -316,18 +323,8 @@ public class StanceDetector : MonoBehaviour
     {
         if (visualRenderer == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
-        if (isPartOfSequence)
-        {
-            AttackSequence sequence = GetAttackSequence();
-            if (sequence != null)
-            {
-                UpdateSequenceColor(sequence.sequenceBoxes.Length);
-            }
-        }
-        else
-        {
-            SetDefaultColor();
-        }
+
+        SetDefaultColor();
     }
 
     private void SetDefaultColor()
@@ -335,84 +332,38 @@ public class StanceDetector : MonoBehaviour
         if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
         Color targetColor;
+        Color targetEmissionColor;
 
         bool shouldSwapColors = StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant;
 
         if (CompareTag("Left Baton") || CompareTag("Left Hand"))
         {
             targetColor = shouldSwapColors ? rightBatonColor : leftBatonColor;
+            targetEmissionColor = shouldSwapColors ? rightBatonEmissionColor : leftBatonEmissionColor;
         }
         else if (CompareTag("Right Baton") || CompareTag("Right Hand"))
         {
             targetColor = shouldSwapColors ? leftBatonColor : rightBatonColor;
+            targetEmissionColor = shouldSwapColors ? leftBatonEmissionColor : rightBatonEmissionColor;
         }
         else
         {
             targetColor = originalColor;
+            targetEmissionColor = Color.black;
         }
 
         propertyBlock.SetColor(ColorProperty, targetColor);
-        visualRenderer.SetPropertyBlock(propertyBlock);
-    }
 
-    private void UpdateSequenceColor(int totalBoxesInSequence)
-    {
-        if (visualRenderer == null || propertyBlock == null || totalBoxesInSequence <= 1 || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
-
-        if (sequencePosition == 0 || sequencePosition == totalBoxesInSequence - 1)
+        if (useEmission)
         {
-            SetDefaultColor();
-            return;
-        }
-
-        float t = (float)(sequencePosition - 1) / (totalBoxesInSequence - 3);
-
-        bool shouldSwapColors = StanceManager.Instance != null && StanceManager.Instance.isRightHandDominant;
-
-        Color targetColor;
-        if (CompareTag("Left Baton") || CompareTag("Left Hand"))
-        {
-            if (shouldSwapColors)
-            {
-                targetColor = Color.Lerp(rightBatonColor, rightBatonDarkColor, t);
-            }
-            else
-            {
-                targetColor = Color.Lerp(leftBatonColor, leftBatonDarkColor, t);
-            }
-        }
-        else if (CompareTag("Right Baton") || CompareTag("Right Hand"))
-        {
-            if (shouldSwapColors)
-            {
-                targetColor = Color.Lerp(leftBatonColor, leftBatonDarkColor, t);
-            }
-            else
-            {
-                targetColor = Color.Lerp(rightBatonColor, rightBatonDarkColor, t);
-            }
+            propertyBlock.SetColor(EmissionColorProperty, targetEmissionColor * emissionIntensity);
         }
         else
         {
-            targetColor = originalColor;
+            propertyBlock.SetColor(EmissionColorProperty, Color.black);
         }
 
-        propertyBlock.SetColor(ColorProperty, targetColor);
         visualRenderer.SetPropertyBlock(propertyBlock);
-    }
-
-    public void UpdateColorForSequence(int totalBoxesInSequence)
-    {
-        if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
-
-        if (isPartOfSequence && totalBoxesInSequence > 1)
-        {
-            UpdateSequenceColor(totalBoxesInSequence);
-        }
-        else
-        {
-            SetDefaultColor();
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -611,7 +562,19 @@ public class StanceDetector : MonoBehaviour
         if (visualRenderer != null && propertyBlock != null && !hasVisualDisappeared)
         {
             Color targetColor = inStance ? successColor : failureColor;
+            Color targetEmissionColor = inStance ? successEmissionColor : failureEmissionColor;
+
             propertyBlock.SetColor(ColorProperty, targetColor);
+
+            if (useEmission)
+            {
+                propertyBlock.SetColor(EmissionColorProperty, targetEmissionColor * emissionIntensity);
+            }
+            else
+            {
+                propertyBlock.SetColor(EmissionColorProperty, Color.black);
+            }
+
             visualRenderer.SetPropertyBlock(propertyBlock);
         }
     }
@@ -678,23 +641,9 @@ public class StanceDetector : MonoBehaviour
     {
         if (visualRenderer == null || propertyBlock == null || !gameObject.activeInHierarchy || hasVisualDisappeared) return;
 
-        if (isPartOfSequence)
-        {
-            AttackSequence sequence = GetAttackSequence();
-            if (sequence != null)
-            {
-                UpdateSequenceColor(sequence.sequenceBoxes.Length);
-            }
-        }
-        else
-        {
-            SetDefaultColor();
-        }
 
-        if (StanceManager.Instance != null && isPartOfSequence)
-        {
-            StanceManager.Instance.UpdateSequenceColors();
-        }
+        SetDefaultColor();
+
     }
 
     public void SetVisualPrefab(GameObject newPrefab, Vector3 rotationOffset = default)
@@ -911,5 +860,25 @@ public class StanceDetector : MonoBehaviour
     public void SetGizmosArrowLength(float length)
     {
         gizmosArrowLength = length;
+    }
+    public void SetUseEmission(bool use)
+    {
+        useEmission = use;
+        SetDefaultColor(); 
+    }
+
+    public void SetEmissionIntensity(float intensity)
+    {
+        emissionIntensity = intensity;
+        SetDefaultColor(); 
+    }
+
+    public void SetEmissionColors(Color leftBaton, Color rightBaton, Color success, Color failure)
+    {
+        leftBatonEmissionColor = leftBaton;
+        rightBatonEmissionColor = rightBaton;
+        successEmissionColor = success;
+        failureEmissionColor = failure;
+        SetDefaultColor(); 
     }
 }

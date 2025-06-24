@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Video;
 
 public class LevelSelector : MonoBehaviour
 {
@@ -102,42 +103,54 @@ public class LevelSelector : MonoBehaviour
 
     
     private bool isTransitioningBackground = false;
+    
+    public CutsceneManager cutsceneManager;
+    public VideoClip completionCutscene;
+    [Tooltip("Should cutscene play when all levels are completed?")]
+    public bool playCompletionCutscene = true;
 
-    private void Start()
+    
+    private bool hasPlayedCompletionCutscene = false;
+    private const string COMPLETION_CUTSCENE_KEY = "CompletionCutscenePlayed";
+        
+
+   private void Start()
+{
+    InitializeScreenFaded();
+    
+    LoadSavedBackground();
+    
+    
+    hasPlayedCompletionCutscene = PlayerPrefs.GetInt(COMPLETION_CUTSCENE_KEY, 0) == 1;
+        
+    if (currentBackground != LevelBackground.House)
     {
-        
-        InitializeScreenFaded();
-        
-        LoadSavedBackground(); 
-            
-        if (currentBackground != LevelBackground.House)
-        {
-            ShowpracLevelsTab();
-        }
-        
-        GenerateLevelButtons();
-        UpdateLevelInfoPanel(-1);
-        startLevelButton.interactable = false;
-        InitializeStoryModeOrder();
-
-        if (pracLevelsTabButton != null)
-            pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
-
-        if (sparLevelsTabButton != null)
-            sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
-
-        if (tournamentLevelsTabButton != null)
-            tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
-            
-        if (houseBackgroundButton != null)
-            houseBackgroundButton.onClick.AddListener(SetHouseBackground);
-
-        if (gymBackgroundButton != null)
-            gymBackgroundButton.onClick.AddListener(SetGymBackground);
-            
-        
-        StartCoroutine(InitialFadeIn());
+        ShowpracLevelsTab();
     }
+    
+    GenerateLevelButtons();
+    UpdateLevelInfoPanel(-1);
+    startLevelButton.interactable = false;
+    InitializeStoryModeOrder();
+
+    if (pracLevelsTabButton != null)
+        pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
+
+    if (sparLevelsTabButton != null)
+        sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
+
+    if (tournamentLevelsTabButton != null)
+        tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
+        
+    if (houseBackgroundButton != null)
+        houseBackgroundButton.onClick.AddListener(SetHouseBackground);
+
+    if (gymBackgroundButton != null)
+        gymBackgroundButton.onClick.AddListener(SetGymBackground);
+        
+    StartCoroutine(InitialFadeIn());
+}
+
 
     private void InitializeScreenFaded()
     {
@@ -155,7 +168,7 @@ public class LevelSelector : MonoBehaviour
         if (!hasInitializedFade)
             yield break;
             
-        // Wait a brief moment for everything to be ready
+        
         yield return new WaitForSeconds(0.1f);
         
         SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
@@ -386,33 +399,29 @@ private void SetBackground(LevelBackground background)
         if (currentStoryLevelIndex < allLevelsInOrder.Count)
         {
             LevelData currentLevel = allLevelsInOrder[currentStoryLevelIndex];
-            
-            
+
             if (storyLevelNameText != null)
                 storyLevelNameText.text = currentLevel.levelName;
-                
+
             if (storyLevelDescriptionText != null)
                 storyLevelDescriptionText.text = currentLevel.levelDescription;
-                
+
             if (storyLevelPreviewImage != null)
                 storyLevelPreviewImage.sprite = currentLevel.levelThumbnail;
-                
+
             if (storyProgressText != null)
             {
                 int completedLevels = currentStoryLevelIndex;
                 int totalLevels = allLevelsInOrder.Count;
                 storyProgressText.text = $"Progress: {completedLevels}/{totalLevels}";
             }
-            
-            
+
             if (nextLevelButton != null)
             {
                 nextLevelButton.interactable = true;
-                
-                
+
                 if (currentStoryLevelIndex >= availableLevels.Count + availableSparLevels.Count)
                 {
-                    
                     if (currentBackground != LevelBackground.Tournament)
                     {
                         ChangeBackground(LevelBackground.Tournament);
@@ -423,16 +432,70 @@ private void SetBackground(LevelBackground background)
         else
         {
             
-            if (storyLevelNameText != null)
-                storyLevelNameText.text = "All Levels Complete";
-                
-            if (storyLevelDescriptionText != null)
-                storyLevelDescriptionText.text = "All Levels done";
-                
-            if (nextLevelButton != null)
-                nextLevelButton.interactable = false;
+            if (playCompletionCutscene && !hasPlayedCompletionCutscene && cutsceneManager != null)
+            {
+                TriggerCompletionCutscene();
+            }
+            else
+            {
+                ShowCompletionUI();
+            }
         }
     }
+private void TriggerCompletionCutscene()
+{
+    hasPlayedCompletionCutscene = true;
+    PlayerPrefs.SetInt(COMPLETION_CUTSCENE_KEY, 1);
+    PlayerPrefs.Save();
+    
+    
+    cutsceneManager.OnCutsceneEnd += OnCompletionCutsceneEnd;
+    cutsceneManager.OnCutsceneSkip += OnCompletionCutsceneEnd;
+    
+    
+    if (storyUIPanel != null)
+        storyUIPanel.SetActive(false);
+    
+    
+    if (completionCutscene != null)
+        cutsceneManager.PlayCutscene(completionCutscene);
+    else
+        cutsceneManager.PlayCutscene();
+}
+
+private void OnCompletionCutsceneEnd()
+{
+    
+    cutsceneManager.OnCutsceneEnd -= OnCompletionCutsceneEnd;
+    cutsceneManager.OnCutsceneSkip -= OnCompletionCutsceneEnd;
+    
+    
+    ShowCompletionUI();
+    
+    
+    if (storyUIPanel != null)
+        storyUIPanel.SetActive(true);
+}
+
+private void ShowCompletionUI()
+{
+    if (storyLevelNameText != null)
+        storyLevelNameText.text = "All Levels Complete!";
+        
+    if (storyLevelDescriptionText != null)
+        storyLevelDescriptionText.text = "Congratulations! You have completed all available levels.";
+        
+    if (nextLevelButton != null)
+        nextLevelButton.interactable = false;
+        
+    if (storyProgressText != null)
+    {
+        int totalLevels = allLevelsInOrder.Count;
+        storyProgressText.text = $"Progress: {totalLevels}/{totalLevels} - COMPLETE!";
+    }
+}
+
+
 
     public void StartNextLevel()
     {
