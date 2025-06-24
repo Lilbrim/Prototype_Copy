@@ -847,7 +847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &22812263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -856,7 +856,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 22812262}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.32388848, y: 0.32388848, z: 0.32388848}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -864,7 +864,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25.4, y: -1840}
+  m_AnchoredPosition: {x: 23.7, y: 23.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &22812264
@@ -4166,7 +4166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &173466162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4302,7 +4302,7 @@ RectTransform:
   m_Father: {fileID: 183909898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.99999994, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -14776,6 +14776,10 @@ PrefabInstance:
       propertyPath: stanceBoxes.Array.data[0]
       value: 
       objectReference: {fileID: 2054267636}
+    - target: {fileID: 6439252576571715017, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6528594825779387654, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
       propertyPath: leftHand
       value: 
@@ -23072,7 +23076,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 285115799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.19567, y: 0.19567, z: 0.19567}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23081,7 +23085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66.2, y: 44.5}
+  m_AnchoredPosition: {x: 36.4, y: 44.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &285115801
@@ -23294,7 +23298,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.1462988, y: 0.091986656}
+  m_AnchoredPosition: {x: -1, y: 0.091986656}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &295392139
@@ -24055,7 +24059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_AnchoredPosition: {x: 0, y: -3.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &335241790
@@ -24120,7 +24124,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -26077,7 +26081,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &446719017
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27254,7 +27258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.586, y: 0.30157062}
   m_AnchorMax: {x: 0.586, y: 0.30157062}
-  m_AnchoredPosition: {x: 7.8, y: -54.6}
+  m_AnchoredPosition: {x: 7.799988, y: -54.600006}
   m_SizeDelta: {x: 129.9, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &563866864
@@ -27841,7 +27845,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1230715520}
   m_HandleRect: {fileID: 1230715519}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -30451,7 +30455,7 @@ RectTransform:
   m_GameObject: {fileID: 716797616}
   m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.70710653}
   m_LocalPosition: {x: 0, y: 0, z: -0.23}
-  m_LocalScale: {x: 0.015473329, y: 0.015473329, z: 0.015473329}
+  m_LocalScale: {x: 0.0054948856, y: 0.0054948856, z: 0.0054948856}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 152390729}
@@ -30459,14 +30463,14 @@ RectTransform:
   - {fileID: 905763038}
   - {fileID: 1660869557}
   - {fileID: 630349777}
-  - {fileID: 446719017}
   - {fileID: 285115800}
+  - {fileID: 446719017}
   - {fileID: 173466162}
   m_Father: {fileID: 436459678}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.73, y: 0.38}
+  m_AnchoredPosition: {x: -0.99823, y: 0.43687}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &716797618
@@ -32563,8 +32567,11 @@ MonoBehaviour:
     requiredLevelIds: []
   - levelName: 12 Basic Strikes
     introLevel: {fileID: 1784065522}
-    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
-    levelDescription: Basics
+    levelThumbnail: {fileID: 21300000, guid: 1d5dc97ee604fcc4593257cdea582324, type: 3}
+    levelDescription: "The 12 Basic Blocks in Arnis are essential defensive techniques
+      used to intercept or deflect incoming strikes from an opponent\u2019s weapon.
+      Each block corresponds to a specific angle of attack, covering the head, shoulders,
+      torso, and legs."
     levelId: 1
     isSparLevel: 0
     isTournamentLevel: 0
@@ -32574,8 +32581,11 @@ MonoBehaviour:
     - 
   - levelName: 12 Basic Blocks
     introLevel: {fileID: 282579936}
-    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
-    levelDescription: Blocks
+    levelThumbnail: {fileID: 21300000, guid: b3ec81cc2aa36c144bd87c1e2b34769d, type: 3}
+    levelDescription: "The 12 Basic Blocks in Arnis are essential defensive techniques
+      used to intercept or deflect incoming strikes from an opponent\u2019s weapon.
+      Each block corresponds to a specific angle of attack, covering the head, shoulders,
+      torso, and legs."
     levelId: 2
     isSparLevel: 0
     isTournamentLevel: 0
@@ -33634,7 +33644,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869637650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.32388848, y: 0.32388848, z: 0.32388848}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33642,7 +33652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25.4, y: 25.1}
+  m_AnchoredPosition: {x: 28.8, y: 25.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &869637652
@@ -35046,7 +35056,7 @@ RectTransform:
   m_Father: {fileID: 658190405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.99999994, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -39290,7 +39300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.2417005, y: 0.39869618}
+  m_AnchoredPosition: {x: -1, y: 0.39869618}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153636142
@@ -39395,7 +39405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.0597005, y: 0.3786962}
+  m_AnchoredPosition: {x: -1, y: 0.3786962}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1157879706
@@ -39514,7 +39524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -2, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.6, y: -12.1}
+  m_AnchoredPosition: {x: 14.599976, y: -12.099976}
   m_SizeDelta: {x: 0, y: 24.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1179581370
@@ -39779,11 +39789,7 @@ RectTransform:
   - {fileID: 373430141}
   - {fileID: 478318139}
   - {fileID: 1766740785}
-  - {fileID: 1831810008}
   - {fileID: 1737719112}
-  - {fileID: 1979969531}
-  - {fileID: 2028960215}
-  - {fileID: 1721155815}
   - {fileID: 1386036441}
   m_Father: {fileID: 436459678}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -39961,7 +39967,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1246054129}
   m_HandleRect: {fileID: 1246054128}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -40151,7 +40157,7 @@ MonoBehaviour:
   objectives:
   - instruction: Left Temple Block
     rightHandInstruction: Right Temple Block
-    instructionImage: {fileID: 21300000, guid: f4e2ff6468cbff94c94465054c0a7dfb, type: 3}
+    instructionImage: {fileID: 21300000, guid: 389ac02511fbf074b9cfc41957f3a45b, type: 3}
     instructionVideo: {fileID: 32900000, guid: 84c4bf37ec803274382299581b65ddaf, type: 3}
     requiredStance: Left_Temple_Block(Spar)
     timeLimit: 100
@@ -40159,7 +40165,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Temple Ready Block
     rightHandInstruction: Left Temple Ready Block
-    instructionImage: {fileID: 21300000, guid: a2a265114d964894e911bce32c95691a, type: 3}
+    instructionImage: {fileID: 21300000, guid: bb7ede8663fc6ea4ab53e10595a83f92, type: 3}
     instructionVideo: {fileID: 32900000, guid: c82443ab2f47d314bb783245ef846ada, type: 3}
     requiredStance: Right_Temple_Block_Ready
     timeLimit: 100
@@ -40167,7 +40173,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Temple Block
     rightHandInstruction: Left Temple Block
-    instructionImage: {fileID: 21300000, guid: 8219a8952d2fbf84f8af87c132c347ab, type: 3}
+    instructionImage: {fileID: 21300000, guid: a64256c64a79ec04791670332b90f7ce, type: 3}
     instructionVideo: {fileID: 32900000, guid: 287f358d1fd247a4993fb199a5762a7c, type: 3}
     requiredStance: Right_Temple_Block(Spar)
     timeLimit: 100
@@ -40175,7 +40181,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Shoulder Ready Block
     rightHandInstruction: Right Shoulder Ready Block
-    instructionImage: {fileID: 21300000, guid: 11dde52001b8cfe4087d9ee11b23ebf2, type: 3}
+    instructionImage: {fileID: 21300000, guid: 55d35b71e8bd2c54e8f1cf9856a86ca8, type: 3}
     instructionVideo: {fileID: 32900000, guid: 45f3fcc5675551e4ab1c6b71535379a7, type: 3}
     requiredStance: Left_Shoulder_Block(Ready)
     timeLimit: 100
@@ -40183,7 +40189,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Shoulder Block
     rightHandInstruction: Right Shoulder Block
-    instructionImage: {fileID: 21300000, guid: 342bae888ae20564aa669c2db60174e8, type: 3}
+    instructionImage: {fileID: 21300000, guid: 276275ae9890ddd4589b31cd732f71ad, type: 3}
     instructionVideo: {fileID: 32900000, guid: 0993fd7780cb99c4d9aaa5486f7c2a37, type: 3}
     requiredStance: Left_Shoulder_Block(Spar)
     timeLimit: 100
@@ -40191,7 +40197,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Shoulder Ready Block
     rightHandInstruction: Left Shoulder Ready Block
-    instructionImage: {fileID: 21300000, guid: 8f509ab8eec540d468cabca5d5a838dd, type: 3}
+    instructionImage: {fileID: 21300000, guid: 0419a3aa389fd8c40bf6e598ad9c71c7, type: 3}
     instructionVideo: {fileID: 32900000, guid: ecb7ea3e1faf352418bfedf1384c7318, type: 3}
     requiredStance: Right_Shoulder_(Ready)
     timeLimit: 100
@@ -40199,7 +40205,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Shoulder Block
     rightHandInstruction: Left Shoulder Block
-    instructionImage: {fileID: 21300000, guid: b5a60c809df053540b1d8688648734b8, type: 3}
+    instructionImage: {fileID: 21300000, guid: a871cd8a371f9424ebea5df39c1a00f7, type: 3}
     instructionVideo: {fileID: 32900000, guid: 03f8f7c7c1773c04c868765900b9c990, type: 3}
     requiredStance: Right_Shoulder_(Spar)
     timeLimit: 100
@@ -40207,7 +40213,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Abdomen Ready
     rightHandInstruction: Abdomen Ready
-    instructionImage: {fileID: 21300000, guid: a47f5ab775eb5c54cb03e774ba80500b, type: 3}
+    instructionImage: {fileID: 21300000, guid: 640a51a1df03eb4408512950a77c99e9, type: 3}
     instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
     requiredStance: Right_Abdomen_(Ready)
     timeLimit: 100
@@ -40215,7 +40221,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Abdomen Block
     rightHandInstruction: Abdomen Block
-    instructionImage: {fileID: 21300000, guid: b759c6f4c55f23242b623e69dd944904, type: 3}
+    instructionImage: {fileID: 21300000, guid: 2a35de217a841084a8fb60d624a65368, type: 3}
     instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
     requiredStance: Abdomen_(Spar)
     timeLimit: 100
@@ -40223,7 +40229,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Pectoral Ready Block
     rightHandInstruction: Right Pectoral Ready Block
-    instructionImage: {fileID: 21300000, guid: 9671cf5b552e19a49b5899bca65384fa, type: 3}
+    instructionImage: {fileID: 21300000, guid: 369d37641ea7b4442b4f09c46928b648, type: 3}
     instructionVideo: {fileID: 32900000, guid: ee20df0de9c9deb48956c18673042d00, type: 3}
     requiredStance: Left_Pectoral(Ready)
     timeLimit: 100
@@ -40231,7 +40237,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Pectoral Block
     rightHandInstruction: Right Pectoral Block
-    instructionImage: {fileID: 21300000, guid: fad6c4658e9897645b44359a7a16f05b, type: 3}
+    instructionImage: {fileID: 21300000, guid: c6565e7fabf1c16418e4f0aa84413c3f, type: 3}
     instructionVideo: {fileID: 32900000, guid: ca678e7ff23c4444a8a1ce17087c6ea3, type: 3}
     requiredStance: Left_Pectoral(Spar)
     timeLimit: 100
@@ -40239,7 +40245,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Pectoral Ready Block
     rightHandInstruction: Left Pectoral Ready Block
-    instructionImage: {fileID: 21300000, guid: 67ff7335877ccda42adc879c5e09485e, type: 3}
+    instructionImage: {fileID: 21300000, guid: 928df5b11ade3ff4e9cd35cd7057a066, type: 3}
     instructionVideo: {fileID: 32900000, guid: 87bac036d4d5fb14b81e18bbc0fe79a0, type: 3}
     requiredStance: Right_Pectoral(Ready)
     timeLimit: 100
@@ -40247,7 +40253,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Pectoral Block
     rightHandInstruction: Left Pectoral Block
-    instructionImage: {fileID: 21300000, guid: 44820bab60b30064ea865ad9467c193b, type: 3}
+    instructionImage: {fileID: 21300000, guid: 3bbc6afbb5cf3f9449fdfdb025205d7d, type: 3}
     instructionVideo: {fileID: 32900000, guid: 5e257545e1bfbe74f9c3f769d20023ff, type: 3}
     requiredStance: Right_Pectoral(Block)
     timeLimit: 100
@@ -40255,7 +40261,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Knee Ready Block
     rightHandInstruction: Left Knee Ready Block
-    instructionImage: {fileID: 21300000, guid: 5559578932342124da486d9f01605147, type: 3}
+    instructionImage: {fileID: 21300000, guid: 66f78a2c0faf17e4aaaac4f395c1a2e4, type: 3}
     instructionVideo: {fileID: 32900000, guid: 11cfde7d0c36cca49b93b484a1b29768, type: 3}
     requiredStance: Right_Knee(Ready)
     timeLimit: 100
@@ -40263,7 +40269,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Knee Block
     rightHandInstruction: Left Knee Block
-    instructionImage: {fileID: 21300000, guid: 127ecc430db74c24980dd1549e579a8a, type: 3}
+    instructionImage: {fileID: 21300000, guid: 2ccb364d5e580874c9ce7474c7619fca, type: 3}
     instructionVideo: {fileID: 32900000, guid: 1612f9b1d4c32f14384f21028df21cb6, type: 3}
     requiredStance: Right_Knee(Spar)
     timeLimit: 100
@@ -40271,7 +40277,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Knee Ready Block
     rightHandInstruction: Right Knee Ready Block
-    instructionImage: {fileID: 21300000, guid: 32c22dba10e96d8488937ada5d24bf77, type: 3}
+    instructionImage: {fileID: 21300000, guid: 61e3e0aeb2998c040a533d9f3816f2ae, type: 3}
     instructionVideo: {fileID: 32900000, guid: cae6f680370ca4042a5e7ac2a5a2d73d, type: 3}
     requiredStance: Left_Knee(Ready)
     timeLimit: 100
@@ -40279,7 +40285,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Knee Block
     rightHandInstruction: Right Knee Block
-    instructionImage: {fileID: 21300000, guid: 6063070e6a16ae14ba7f696628a181ca, type: 3}
+    instructionImage: {fileID: 21300000, guid: 44a3b4143fe62894ea03bf485ee3b58a, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8082b744d25cb014094bd331b58a6525, type: 3}
     requiredStance: Left_Knee(Spar)
     timeLimit: 100
@@ -40287,7 +40293,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Eye Ready Block
     rightHandInstruction: Right Eye Ready Block
-    instructionImage: {fileID: 21300000, guid: 3a43786ed5574ed45b8638b2c866626a, type: 3}
+    instructionImage: {fileID: 21300000, guid: 50735ec57c0a0c241a9973594bd57a73, type: 3}
     instructionVideo: {fileID: 32900000, guid: 80b06b6a80fb4714799ec388a4fb5dc9, type: 3}
     requiredStance: Left_Eye(Ready)
     timeLimit: 100
@@ -40295,7 +40301,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Eye Block
     rightHandInstruction: Right Eye Block
-    instructionImage: {fileID: 21300000, guid: 7f675b0bd3d63324585238709fb52d72, type: 3}
+    instructionImage: {fileID: 21300000, guid: 1ff43746f91382e44826373aaa1d3b41, type: 3}
     instructionVideo: {fileID: 32900000, guid: cbc7f82d5b285c241b778563f10f891f, type: 3}
     requiredStance: Left_Eye(Spar)
     timeLimit: 100
@@ -40303,7 +40309,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Eye Ready Block
     rightHandInstruction: Left Eye Ready Block
-    instructionImage: {fileID: 21300000, guid: d44496a9f7509d84da1835ec55df7ad4, type: 3}
+    instructionImage: {fileID: 21300000, guid: 081edf25f9d39ba4db6126110e180c5e, type: 3}
     instructionVideo: {fileID: 32900000, guid: fbf46e59be4fcf845b3ea9c99e6e4319, type: 3}
     requiredStance: Right_Eye(Ready)
     timeLimit: 100
@@ -40311,7 +40317,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Eye Block
     rightHandInstruction: Left Eye Block
-    instructionImage: {fileID: 21300000, guid: 62ec0a0818282f845bee1724018b5d6a, type: 3}
+    instructionImage: {fileID: 21300000, guid: 36ef22f6118058b40bce8df9efd09c71, type: 3}
     instructionVideo: {fileID: 32900000, guid: e5e917913b3d370439cf8a5d114580f2, type: 3}
     requiredStance: Right_Eye(Spar)
     timeLimit: 100
@@ -40319,7 +40325,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Head Ready Block
     rightHandInstruction: Head Ready Block
-    instructionImage: {fileID: 21300000, guid: d1afdb905a3f9fd459f5e326ab60a205, type: 3}
+    instructionImage: {fileID: 21300000, guid: bb426d1f10e28744bade1fab0393569d, type: 3}
     instructionVideo: {fileID: 32900000, guid: 92f6d10cf8c17774bb1dd4145c44568d, type: 3}
     requiredStance: Head(Ready)
     timeLimit: 100
@@ -40327,7 +40333,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Head Block
     rightHandInstruction: Head Block
-    instructionImage: {fileID: 21300000, guid: 25967bb8542b4d94aab33d57ff0a9308, type: 3}
+    instructionImage: {fileID: 21300000, guid: be4c975cea1c08a4aa971c3bc8ebd168, type: 3}
     instructionVideo: {fileID: 32900000, guid: 05c93ce1186e7874990dafd867232232, type: 3}
     requiredStance: Head(Block)
     timeLimit: 100
@@ -41815,7 +41821,7 @@ RectTransform:
   m_Father: {fileID: 766313276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.99999994, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -42003,7 +42009,7 @@ Transform:
   m_GameObject: {fileID: 1317660924}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.172, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -44669,8 +44675,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474926516}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.387}
-  m_LocalScale: {x: 0.008186475, y: 0.0069746473, z: 0.0826299}
+  m_LocalPosition: {x: 0, y: 0, z: -0.19309}
+  m_LocalScale: {x: 0.006449878, y: 0.005495115, z: 0.065101616}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1313502347}
@@ -44679,7 +44685,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.442, y: 0.596}
+  m_AnchoredPosition: {x: -1, y: 0.596}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1474926518
@@ -46546,7 +46552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Name
+  m_text: 12 Basic Strikes
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bd481e820356a374e9da189271ad5ba8, type: 2}
   m_sharedMaterial: {fileID: -6110367040952366400, guid: bd481e820356a374e9da189271ad5ba8, type: 2}
@@ -47177,8 +47183,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568603165}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.194}
-  m_LocalScale: {x: 0.0083226245, y: 0.007090642, z: 0.08400411}
+  m_LocalPosition: {x: 0, y: 0, z: -0.19428}
+  m_LocalScale: {x: 0.006733669, y: 0.005736897, z: 0.067966044}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 56887328}
@@ -47191,7 +47197,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.083, y: 0.46483}
+  m_AnchoredPosition: {x: -1, y: 0.43925}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1568603167
@@ -47651,8 +47657,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601504891}
   m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.70710653}
-  m_LocalPosition: {x: 0, y: 0, z: -0.694}
-  m_LocalScale: {x: 0.015473329, y: 0.015473329, z: 0.015473329}
+  m_LocalPosition: {x: 0, y: 0, z: -0.364}
+  m_LocalScale: {x: 0.0065148696, y: 0.0065148696, z: 0.0065148696}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 609984508}
@@ -47661,7 +47667,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.73, y: 0.38}
+  m_AnchoredPosition: {x: -0.99868, y: 0.473}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1601504893
@@ -47916,15 +47922,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620773779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.607e-12}
-  m_LocalScale: {x: 1.8479, y: 1.5175155, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3639472, y: 1.5175155, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 152390729}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 5.7}
+  m_AnchoredPosition: {x: -20.2, y: 5.700001}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1620773781
@@ -49503,7 +49509,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.0597005, y: 0.3786962}
+  m_AnchoredPosition: {x: -1, y: 0.3786962}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711357602
@@ -49821,17 +49827,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721155814}
-  m_LocalRotation: {x: -0, y: 0.017452328, z: -0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 0, z: -0.02}
-  m_LocalScale: {x: 0.29703307, y: 0.34864193, z: 0.029428266}
+  m_LocalRotation: {x: -0, y: -0.00000012293455, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.026966006}
+  m_LocalScale: {x: 0.48815897, y: 1.1638856, z: 0.02942827}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 323349893}
-  m_Father: {fileID: 1214385016}
+  m_Father: {fileID: 1737719112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 235.29999, y: 10.199997}
+  m_AnchoredPosition: {x: -0.32739258, y: 42.730736}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1721155816
@@ -49945,8 +49951,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726460726}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.194}
-  m_LocalScale: {x: 0.0083226245, y: 0.007090642, z: 0.08400411}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1943}
+  m_LocalScale: {x: 0.006615987, y: 0.0056366352, z: 0.06677823}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 133901481}
@@ -49958,7 +49964,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.083, y: 0.46483}
+  m_AnchoredPosition: {x: -1, y: 0.44564}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1726460728
@@ -50254,16 +50260,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737719111}
-  m_LocalRotation: {x: 0, y: 0.01745245, z: 0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6084761, y: 0.29955, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10.81}
+  m_LocalScale: {x: 0.32020447, y: 0.15763518, z: 0.52624}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1831810008}
+  - {fileID: 1979969531}
+  - {fileID: 2028960215}
+  - {fileID: 1721155815}
   m_Father: {fileID: 1214385016}
-  m_LocalEulerAnglesHint: {x: 0, y: 2, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 235.5, y: -2.6}
+  m_AnchoredPosition: {x: 125.5, y: -26.019}
   m_SizeDelta: {x: 0, y: 148.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737719113
@@ -50338,7 +50348,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.5}
+  m_AnchoredPosition: {x: -91.5, y: 91.49929}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1745777024
@@ -52549,7 +52559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.5}
+  m_AnchoredPosition: {x: -91.5, y: 91.49929}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1785708855
@@ -52677,7 +52687,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 230798231}
   m_HandleRect: {fileID: 230798230}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -52932,7 +52942,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.1777005, y: 0.30754495}
+  m_AnchoredPosition: {x: -1, y: 0.30754495}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1804835148
@@ -53384,14 +53394,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1831810007}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.017452447, z: -0, w: 0.99984777}
-  m_LocalPosition: {x: 235.50003, y: -30.9, z: 0}
-  m_LocalScale: {x: 0.6084761, y: 0.29955, z: 1}
+  m_LocalRotation: {x: -0, y: -0.0000000037252894, z: -0, w: 1}
+  m_LocalPosition: {x: 0.00010024711, y: -94.475044, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1692031044}
   - {fileID: 206967729}
-  m_Father: {fileID: 1214385016}
+  m_Father: {fileID: 1737719112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1832948971
 GameObject:
@@ -54272,7 +54282,7 @@ MonoBehaviour:
   objectives:
   - instruction: 
     rightHandInstruction: 
-    instructionImage: {fileID: 21300000, guid: bb51c13ec4b14c14f86fae50e6f6af54, type: 3}
+    instructionImage: {fileID: 21300000, guid: ac4325f70f394df45bfe3277406e90cb, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
     requiredStance: Left_Temple(Strike)
     timeLimit: 100
@@ -54280,7 +54290,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Temple Ready Strike
     rightHandInstruction: Left Temple Ready Strike
-    instructionImage: {fileID: 21300000, guid: 4cdc576d7492f0c479bffc362123092a, type: 3}
+    instructionImage: {fileID: 21300000, guid: aaedfd61af7056c4799cf4e4c391d967, type: 3}
     instructionVideo: {fileID: 32900000, guid: 751b4c7c480bdb943a34bd808297db0f, type: 3}
     requiredStance: Right_Temple(Ready)
     timeLimit: 100
@@ -54288,7 +54298,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Temple Strike
     rightHandInstruction: Left Temple Strike
-    instructionImage: {fileID: 21300000, guid: b980ce402b5cc9f4cb7a15799ea6c7f5, type: 3}
+    instructionImage: {fileID: 21300000, guid: 7ad0aa1f0325e0548adb497988e90aa5, type: 3}
     instructionVideo: {fileID: 32900000, guid: 6f419a54b8a32424594b30558c51fc8c, type: 3}
     requiredStance: Right_Temple(Strike)
     timeLimit: 100
@@ -54296,7 +54306,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Shoulder Ready Strike
     rightHandInstruction: Right Shoulder Ready Strike
-    instructionImage: {fileID: 21300000, guid: d01c28f447704704dae843c10fe1d4f6, type: 3}
+    instructionImage: {fileID: 21300000, guid: 7e91da572e57d0a4eb51ed8b507b4bc4, type: 3}
     instructionVideo: {fileID: 32900000, guid: 2f2b0af65ad10734faf8ecc264354074, type: 3}
     requiredStance: Left_Shoulder(Ready)
     timeLimit: 100
@@ -54304,7 +54314,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Shoulder  Strike
     rightHandInstruction: Right Shoulder  Strike
-    instructionImage: {fileID: 21300000, guid: 99764db1c13eec54ea239d39f8732c98, type: 3}
+    instructionImage: {fileID: 21300000, guid: d5ea8335ba56cc346ae4f1b177ade188, type: 3}
     instructionVideo: {fileID: 32900000, guid: dde8509f6905da94c945785205a018b2, type: 3}
     requiredStance: Left_Shoulder(Strike)
     timeLimit: 100
@@ -54312,7 +54322,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Shoulder Ready
     rightHandInstruction: Left Shoulder Ready
-    instructionImage: {fileID: 21300000, guid: 857c4f7f435011649a911149d55108ac, type: 3}
+    instructionImage: {fileID: 21300000, guid: dfcfdb807fe93c74bbdfb5f20e49ce60, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8ca791fc6007daf43b14beef6c12bc26, type: 3}
     requiredStance: Right_Shoulder(Ready)
     timeLimit: 100
@@ -54320,7 +54330,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Shoulder Strike
     rightHandInstruction: Left Shoulder Strike
-    instructionImage: {fileID: 21300000, guid: fde361a57c1764c4092ec78dea94914b, type: 3}
+    instructionImage: {fileID: 21300000, guid: ff824aeeaa4e8c345acbc2229fe3ad16, type: 3}
     instructionVideo: {fileID: 32900000, guid: ff22e7a5086a36641955973a4e3651cb, type: 3}
     requiredStance: Right_Shoulder(Strike)
     timeLimit: 100
@@ -54328,7 +54338,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Abdoment Ready Thrust
     rightHandInstruction: Abdoment Ready Thrust
-    instructionImage: {fileID: 21300000, guid: eda139af1c10e924292f2994c1060367, type: 3}
+    instructionImage: {fileID: 21300000, guid: 3d3ae150faba4a94593e0f8865dbac0f, type: 3}
     instructionVideo: {fileID: 32900000, guid: e85d97835ef807f4e8ca3994265a7408, type: 3}
     requiredStance: Abdoment(Ready)
     timeLimit: 100
@@ -54336,7 +54346,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Abdoment  Thrust
     rightHandInstruction: Abdoment  Thrust
-    instructionImage: {fileID: 21300000, guid: eda139af1c10e924292f2994c1060367, type: 3}
+    instructionImage: {fileID: 21300000, guid: d21b68ae2e267aa41ad3d5971915a425, type: 3}
     instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
     requiredStance: Abdoment(Strike)
     timeLimit: 100
@@ -54344,7 +54354,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Pectoral Ready Thrust
     rightHandInstruction: Right Pectoral Ready Thrust
-    instructionImage: {fileID: 21300000, guid: e2e29e99eacc91c4bafb03dcf83b85fa, type: 3}
+    instructionImage: {fileID: 21300000, guid: 7580bea7626278547a79dcb52d325a1c, type: 3}
     instructionVideo: {fileID: 32900000, guid: a8b743596b286434b9943a8827d9c7c7, type: 3}
     requiredStance: Left_Pectoral(Ready)
     timeLimit: 100
@@ -54352,7 +54362,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Pectoral Thrust
     rightHandInstruction: Right Pectoral Thrust
-    instructionImage: {fileID: 21300000, guid: e2e29e99eacc91c4bafb03dcf83b85fa, type: 3}
+    instructionImage: {fileID: 21300000, guid: 0d789c109fc47654cb13eaf3862605f8, type: 3}
     instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
     requiredStance: Left_Pectoral(Strike)
     timeLimit: 100
@@ -54360,7 +54370,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Pectoral Thrust
     rightHandInstruction: Left Pectoral Thrust
-    instructionImage: {fileID: 21300000, guid: 513e3c2114bef414991359defdd5ee3b, type: 3}
+    instructionImage: {fileID: 21300000, guid: 85216f499d78925438b144253533fd48, type: 3}
     instructionVideo: {fileID: 32900000, guid: 92c687f15c2c8344487d608c29085213, type: 3}
     requiredStance: Right_Pectoral(Strike)
     timeLimit: 100
@@ -54368,7 +54378,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Knee
     rightHandInstruction: 'Left Knee '
-    instructionImage: {fileID: 21300000, guid: 29941b015527b3644be9ea679356bee1, type: 3}
+    instructionImage: {fileID: 21300000, guid: 11f469c67b59f8148a35ae1aa3afb4cb, type: 3}
     instructionVideo: {fileID: 32900000, guid: 7c3f807c548f3b5488ec72feeb2829cc, type: 3}
     requiredStance: Right_Knee(Strike)
     timeLimit: 100
@@ -54376,7 +54386,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Knee Ready
     rightHandInstruction: Right Knee Ready
-    instructionImage: {fileID: 21300000, guid: a3bc3089b95827443ad0c69eab55c00a, type: 3}
+    instructionImage: {fileID: 21300000, guid: c59f4e98e05b2224f9fcd46c03e75bb0, type: 3}
     instructionVideo: {fileID: 32900000, guid: f9ed84c38c9415f4db176f8f94353ed0, type: 3}
     requiredStance: Left_Knee(Ready)
     timeLimit: 100
@@ -54384,7 +54394,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Knee Strike
     rightHandInstruction: Right Knee Strike
-    instructionImage: {fileID: 21300000, guid: 2eecd90ac50c3384fa408c64f45f0cfc, type: 3}
+    instructionImage: {fileID: 21300000, guid: c229beb0458e3ac4982724dc025cb4a9, type: 3}
     instructionVideo: {fileID: 32900000, guid: 75c61cf5f3520b8408ff68854e22d47b, type: 3}
     requiredStance: Left_Knee(Strike)
     timeLimit: 100
@@ -54392,7 +54402,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Eye Ready
     rightHandInstruction: Right Eye Ready
-    instructionImage: {fileID: 21300000, guid: 3ab5752c58e02204b86b1cd96442e6a7, type: 3}
+    instructionImage: {fileID: 21300000, guid: 40e2ce1ab05d16b49b6b701da8de7cef, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8095dfbb172ca75408fed6002b45f9aa, type: 3}
     requiredStance: Left_Eye(Ready)
     timeLimit: 100
@@ -54400,7 +54410,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Left Eye Thrust
     rightHandInstruction: Right Eye Thrust
-    instructionImage: {fileID: 21300000, guid: c961c6ac1f636f342897b399d6b934e2, type: 3}
+    instructionImage: {fileID: 21300000, guid: 0d9d6e0fa54a0fe40a671a8dd9bfcfe1, type: 3}
     instructionVideo: {fileID: 32900000, guid: fc36bfee54acc6449a94dd0545497bca, type: 3}
     requiredStance: Left_Eye(Strike)
     timeLimit: 100
@@ -54408,7 +54418,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Right Eye Thrust
     rightHandInstruction: Left Eye Thrust
-    instructionImage: {fileID: 21300000, guid: dd2e79c0e1da9594eab64fc1880bbe58, type: 3}
+    instructionImage: {fileID: 21300000, guid: b39e5eb5f2c1f204aacb9a20669df3fc, type: 3}
     instructionVideo: {fileID: 32900000, guid: f5d1de9184bb70b4185c6d6d026345b0, type: 3}
     requiredStance: Right_Eye(Strike)
     timeLimit: 100
@@ -54416,7 +54426,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Top Head
     rightHandInstruction: Top Head
-    instructionImage: {fileID: 21300000, guid: 3b79b410eb613bb45a395c47cbb5f573, type: 3}
+    instructionImage: {fileID: 21300000, guid: 3134cccc4497637448f8e52aca0fc2b9, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8e8585c5f47574f40a6e2bfabbd66100, type: 3}
     requiredStance: Top_Head(Ready)
     timeLimit: 100
@@ -54424,7 +54434,7 @@ MonoBehaviour:
     repeatCount: 3
   - instruction: Top Head Strike
     rightHandInstruction: Top Head Strike
-    instructionImage: {fileID: 21300000, guid: d4d3050192610d940b58f6f62442278f, type: 3}
+    instructionImage: {fileID: 21300000, guid: cd03d8ed3a88ff44693897e0476881a5, type: 3}
     instructionVideo: {fileID: 32900000, guid: f07ecbe500a9a864eb8f13369dba5317, type: 3}
     requiredStance: Top_Head(Strike)
     timeLimit: 100
@@ -55551,7 +55561,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_AnchoredPosition: {x: 0, y: 16}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1909662708
@@ -55608,7 +55618,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -56511,7 +56521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91.5, y: 91.5}
+  m_AnchoredPosition: {x: -91.5, y: 91.49929}
   m_SizeDelta: {x: 183, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1950690548
@@ -57260,16 +57270,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1979969530}
-  m_LocalRotation: {x: -0, y: 0.017452447, z: -0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 0, z: 0.03}
-  m_LocalScale: {x: 0.79314756, y: 1.4773, z: 1.4773002}
+  m_LocalRotation: {x: -0, y: -0.0000000037252894, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0020647272}
+  m_LocalScale: {x: 1.3034983, y: 4.9317307, z: 1.4773002}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1214385016}
+  m_Father: {fileID: 1737719112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.586, y: 0.30157062}
   m_AnchorMax: {x: 0.586, y: 0.30157062}
-  m_AnchoredPosition: {x: 226.09999, y: -87.400024}
+  m_AnchoredPosition: {x: -9.915726, y: -300.0163}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1979969532
@@ -58524,17 +58534,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028960214}
-  m_LocalRotation: {x: -0, y: 0.017452328, z: -0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: 0, z: -0.02}
-  m_LocalScale: {x: 0.29703307, y: 0.34864193, z: 0.029428266}
+  m_LocalRotation: {x: -0, y: -0.00000012293455, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.026966006}
+  m_LocalScale: {x: 0.48815897, y: 1.1638856, z: 0.02942827}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 911217881}
-  m_Father: {fileID: 1214385016}
+  m_Father: {fileID: 1737719112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 235.29999, y: 25.400002}
+  m_AnchoredPosition: {x: -0.32739258, y: 93.47356}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2028960216
