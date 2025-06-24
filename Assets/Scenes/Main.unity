@@ -37129,6 +37129,9 @@ MonoBehaviour:
   storyLevelPreviewImage: {fileID: 869637652}
   storyLevelDescriptionText: {fileID: 1909662708}
   isInStoryMode: 0
+  cutsceneManager: {fileID: 0}
+  completionCutscene: {fileID: 0}
+  playCompletionCutscene: 1
 --- !u!4 &833419205
 Transform:
   m_ObjectHideFlags: 0
@@ -46036,7 +46039,7 @@ MonoBehaviour:
   cutsceneCanvas: {fileID: 701324761}
   cutsceneDisplay: {fileID: 1547818143}
   videoPlayer: {fileID: 2002797369}
-  cutsceneVideo: {fileID: 32900000, guid: c13d46eb18a6cad43bf08b49839f1c69, type: 3}
+  cutsceneVideo: {fileID: 32900000, guid: d58294a6948b5cd4da96ca7d5b7acbe2, type: 3}
   renderTexture: {fileID: 8400000, guid: 0d59a0b3684ce81458db1055e63ef812, type: 2}
   theaterPosition: {fileID: 1565467529}
   playerRig: {fileID: 1317660925}
