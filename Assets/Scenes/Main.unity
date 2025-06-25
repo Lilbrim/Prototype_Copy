@@ -37765,10 +37765,10 @@ MonoBehaviour:
   - levelName: 12 Basic Strikes+
     introLevel: {fileID: 1498904607}
     levelThumbnail: {fileID: 21300000, guid: b3ec81cc2aa36c144bd87c1e2b34769d, type: 3}
-    levelDescription: "The 12 Basic Blocks in Arnis are essential defensive techniques
-      used to intercept or deflect incoming strikes from an opponent\u2019s weapon.
-      Each block corresponds to a specific angle of attack, covering the head, shoulders,
-      torso, and legs."
+    levelDescription: "The 12 Basic Strikes are fundamental offensive techniques
+      designed to target specific areas of an opponent\u2019s body. Each strike corresponds
+      to a particular angle and direction, aiming at vital points such as the head,
+      shoulders, torso, arms, and legs."
     levelId: 3
     isSparLevel: 0
     isTournamentLevel: 0
@@ -37794,8 +37794,10 @@ MonoBehaviour:
   availableTournamentLevels:
   - levelName: Tutorial
     introLevel: {fileID: 1870491782}
-    levelThumbnail: {fileID: 0}
-    levelDescription: Tournament Tutorial
+    levelThumbnail: {fileID: 21300000, guid: 60107421a5d00f4499c0c2bf5a8fe5bb, type: 3}
+    levelDescription: Face off against an opponent in a quick-time style match. Follow
+      the Position Guides to block and strike at the right moments. Timing and proper
+      form are key to winning each round.
     levelId: T0
     isSparLevel: 0
     isTournamentLevel: 0
@@ -37804,8 +37806,11 @@ MonoBehaviour:
     requiredLevelIds: []
   - levelName: Tournament 1
     introLevel: {fileID: 1972052387}
-    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
-    levelDescription: 
+    levelThumbnail: {fileID: 21300000, guid: ace3f70bba683834fa43ec1ed839ef5c, type: 3}
+    levelDescription: You will be sparring an opponent who is specialized in defense.
+      Use the 12 Basic Strikes to create an opening. Follow the Position Guides to
+      perform each strike with proper timing and form. Focus on rhythm, accuracy,
+      and smooth execution.
     levelId: T1
     isSparLevel: 0
     isTournamentLevel: 0
@@ -37815,8 +37820,11 @@ MonoBehaviour:
     - 0
   - levelName: Tournament 1+
     introLevel: {fileID: 1795985148}
-    levelThumbnail: {fileID: 21300000, guid: 3c2189414ad8c65449bfc5f8850ed5b7, type: 3}
-    levelDescription: 
+    levelThumbnail: {fileID: 21300000, guid: ace3f70bba683834fa43ec1ed839ef5c, type: 3}
+    levelDescription: You will be sparring an opponent who is specialized in defense.
+      Use the 12 Basic Strikes to create an opening. Follow the Position Guides to
+      perform each strike with proper timing and form. Focus on rhythm, accuracy,
+      and smooth execution.
     levelId: T2
     isSparLevel: 0
     isTournamentLevel: 0
