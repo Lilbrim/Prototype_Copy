@@ -928,8 +928,8 @@ private void InitializeTransparency()
 
 
     public void EndObjective()
-    {
-        
+    {   
+        OnObjectiveCompleted();
         StopObjectiveTimer();
         
         if (objectiveVideoPlayer != null && objectiveVideoPlayer.isPlaying)
@@ -1329,6 +1329,20 @@ private void InitializeTransparency()
         }
     }
 
+    public void OnObjectiveCompleted()
+    {
+        if (currentObjectiveIndex >= 0 && currentObjectiveIndex < objectives.Count)
+        {
+            LevelObjective currentObjective = objectives[currentObjectiveIndex];
+            string soundName = currentObjective.GetRandomSoundName();
+            
+            if (!string.IsNullOrEmpty(soundName))
+            {
+                AudioManager.PlaySoundAtGameObjectStatic(soundName, this.gameObject);
+            }
+        }
+    }
+
     private float CalculateTrainingModeFinalAccuracy()
     {
         float totalAccuracy = 0f;
@@ -1556,6 +1570,10 @@ public class LevelObjective
     [Range(1, 10)]
     public int repeatCount = 1;
 
+    [Header("Sound Effects")]
+    public bool enableSoundEffects = false;
+    public List<string> soundNames = new List<string>();
+
     public string GetInstruction(bool isRightHandDominant)
     {
         if (isRightHandDominant && !string.IsNullOrEmpty(rightHandInstruction))
@@ -1564,6 +1582,16 @@ public class LevelObjective
         }
 
         return instruction;
+    }
+        public string GetRandomSoundName()
+    {
+        if (!enableSoundEffects || soundNames == null || soundNames.Count == 0)
+        {
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, soundNames.Count);
+        return soundNames[randomIndex];
     }
     
 }

@@ -33,6 +33,11 @@ public class Pause : MonoBehaviour
     private const string HAND_DOMINANCE_SET_KEY = "HandDominanceAutoSet";
     [SerializeField] private bool defaultRightHand = true;
     
+    [Header("Audio Settings")]
+    public Slider volumeSlider;
+    public TextMeshProUGUI volumeText;
+    [SerializeField] private float defaultVolume = 1.0f;
+    
     /*[Header("Passthrough Integration")]
     public PassthroughManager passthroughManager; */
     
@@ -72,6 +77,7 @@ public class Pause : MonoBehaviour
             }
         }*/
         
+        // Initialize height settings
         if (playerRig != null && heightSlider != null)
         {
             float savedHeight = PlayerPrefs.GetFloat(HEIGHT_PREF_KEY, defaultHeight);
@@ -92,6 +98,7 @@ public class Pause : MonoBehaviour
             UpdateHeightText();
         }
         
+        // Initialize right-hand dominance settings
         if (rightHandToggle != null)
         {
             bool savedRightHand = PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0) == 1;
@@ -99,6 +106,19 @@ public class Pause : MonoBehaviour
             rightHandToggle.onValueChanged.AddListener(OnRightHandToggleChanged);
             
             ApplyRightHandDominanceToStanceManager(savedRightHand);
+        }
+        
+        // Initialize volume settings
+        if (volumeSlider != null)
+        {
+            float savedVolume = AudioManager.Instance != null ? AudioManager.Instance.GetMasterVolume() : defaultVolume;
+            
+            volumeSlider.minValue = 0f;
+            volumeSlider.maxValue = 1f;
+            volumeSlider.value = savedVolume;
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+            
+            UpdateVolumeText();
         }
         
         if (inputActions != null)
@@ -318,6 +338,36 @@ public class Pause : MonoBehaviour
         return PlayerPrefs.GetInt(RIGHT_HAND_PREF_KEY, defaultRightHand ? 1 : 0) == 1;
     }
 
+    // Audio Settings Methods
+    public void OnVolumeChanged(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetMasterVolume(value);
+            UpdateVolumeText();
+        }
+    }
+
+    private void UpdateVolumeText()
+    {
+        if (volumeText != null && volumeSlider != null)
+        {
+            volumeText.text = $"Volume: {(volumeSlider.value * 100):F0}%";
+        }
+    }
+
+    public void ResetVolume()
+    {
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = defaultVolume;
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetMasterVolume(defaultVolume);
+            }
+        }
+    }
     
     /*public void TogglePassthrough()
     {

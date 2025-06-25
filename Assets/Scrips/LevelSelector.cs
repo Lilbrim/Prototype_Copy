@@ -18,14 +18,14 @@ public class LevelSelector : MonoBehaviour
         public string levelId;
         public bool isSparLevel = false;
         public bool isTournamentLevel = false;
-        
+
         [Tooltip("Minimum score required to unlock this spar/tournament level")]
         public int requiredScore = 0;
-        
+
         [Tooltip("Minimum accuracy required to unlock next level (only used for prac levels)")]
         [Range(0f, 1f)]
         public float requiredAccuracy = 0.7f;
-        
+
         public List<string> requiredLevelIds = new List<string>();
     }
 
@@ -43,11 +43,11 @@ public class LevelSelector : MonoBehaviour
 
     [Header("Level Backgrounds")]
     public LevelBackground currentBackground = LevelBackground.Gym;
-    
+
     public GameObject houseBackground;
     public GameObject gymBackground;
     public GameObject tournamentBackground;
-    
+
     [Range(0.1f, 3f)]
     public float backgroundTransitionDuration = 1.0f;
 
@@ -57,13 +57,13 @@ public class LevelSelector : MonoBehaviour
     public GameObject levelSelectionPanel;
     public GameObject levelButtonPrefab;
     public Transform levelButtonContainer;
-    public Transform sparLevelButtonContainer; 
+    public Transform sparLevelButtonContainer;
     public Transform tournamentLevelButtonContainer;
     public TextMeshProUGUI levelDescriptionText;
     public Image levelPreviewImage;
     public TextMeshProUGUI scoreText;
     public Button startLevelButton;
-    
+
     [Header("Tabs")]
     public GameObject pracLevelsTab;
     public GameObject sparLevelsTab;
@@ -96,60 +96,61 @@ public class LevelSelector : MonoBehaviour
     public TextMeshProUGUI storyProgressText;
     public Image storyLevelPreviewImage;
     public TextMeshProUGUI storyLevelDescriptionText;
+    public string completionTriggerLevelId = "T1";
 
     private int currentStoryLevelIndex = 0;
     private List<LevelData> allLevelsInOrder = new List<LevelData>();
     public bool isInStoryMode = false;
 
-    
+
     private bool isTransitioningBackground = false;
-    
+
     public CutsceneManager cutsceneManager;
     public VideoClip completionCutscene;
     [Tooltip("Should cutscene play when all levels are completed?")]
     public bool playCompletionCutscene = true;
 
-    
+
     private bool hasPlayedCompletionCutscene = false;
     private const string COMPLETION_CUTSCENE_KEY = "CompletionCutscenePlayed";
-        
 
-   private void Start()
-{
-    InitializeScreenFaded();
-    
-    LoadSavedBackground();
-    
-    
-    hasPlayedCompletionCutscene = PlayerPrefs.GetInt(COMPLETION_CUTSCENE_KEY, 0) == 1;
-        
-    if (currentBackground != LevelBackground.House)
+
+    private void Start()
     {
-        ShowpracLevelsTab();
+        InitializeScreenFaded();
+
+        LoadSavedBackground();
+
+
+        hasPlayedCompletionCutscene = PlayerPrefs.GetInt(COMPLETION_CUTSCENE_KEY, 0) == 1;
+
+        if (currentBackground != LevelBackground.House)
+        {
+            ShowpracLevelsTab();
+        }
+
+        GenerateLevelButtons();
+        UpdateLevelInfoPanel(-1);
+        startLevelButton.interactable = false;
+        InitializeStoryModeOrder();
+
+        if (pracLevelsTabButton != null)
+            pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
+
+        if (sparLevelsTabButton != null)
+            sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
+
+        if (tournamentLevelsTabButton != null)
+            tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
+
+        if (houseBackgroundButton != null)
+            houseBackgroundButton.onClick.AddListener(SetHouseBackground);
+
+        if (gymBackgroundButton != null)
+            gymBackgroundButton.onClick.AddListener(SetGymBackground);
+
+        StartCoroutine(InitialFadeIn());
     }
-    
-    GenerateLevelButtons();
-    UpdateLevelInfoPanel(-1);
-    startLevelButton.interactable = false;
-    InitializeStoryModeOrder();
-
-    if (pracLevelsTabButton != null)
-        pracLevelsTabButton.onClick.AddListener(ShowpracLevelsTab);
-
-    if (sparLevelsTabButton != null)
-        sparLevelsTabButton.onClick.AddListener(ShowSparLevelsTab);
-
-    if (tournamentLevelsTabButton != null)
-        tournamentLevelsTabButton.onClick.AddListener(ShowTournamentLevelsTab);
-        
-    if (houseBackgroundButton != null)
-        houseBackgroundButton.onClick.AddListener(SetHouseBackground);
-
-    if (gymBackgroundButton != null)
-        gymBackgroundButton.onClick.AddListener(SetGymBackground);
-        
-    StartCoroutine(InitialFadeIn());
-}
 
 
     private void InitializeScreenFaded()
@@ -167,10 +168,10 @@ public class LevelSelector : MonoBehaviour
     {
         if (!hasInitializedFade)
             yield break;
-            
-        
+
+
         yield return new WaitForSeconds(0.1f);
-        
+
         SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
         if (transitionManager != null)
         {
@@ -189,7 +190,7 @@ public class LevelSelector : MonoBehaviour
 
     private void LoadSavedBackground()
     {
-        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.House);
+        int savedBackground = PlayerPrefs.GetInt(BACKGROUND_SAVE_KEY, (int)LevelBackground.Gym);
         Debug.Log($"Loading background: {(LevelBackground)savedBackground}");
         currentBackground = (LevelBackground)savedBackground;
         SetBackground(currentBackground);
@@ -202,12 +203,12 @@ public class LevelSelector : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    
+
     [ContextMenu("Set House Background")]
     public void SetHouseBackground()
     {
         isInStoryMode = true;
-        ChangeBackground(LevelBackground.House);
+        ChangeBackground(LevelBackground.Gym);
     }
 
     [ContextMenu("Set Gym Background")]
@@ -224,23 +225,23 @@ public class LevelSelector : MonoBehaviour
         ChangeBackground(LevelBackground.Tournament);
     }
 
-    
-  private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
+
+    private IEnumerator TransitionToNewBackground(LevelBackground newBackground)
     {
         isTransitioningBackground = true;
-        
+
         SceneTransitionManager transitionManager = SceneTransitionManager.Instance;
         if (transitionManager != null)
         {
             yield return StartCoroutine(FadeToBlack(transitionManager));
-            
+
             SetBackground(newBackground);
             currentBackground = newBackground;
-            
+
             SaveCurrentBackground();
-            
+
             yield return new WaitForSeconds(0.1f);
-            
+
             yield return StartCoroutine(FadeFromBlack(transitionManager));
         }
         else
@@ -248,18 +249,18 @@ public class LevelSelector : MonoBehaviour
             Debug.LogWarning("SceneTransitionManager not found. Changing background without fade.");
             SetBackground(newBackground);
             currentBackground = newBackground;
-            SaveCurrentBackground(); 
+            SaveCurrentBackground();
         }
-        
+
         isTransitioningBackground = false;
     }
-        
+
     private IEnumerator FadeToBlack(SceneTransitionManager transitionManager)
     {
         if (transitionManager.fadeCanvasGroup != null)
         {
             transitionManager.fadeCanvasGroup.blocksRaycasts = true;
-            
+
             float elapsedTime = 0f;
             while (elapsedTime < backgroundTransitionDuration)
             {
@@ -267,11 +268,11 @@ public class LevelSelector : MonoBehaviour
                 transitionManager.fadeCanvasGroup.alpha = Mathf.Clamp01(elapsedTime / backgroundTransitionDuration);
                 yield return null;
             }
-            
+
             transitionManager.fadeCanvasGroup.alpha = 1f;
         }
     }
-    
+
     private IEnumerator FadeFromBlack(SceneTransitionManager transitionManager)
     {
         if (transitionManager.fadeCanvasGroup != null)
@@ -283,77 +284,77 @@ public class LevelSelector : MonoBehaviour
                 transitionManager.fadeCanvasGroup.alpha = 1f - Mathf.Clamp01(elapsedTime / backgroundTransitionDuration);
                 yield return null;
             }
-            
+
             transitionManager.fadeCanvasGroup.alpha = 0f;
             transitionManager.fadeCanvasGroup.blocksRaycasts = false;
         }
     }
-    
-private void SetBackground(LevelBackground background)
-{
-    
-    if (houseBackground != null) houseBackground.SetActive(false);
-    if (gymBackground != null) gymBackground.SetActive(false);
-    if (tournamentBackground != null) tournamentBackground.SetActive(false);
-    if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
-    if (storyUIPanel != null) storyUIPanel.SetActive(false);
-    
-    switch (background)
-    {
-        case LevelBackground.House:
-            if (houseBackground != null) 
-            {
-                houseBackground.SetActive(true);
-                Debug.Log("Switched to House background");
-            }
-            
-            if (storyUIPanel != null)
-            {
-                storyUIPanel.SetActive(true);
-                UpdateStoryUI();
-            }
-            break;
-            
-        case LevelBackground.Gym:
-            if (gymBackground != null) 
-            {
-                gymBackground.SetActive(true);
-                Debug.Log("Switched to Gym background");
-            }
-            
-            if (levelSelectionPanel != null)
-            {
-                levelSelectionPanel.SetActive(true);
-                ShowpracLevelsTab();
-            }
-            break;
-            
-        case LevelBackground.Tournament:
-            if (tournamentBackground != null) 
-            {
-                tournamentBackground.SetActive(true);
-                Debug.Log("Switched to Tournament background");
-            }
-            
-            if (levelSelectionPanel != null)
-            {
-                levelSelectionPanel.SetActive(true);
-                ShowTournamentLevelsTab();
-            }
-            break;
-    }
-}
 
-    
+    private void SetBackground(LevelBackground background)
+    {
+
+        if (houseBackground != null) houseBackground.SetActive(false);
+        if (gymBackground != null) gymBackground.SetActive(false);
+        if (tournamentBackground != null) tournamentBackground.SetActive(false);
+        if (levelSelectionPanel != null) levelSelectionPanel.SetActive(false);
+        if (storyUIPanel != null) storyUIPanel.SetActive(false);
+
+        switch (background)
+        {
+            case LevelBackground.House:
+                if (houseBackground != null)
+                {
+                    houseBackground.SetActive(true);
+                    Debug.Log("Switched to House background");
+                }
+
+                if (storyUIPanel != null)
+                {
+                    storyUIPanel.SetActive(true);
+                    UpdateStoryUI();
+                }
+                break;
+
+            case LevelBackground.Gym:
+                if (gymBackground != null)
+                {
+                    gymBackground.SetActive(true);
+                    Debug.Log("Switched to Gym background");
+                }
+
+                if (levelSelectionPanel != null)
+                {
+                    levelSelectionPanel.SetActive(true);
+                    ShowpracLevelsTab();
+                }
+                break;
+
+            case LevelBackground.Tournament:
+                if (tournamentBackground != null)
+                {
+                    tournamentBackground.SetActive(true);
+                    Debug.Log("Switched to Tournament background");
+                }
+
+                if (levelSelectionPanel != null)
+                {
+                    levelSelectionPanel.SetActive(true);
+                    ShowTournamentLevelsTab();
+                }
+                break;
+        }
+    }
+
+
     public void StartStoryModeWithTutorialInGym()
     {
         isInStoryMode = true;
         InitializeStoryModeOrder();
-        
-        ChangeBackground(LevelBackground.House);
+
+        ChangeBackground(LevelBackground.Gym);
     }
 
-    
+
     private void InitializeStoryModeOrder()
     {
         allLevelsInOrder.Clear();
@@ -431,7 +432,7 @@ private void SetBackground(LevelBackground background)
         }
         else
         {
-            
+
             if (playCompletionCutscene && !hasPlayedCompletionCutscene && cutsceneManager != null)
             {
                 TriggerCompletionCutscene();
@@ -442,58 +443,66 @@ private void SetBackground(LevelBackground background)
             }
         }
     }
-private void TriggerCompletionCutscene()
-{
-    hasPlayedCompletionCutscene = true;
-    PlayerPrefs.SetInt(COMPLETION_CUTSCENE_KEY, 1);
-    PlayerPrefs.Save();
-    
-    
-    cutsceneManager.OnCutsceneEnd += OnCompletionCutsceneEnd;
-    cutsceneManager.OnCutsceneSkip += OnCompletionCutsceneEnd;
-    
-    
-    if (storyUIPanel != null)
-        storyUIPanel.SetActive(false);
-    
-    
-    if (completionCutscene != null)
-        cutsceneManager.PlayCutscene(completionCutscene);
-    else
-        cutsceneManager.PlayCutscene();
-}
-
-private void OnCompletionCutsceneEnd()
-{
-    
-    cutsceneManager.OnCutsceneEnd -= OnCompletionCutsceneEnd;
-    cutsceneManager.OnCutsceneSkip -= OnCompletionCutsceneEnd;
-    
-    
-    ShowCompletionUI();
-    
-    
-    if (storyUIPanel != null)
-        storyUIPanel.SetActive(true);
-}
-
-private void ShowCompletionUI()
-{
-    if (storyLevelNameText != null)
-        storyLevelNameText.text = "All Levels Complete!";
-        
-    if (storyLevelDescriptionText != null)
-        storyLevelDescriptionText.text = "Congratulations! You have completed all available levels.";
-        
-    if (nextLevelButton != null)
-        nextLevelButton.interactable = false;
-        
-    if (storyProgressText != null)
+    private void TriggerCompletionCutscene()
     {
-        int totalLevels = allLevelsInOrder.Count;
-        storyProgressText.text = $"Progress: {totalLevels}/{totalLevels} - COMPLETE!";
+        Debug.Log("Triggering completion cutscene!");
+        
+        hasPlayedCompletionCutscene = true;
+        PlayerPrefs.SetInt(COMPLETION_CUTSCENE_KEY, 1);
+        PlayerPrefs.Save();
+        
+        cutsceneManager.OnCutsceneEnd += OnCompletionCutsceneEnd;
+        cutsceneManager.OnCutsceneSkip += OnCompletionCutsceneEnd;
+        
+        if (storyUIPanel != null)
+            storyUIPanel.SetActive(false);
+        if (levelSelectionPanel != null)
+            levelSelectionPanel.SetActive(false);
+        
+        if (completionCutscene != null)
+            cutsceneManager.PlayCutscene(completionCutscene);
+        else
+            cutsceneManager.PlayCutscene();
     }
-}
+
+    private void OnCompletionCutsceneEnd()
+    {
+        Debug.Log("Completion cutscene ended");
+        
+        cutsceneManager.OnCutsceneEnd -= OnCompletionCutsceneEnd;
+        cutsceneManager.OnCutsceneSkip -= OnCompletionCutsceneEnd;
+        
+        if (isInStoryMode)
+        {
+            if (storyUIPanel != null)
+                storyUIPanel.SetActive(true);
+            
+            OnLevelCompleted();
+        }
+        else
+        {
+            if (levelSelectionPanel != null)
+                levelSelectionPanel.SetActive(true);
+        }
+    }
+
+    private void ShowCompletionUI()
+    {
+        if (storyLevelNameText != null)
+            storyLevelNameText.text = "All Levels Complete!";
+
+        if (storyLevelDescriptionText != null)
+            storyLevelDescriptionText.text = "Congratulations! You have completed all available levels.";
+
+        if (nextLevelButton != null)
+            nextLevelButton.interactable = false;
+
+        if (storyProgressText != null)
+        {
+            int totalLevels = allLevelsInOrder.Count;
+            storyProgressText.text = $"Progress: {totalLevels}/{totalLevels} - COMPLETE!";
+        }
+    }
 
 
 
@@ -503,16 +512,16 @@ private void ShowCompletionUI()
         {
             LevelData levelToStart = allLevelsInOrder[currentStoryLevelIndex];
             selectedIntroLevel = levelToStart.introLevel;
-            
+
             if (selectedIntroLevel != null)
             {
-                
+
                 if (storyUIPanel != null)
                     storyUIPanel.SetActive(false);
-                    
+
                 string levelId = levelToStart.levelId;
-                
-                
+
+
                 if (levelToStart.isSparLevel || levelToStart.isTournamentLevel)
                 {
                     if (selectedIntroLevel.gameObject.GetComponent<SaveSparScore>() == null)
@@ -520,7 +529,7 @@ private void ShowCompletionUI()
                         SaveSparScore observer = selectedIntroLevel.gameObject.AddComponent<SaveSparScore>();
                         observer.Initialize(this, levelId);
                     }
-                    
+
                     SparResultsManager resultsManager = FindObjectOfType<SparResultsManager>();
                     if (resultsManager != null)
                     {
@@ -535,12 +544,12 @@ private void ShowCompletionUI()
                         observer.Initialize(this, levelId);
                     }
                 }
-                
+
                 selectedIntroLevel.ActivateIntro();
             }
         }
     }
-    
+
     public void ShowpracLevelsTab()
     {
         isViewingSparLevels = false;
@@ -571,37 +580,37 @@ private void ShowCompletionUI()
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.interactable = true;
     }
-    
+
     public void ShowSparLevelsTab()
     {
         isViewingSparLevels = true;
         isViewingTournamentLevels = false;
         ChangeBackground(LevelBackground.Gym);
-        
+
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(false);
-        
+
         if (sparLevelsTab != null)
             sparLevelsTab.SetActive(true);
-            
+
         if (tournamentLevelsTab != null)
             tournamentLevelsTab.SetActive(false);
-        
+
         selectedLevelIndex = -1;
         selectedIntroLevel = null;
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
-        
+
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.interactable = true;
-        
+
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.interactable = false;
-            
+
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.interactable = true;
     }
-    
+
     public void ShowTournamentLevelsTab()
     {
         isViewingSparLevels = false;
@@ -609,24 +618,24 @@ private void ShowCompletionUI()
         ChangeBackground(LevelBackground.Tournament);
         if (pracLevelsTab != null)
             pracLevelsTab.SetActive(false);
-        
+
         if (sparLevelsTab != null)
             sparLevelsTab.SetActive(false);
-            
+
         if (tournamentLevelsTab != null)
             tournamentLevelsTab.SetActive(true);
-        
+
         selectedLevelIndex = -1;
         selectedIntroLevel = null;
         UpdateLevelInfoPanel(-1);
         startLevelButton.interactable = false;
-        
+
         if (pracLevelsTabButton != null)
             pracLevelsTabButton.interactable = true;
-        
+
         if (sparLevelsTabButton != null)
             sparLevelsTabButton.interactable = true;
-            
+
         if (tournamentLevelsTabButton != null)
             tournamentLevelsTabButton.interactable = false;
     }
@@ -634,14 +643,14 @@ private void ShowCompletionUI()
     private void GenerateLevelButtons()
     {
         GenerateButtonsForList(availableLevels, levelButtonContainer, levelButtons, false, false);
-        
+
         GenerateButtonsForList(availableSparLevels, sparLevelButtonContainer, sparLevelButtons, true, false);
-        
+
         GenerateButtonsForList(availableTournamentLevels, tournamentLevelButtonContainer, tournamentLevelButtons, false, true);
-        
+
         UpdateLevelButtonsState();
     }
-    
+
     private void GenerateButtonsForList(List<LevelData> levels, Transform container, List<Button> buttonsList, bool isSparLevel, bool isTournamentLevel)
     {
         foreach (Transform child in container)
@@ -654,18 +663,18 @@ private void ShowCompletionUI()
         {
             LevelData levelData = levels[i];
             GameObject buttonObj = Instantiate(levelButtonPrefab, container);
-            
+
             TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
                 buttonText.text = levelData.levelName;
             }
-            
+
             Transform indicatorTransform = buttonObj.transform.Find("AccuracyIndicator");
             if (indicatorTransform != null && indicatorTransform.GetComponent<TextMeshProUGUI>() != null)
             {
                 TextMeshProUGUI indicator = indicatorTransform.GetComponent<TextMeshProUGUI>();
-                
+
                 if (isSparLevel)
                 {
                     int savedScore = GetSavedScore(levelData.levelId);
@@ -704,10 +713,10 @@ private void ShowCompletionUI()
                 }
             }
 
-            int levelIndex = i; 
+            int levelIndex = i;
             Button button = buttonObj.GetComponent<Button>();
             buttonsList.Add(button);
-            
+
             if (button != null)
             {
                 if (isSparLevel)
@@ -729,20 +738,20 @@ private void ShowCompletionUI()
     public void UpdateLevelButtonsState()
     {
         UpdateButtonsStateForList(levelButtons, availableLevels, false, false);
-        
+
         UpdateButtonsStateForList(sparLevelButtons, availableSparLevels, true, false);
-        
+
         UpdateButtonsStateForList(tournamentLevelButtons, availableTournamentLevels, false, true);
     }
-    
+
     private void UpdateButtonsStateForList(List<Button> buttons, List<LevelData> levels, bool isSparLevel, bool isTournamentLevel)
     {
         for (int i = 0; i < buttons.Count; i++)
         {
             LevelData levelData = levels[i];
             bool isUnlocked;
-            
-            if (i == 0) 
+
+            if (i == 0)
             {
                 isUnlocked = true;
             }
@@ -758,12 +767,12 @@ private void ShowCompletionUI()
             {
                 string previousLevelId = levels[i - 1].levelId;
                 float previousLevelAccuracy = GetSavedAccuracy(previousLevelId);
-                float requiredAccuracy = levels[i - 1].requiredAccuracy; 
+                float requiredAccuracy = levels[i - 1].requiredAccuracy;
                 isUnlocked = previousLevelAccuracy >= requiredAccuracy;
             }
-            
+
             buttons[i].interactable = isUnlocked;
-            
+
             Transform lockIndicator = buttons[i].transform.Find("LockIndicator");
             if (lockIndicator != null)
             {
@@ -783,7 +792,7 @@ private void ShowCompletionUI()
             }
         }
     }
-    
+
     private bool CheckSparLevelUnlockRequirements(LevelData sparLevel)
     {
         if (sparLevel.requiredLevelIds.Count == 0)
@@ -797,10 +806,10 @@ private void ShowCompletionUI()
             }
             return true;
         }
-        
+
         return CheckLevelUnlockRequirements(sparLevel, GetSavedScore);
     }
-    
+
     private bool CheckTournamentLevelUnlockRequirements(LevelData tournamentLevel)
     {
         if (tournamentLevel.requiredLevelIds.Count == 0)
@@ -814,16 +823,16 @@ private void ShowCompletionUI()
             }
             return true;
         }
-        
+
         return CheckLevelUnlockRequirements(tournamentLevel, GetSavedScore);
     }
-    
+
     private bool CheckLevelUnlockRequirements(LevelData level, System.Func<string, int> getScoreFunc)
     {
         foreach (string requiredLevelId in level.requiredLevelIds)
         {
             bool found = false;
-            
+
             foreach (LevelData pracLevel in availableLevels)
             {
                 if (pracLevel.levelId == requiredLevelId)
@@ -837,7 +846,7 @@ private void ShowCompletionUI()
                     break;
                 }
             }
-            
+
             if (!found)
             {
                 foreach (LevelData otherSparLevel in availableSparLevels)
@@ -854,7 +863,7 @@ private void ShowCompletionUI()
                     }
                 }
             }
-            
+
             if (!found)
             {
                 foreach (LevelData otherTournamentLevel in availableTournamentLevels)
@@ -871,39 +880,39 @@ private void ShowCompletionUI()
                     }
                 }
             }
-            
+
             if (!found)
             {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
 
     public void SelectLevel(int levelIndex)
     {
         SelectLevelFromList(levelIndex, availableLevels, levelButtons, false, false);
     }
-    
+
     public void SelectSparLevel(int levelIndex)
     {
         SelectLevelFromList(levelIndex, availableSparLevels, sparLevelButtons, true, false);
     }
-    
+
     public void SelectTournamentLevel(int levelIndex)
     {
         SelectLevelFromList(levelIndex, availableTournamentLevels, tournamentLevelButtons, false, true);
     }
-    
+
     public void SelectLevelFromList(int levelIndex, List<LevelData> levels, List<Button> buttons, bool isSparLevel, bool isTournamentLevel)
     {
         if (levelIndex >= 0 && levelIndex < levels.Count)
         {
             selectedLevelIndex = levelIndex;
             selectedIntroLevel = levels[levelIndex].introLevel;
-            
+
             if (buttons[levelIndex].interactable)
             {
                 UpdateLevelInfoPanel(levelIndex, levels);
@@ -913,7 +922,7 @@ private void ShowCompletionUI()
             {
                 LevelData levelData = levels[levelIndex];
                 string unlockMessage = "Level locked! ";
-                
+
                 if ((isSparLevel || isTournamentLevel) && levelData.requiredLevelIds.Count > 0)
                 {
                     unlockMessage += "Complete required levels:";
@@ -922,7 +931,7 @@ private void ShowCompletionUI()
                         string levelName = GetLevelNameById(requiredId);
                         unlockMessage += $"\n- {levelName}";
                     }
-                    
+
                     if (levelData.requiredScore > 0)
                     {
                         unlockMessage += $"\nWith minimum score: {levelData.requiredScore}";
@@ -948,7 +957,7 @@ private void ShowCompletionUI()
                         unlockMessage += $"Complete {previousLevelName} with at least {requiredAccuracy:P0} accuracy (current: {previousLevelAccuracy:P0})";
                     }
                 }
-                
+
                 levelDescriptionText.text = unlockMessage;
                 startLevelButton.interactable = false;
             }
@@ -962,19 +971,19 @@ private void ShowCompletionUI()
             if (level.levelId == levelId)
                 return level.levelName;
         }
-        
+
         foreach (LevelData level in availableSparLevels)
         {
             if (level.levelId == levelId)
                 return level.levelName;
         }
-        
+
         foreach (LevelData level in availableTournamentLevels)
         {
             if (level.levelId == levelId)
                 return level.levelName;
         }
-        
+
         return "Unknown Level";
     }
 
@@ -1002,11 +1011,11 @@ private void ShowCompletionUI()
             levelDescriptionText.text = levelData.levelDescription;
             levelPreviewImage.sprite = levelData.levelThumbnail;
             levelPreviewImage.gameObject.SetActive(true);
-            
+
             if (scoreText != null)
             {
                 scoreText.gameObject.SetActive(true);
-                
+
                 if (levelData.isSparLevel)
                 {
                     int savedScore = GetSavedScore(levelData.levelId);
@@ -1049,7 +1058,7 @@ private void ShowCompletionUI()
         {
             levelDescriptionText.text = "Select level";
             levelPreviewImage.gameObject.SetActive(false);
-            
+
             if (scoreText != null)
             {
                 scoreText.gameObject.SetActive(false);
@@ -1059,8 +1068,8 @@ private void ShowCompletionUI()
 
     public void StartSelectedLevel()
     {
-            Debug.Log("StartSelectedLevel called!");
-             Debug.Log($"selectedIntroLevel is null: {selectedIntroLevel == null}");
+        Debug.Log("StartSelectedLevel called!");
+        Debug.Log($"selectedIntroLevel is null: {selectedIntroLevel == null}");
         if (selectedIntroLevel != null)
         {
             levelSelectionPanel.SetActive(false);
@@ -1125,43 +1134,61 @@ private void ShowCompletionUI()
         }
     }
 
-    public void SaveLevelAccuracy(string levelId, float accuracy)
+public void SaveLevelAccuracy(string levelId, float accuracy)
+{
+    float currentAccuracy = GetSavedAccuracy(levelId);
+    if (accuracy > currentAccuracy)
     {
-        float currentAccuracy = GetSavedAccuracy(levelId);
-        if (accuracy > currentAccuracy)
+        PlayerPrefs.SetFloat(ACCURACY_SAVE_PREFIX + levelId, accuracy);
+        PlayerPrefs.Save();
+        UpdateLevelButtonsState();
+        
+        
+        if (ShouldTriggerCompletionCutscene(levelId))
         {
-            PlayerPrefs.SetFloat(ACCURACY_SAVE_PREFIX + levelId, accuracy);
-            PlayerPrefs.Save();
-            UpdateLevelButtonsState();
-            
-            
-            if (isInStoryMode)
-            {
-                OnLevelCompleted();
-            }
+            Debug.Log($"Triggering completion cutscene for level: {levelId}");
+            TriggerCompletionCutscene();
+            return; 
+        }
+        
+        
+        if (isInStoryMode)
+        {
+            OnLevelCompleted();
         }
     }
+}
 
     public float GetSavedAccuracy(string levelId)
     {
         return PlayerPrefs.GetFloat(ACCURACY_SAVE_PREFIX + levelId, 0f);
     }
-    
-    public void SaveLevelScore(string levelId, int score)
+
+  public void SaveLevelScore(string levelId, int score)
+{
+    int currentScore = GetSavedScore(levelId);
+    if (score > currentScore)
     {
-        int currentScore = GetSavedScore(levelId);
-        if (score > currentScore)
+        PlayerPrefs.SetInt(SCORE_SAVE_PREFIX + levelId, score);
+        PlayerPrefs.Save();
+        UpdateLevelButtonsState();
+
+        // Check if this level completion should trigger the end cutscene
+        if (ShouldTriggerCompletionCutscene(levelId))
         {
-            PlayerPrefs.SetInt(SCORE_SAVE_PREFIX + levelId, score);
-            PlayerPrefs.Save();
-            UpdateLevelButtonsState();
-            
-            if (isInStoryMode)
-            {
-                OnLevelCompleted();
-            }
+            Debug.Log($"Triggering completion cutscene for level: {levelId}");
+            TriggerCompletionCutscene();
+            return; // Don't continue to story mode logic
+        }
+
+        // Continue with normal story mode progression
+        if (isInStoryMode)
+        {
+            OnLevelCompleted();
         }
     }
+}
+
 
     public void OnLevelCompleted()
     {
@@ -1172,9 +1199,16 @@ private void ShowCompletionUI()
         }
     }
 
-        
-        public int GetSavedScore(string levelId)
-        {
-            return PlayerPrefs.GetInt(SCORE_SAVE_PREFIX + levelId, 0);
-        }
+
+    public int GetSavedScore(string levelId)
+    {
+        return PlayerPrefs.GetInt(SCORE_SAVE_PREFIX + levelId, 0);
+    }
+    private bool ShouldTriggerCompletionCutscene(string levelId)
+    {
+        return levelId == completionTriggerLevelId && 
+            playCompletionCutscene && 
+            !hasPlayedCompletionCutscene && 
+            cutsceneManager != null;
+    }
 }
