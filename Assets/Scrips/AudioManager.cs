@@ -41,8 +41,8 @@ public class AudioManager : MonoBehaviour
     private List<SoundEmitter> activeEmitters = new List<SoundEmitter>();
     
     [Header("Volume Settings")]
-    [Range(0f, 1f)]
-    public float masterVolume = 1f;
+    [Range(0f, 0.1f)]
+    public float masterVolume = 0.05f;
     private const string VOLUME_PREF_KEY = "MasterVolume";
     
     private LevelManager levelManager;
@@ -93,7 +93,7 @@ public class AudioManager : MonoBehaviour
         InitializeSoundEmitterPool();
         
         
-        masterVolume = PlayerPrefs.GetFloat(VOLUME_PREF_KEY, 1f);
+        masterVolume = PlayerPrefs.GetFloat(VOLUME_PREF_KEY, 0.05f);
         ApplyVolumeSettings();
     }
     
