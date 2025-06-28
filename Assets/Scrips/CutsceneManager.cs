@@ -45,21 +45,22 @@ public class CutsceneManager : MonoBehaviour
     public System.Action OnCutsceneStart;
     public System.Action OnCutsceneEnd;
     public System.Action OnCutsceneSkip;
+    private bool wasBGMPlaying = false;
     
     private void Awake()
     {
-        
+
         if (skipUI != null)
         {
             skipUICanvasGroup = skipUI.GetComponent<CanvasGroup>();
             if (skipUICanvasGroup == null)
                 skipUICanvasGroup = skipUI.AddComponent<CanvasGroup>();
         }
-        
+
         SetupInputActions();
-        
+
         InitializeUI();
-        
+
         if (originalPlayerPosition == null && playerRig != null)
         {
             GameObject posMarker = new GameObject("OriginalPlayerPosition");
@@ -165,39 +166,54 @@ public class CutsceneManager : MonoBehaviour
         PlayCutscene();
     }
     
-    private IEnumerator CutsceneSequence()
+private IEnumerator CutsceneSequence()
+{
+    cutscenePlaying = true;
+    cutsceneSkipped = false;
+    cutsceneStarted = false;
+    
+    // Pause BGM when cutscene starts
+    if (AudioManager.Instance != null)
     {
-        cutscenePlaying = true;
-        cutsceneSkipped = false;
-        cutsceneStarted = false;
-        
-        OnCutsceneStart?.Invoke();
-        
-        if (playerRig != null)
+        wasBGMPlaying = AudioManager.Instance.bgmSource != null && AudioManager.Instance.bgmSource.isPlaying;
+        if (wasBGMPlaying)
         {
-            storedPlayerPosition = playerRig.position;
-            storedPlayerRotation = playerRig.rotation;
+            AudioManager.Instance.PauseBGM();
         }
-        
-        if (playerRig != null && theaterPosition != null)
-        {
-            yield return StartCoroutine(TeleportToTheater());
-        }
-        
-        yield return StartCoroutine(PlayCutsceneVideo());
-        
-        if (returnToOriginalPosition && playerRig != null)
-        {
-            yield return StartCoroutine(ReturnPlayerToOriginalPosition());
-        }
-        
-        cutscenePlaying = false;
-        
-        if (cutsceneSkipped)
-            OnCutsceneSkip?.Invoke();
-        else
-            OnCutsceneEnd?.Invoke();
     }
+    
+    OnCutsceneStart?.Invoke();
+    
+    if (playerRig != null)
+    {
+        storedPlayerPosition = playerRig.position;
+        storedPlayerRotation = playerRig.rotation;
+    }
+    
+    if (playerRig != null && theaterPosition != null)
+    {
+        yield return StartCoroutine(TeleportToTheater());
+    }
+    
+    yield return StartCoroutine(PlayCutsceneVideo());
+    
+    if (returnToOriginalPosition && playerRig != null)
+    {
+        yield return StartCoroutine(ReturnPlayerToOriginalPosition());
+    }
+    
+    if (AudioManager.Instance != null && wasBGMPlaying)
+    {
+        AudioManager.Instance.ResumeBGM();
+    }
+    
+    cutscenePlaying = false;
+    
+    if (cutsceneSkipped)
+        OnCutsceneSkip?.Invoke();
+    else
+        OnCutsceneEnd?.Invoke();
+}
     
     private IEnumerator TeleportToTheater()
     {
@@ -388,13 +404,18 @@ public class CutsceneManager : MonoBehaviour
     {
         return cutscenePlaying;
     }
-    
+
 
     public void StopCutscene()
     {
         if (cutscenePlaying)
         {
             cutsceneSkipped = true;
+            
+            if (AudioManager.Instance != null && wasBGMPlaying)
+            {
+                AudioManager.Instance.ResumeBGM();
+            }
         }
     }
 }

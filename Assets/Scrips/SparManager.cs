@@ -687,7 +687,7 @@ public class SparManager : MonoBehaviour, ILevelManager
             }
             else
             {
-                playerScore++;
+                //playerScore++;
                 Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
                 UpdateScoreDisplay();
 

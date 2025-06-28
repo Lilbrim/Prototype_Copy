@@ -588,6 +588,74 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3926425}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &4833801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4833802}
+  - component: {fileID: 4833803}
+  m_Layer: 0
+  m_Name: IntroLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4833802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833801}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.46616948, y: 1.0790883, z: 0.54413074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 428596866}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4833803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4833801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f18da6c11a62fd4b8f8c24539b85b81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stanceInstructionText: {fileID: 718589772}
+  stanceInstructionImage: {fileID: 210054412}
+  stanceInstructionMessage: Ready Position
+  stanceInstructionSprite: {fileID: 21300000, guid: eea95c308847f47408255e7977af8d4b, type: 3}
+  stanceBoxes:
+  - {fileID: 1852088525}
+  stanceManager: {fileID: 1749916801}
+  levelManagerComponent: {fileID: 269624842}
+  stanceHoldTime: 1
+  levelBatonMode: 1
+  overrideBatonMode: 1
+  includeSparringPartner: 0
+  sparringPartnerPrefab: {fileID: 0}
+  sparringPartnerSpawnPoint: {fileID: 0}
+  sparringPartnerAnimation: 
+  includeDummyPartner: 1
+  dummyPartnerPrefab: {fileID: 691306807}
+  dummyPartnerSpawnPoint: {fileID: 1246974198}
+  mirrorSparringPartner: 0
+  cutsceneManager: {fileID: 1276659253}
+  includeCutscene: 0
+  levelCutsceneVideo: {fileID: 32900000, guid: 7e7f7442ac272474c96d155224e66843, type: 3}
+  cutsceneId: 1
+  useScreenTransition: 0
 --- !u!1 &11283825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,9 +1484,11 @@ MonoBehaviour:
   tutorialInstructionPanel: {fileID: 859441151}
   tutorialInstructionTextUI: {fileID: 601883584}
   enableAutoDetectSequences: 1
-  enableSoundEffects: 0
-  playerScoreSounds: []
-  opponentScoreSounds: []
+  enableSoundEffects: 1
+  playerScoreSounds:
+  - BatonHit
+  opponentScoreSounds:
+  - BodyHit
 --- !u!4 &46771984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9025513322688193129, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
@@ -23979,7 +24049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.19, y: -17.89999}
+  m_AnchoredPosition: {x: -0.19, y: -30.1}
   m_SizeDelta: {x: 280.82, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &207754958
@@ -25923,6 +25993,313 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267968896}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &269624839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 269624840}
+  - component: {fileID: 269624842}
+  - component: {fileID: 269624841}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &269624840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269624839}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.5405806, y: 1.389696, z: 1.4905214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 428596866}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &269624841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269624839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee6b480d100e734291177f235a26beb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalBoxes: 0
+  totalBoxesTouched: 0
+  objectiveTotalBoxes: 
+  objectiveTouchedBoxes: 
+  showDebugLogs: 0
+--- !u!114 &269624842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269624839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelName: Tutorial
+  objectives:
+  - instruction: 
+    rightHandInstruction: 
+    instructionImage: {fileID: 21300000, guid: ac4325f70f394df45bfe3277406e90cb, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
+    requiredStance: Left_Temple(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Right Temple Ready Strike
+    rightHandInstruction: Left Temple Ready Strike
+    instructionImage: {fileID: 21300000, guid: aaedfd61af7056c4799cf4e4c391d967, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 751b4c7c480bdb943a34bd808297db0f, type: 3}
+    requiredStance: Right_Temple(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Right Temple Strike
+    rightHandInstruction: Left Temple Strike
+    instructionImage: {fileID: 21300000, guid: 7ad0aa1f0325e0548adb497988e90aa5, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 6f419a54b8a32424594b30558c51fc8c, type: 3}
+    requiredStance: Right_Temple(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Left Shoulder Ready Strike
+    rightHandInstruction: Right Shoulder Ready Strike
+    instructionImage: {fileID: 21300000, guid: 7e91da572e57d0a4eb51ed8b507b4bc4, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 2f2b0af65ad10734faf8ecc264354074, type: 3}
+    requiredStance: Left_Shoulder(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Left Shoulder  Strike
+    rightHandInstruction: Right Shoulder  Strike
+    instructionImage: {fileID: 21300000, guid: d5ea8335ba56cc346ae4f1b177ade188, type: 3}
+    instructionVideo: {fileID: 32900000, guid: dde8509f6905da94c945785205a018b2, type: 3}
+    requiredStance: Left_Shoulder(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Right Shoulder Ready
+    rightHandInstruction: Left Shoulder Ready
+    instructionImage: {fileID: 21300000, guid: dfcfdb807fe93c74bbdfb5f20e49ce60, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8ca791fc6007daf43b14beef6c12bc26, type: 3}
+    requiredStance: Right_Shoulder(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Right Shoulder Strike
+    rightHandInstruction: Left Shoulder Strike
+    instructionImage: {fileID: 21300000, guid: ff824aeeaa4e8c345acbc2229fe3ad16, type: 3}
+    instructionVideo: {fileID: 32900000, guid: ff22e7a5086a36641955973a4e3651cb, type: 3}
+    requiredStance: Right_Shoulder(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Abdoment Ready Thrust
+    rightHandInstruction: Abdoment Ready Thrust
+    instructionImage: {fileID: 21300000, guid: 3d3ae150faba4a94593e0f8865dbac0f, type: 3}
+    instructionVideo: {fileID: 32900000, guid: e85d97835ef807f4e8ca3994265a7408, type: 3}
+    requiredStance: Abdoment(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Abdoment  Thrust
+    rightHandInstruction: Abdoment  Thrust
+    instructionImage: {fileID: 21300000, guid: d21b68ae2e267aa41ad3d5971915a425, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
+    requiredStance: Abdoment(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Left Pectoral Ready Thrust
+    rightHandInstruction: Right Pectoral Ready Thrust
+    instructionImage: {fileID: 21300000, guid: 7580bea7626278547a79dcb52d325a1c, type: 3}
+    instructionVideo: {fileID: 32900000, guid: a8b743596b286434b9943a8827d9c7c7, type: 3}
+    requiredStance: Left_Pectoral(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Left Pectoral Thrust
+    rightHandInstruction: Right Pectoral Thrust
+    instructionImage: {fileID: 21300000, guid: 0d789c109fc47654cb13eaf3862605f8, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
+    requiredStance: Left_Pectoral(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Right Pectoral Thrust
+    rightHandInstruction: Left Pectoral Thrust
+    instructionImage: {fileID: 21300000, guid: 85216f499d78925438b144253533fd48, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 92c687f15c2c8344487d608c29085213, type: 3}
+    requiredStance: Right_Pectoral(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Right Knee
+    rightHandInstruction: 'Left Knee '
+    instructionImage: {fileID: 21300000, guid: 11f469c67b59f8148a35ae1aa3afb4cb, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 7c3f807c548f3b5488ec72feeb2829cc, type: 3}
+    requiredStance: Right_Knee(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Left Knee Ready
+    rightHandInstruction: Right Knee Ready
+    instructionImage: {fileID: 21300000, guid: c59f4e98e05b2224f9fcd46c03e75bb0, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f9ed84c38c9415f4db176f8f94353ed0, type: 3}
+    requiredStance: Left_Knee(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Left Knee Strike
+    rightHandInstruction: Right Knee Strike
+    instructionImage: {fileID: 21300000, guid: c229beb0458e3ac4982724dc025cb4a9, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 75c61cf5f3520b8408ff68854e22d47b, type: 3}
+    requiredStance: Left_Knee(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Left Eye Ready
+    rightHandInstruction: Right Eye Ready
+    instructionImage: {fileID: 21300000, guid: 40e2ce1ab05d16b49b6b701da8de7cef, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8095dfbb172ca75408fed6002b45f9aa, type: 3}
+    requiredStance: Left_Eye(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Left Eye Thrust
+    rightHandInstruction: Right Eye Thrust
+    instructionImage: {fileID: 21300000, guid: 0d9d6e0fa54a0fe40a671a8dd9bfcfe1, type: 3}
+    instructionVideo: {fileID: 32900000, guid: fc36bfee54acc6449a94dd0545497bca, type: 3}
+    requiredStance: Left_Eye(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Right Eye Thrust
+    rightHandInstruction: Left Eye Thrust
+    instructionImage: {fileID: 21300000, guid: b39e5eb5f2c1f204aacb9a20669df3fc, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f5d1de9184bb70b4185c6d6d026345b0, type: 3}
+    requiredStance: Right_Eye(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  - instruction: Top Head
+    rightHandInstruction: Top Head
+    instructionImage: {fileID: 21300000, guid: 3134cccc4497637448f8e52aca0fc2b9, type: 3}
+    instructionVideo: {fileID: 32900000, guid: 8e8585c5f47574f40a6e2bfabbd66100, type: 3}
+    requiredStance: Top_Head(Ready)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 0
+    soundNames: []
+  - instruction: Top Head Strike
+    rightHandInstruction: Top Head Strike
+    instructionImage: {fileID: 21300000, guid: cd03d8ed3a88ff44693897e0476881a5, type: 3}
+    instructionVideo: {fileID: 32900000, guid: f07ecbe500a9a864eb8f13369dba5317, type: 3}
+    requiredStance: Top_Head(Strike)
+    timeLimit: 10
+    enableRepeat: 1
+    repeatCount: 3
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
+  objectiveText: {fileID: 563866865}
+  repeatCountText: {fileID: 701684451}
+  scoreText: {fileID: 1089864350}
+  objectiveImage: {fileID: 478318141}
+  objectiveVideoPlayer: {fileID: 1718001608}
+  feedbackImage: {fileID: 859272578}
+  stanceEntryImage: {fileID: 1766740783}
+  videoPlayer: {fileID: 1718001608}
+  toggleVideoButton: {fileID: 1773611429}
+  DummyPrefab: {fileID: 691306807}
+  objectiveVideoRawImage: {fileID: 373430142}
+  toggleImageButton: {fileID: 1901466051}
+  levelUI: {fileID: 1455138369}
+  incorrectStanceSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  poorSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  goodSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  excellentSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  perfectSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
+  trainingMode: 0
+  trainingModePanel: {fileID: 687840513}
+  accuracyText: {fileID: 1547879003}
+  trainingModeInstructionText: {fileID: 1502088628}
+  inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
+  enableAutoDetectSequences: 0
+  stanceGuideToggleButton: {fileID: 2073672772}
+  stanceGuideButtonText: {fileID: 822341683}
+  enableObjectiveTimeout: 1
+  timeBarFill: {fileID: 2046301259}
+  timeBarBackground: {fileID: 1008950516}
+  timeRemainingText: {fileID: 261081926}
 --- !u!1 &282540271
 GameObject:
   m_ObjectHideFlags: 0
@@ -28723,7 +29100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.19, y: -22.600008}
+  m_AnchoredPosition: {x: -0.19, y: -30.3}
   m_SizeDelta: {x: 280.82, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &380722877
@@ -29783,6 +30160,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d103296d4d87f6146b1e168daa4304db, type: 3}
+--- !u!1 &428596865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 428596866}
+  m_Layer: 0
+  m_Name: 12BasicStrikes (Intermediate)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &428596866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428596865}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -1.451, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4833802}
+  - {fileID: 269624840}
+  m_Father: {fileID: 650454195}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &429922886
 GameObject:
   m_ObjectHideFlags: 0
@@ -32151,7 +32561,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 389ac02511fbf074b9cfc41957f3a45b, type: 3}
     instructionVideo: {fileID: 32900000, guid: 84c4bf37ec803274382299581b65ddaf, type: 3}
     requiredStance: Left_Temple_Block(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32161,7 +32571,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: bb7ede8663fc6ea4ab53e10595a83f92, type: 3}
     instructionVideo: {fileID: 32900000, guid: c82443ab2f47d314bb783245ef846ada, type: 3}
     requiredStance: Right_Temple_Block_Ready
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32171,7 +32581,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: a64256c64a79ec04791670332b90f7ce, type: 3}
     instructionVideo: {fileID: 32900000, guid: 287f358d1fd247a4993fb199a5762a7c, type: 3}
     requiredStance: Right_Temple_Block(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32181,7 +32591,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 55d35b71e8bd2c54e8f1cf9856a86ca8, type: 3}
     instructionVideo: {fileID: 32900000, guid: 45f3fcc5675551e4ab1c6b71535379a7, type: 3}
     requiredStance: Left_Shoulder_Block(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32191,7 +32601,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 276275ae9890ddd4589b31cd732f71ad, type: 3}
     instructionVideo: {fileID: 32900000, guid: 0993fd7780cb99c4d9aaa5486f7c2a37, type: 3}
     requiredStance: Left_Shoulder_Block(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32201,7 +32611,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 0419a3aa389fd8c40bf6e598ad9c71c7, type: 3}
     instructionVideo: {fileID: 32900000, guid: ecb7ea3e1faf352418bfedf1384c7318, type: 3}
     requiredStance: Right_Shoulder_(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32211,7 +32621,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: a871cd8a371f9424ebea5df39c1a00f7, type: 3}
     instructionVideo: {fileID: 32900000, guid: 03f8f7c7c1773c04c868765900b9c990, type: 3}
     requiredStance: Right_Shoulder_(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32221,7 +32631,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 640a51a1df03eb4408512950a77c99e9, type: 3}
     instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
     requiredStance: Right_Abdomen_(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32231,7 +32641,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 2a35de217a841084a8fb60d624a65368, type: 3}
     instructionVideo: {fileID: 32900000, guid: 4bc5e49acda337442b946f4ad3c6d55f, type: 3}
     requiredStance: Abdomen_(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32241,7 +32651,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 369d37641ea7b4442b4f09c46928b648, type: 3}
     instructionVideo: {fileID: 32900000, guid: ee20df0de9c9deb48956c18673042d00, type: 3}
     requiredStance: Left_Pectoral(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32251,7 +32661,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: c6565e7fabf1c16418e4f0aa84413c3f, type: 3}
     instructionVideo: {fileID: 32900000, guid: ca678e7ff23c4444a8a1ce17087c6ea3, type: 3}
     requiredStance: Left_Pectoral(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32261,7 +32671,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 928df5b11ade3ff4e9cd35cd7057a066, type: 3}
     instructionVideo: {fileID: 32900000, guid: 87bac036d4d5fb14b81e18bbc0fe79a0, type: 3}
     requiredStance: Right_Pectoral(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32271,7 +32681,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 3bbc6afbb5cf3f9449fdfdb025205d7d, type: 3}
     instructionVideo: {fileID: 32900000, guid: 5e257545e1bfbe74f9c3f769d20023ff, type: 3}
     requiredStance: Right_Pectoral(Block)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32281,7 +32691,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 66f78a2c0faf17e4aaaac4f395c1a2e4, type: 3}
     instructionVideo: {fileID: 32900000, guid: 11cfde7d0c36cca49b93b484a1b29768, type: 3}
     requiredStance: Right_Knee(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32291,7 +32701,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 2ccb364d5e580874c9ce7474c7619fca, type: 3}
     instructionVideo: {fileID: 32900000, guid: 1612f9b1d4c32f14384f21028df21cb6, type: 3}
     requiredStance: Right_Knee(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32301,7 +32711,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 61e3e0aeb2998c040a533d9f3816f2ae, type: 3}
     instructionVideo: {fileID: 32900000, guid: cae6f680370ca4042a5e7ac2a5a2d73d, type: 3}
     requiredStance: Left_Knee(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32311,7 +32721,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 44a3b4143fe62894ea03bf485ee3b58a, type: 3}
     instructionVideo: {fileID: 32900000, guid: 8082b744d25cb014094bd331b58a6525, type: 3}
     requiredStance: Left_Knee(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32321,7 +32731,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 50735ec57c0a0c241a9973594bd57a73, type: 3}
     instructionVideo: {fileID: 32900000, guid: 80b06b6a80fb4714799ec388a4fb5dc9, type: 3}
     requiredStance: Left_Eye(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32331,7 +32741,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 1ff43746f91382e44826373aaa1d3b41, type: 3}
     instructionVideo: {fileID: 32900000, guid: cbc7f82d5b285c241b778563f10f891f, type: 3}
     requiredStance: Left_Eye(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32341,7 +32751,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 081edf25f9d39ba4db6126110e180c5e, type: 3}
     instructionVideo: {fileID: 32900000, guid: fbf46e59be4fcf845b3ea9c99e6e4319, type: 3}
     requiredStance: Right_Eye(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32351,7 +32761,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: 36ef22f6118058b40bce8df9efd09c71, type: 3}
     instructionVideo: {fileID: 32900000, guid: e5e917913b3d370439cf8a5d114580f2, type: 3}
     requiredStance: Right_Eye(Spar)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32361,7 +32771,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: bb426d1f10e28744bade1fab0393569d, type: 3}
     instructionVideo: {fileID: 32900000, guid: 92f6d10cf8c17774bb1dd4145c44568d, type: 3}
     requiredStance: Head(Ready)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -32371,7 +32781,7 @@ MonoBehaviour:
     instructionImage: {fileID: 21300000, guid: be4c975cea1c08a4aa971c3bc8ebd168, type: 3}
     instructionVideo: {fileID: 32900000, guid: 05c93ce1186e7874990dafd867232232, type: 3}
     requiredStance: Head(Block)
-    timeLimit: 100
+    timeLimit: 10
     enableRepeat: 1
     repeatCount: 3
     enableSoundEffects: 0
@@ -33218,7 +33628,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630619321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
@@ -33879,8 +34289,8 @@ Transform:
   m_Children:
   - {fileID: 1317934832}
   - {fileID: 605232861}
+  - {fileID: 428596866}
   - {fileID: 2014887550}
-  - {fileID: 687749737}
   - {fileID: 1101022005}
   - {fileID: 607056643}
   - {fileID: 1821766594}
@@ -34159,39 +34569,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681182666}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &687749736
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 687749737}
-  m_Layer: 0
-  m_Name: 12BasicStrikes (Intermediate)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &687749737
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 687749736}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1.451, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1498904606}
-  - {fileID: 1326364099}
-  m_Father: {fileID: 650454195}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &687840513
 GameObject:
   m_ObjectHideFlags: 0
@@ -35424,7 +35801,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.923, y: 0.15}
+  m_AnchoredPosition: {x: -0.869, y: 0.15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &716797618
@@ -36551,7 +36928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.19, y: -17.9}
+  m_AnchoredPosition: {x: -0.19, y: -32.9}
   m_SizeDelta: {x: 280.82, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &761956406
@@ -37762,8 +38139,8 @@ MonoBehaviour:
     requiredScore: 0
     requiredAccuracy: 0
     requiredLevelIds: []
-  - levelName: 12 Basic Strikes+
-    introLevel: {fileID: 1498904607}
+  - levelName: 12BasicStrikes+
+    introLevel: {fileID: 4833803}
     levelThumbnail: {fileID: 21300000, guid: b3ec81cc2aa36c144bd87c1e2b34769d, type: 3}
     levelDescription: "The 12 Basic Strikes are fundamental offensive techniques
       designed to target specific areas of an opponent\u2019s body. Each strike corresponds
@@ -37774,9 +38151,8 @@ MonoBehaviour:
     isTournamentLevel: 0
     requiredScore: 0
     requiredAccuracy: 0
-    requiredLevelIds:
-    - T1
-  - levelName: 12 Basic Blocks+
+    requiredLevelIds: []
+  - levelName: 12BasicBlocks+
     introLevel: {fileID: 1112961504}
     levelThumbnail: {fileID: 21300000, guid: b3ec81cc2aa36c144bd87c1e2b34769d, type: 3}
     levelDescription: "The 12 Basic Blocks in Arnis are essential defensive techniques
@@ -37788,8 +38164,7 @@ MonoBehaviour:
     isTournamentLevel: 0
     requiredScore: 0
     requiredAccuracy: 0
-    requiredLevelIds:
-    - T1
+    requiredLevelIds: []
   availableSparLevels: []
   availableTournamentLevels:
   - levelName: Tutorial
@@ -37804,7 +38179,7 @@ MonoBehaviour:
     requiredScore: 0
     requiredAccuracy: 0
     requiredLevelIds: []
-  - levelName: Tournament 1
+  - levelName: Tournament
     introLevel: {fileID: 1972052387}
     levelThumbnail: {fileID: 21300000, guid: ace3f70bba683834fa43ec1ed839ef5c, type: 3}
     levelDescription: You will be sparring an opponent who is specialized in defense.
@@ -37818,7 +38193,7 @@ MonoBehaviour:
     requiredAccuracy: 0
     requiredLevelIds:
     - 0
-  - levelName: Tournament 1+
+  - levelName: Tournament+
     introLevel: {fileID: 1795985148}
     levelThumbnail: {fileID: 21300000, guid: ace3f70bba683834fa43ec1ed839ef5c, type: 3}
     levelDescription: You will be sparring an opponent who is specialized in defense.
@@ -37828,7 +38203,7 @@ MonoBehaviour:
     levelId: T2
     isSparLevel: 0
     isTournamentLevel: 0
-    requiredScore: 1
+    requiredScore: 0
     requiredAccuracy: 0
     requiredLevelIds:
     - T1
@@ -39571,7 +39946,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918476593}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
@@ -42388,9 +42763,11 @@ MonoBehaviour:
   tutorialInstructionPanel: {fileID: 859441151}
   tutorialInstructionTextUI: {fileID: 601883584}
   enableAutoDetectSequences: 1
-  enableSoundEffects: 0
-  playerScoreSounds: []
-  opponentScoreSounds: []
+  enableSoundEffects: 1
+  playerScoreSounds:
+  - BatonHit
+  opponentScoreSounds:
+  - BodyHit
 --- !u!1 &1042007934
 GameObject:
   m_ObjectHideFlags: 0
@@ -42809,6 +43186,81 @@ MonoBehaviour:
   failureEmissionColor: {r: 1, g: 0, b: 0, a: 0.7058824}
   isPartOfSequence: 0
   sequencePosition: 0
+--- !u!1 &1085876518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085876519}
+  - component: {fileID: 1085876521}
+  - component: {fileID: 1085876520}
+  m_Layer: 5
+  m_Name: Image (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1085876519
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085876518}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1396166, y: 0.52065814, z: 0.52065814}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1882927476}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0, y: 7.700012}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1085876520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085876518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6319a7f047f959d4f96a0d49bda60589, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1085876521
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085876518}
+  m_CullTransparentMesh: 1
 --- !u!1 &1089864347
 GameObject:
   m_ObjectHideFlags: 0
@@ -47756,7 +48208,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317660924}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71b727101e5078e40b16edf5399aaf27, type: 3}
   m_Name: 
@@ -47893,7 +48345,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317660924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 799c9bd9093d08d4ea5b9e7a2bb5a532, type: 3}
   m_Name: 
@@ -48119,301 +48571,6 @@ MonoBehaviour:
   failureEmissionColor: {r: 1, g: 0, b: 0, a: 0.7058824}
   isPartOfSequence: 0
   sequencePosition: 0
---- !u!1 &1326364098
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1326364099}
-  - component: {fileID: 1326364101}
-  - component: {fileID: 1326364100}
-  m_Layer: 0
-  m_Name: LevelManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1326364099
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326364098}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5405806, y: 1.389696, z: 1.4905214}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 687749737}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1326364100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326364098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cee6b480d100e734291177f235a26beb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalBoxes: 0
-  totalBoxesTouched: 0
-  objectiveTotalBoxes: 
-  objectiveTouchedBoxes: 
-  showDebugLogs: 0
---- !u!114 &1326364101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326364098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7e5cb26c1fed5a459fc2134220bb3e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelName: Tutorial
-  objectives:
-  - instruction: 
-    rightHandInstruction: 
-    instructionImage: {fileID: 21300000, guid: ac4325f70f394df45bfe3277406e90cb, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 8363b753dcaff124d9deec440d8cf016, type: 3}
-    requiredStance: Left_Temple(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Temple Ready Strike
-    rightHandInstruction: Left Temple Ready Strike
-    instructionImage: {fileID: 21300000, guid: aaedfd61af7056c4799cf4e4c391d967, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 751b4c7c480bdb943a34bd808297db0f, type: 3}
-    requiredStance: Right_Temple(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Temple Strike
-    rightHandInstruction: Left Temple Strike
-    instructionImage: {fileID: 21300000, guid: 7ad0aa1f0325e0548adb497988e90aa5, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 6f419a54b8a32424594b30558c51fc8c, type: 3}
-    requiredStance: Right_Temple(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Shoulder Ready Strike
-    rightHandInstruction: Right Shoulder Ready Strike
-    instructionImage: {fileID: 21300000, guid: 7e91da572e57d0a4eb51ed8b507b4bc4, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 2f2b0af65ad10734faf8ecc264354074, type: 3}
-    requiredStance: Left_Shoulder(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Shoulder  Strike
-    rightHandInstruction: Right Shoulder  Strike
-    instructionImage: {fileID: 21300000, guid: d5ea8335ba56cc346ae4f1b177ade188, type: 3}
-    instructionVideo: {fileID: 32900000, guid: dde8509f6905da94c945785205a018b2, type: 3}
-    requiredStance: Left_Shoulder(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Shoulder Ready
-    rightHandInstruction: Left Shoulder Ready
-    instructionImage: {fileID: 21300000, guid: dfcfdb807fe93c74bbdfb5f20e49ce60, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 8ca791fc6007daf43b14beef6c12bc26, type: 3}
-    requiredStance: Right_Shoulder(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Shoulder Strike
-    rightHandInstruction: Left Shoulder Strike
-    instructionImage: {fileID: 21300000, guid: ff824aeeaa4e8c345acbc2229fe3ad16, type: 3}
-    instructionVideo: {fileID: 32900000, guid: ff22e7a5086a36641955973a4e3651cb, type: 3}
-    requiredStance: Right_Shoulder(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Abdoment Ready Thrust
-    rightHandInstruction: Abdoment Ready Thrust
-    instructionImage: {fileID: 21300000, guid: 3d3ae150faba4a94593e0f8865dbac0f, type: 3}
-    instructionVideo: {fileID: 32900000, guid: e85d97835ef807f4e8ca3994265a7408, type: 3}
-    requiredStance: Abdoment(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Abdoment  Thrust
-    rightHandInstruction: Abdoment  Thrust
-    instructionImage: {fileID: 21300000, guid: d21b68ae2e267aa41ad3d5971915a425, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
-    requiredStance: Abdoment(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Pectoral Ready Thrust
-    rightHandInstruction: Right Pectoral Ready Thrust
-    instructionImage: {fileID: 21300000, guid: 7580bea7626278547a79dcb52d325a1c, type: 3}
-    instructionVideo: {fileID: 32900000, guid: a8b743596b286434b9943a8827d9c7c7, type: 3}
-    requiredStance: Left_Pectoral(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Pectoral Thrust
-    rightHandInstruction: Right Pectoral Thrust
-    instructionImage: {fileID: 21300000, guid: 0d789c109fc47654cb13eaf3862605f8, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 131c6c6cdd7c2a444b592ee3c4ad52f8, type: 3}
-    requiredStance: Left_Pectoral(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Pectoral Thrust
-    rightHandInstruction: Left Pectoral Thrust
-    instructionImage: {fileID: 21300000, guid: 85216f499d78925438b144253533fd48, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 92c687f15c2c8344487d608c29085213, type: 3}
-    requiredStance: Right_Pectoral(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Knee
-    rightHandInstruction: 'Left Knee '
-    instructionImage: {fileID: 21300000, guid: 11f469c67b59f8148a35ae1aa3afb4cb, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 7c3f807c548f3b5488ec72feeb2829cc, type: 3}
-    requiredStance: Right_Knee(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Knee Ready
-    rightHandInstruction: Right Knee Ready
-    instructionImage: {fileID: 21300000, guid: c59f4e98e05b2224f9fcd46c03e75bb0, type: 3}
-    instructionVideo: {fileID: 32900000, guid: f9ed84c38c9415f4db176f8f94353ed0, type: 3}
-    requiredStance: Left_Knee(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Knee Strike
-    rightHandInstruction: Right Knee Strike
-    instructionImage: {fileID: 21300000, guid: c229beb0458e3ac4982724dc025cb4a9, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 75c61cf5f3520b8408ff68854e22d47b, type: 3}
-    requiredStance: Left_Knee(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Eye Ready
-    rightHandInstruction: Right Eye Ready
-    instructionImage: {fileID: 21300000, guid: 40e2ce1ab05d16b49b6b701da8de7cef, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 8095dfbb172ca75408fed6002b45f9aa, type: 3}
-    requiredStance: Left_Eye(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Left Eye Thrust
-    rightHandInstruction: Right Eye Thrust
-    instructionImage: {fileID: 21300000, guid: 0d9d6e0fa54a0fe40a671a8dd9bfcfe1, type: 3}
-    instructionVideo: {fileID: 32900000, guid: fc36bfee54acc6449a94dd0545497bca, type: 3}
-    requiredStance: Left_Eye(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Right Eye Thrust
-    rightHandInstruction: Left Eye Thrust
-    instructionImage: {fileID: 21300000, guid: b39e5eb5f2c1f204aacb9a20669df3fc, type: 3}
-    instructionVideo: {fileID: 32900000, guid: f5d1de9184bb70b4185c6d6d026345b0, type: 3}
-    requiredStance: Right_Eye(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Top Head
-    rightHandInstruction: Top Head
-    instructionImage: {fileID: 21300000, guid: 3134cccc4497637448f8e52aca0fc2b9, type: 3}
-    instructionVideo: {fileID: 32900000, guid: 8e8585c5f47574f40a6e2bfabbd66100, type: 3}
-    requiredStance: Top_Head(Ready)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  - instruction: Top Head Strike
-    rightHandInstruction: Top Head Strike
-    instructionImage: {fileID: 21300000, guid: cd03d8ed3a88ff44693897e0476881a5, type: 3}
-    instructionVideo: {fileID: 32900000, guid: f07ecbe500a9a864eb8f13369dba5317, type: 3}
-    requiredStance: Top_Head(Strike)
-    timeLimit: 100
-    enableRepeat: 1
-    repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
-  objectiveText: {fileID: 563866865}
-  repeatCountText: {fileID: 701684451}
-  scoreText: {fileID: 1089864350}
-  objectiveImage: {fileID: 478318141}
-  objectiveVideoPlayer: {fileID: 1718001608}
-  feedbackImage: {fileID: 859272578}
-  stanceEntryImage: {fileID: 1766740783}
-  videoPlayer: {fileID: 1718001608}
-  toggleVideoButton: {fileID: 1773611429}
-  DummyPrefab: {fileID: 691306807}
-  objectiveVideoRawImage: {fileID: 373430142}
-  toggleImageButton: {fileID: 1901466051}
-  levelUI: {fileID: 1455138369}
-  incorrectStanceSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  missedSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  poorSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  goodSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  excellentSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  perfectSprite: {fileID: 21300000, guid: a9fd90bb5c6630f4eb2d3f75295da472, type: 3}
-  trainingMode: 0
-  trainingModePanel: {fileID: 687840513}
-  accuracyText: {fileID: 1547879003}
-  trainingModeInstructionText: {fileID: 1502088628}
-  inputActions: {fileID: -944628639613478452, guid: 21572dd894c02ec4c8a9a0ac812a7a88, type: 3}
-  enableAutoDetectSequences: 0
-  stanceGuideToggleButton: {fileID: 2073672772}
-  stanceGuideButtonText: {fileID: 822341683}
-  enableObjectiveTimeout: 1
-  timeBarFill: {fileID: 2046301259}
-  timeBarBackground: {fileID: 1008950516}
-  timeRemainingText: {fileID: 261081926}
 --- !u!1 &1326988953
 GameObject:
   m_ObjectHideFlags: 0
@@ -49885,6 +50042,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 207754957}
+  - {fileID: 1674759766}
   m_Father: {fileID: 1711357601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -50377,81 +50535,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1430234303}
-  m_CullTransparentMesh: 1
---- !u!1 &1431909146
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1431909147}
-  - component: {fileID: 1431909149}
-  - component: {fileID: 1431909148}
-  m_Layer: 5
-  m_Name: Image (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1431909147
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431909146}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1396166, y: 0.52065814, z: 0.52065814}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1882927476}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 7.700012}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1431909148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431909146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bb98b6f0c35fd39439a9639b8049b46c, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1431909149
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431909146}
   m_CullTransparentMesh: 1
 --- !u!1 &1433252213 stripped
 GameObject:
@@ -52053,7 +52136,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474926516}
   m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
-  m_LocalPosition: {x: 0, y: 0, z: -0.19309}
+  m_LocalPosition: {x: 0, y: 0, z: -0.042}
   m_LocalScale: {x: 0.006449878, y: 0.005495115, z: 0.065101616}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52282,74 +52365,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496616308}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1498904605
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1498904606}
-  - component: {fileID: 1498904607}
-  m_Layer: 0
-  m_Name: IntroLevel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1498904606
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498904605}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.46616948, y: 1.0790883, z: 0.54413074}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 687749737}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1498904607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498904605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f18da6c11a62fd4b8f8c24539b85b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stanceInstructionText: {fileID: 718589772}
-  stanceInstructionImage: {fileID: 210054412}
-  stanceInstructionMessage: Ready Position
-  stanceInstructionSprite: {fileID: 21300000, guid: eea95c308847f47408255e7977af8d4b, type: 3}
-  stanceBoxes:
-  - {fileID: 1852088525}
-  stanceManager: {fileID: 1749916801}
-  levelManagerComponent: {fileID: 1326364101}
-  stanceHoldTime: 1
-  levelBatonMode: 1
-  overrideBatonMode: 1
-  includeSparringPartner: 0
-  sparringPartnerPrefab: {fileID: 0}
-  sparringPartnerSpawnPoint: {fileID: 0}
-  sparringPartnerAnimation: 
-  includeDummyPartner: 1
-  dummyPartnerPrefab: {fileID: 691306807}
-  dummyPartnerSpawnPoint: {fileID: 1246974198}
-  mirrorSparringPartner: 0
-  cutsceneManager: {fileID: 1276659253}
-  includeCutscene: 0
-  levelCutsceneVideo: {fileID: 32900000, guid: 7e7f7442ac272474c96d155224e66843, type: 3}
-  cutsceneId: 1
-  useScreenTransition: 0
 --- !u!1 &1502088626
 GameObject:
   m_ObjectHideFlags: 0
@@ -55406,7 +55421,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.92345, y: 0.18612999}
+  m_AnchoredPosition: {x: -0.86945003, y: 0.18612999}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1601504893
@@ -56750,6 +56765,81 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2536953596714220021, guid: 5f0fb3a60c68be448b14f20bfb3b0e6d, type: 3}
   m_PrefabInstance: {fileID: 181232301}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1674759765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674759766}
+  - component: {fileID: 1674759768}
+  - component: {fileID: 1674759767}
+  m_Layer: 5
+  m_Name: Image (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1674759766
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674759765}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 1.1390135, y: 0.5201794, z: 0.5201794}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1376165187}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.0000019073486, y: 7.700011}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1674759767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674759765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 6319a7f047f959d4f96a0d49bda60589, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1674759768
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674759765}
+  m_CullTransparentMesh: 1
 --- !u!1 &1675577625
 GameObject:
   m_ObjectHideFlags: 0
@@ -57019,7 +57109,7 @@ MonoBehaviour:
   batonInstructionImage: {fileID: 383380787}
   heightInstructionPanel: {fileID: 1882927475}
   heightInstructionText: {fileID: 761956406}
-  heightInstructionImage: {fileID: 0}
+  heightInstructionImage: {fileID: 1620353359}
   heightSlider: {fileID: 0}
   heightValueText: {fileID: 0}
   boxInstructionPanel: {fileID: 1777523770}
@@ -62302,8 +62392,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Right Temple Ready Strike
     rightHandInstruction: Left Temple Ready Strike
     instructionImage: {fileID: 21300000, guid: aaedfd61af7056c4799cf4e4c391d967, type: 3}
@@ -62322,8 +62413,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Left Shoulder Ready Strike
     rightHandInstruction: Right Shoulder Ready Strike
     instructionImage: {fileID: 21300000, guid: 7e91da572e57d0a4eb51ed8b507b4bc4, type: 3}
@@ -62342,8 +62434,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Right Shoulder Ready
     rightHandInstruction: Left Shoulder Ready
     instructionImage: {fileID: 21300000, guid: dfcfdb807fe93c74bbdfb5f20e49ce60, type: 3}
@@ -62362,8 +62455,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Abdoment Ready Thrust
     rightHandInstruction: Abdoment Ready Thrust
     instructionImage: {fileID: 21300000, guid: 3d3ae150faba4a94593e0f8865dbac0f, type: 3}
@@ -62382,8 +62476,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Left Pectoral Ready Thrust
     rightHandInstruction: Right Pectoral Ready Thrust
     instructionImage: {fileID: 21300000, guid: 7580bea7626278547a79dcb52d325a1c, type: 3}
@@ -62402,8 +62497,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Right Pectoral Thrust
     rightHandInstruction: Left Pectoral Thrust
     instructionImage: {fileID: 21300000, guid: 85216f499d78925438b144253533fd48, type: 3}
@@ -62412,8 +62508,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Right Knee
     rightHandInstruction: 'Left Knee '
     instructionImage: {fileID: 21300000, guid: 11f469c67b59f8148a35ae1aa3afb4cb, type: 3}
@@ -62422,8 +62519,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Left Knee Ready
     rightHandInstruction: Right Knee Ready
     instructionImage: {fileID: 21300000, guid: c59f4e98e05b2224f9fcd46c03e75bb0, type: 3}
@@ -62442,8 +62540,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Left Eye Ready
     rightHandInstruction: Right Eye Ready
     instructionImage: {fileID: 21300000, guid: 40e2ce1ab05d16b49b6b701da8de7cef, type: 3}
@@ -62462,8 +62561,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Right Eye Thrust
     rightHandInstruction: Left Eye Thrust
     instructionImage: {fileID: 21300000, guid: b39e5eb5f2c1f204aacb9a20669df3fc, type: 3}
@@ -62472,8 +62572,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   - instruction: Top Head
     rightHandInstruction: Top Head
     instructionImage: {fileID: 21300000, guid: 3134cccc4497637448f8e52aca0fc2b9, type: 3}
@@ -62492,8 +62593,9 @@ MonoBehaviour:
     timeLimit: 100
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   objectiveText: {fileID: 563866865}
   repeatCountText: {fileID: 701684451}
   scoreText: {fileID: 1089864350}
@@ -62989,7 +63091,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1431909147}
+  - {fileID: 1085876519}
   - {fileID: 761956405}
   m_Father: {fileID: 1711357601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -66740,8 +66842,9 @@ MonoBehaviour:
     timeLimit: 30
     enableRepeat: 1
     repeatCount: 3
-    enableSoundEffects: 0
-    soundNames: []
+    enableSoundEffects: 1
+    soundNames:
+    - BodyHit
   objectiveText: {fileID: 563866865}
   repeatCountText: {fileID: 701684451}
   scoreText: {fileID: 1089864350}
@@ -68190,7 +68293,7 @@ RectTransform:
   m_GameObject: {fileID: 2076757377}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.178}
-  m_LocalScale: {x: 0.0030361207, y: 0.0030361207, z: 0.0030361207}
+  m_LocalScale: {x: 0.0022451149, y: 0.0022451149, z: 0.0022451149}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 395028117}
@@ -69851,7 +69954,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.8460083
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8830895359737542428, guid: 889df1dbb3363cf4ca465e336569dca8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8997461597997527933, guid: 889df1dbb3363cf4ca465e336569dca8, type: 3}
@@ -74259,7 +74363,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8731991011844824059, guid: 74aacc4f9743f7748a24b897c643b451, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3310946599963709414, guid: 74aacc4f9743f7748a24b897c643b451, type: 3}

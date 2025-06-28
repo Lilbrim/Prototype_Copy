@@ -15,40 +15,41 @@ public class AudioManager : MonoBehaviour
         [Range(0.1f, 3f)]
         public float pitch = 1f;
         public bool loop = false;
-        
+
         [HideInInspector]
         public AudioSource source;
     }
-    
+
     public static AudioManager Instance;
-    
+
     [Header("Background Music")]
     public AudioClip defaultBGM;
     public AudioClip levelManagerBGM;
     public AudioClip sparManagerBGM;
-    
+
     [Header("Sound Effects")]
     public Sound[] soundEffects;
-    
+
     [Header("Audio Sources")]
-    private AudioSource bgmSource;
+    public AudioSource bgmSource;
     private List<AudioSource> sfxSources = new List<AudioSource>();
     private const int MAX_SFX_SOURCES = 10;
-    
+
     [Header("Pooled Sound Emitters")]
     [SerializeField] private int poolSize = 20;
     private Queue<SoundEmitter> availableEmitters = new Queue<SoundEmitter>();
     private List<SoundEmitter> activeEmitters = new List<SoundEmitter>();
-    
+
     [Header("Volume Settings")]
     [Range(0f, 0.1f)]
     public float masterVolume = 0.05f;
     private const string VOLUME_PREF_KEY = "MasterVolume";
-    
+
     private LevelManager levelManager;
     private SparManager sparManager;
     private AudioClip currentBGM;
-    
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -62,23 +63,23 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private void InitializeAudioManager()
     {
-        
+
         bgmSource = gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;
         bgmSource.playOnAwake = false;
-        
-        
+
+
         for (int i = 0; i < MAX_SFX_SOURCES; i++)
         {
             AudioSource sfxSource = gameObject.AddComponent<AudioSource>();
             sfxSource.playOnAwake = false;
             sfxSources.Add(sfxSource);
         }
-        
-        
+
+
         foreach (Sound sound in soundEffects)
         {
             sound.source = gameObject.AddComponent<AudioSource>();
@@ -88,22 +89,22 @@ public class AudioManager : MonoBehaviour
             sound.source.loop = sound.loop;
             sound.source.playOnAwake = false;
         }
-        
-        
+
+
         InitializeSoundEmitterPool();
-        
-        
+
+
         masterVolume = PlayerPrefs.GetFloat(VOLUME_PREF_KEY, 0.05f);
         ApplyVolumeSettings();
     }
-    
+
     private void InitializeSoundEmitterPool()
     {
-        
+
         GameObject poolParent = new GameObject("Sound Emitter Pool");
         poolParent.transform.SetParent(transform);
-        
-        
+
+
         for (int i = 0; i < poolSize; i++)
         {
             GameObject emitterObj = CreateSoundEmitter();
@@ -114,7 +115,7 @@ public class AudioManager : MonoBehaviour
             availableEmitters.Enqueue(emitter);
         }
     }
-    
+
     private GameObject CreateSoundEmitter()
     {
         GameObject emitter = new GameObject("Sound Emitter");
@@ -122,21 +123,21 @@ public class AudioManager : MonoBehaviour
         emitter.AddComponent<SoundEmitter>();
         return emitter;
     }
-    
+
     private void Start()
     {
         StartCoroutine(CheckForManagers());
     }
-    
+
     private IEnumerator CheckForManagers()
     {
         while (true)
         {
             LevelManager currentLevelManager = FindObjectOfType<LevelManager>();
             SparManager currentSparManager = FindObjectOfType<SparManager>();
-            
+
             AudioClip targetBGM = defaultBGM;
-            
+
             if (currentLevelManager != null && currentLevelManager.gameObject.activeInHierarchy)
             {
                 targetBGM = levelManagerBGM;
@@ -145,26 +146,26 @@ public class AudioManager : MonoBehaviour
             {
                 targetBGM = sparManagerBGM;
             }
-            
+
             if (targetBGM != currentBGM)
             {
                 SwitchBGM(targetBGM);
             }
-            
+
             yield return new WaitForSeconds(1f);
         }
     }
-    
+
     private void SwitchBGM(AudioClip newBGM)
     {
         if (newBGM == null) return;
-        
+
         currentBGM = newBGM;
         bgmSource.clip = newBGM;
         bgmSource.Play();
     }
-    
-    
+
+
     public void PlaySound(string soundName)
     {
         Sound sound = System.Array.Find(soundEffects, s => s.name == soundName);
@@ -173,11 +174,11 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning($"Sound '{soundName}' not found in AudioManager!");
             return;
         }
-        
+
         sound.source.Play();
     }
-    
-    
+
+
     public void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
     {
         Sound sound = System.Array.Find(soundEffects, s => s.name == soundName);
@@ -186,15 +187,15 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning($"Sound '{soundName}' not found in AudioManager!");
             return;
         }
-        
+
         SoundEmitter emitter = GetAvailableEmitter();
         if (emitter != null)
         {
             emitter.PlaySound(sound, position, volumeMultiplier, pitchMultiplier);
         }
     }
-    
-    
+
+
     public void PlaySoundAtGameObject(string soundName, GameObject target, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
     {
         if (target != null)
@@ -202,8 +203,8 @@ public class AudioManager : MonoBehaviour
             PlaySound(soundName, target.transform.position, volumeMultiplier, pitchMultiplier);
         }
     }
-    
-    
+
+
     public static void PlaySoundStatic(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
     {
         if (Instance != null)
@@ -211,8 +212,8 @@ public class AudioManager : MonoBehaviour
             Instance.PlaySound(soundName, position, volumeMultiplier, pitchMultiplier);
         }
     }
-    
-    
+
+
     public static void PlaySoundAtGameObjectStatic(string soundName, GameObject target, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
     {
         if (Instance != null)
@@ -220,7 +221,7 @@ public class AudioManager : MonoBehaviour
             Instance.PlaySoundAtGameObject(soundName, target, volumeMultiplier, pitchMultiplier);
         }
     }
-    
+
     private SoundEmitter GetAvailableEmitter()
     {
         if (availableEmitters.Count > 0)
@@ -229,7 +230,7 @@ public class AudioManager : MonoBehaviour
             activeEmitters.Add(emitter);
             return emitter;
         }
-        
+
         Debug.LogWarning("No available sound emitters! Creating temporary emitter.");
         GameObject tempEmitter = CreateSoundEmitter();
         SoundEmitter tempEmitterComponent = tempEmitter.GetComponent<SoundEmitter>();
@@ -237,8 +238,8 @@ public class AudioManager : MonoBehaviour
         activeEmitters.Add(tempEmitterComponent);
         return tempEmitterComponent;
     }
-    
-    
+
+
     public void ReturnEmitterToPool(SoundEmitter emitter)
     {
         if (activeEmitters.Contains(emitter))
@@ -248,7 +249,7 @@ public class AudioManager : MonoBehaviour
             availableEmitters.Enqueue(emitter);
         }
     }
-    
+
     private AudioSource GetAvailableSFXSource()
     {
         foreach (AudioSource source in sfxSources)
@@ -258,26 +259,26 @@ public class AudioManager : MonoBehaviour
                 return source;
             }
         }
-        
+
         return sfxSources[0];
     }
-    
+
     public void SetMasterVolume(float volume)
     {
         masterVolume = Mathf.Clamp01(volume);
         PlayerPrefs.SetFloat(VOLUME_PREF_KEY, masterVolume);
         PlayerPrefs.Save();
-        
+
         ApplyVolumeSettings();
     }
-    
+
     private void ApplyVolumeSettings()
     {
         if (bgmSource != null)
         {
             bgmSource.volume = masterVolume;
         }
-        
+
         foreach (Sound sound in soundEffects)
         {
             if (sound.source != null)
@@ -285,23 +286,23 @@ public class AudioManager : MonoBehaviour
                 sound.source.volume = sound.volume * masterVolume;
             }
         }
-        
+
         foreach (AudioSource source in sfxSources)
         {
             source.volume = masterVolume;
         }
-        
+
         foreach (SoundEmitter emitter in activeEmitters)
         {
             emitter.UpdateVolume(masterVolume);
         }
     }
-    
+
     public float GetMasterVolume()
     {
         return masterVolume;
     }
-    
+
     public void StopSound(string soundName)
     {
         Sound sound = System.Array.Find(soundEffects, s => s.name == soundName);
@@ -310,7 +311,7 @@ public class AudioManager : MonoBehaviour
             sound.source.Stop();
         }
     }
-    
+
     public void StopAllSounds()
     {
         foreach (Sound sound in soundEffects)
@@ -320,18 +321,18 @@ public class AudioManager : MonoBehaviour
                 sound.source.Stop();
             }
         }
-        
+
         foreach (AudioSource source in sfxSources)
         {
             source.Stop();
         }
-        
+
         foreach (SoundEmitter emitter in activeEmitters)
         {
             emitter.Stop();
         }
     }
-    
+
     public void PauseBGM()
     {
         if (bgmSource != null && bgmSource.isPlaying)
@@ -339,7 +340,7 @@ public class AudioManager : MonoBehaviour
             bgmSource.Pause();
         }
     }
-    
+
     public void ResumeBGM()
     {
         if (bgmSource != null && !bgmSource.isPlaying)
@@ -347,7 +348,7 @@ public class AudioManager : MonoBehaviour
             bgmSource.UnPause();
         }
     }
-    
+
     public void StopBGM()
     {
         if (bgmSource != null)
@@ -355,4 +356,5 @@ public class AudioManager : MonoBehaviour
             bgmSource.Stop();
         }
     }
+    
 }

@@ -2474,7 +2474,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666996037}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71b727101e5078e40b16edf5399aaf27, type: 3}
   m_Name: 
@@ -2820,26 +2820,21 @@ MonoBehaviour:
   levelManagerBGM: {fileID: 8300000, guid: f86a75d3842928746b8ab16ef0ad29f2, type: 3}
   sparManagerBGM: {fileID: 8300000, guid: 375c263d9c4d8d141aa7690dab79fdb6, type: 3}
   soundEffects:
-  - name: Rattan_Hit
-    clip: {fileID: 0}
+  - name: BodyHit
+    clip: {fileID: 8300000, guid: 8196f3e748d1fa545be1b368965b674b, type: 3}
     volume: 0
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: Rattan_Block
-    clip: {fileID: 0}
+  - name: BatonHit
+    clip: {fileID: 8300000, guid: b370d0ac144b0844f9c18eb1b585e4df, type: 3}
     volume: 0
     pitch: 0
     loop: 0
     source: {fileID: 0}
-  - name: Rattan_
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
-    loop: 0
-    source: {fileID: 0}
+  bgmSource: {fileID: 0}
   poolSize: 20
-  masterVolume: 0.5
+  masterVolume: 0.05
 --- !u!4 &834780587
 Transform:
   m_ObjectHideFlags: 0
@@ -3938,7 +3933,7 @@ MonoBehaviour:
   m_OnSelectExited:
     m_PersistentCalls:
       m_Calls: []
-  m_PokeDepth: 0.1
+  m_PokeDepth: 0.5
   m_PokeWidth: 0.0075
   m_PokeSelectWidth: 0.015
   m_PokeHoverRadius: 0.015
@@ -4919,7 +4914,7 @@ MonoBehaviour:
   m_OnSelectExited:
     m_PersistentCalls:
       m_Calls: []
-  m_PokeDepth: 0.1
+  m_PokeDepth: 0.5
   m_PokeWidth: 0.0075
   m_PokeSelectWidth: 0.015
   m_PokeHoverRadius: 0.015
@@ -6174,7 +6169,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442681608}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
@@ -9023,7 +9018,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077354665}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
