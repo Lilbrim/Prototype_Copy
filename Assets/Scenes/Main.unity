@@ -1484,7 +1484,7 @@ MonoBehaviour:
   blockChanceIncrement: 0
   blockChanceResetTime: 1000
   blockFeedbackText: {fileID: 0}
-  isTutorialMode: 1
+  isTutorialMode: 0
   tutorialAnimationPauseTime: 3
   tutorialInstructionText: Use what you have learned and block the attacks. If you
     fail to do so the Opponent will get a point. To time it wait for the bar to turn
@@ -25784,18 +25784,18 @@ MonoBehaviour:
   - name: BodyHit
     clip: {fileID: 8300000, guid: 8196f3e748d1fa545be1b368965b674b, type: 3}
     volume: 1
-    pitch: 0
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: BatonHit
     clip: {fileID: 8300000, guid: b370d0ac144b0844f9c18eb1b585e4df, type: 3}
     volume: 1
-    pitch: 0
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   bgmSource: {fileID: 0}
   poolSize: 20
-  masterVolume: 0.05
+  masterVolume: 0.1
 --- !u!4 &255610951
 Transform:
   m_ObjectHideFlags: 0
@@ -65425,7 +65425,7 @@ MonoBehaviour:
   isOneHanded: 1
   angleThreshold: 15
   positionThreshold: 0.7
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 1368050364196381540}
   visualRotationOffset: {x: 0, y: 90, z: -180}
   enableVisualMirroring: 1
   mirrorAxis: 2
