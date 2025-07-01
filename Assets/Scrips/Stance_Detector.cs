@@ -62,6 +62,12 @@ public class StanceDetector : MonoBehaviour
     [SerializeField] private Color successEmissionColor = Color.green;
     [SerializeField] private Color failureEmissionColor = Color.red;
 
+    [Header("Hit Effect Settings")]
+    [SerializeField] private bool enableHitEffect = false;
+    [SerializeField] private GameObject hitEffectPrefab;
+    [SerializeField] private Vector3 hitEffectOffset = Vector3.zero;
+    [SerializeField] private float hitEffectLifetime = 2.0f;
+
     [HideInInspector] public bool isPartOfSequence = false;
     [HideInInspector] public int sequencePosition = 0;
 
@@ -543,6 +549,10 @@ public class StanceDetector : MonoBehaviour
         float distance = Vector3.Distance(currentTransform.position, transform.position);
         bool inStance = (dot >= Mathf.Cos(angleThreshold * Mathf.Deg2Rad)) && (distance < positionThreshold);
 
+
+        bool wasInStance = isLeftHand ? leftHandInStance : rightHandInStance;
+        bool isNewHit = !wasInStance && inStance;
+
         if (isLeftHand)
         {
             leftHandInStance = inStance;
@@ -557,6 +567,12 @@ public class StanceDetector : MonoBehaviour
         if (inStance && isPartOfSequence)
         {
             HandleSequenceTouch();
+        }
+
+
+        if (isNewHit)
+        {
+            SpawnHitEffect();
         }
 
         if (visualRenderer != null && propertyBlock != null && !hasVisualDisappeared)
@@ -765,6 +781,37 @@ public class StanceDetector : MonoBehaviour
             SetupInitialColors();
         }
     }
+    private void SpawnHitEffect()
+    {
+        if (!enableHitEffect || hitEffectPrefab == null) return;
+
+
+        Vector3 spawnPosition = transform.position + transform.forward * gizmosArrowLength + hitEffectOffset;
+
+        GameObject hitEffect = Instantiate(hitEffectPrefab, spawnPosition, transform.rotation);
+
+
+        Animator animator = hitEffect.GetComponent<Animator>();
+        if (animator != null)
+        {
+
+            animator.Play("Hit");
+
+
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float animationLength = stateInfo.length;
+
+
+            Destroy(hitEffect, animationLength);
+        }
+        else
+        {
+
+            Destroy(hitEffect, hitEffectLifetime);
+        }
+
+        Debug.Log($"Hit effect spawned at {spawnPosition} for {gameObject.name}");
+    }
     private void DrawDetectionGizmos()
     {
 
@@ -864,13 +911,13 @@ public class StanceDetector : MonoBehaviour
     public void SetUseEmission(bool use)
     {
         useEmission = use;
-        SetDefaultColor(); 
+        SetDefaultColor();
     }
 
     public void SetEmissionIntensity(float intensity)
     {
         emissionIntensity = intensity;
-        SetDefaultColor(); 
+        SetDefaultColor();
     }
 
     public void SetEmissionColors(Color leftBaton, Color rightBaton, Color success, Color failure)
@@ -879,6 +926,26 @@ public class StanceDetector : MonoBehaviour
         rightBatonEmissionColor = rightBaton;
         successEmissionColor = success;
         failureEmissionColor = failure;
-        SetDefaultColor(); 
+        SetDefaultColor();
     }
+    public void SetEnableHitEffect(bool enable)
+    {
+        enableHitEffect = enable;
+    }
+
+    public void SetHitEffectPrefab(GameObject prefab)
+    {
+        hitEffectPrefab = prefab;
+    }
+
+    public void SetHitEffectOffset(Vector3 offset)
+    {
+        hitEffectOffset = offset;
+    }
+
+    public void SetHitEffectLifetime(float lifetime)
+    {
+        hitEffectLifetime = lifetime;
+    }
+    
 }

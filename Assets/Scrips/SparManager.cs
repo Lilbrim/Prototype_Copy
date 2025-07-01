@@ -81,6 +81,8 @@ public class SparManager : MonoBehaviour, ILevelManager
 
     [Header("Sparring Partner Settings")]
     public string sparringPartnerAnimation = "Default";
+    public string sparringPartnerHitAnimation = "Hit";
+
     public bool useSparringPartner = false;
     [Range(0f, 10f)]
     public float sparringPartnerDelay = 2f;
@@ -88,6 +90,8 @@ public class SparManager : MonoBehaviour, ILevelManager
     public float sparringPartnerAnimationSpeed = 1f;
     private GameObject sparringPartner;
     private Animator sparringPartnerAnimator;
+    public float hitAnimationDuration = 1f;
+    private Coroutine hitAnimationCoroutine;
 
     [System.Serializable]
     public class PhaseObjective
@@ -494,6 +498,12 @@ public class SparManager : MonoBehaviour, ILevelManager
             sparringPartnerCoroutine = null;
         }
 
+        if (hitAnimationCoroutine != null)
+        {
+            StopCoroutine(hitAnimationCoroutine);
+            hitAnimationCoroutine = null;
+        }
+
         if (sparringPartnerAnimator != null)
         {
             sparringPartnerAnimator.enabled = false;
@@ -645,8 +655,8 @@ public class SparManager : MonoBehaviour, ILevelManager
                 opponentScore++;
                 Debug.Log($"Player failed Phase 1 objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
                 UpdateScoreDisplay();
-                
-                
+
+
                 string opponentSound = GetRandomSoundFromList(opponentScoreSounds);
                 if (!string.IsNullOrEmpty(opponentSound))
                 {
@@ -661,75 +671,76 @@ public class SparManager : MonoBehaviour, ILevelManager
 
 
 
-    public void NotifyPhase1Completion(string stanceName, string sequenceName)
+   public void NotifyPhase1Completion(string stanceName, string sequenceName)
+{
+    if (!isGameActive || isGameOver || currentPhase != 1 || !objectiveActive) return;
+
+    string currentObjective = phase1Objectives[currentObjectiveIndex].stanceName;
+
+    if (stanceName == currentObjective)
     {
-        if (!isGameActive || isGameOver || currentPhase != 1 || !objectiveActive) return;
-
-        string currentObjective = phase1Objectives[currentObjectiveIndex].stanceName;
-
-        if (stanceName == currentObjective)
+        if (!canPlayerAct)
         {
-            if (!canPlayerAct)
+            playerActedTooEarly = true;
+            opponentScore++;
+            Debug.Log($"Player acted too early for objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
+            UpdateScoreDisplay();
+
+            string opponentSound = GetRandomSoundFromList(opponentScoreSounds);
+            if (!string.IsNullOrEmpty(opponentSound))
             {
-                playerActedTooEarly = true;
-                opponentScore++;
-                Debug.Log($"Player acted too early for objective {currentObjectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
-                UpdateScoreDisplay();
-
-                string opponentSound = GetRandomSoundFromList(opponentScoreSounds);
-                if (!string.IsNullOrEmpty(opponentSound))
-                {
-                    AudioManager.PlaySoundAtGameObjectStatic(opponentSound, this.gameObject);
-                }
-
-                ShowPhase1Feedback("MISS", missColor);
-                return;
+                AudioManager.PlaySoundAtGameObjectStatic(opponentSound, this.gameObject);
             }
-            else
+
+            ShowPhase1Feedback("MISS", missColor);
+            return;
+        }
+        else
+        {
+            playerScore++; 
+            Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
+            UpdateScoreDisplay();
+
+            
+            PlaySparringPartnerHitAnimation();
+
+            string playerSound = GetRandomSoundFromList(playerScoreSounds);
+            if (!string.IsNullOrEmpty(playerSound))
             {
-                //playerScore++;
-                Debug.Log($"Phase 1 objective {currentObjectiveIndex + 1} completed successfully: {stanceName}.{sequenceName}");
-                UpdateScoreDisplay();
-
-                string playerSound = GetRandomSoundFromList(playerScoreSounds);
-                if (!string.IsNullOrEmpty(playerSound))
-                {
-                    AudioManager.PlaySoundAtGameObjectStatic(playerSound, this.gameObject);
-                }
-
-                ShowPhase1Feedback("BLOCK", blockColor);
-
-                objectiveActive = false;
-                canPlayerAct = false;
-                StopTimingBar();
-
-
-                SetAutoDetectSequences(false);
-                ResetStanceGuide();
-
-                if (isTutorialMode)
-                {
-                    if (tutorialInstructionPanel != null)
-                    {
-                        tutorialInstructionPanel.SetActive(false);
-                    }
-
-                    if (tutorialAnimationPaused && sparringPartnerAnimator != null)
-                    {
-                        sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
-                        tutorialAnimationPaused = false;
-                        Debug.Log("Tutorial: Animation resumed");
-
-                        StartCoroutine(TutorialTransitionToPhase2());
-                        return;
-                    }
-                }
-
-
-                StartCoroutine(DelayedNextObjective());
+                AudioManager.PlaySoundAtGameObjectStatic(playerSound, this.gameObject);
             }
+
+            ShowPhase1Feedback("BLOCK", blockColor);
+
+            objectiveActive = false;
+            canPlayerAct = false;
+            StopTimingBar();
+
+            SetAutoDetectSequences(false);
+            ResetStanceGuide();
+
+            if (isTutorialMode)
+            {
+                if (tutorialInstructionPanel != null)
+                {
+                    tutorialInstructionPanel.SetActive(false);
+                }
+
+                if (tutorialAnimationPaused && sparringPartnerAnimator != null)
+                {
+                    sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
+                    tutorialAnimationPaused = false;
+                    Debug.Log("Tutorial: Animation resumed");
+
+                    StartCoroutine(TutorialTransitionToPhase2());
+                    return;
+                }
+            }
+
+            StartCoroutine(DelayedNextObjective());
         }
     }
+}
 
     private IEnumerator TutorialTransitionToPhase2()
     {
@@ -830,69 +841,68 @@ public class SparManager : MonoBehaviour, ILevelManager
     }
 
     public void OnSequenceCompleted(string stanceName, string sequenceName)
+{
+    if (!isGameActive || isGameOver) return;
+
+    if (currentPhase == 2)
     {
-        if (!isGameActive || isGameOver) return;
-
-        if (currentPhase == 2)
+        if (isTutorialMode && tutorialInstructionPanel != null && tutorialInstructionPanel.activeInHierarchy)
         {
+            tutorialInstructionPanel.SetActive(false);
+            Debug.Log("Tutorial Phase 2 instruction hidden after first objective completion");
+        }
 
-            if (isTutorialMode && tutorialInstructionPanel != null && tutorialInstructionPanel.activeInHierarchy)
+        if (isTutorialMode)
+        {
+            Debug.Log("Tutorial completed after 1 sequence! Ending game.");
+            EndGame();
+            return;
+        }
+
+        bool blocked = CheckIfOpponentBlocks(stanceName);
+
+        if (blocked)
+        {
+            ShowBlockFeedback();
+            Debug.Log($"Opponent blocked {stanceName}.{sequenceName} in Phase 2!");
+
+            if (!isTutorialMode)
             {
-                tutorialInstructionPanel.SetActive(false);
-                Debug.Log("Tutorial Phase 2 instruction hidden after first objective completion");
-            }
-
-            if (isTutorialMode)
-            {
-
-                Debug.Log("Tutorial completed after 1 sequence! Ending game.");
-                EndGame();
-                return;
-            }
-
-            bool blocked = CheckIfOpponentBlocks(stanceName);
-
-            if (blocked)
-            {
-                ShowBlockFeedback();
-                Debug.Log($"Opponent blocked {stanceName}.{sequenceName} in Phase 2!");
-
-                if (!isTutorialMode)
-                {
-                    phase2Value -= phase2BlockReduction;
-                    phase2Value = Mathf.Max(0, phase2Value);
-                }
-            }
-            else
-            {
-                playerScore++;
-                Debug.Log($"Player completed {stanceName}.{sequenceName} in Phase 2! Score: {playerScore}");
-                UpdateScoreDisplay();
-
-                
-                string playerSound = GetRandomSoundFromList(playerScoreSounds);
-                if (!string.IsNullOrEmpty(playerSound))
-                {
-                    AudioManager.PlaySoundAtGameObjectStatic(playerSound, this.gameObject);
-                }
-
-                if (!isTutorialMode)
-                {
-                    phase2Value -= phase2SequenceReduction;
-                    phase2Value = Mathf.Max(0, phase2Value);
-                }
-            }
-
-            IncreaseBlockChance(stanceName);
-
-
-            if (StanceManager.Instance != null)
-            {
-                StanceManager.Instance.EnterStance("Default");
-                StartCoroutine(ReactivatePhase2StancesAfterDelay());
+                phase2Value -= phase2BlockReduction;
+                phase2Value = Mathf.Max(0, phase2Value);
             }
         }
+        else
+        {
+            playerScore++;
+            Debug.Log($"Player completed {stanceName}.{sequenceName} in Phase 2! Score: {playerScore}");
+            UpdateScoreDisplay();
+
+            
+            PlaySparringPartnerHitAnimation();
+
+            string playerSound = GetRandomSoundFromList(playerScoreSounds);
+            if (!string.IsNullOrEmpty(playerSound))
+            {
+                AudioManager.PlaySoundAtGameObjectStatic(playerSound, this.gameObject);
+            }
+
+            if (!isTutorialMode)
+            {
+                phase2Value -= phase2SequenceReduction;
+                phase2Value = Mathf.Max(0, phase2Value);
+            }
+        }
+
+        IncreaseBlockChance(stanceName);
+
+        if (StanceManager.Instance != null)
+        {
+            StanceManager.Instance.EnterStance("Default");
+            StartCoroutine(ReactivatePhase2StancesAfterDelay());
+        }
     }
+}
     private IEnumerator ReactivatePhase2StancesAfterDelay()
     {
         yield return new WaitForSeconds(0.1f);
@@ -1315,13 +1325,13 @@ public class SparManager : MonoBehaviour, ILevelManager
             opponentScore++;
             Debug.Log($"Player was too late for objective {objectiveIndex + 1}. Opponent scores! Opponent Score: {opponentScore}");
             UpdateScoreDisplay();
-            
+
             string opponentSound = GetRandomSoundFromList(opponentScoreSounds);
             if (!string.IsNullOrEmpty(opponentSound))
             {
                 AudioManager.PlaySoundAtGameObjectStatic(opponentSound, this.gameObject);
             }
-            
+
             ShowPhase1Feedback("MISS", missColor);
         }
 
@@ -1426,6 +1436,55 @@ public class SparManager : MonoBehaviour, ILevelManager
 
         int randomIndex = Random.Range(0, soundList.Count);
         return soundList[randomIndex];
+    }
+    private void PlaySparringPartnerHitAnimation()
+{
+    if (!useSparringPartner || sparringPartnerAnimator == null || string.IsNullOrEmpty(sparringPartnerHitAnimation))
+    {
+        return;
+    }
+
+    
+    if (hitAnimationCoroutine != null)
+    {
+        StopCoroutine(hitAnimationCoroutine);
+    }
+
+    hitAnimationCoroutine = StartCoroutine(PlayHitAnimationCoroutine());
+}
+
+    private IEnumerator PlayHitAnimationCoroutine()
+    {
+        string previousAnimation = sparringPartnerAnimation;
+        bool wasEnabled = sparringPartnerAnimator.enabled;
+        
+        if (!sparringPartnerAnimator.enabled)
+        {
+            sparringPartnerAnimator.enabled = true;
+        }
+        
+        sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
+        sparringPartnerAnimator.Play(sparringPartnerHitAnimation, 0, 0f);
+        
+        Debug.Log($"Playing hit animation '{sparringPartnerHitAnimation}' on sparring partner");
+        
+        yield return new WaitForSeconds(hitAnimationDuration);
+        
+        if (currentPhase == 1 && isGameActive && !isGameOver)
+        {
+            if (!string.IsNullOrEmpty(previousAnimation) && previousAnimation != sparringPartnerHitAnimation)
+            {
+                sparringPartnerAnimator.speed = sparringPartnerAnimationSpeed;
+                sparringPartnerAnimator.Play(previousAnimation, 0, 0f);
+                Debug.Log($"Returned to animation '{previousAnimation}' after hit");
+            }
+        }
+        else if (!wasEnabled)
+        {
+            sparringPartnerAnimator.enabled = false;
+        }
+        
+        hitAnimationCoroutine = null;
     }
 
 }
