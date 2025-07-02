@@ -138,6 +138,22 @@ public class StanceGuide : MonoBehaviour
         public Material trailMaterial;
         [Tooltip("Trail color gradient")]
 
+        [Header("Arrow Head Settings")]
+        public bool enableArrowHead = true;
+        [Tooltip("Size of the arrow head")]
+        [Range(0.1f, 2f)]
+        public float arrowHeadSize = 0.3f;
+        [Tooltip("Arrow head angle in degrees")]
+        [Range(15f, 60f)]
+        public float arrowHeadAngle = 30f;
+        [Range(0f, 90f)]
+        public float arrowHeadTilt = 45f;
+        public bool cameraFacingArrow = true;
+
+        [System.NonSerialized] public LineRenderer arrowHeadRenderer;
+        [System.NonSerialized] public Vector3 lastPosition;
+        [System.NonSerialized] public Vector3 lastDirection;
+
         [System.NonSerialized] public TrailRenderer batonTrail;
         public Gradient trailColorGradient = new Gradient();
 
@@ -890,6 +906,15 @@ void CreateBatonInstance(int batonIndex)
         config.batonInstance.transform.position = config.batonPath[0].position;
         config.batonInstance.transform.rotation = config.batonPath[0].rotation;
     }
+    config.lastPosition = Vector3.zero;
+    if (config.batonPath != null && config.batonPath.Length > 1)
+    {
+        config.lastDirection = (config.batonPath[1].position - config.batonPath[0].position).normalized;
+    }
+    else
+    {
+        config.lastDirection = Vector3.forward;
+    }
 
     
     InitializeTrail(batonIndex);
@@ -980,67 +1005,183 @@ void CreateBatonInstance(int batonIndex)
         }
     }
 
-void UpdateBatonTrail(int batonIndex)
+    void UpdateBatonTrail(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+
+        var config = batonConfigs[batonIndex];
+
+        if (!config.enableTrail || config.batonTrail == null || config.batonInstance == null)
+            return;
+
+        config.batonTrail.enabled = true;
+
+        
+        UpdateArrowHead(batonIndex);
+    }
+void UpdateArrowHead(int batonIndex)
 {
     if (batonIndex >= batonConfigs.Length) return;
 
     var config = batonConfigs[batonIndex];
     
-    if (!config.enableTrail || config.batonTrail == null || config.batonInstance == null)
+    if (!config.enableArrowHead || config.arrowHeadRenderer == null || config.batonInstance == null)
         return;
 
+    Vector3 currentPos = config.batonInstance.transform.position;
     
-    config.batonTrail.enabled = true;
+    
+    Vector3 direction;
+    if (config.lastPosition != Vector3.zero)
+    {
+        direction = (currentPos - config.lastPosition).normalized;
+        if (direction.magnitude > 0.01f) 
+        {
+            config.lastDirection = direction;
+        }
+    }
+    else
+    {
+        direction = config.batonInstance.transform.forward;
+        config.lastDirection = direction;
+    }
+    
+    config.lastPosition = currentPos;
+    
+    Vector3 arrowTip = currentPos;
+    
+    
+    Vector3 right, up;
+    
+    if (config.cameraFacingArrow && Camera.main != null)
+    {
+        
+        Vector3 toCamera = (Camera.main.transform.position - currentPos).normalized;
+        right = Vector3.Cross(config.lastDirection, toCamera).normalized;
+        up = Vector3.Cross(right, config.lastDirection).normalized;
+    }
+    else
+    {
+        
+        right = Vector3.Cross(config.lastDirection, Vector3.up).normalized;
+        if (right.magnitude < 0.1f) 
+        {
+            right = Vector3.Cross(config.lastDirection, Vector3.forward).normalized;
+        }
+        up = Vector3.Cross(right, config.lastDirection).normalized;
+    }
+    
+    float radians = config.arrowHeadAngle * Mathf.Deg2Rad;
+    float tiltRadians = config.arrowHeadTilt * Mathf.Deg2Rad;
+    float wingLength = config.arrowHeadSize;
+    
+    
+    Vector3 baseWingDirection = -config.lastDirection * Mathf.Cos(radians);
+    Vector3 rightWingOffset = right * Mathf.Sin(radians) * Mathf.Cos(tiltRadians);
+    Vector3 upWingOffset = up * Mathf.Sin(radians) * Mathf.Sin(tiltRadians);
+    
+    Vector3 wingDirection1 = (baseWingDirection + rightWingOffset + upWingOffset).normalized;
+    Vector3 wingDirection2 = (baseWingDirection - rightWingOffset - upWingOffset).normalized;
+    
+    Vector3 wingTip1 = arrowTip + wingDirection1 * wingLength;
+    Vector3 wingTip2 = arrowTip + wingDirection2 * wingLength;
+    
+    
+    config.arrowHeadRenderer.SetPosition(0, wingTip1);
+    config.arrowHeadRenderer.SetPosition(1, arrowTip);
+    config.arrowHeadRenderer.SetPosition(2, wingTip2);
+    
+    config.arrowHeadRenderer.enabled = config.enableTrail && config.enableArrowHead;
 }
 
-void InitializeTrail(int batonIndex)
+
+
+    void InitializeTrail(int batonIndex)
+    {
+        if (batonIndex >= batonConfigs.Length) return;
+
+        var config = batonConfigs[batonIndex];
+
+        if (config.batonInstance != null)
+        {
+            
+            config.batonTrail = config.batonInstance.GetComponent<TrailRenderer>();
+
+            if (config.batonTrail == null)
+            {
+                config.batonTrail = config.batonInstance.AddComponent<TrailRenderer>();
+            }
+
+            config.batonTrail.time = config.trailTime;
+            config.batonTrail.startWidth = config.trailWidth;
+            config.batonTrail.endWidth = config.trailWidth * 0.1f;
+            config.batonTrail.enabled = config.enableTrail;
+
+            if (config.trailMaterial != null)
+            {
+                config.batonTrail.material = config.trailMaterial;
+            }
+            else
+            {
+                Material defaultMaterial = new Material(Shader.Find("Sprites/Default"));
+                defaultMaterial.color = config.isLeftHand ? Color.yellow : Color.cyan;
+                config.batonTrail.material = defaultMaterial;
+            }
+
+            if (config.trailColorGradient.colorKeys.Length == 0)
+            {
+                Color trailColor = config.isLeftHand ? Color.yellow : Color.cyan;
+                config.trailColorGradient.SetKeys(
+                    new GradientColorKey[] { new GradientColorKey(trailColor, 0.0f), new GradientColorKey(trailColor, 1.0f) },
+                    new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) }
+                );
+            }
+            config.batonTrail.colorGradient = config.trailColorGradient;
+
+            
+            InitializeArrowHead(batonIndex);
+        }
+    }
+void InitializeArrowHead(int batonIndex)
 {
     if (batonIndex >= batonConfigs.Length) return;
 
     var config = batonConfigs[batonIndex];
     
-    if (config.batonInstance != null)
+    if (!config.enableArrowHead || config.batonInstance == null) return;
+
+    
+    GameObject arrowHeadObj = new GameObject($"{config.batonName}_ArrowHead");
+    arrowHeadObj.transform.SetParent(config.batonInstance.transform);
+    
+    config.arrowHeadRenderer = arrowHeadObj.AddComponent<LineRenderer>();
+    config.arrowHeadRenderer.positionCount = 3; 
+    config.arrowHeadRenderer.startWidth = config.trailWidth * 1.2f;
+    config.arrowHeadRenderer.endWidth = config.trailWidth * 0.8f;
+    config.arrowHeadRenderer.useWorldSpace = true;
+    
+    
+    if (config.trailMaterial != null)
     {
-        
-        config.batonTrail = config.batonInstance.GetComponent<TrailRenderer>();
-        
-        if (config.batonTrail == null)
-        {
-            config.batonTrail = config.batonInstance.AddComponent<TrailRenderer>();
-        }
-
-        
-        config.batonTrail.time = config.trailTime;
-        config.batonTrail.startWidth = config.trailWidth;
-        config.batonTrail.endWidth = config.trailWidth * 0.1f;
-        config.batonTrail.enabled = config.enableTrail;
-        
-        
-        if (config.trailMaterial != null)
-        {
-            config.batonTrail.material = config.trailMaterial;
-        }
-        else
-        {
-            
-            Material defaultMaterial = new Material(Shader.Find("Sprites/Default"));
-            defaultMaterial.color = config.isLeftHand ? Color.yellow : Color.cyan;
-            config.batonTrail.material = defaultMaterial;
-        }
-
-        
-        if (config.trailColorGradient.colorKeys.Length == 0)
-        {
-            
-            Color trailColor = config.isLeftHand ? Color.yellow : Color.cyan;
-            config.trailColorGradient.SetKeys(
-                new GradientColorKey[] { new GradientColorKey(trailColor, 0.0f), new GradientColorKey(trailColor, 1.0f) },
-                new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) }
-            );
-        }
-        config.batonTrail.colorGradient = config.trailColorGradient;
+        config.arrowHeadRenderer.material = config.trailMaterial;
     }
+    else
+    {
+        Material arrowMaterial = new Material(Shader.Find("Sprites/Default"));
+        Color arrowColor = config.isLeftHand ? Color.yellow : Color.cyan;
+        arrowColor.a = 0.9f; 
+        arrowMaterial.color = arrowColor;
+        config.arrowHeadRenderer.material = arrowMaterial;
+    }
+    
+    
+    config.arrowHeadRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+    config.arrowHeadRenderer.receiveShadows = false;
+    config.arrowHeadRenderer.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
+    
+    config.arrowHeadRenderer.enabled = config.enableTrail && config.enableArrowHead;
 }
+
 
 
     public void StartBaton(int batonIndex)
@@ -1104,17 +1245,21 @@ void InitializeTrail(int batonIndex)
         }
     }
     
-    public void ClearTrail(int batonIndex)
-    {
-        if (batonIndex >= batonConfigs.Length) return;
+public void ClearTrail(int batonIndex)
+{
+    if (batonIndex >= batonConfigs.Length) return;
 
-        var config = batonConfigs[batonIndex];
-        
-        if (config.batonTrail != null)
-        {
-            config.batonTrail.Clear();
-        }
+    var config = batonConfigs[batonIndex];
+    
+    if (config.batonTrail != null)
+    {
+        config.batonTrail.Clear();
     }
+    
+    
+    config.lastPosition = Vector3.zero;
+    config.lastDirection = Vector3.forward;
+}
 
     public void ResetBaton(int batonIndex)
     {
